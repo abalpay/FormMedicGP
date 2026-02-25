@@ -21,7 +21,9 @@ export interface PatientDetails {
 
 export interface FormField {
   type: 'text' | 'date' | 'number' | 'radio' | 'checkbox';
-  pdfField: string;
+  pdfField: string | string[];
+  pdfFieldType?: 'text' | 'checkbox' | 'radio' | 'split-date' | 'split-chars';
+  pdfOptions?: Record<string, string>;
   required?: boolean;
   optional?: boolean;
   options?: string[];

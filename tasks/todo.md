@@ -54,3 +54,42 @@
 - [x] `pnpm build` passes with 0 TypeScript errors
 - [x] curl test to `/api/process-form` returns extractedData + valid pdfBase64
 - [x] Full UI flow: select SU415 → patient details → dictate/type → process → review → download PDF
+
+---
+
+# Phase 5: Fill Real PDF Form (SU415)
+
+- [x] 5.0 Field discovery script — extracted 52 AcroForm fields from real PDF via `qpdf` + `pdf-lib`
+- [x] 5.1 Place template — qpdf-fixed PDF at `src/lib/schemas/templates/SU415.pdf`
+- [x] 5.2 Update types — `FormField` extended with `pdfField: string | string[]`, `pdfFieldType`, `pdfOptions`
+- [x] 5.3 Rebuild SU415.json schema — all 52 fields mapped to real AcroForm field names
+- [x] 5.4 Rewrite pdf-filler.ts — template loading + AcroForm filling (text, checkbox, split-date, split-chars)
+- [x] 5.5 Update reidentify.ts — split name (family/first/second), split address (line1/2/3 + postcode)
+- [x] 5.6 LLM adjustments — max_tokens bumped, new clinical fields auto-flow from schema
+- [x] 5.7 Verification — `pnpm build` 0 errors, test fill produces valid PDF
+
+## Phase 5 Review
+
+### What Changed
+| File | Change |
+|---|---|
+| `scripts/inspect-pdf-fields.ts` | New — field discovery script |
+| `src/lib/schemas/templates/SU415.pdf` | New — qpdf-fixed real form template (596KB) |
+| `src/types/index.ts` | Extended `FormField` with `pdfField: string \| string[]`, `pdfFieldType`, `pdfOptions` |
+| `src/lib/schemas/SU415.json` | Full rebuild — 52 fields mapped to real AcroForm names |
+| `src/lib/pdf-filler.ts` | Complete rewrite — template loading + AcroForm filling |
+| `src/lib/reidentify.ts` | Split name (family/first/second), split address (3 lines + postcode), new doctor fields |
+| `src/lib/llm.ts` | `max_tokens` 1024→2048 for richer clinical extraction |
+
+### Key Decisions
+- Original PDF had invalid object refs → pre-processed with `qpdf --qdf` for pdf-lib compatibility
+- CRN split: 3-3-3-1 chars across `Q1CRN.0`–`Q1CRN.3`
+- Checkboxes acting as radios: on-values `#233c3` (≤13wk), `13-24`, `24+`, `Yes`, `No`
+- `PatientDetails.customerName` stays as single field in UI; split into family/first/second in `reidentify()`
+- Form kept editable (no `form.flatten()`) so doctors can manually correct
+
+### Verification
+- `pnpm build` — 0 TypeScript errors
+- IDE diagnostics — 0 issues across all modified files
+- Test fill script produced valid filled PDF at `/tmp/test-su415-filled.pdf`
+- All text fields, split-date fields, split-char fields, and checkbox groups filled correctly
