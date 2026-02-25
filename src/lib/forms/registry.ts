@@ -104,6 +104,7 @@ export function getFormCatalog(includeDeferred = false): FormCatalogItem[] {
       status: form.status,
       deferred: form.deferred,
       dictationTips: schema?.dictationTips ?? [],
+      dictationGuide: schema?.dictationGuide,
     };
   });
 }

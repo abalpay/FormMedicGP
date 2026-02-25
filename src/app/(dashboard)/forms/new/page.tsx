@@ -50,10 +50,10 @@ export default function NewFormPage() {
     <div className="max-w-2xl space-y-6">
       <StepIndicator steps={steps} currentStep={currentStep} />
 
-      <Card>
+      <Card className="shadow-sm">
         <CardContent className="p-6">
           {currentStep === 0 && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-in-up">
               <FormSelector
                 selectedFormId={selectedFormId}
                 onSelect={handleFormSelect}
@@ -71,12 +71,14 @@ export default function NewFormPage() {
           )}
 
           {currentStep === 1 && (
-            <PatientDetailsForm
-              formType={selectedFormType}
-              initialValues={patientDetails}
-              onSubmit={handlePatientDetailsSubmit}
-              onBack={handleBackToFormSelection}
-            />
+            <div className="animate-fade-in-up">
+              <PatientDetailsForm
+                formType={selectedFormType}
+                initialValues={patientDetails}
+                onSubmit={handlePatientDetailsSubmit}
+                onBack={handleBackToFormSelection}
+              />
+            </div>
           )}
         </CardContent>
       </Card>

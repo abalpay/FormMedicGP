@@ -115,7 +115,7 @@ function renderFieldControl({
                 role="radio"
                 aria-checked={isSelected}
                 className={cn(
-                  'rounded-sm px-3 py-2 text-left text-sm transition-colors border',
+                  'rounded-lg px-3 py-2 text-left text-sm transition-all duration-200 border',
                   isSelected
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                     : 'bg-background text-foreground border-transparent hover:bg-muted'
@@ -247,9 +247,9 @@ export function FormSummary({
   );
 
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <CardTitle className="text-base">Mapped Fields</CardTitle>
+        <CardTitle className="text-base font-[family-name:var(--font-display)]">Mapped Fields</CardTitle>
         <div className="flex items-center gap-2">
           {!isCapacityForm && technicalFieldCount > 0 && (
             <button
@@ -384,7 +384,7 @@ export function FormSummary({
                                 return (
                                   <Fragment key={`${section.id}-${field.key}`}>
                                     <tr
-                                      className="border-t border-border/70 first:border-t-0"
+                                      className="border-t border-border/70 first:border-t-0 hover:bg-muted/30 transition-colors"
                                     >
                                       <th
                                         id={`${fieldId}-label`}
@@ -541,7 +541,7 @@ export function FormSummary({
 
           return (
             <section key={section.id} className="space-y-3">
-              <h3 className="text-sm font-semibold text-muted-foreground">
+              <h3 className="text-sm font-semibold text-muted-foreground pl-3 border-l-2 border-primary/30">
                 {section.title}
               </h3>
               {sectionBody}

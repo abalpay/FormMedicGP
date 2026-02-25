@@ -31,16 +31,18 @@ export function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between h-16 px-4 lg:px-6 border-b border-border bg-card">
+    <header className="flex items-center justify-between h-16 px-4 lg:px-8 border-b border-border bg-card/80 glass sticky top-0 z-30">
       <div className="flex items-center gap-3">
         <MobileSidebar />
-        <h1 className="text-xl font-semibold text-foreground">{getTitle()}</h1>
+        <h1 className="text-xl font-semibold text-foreground font-[family-name:var(--font-display)]">
+          {getTitle()}
+        </h1>
       </div>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-            <Avatar className="h-9 w-9">
+            <Avatar className="h-9 w-9 transition-shadow hover:ring-2 hover:ring-primary/20">
               <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
                 Dr
               </AvatarFallback>

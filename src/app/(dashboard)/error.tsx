@@ -18,16 +18,16 @@ export default function DashboardError({
 
   return (
     <div className="flex items-center justify-center min-h-[50vh]">
-      <Card className="max-w-md w-full">
-        <CardContent className="flex flex-col items-center text-center p-8 space-y-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-destructive/10">
-            <AlertCircle className="w-6 h-6 text-destructive" />
+      <Card className="max-w-md w-full shadow-lg animate-fade-in-up">
+        <CardContent className="flex flex-col items-center text-center p-8 space-y-5">
+          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-destructive/10">
+            <AlertCircle className="w-7 h-7 text-destructive" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">
               Something went wrong
             </h2>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-muted-foreground mt-1.5">
               An unexpected error occurred. Please try again.
             </p>
           </div>

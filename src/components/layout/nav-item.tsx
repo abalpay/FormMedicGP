@@ -26,12 +26,15 @@ export function NavItem({ href, label, icon }: NavItemProps) {
     <Link
       href={href}
       className={cn(
-        'flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
+        'relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
         isActive
-          ? 'bg-primary/10 text-primary'
-          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+          ? 'bg-white/15 text-white'
+          : 'text-white/60 hover:bg-white/8 hover:text-white/90'
       )}
     >
+      {isActive && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-white rounded-r-full" />
+      )}
       <Icon className="w-4.5 h-4.5" />
       {label}
     </Link>

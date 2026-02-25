@@ -227,7 +227,8 @@
             "yes": "Yes",
             "no": "No"
           },
-          "reviewControl": "segmented"
+          "reviewControl": "segmented",
+          "llmInstruction": "Set yes when the injury/condition is described as a TAC motor vehicle claim; otherwise set no unless both claim types are explicitly stated."
         },
         "vwaClaim": {
           "label": "VWA Claim",
@@ -245,7 +246,8 @@
             "yes": "Yes",
             "no": "No"
           },
-          "reviewControl": "segmented"
+          "reviewControl": "segmented",
+          "llmInstruction": "Set yes when the injury/condition is described as a WorkSafe/VWA claim; otherwise set no unless both claim types are explicitly stated."
         },
         "confirmAttendance": {
           "label": "Confirm Attendance",
@@ -263,7 +265,8 @@
             "yes": "Yes",
             "no": "No"
           },
-          "reviewControl": "segmented"
+          "reviewControl": "segmented",
+          "llmInstruction": "Set yes only when the certificate is for attendance confirmation only (sections 1, 2, 5, 6)."
         },
         "certificationOption": {
           "label": "Certification Option",
@@ -299,7 +302,8 @@
               "suitable_employment",
               "no_capacity"
             ]
-          }
+          },
+          "llmInstruction": "Choose one value: pre_injury_capacity, suitable_employment, or no_capacity based on the stated work capacity outcome."
         },
         "workEnvironmentConsiderations": {
           "label": "Work Environment Considerations",
@@ -307,7 +311,8 @@
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Work Environment Considerations",
-          "pdfFieldType": "text"
+          "pdfFieldType": "text",
+          "llmInstruction": "Describe workplace/environment factors that affect safe duties (e.g., driving, heights, repetitive load, temperature, pace)."
         },
         "physicalFunction": {
           "label": "Physical Function",
@@ -315,7 +320,8 @@
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Physical Function",
-          "pdfFieldType": "text"
+          "pdfFieldType": "text",
+          "llmInstruction": "Summarize overall physical capacity limits and relevant lifting/posture tolerances."
         },
         "mentalHealthFunction": {
           "label": "Mental Health Function",
@@ -323,7 +329,8 @@
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Mental Health Function",
-          "pdfFieldType": "text"
+          "pdfFieldType": "text",
+          "llmInstruction": "Summarize mental/cognitive impacts relevant to work function, attention, memory, and judgment."
         },
         "otherFunctionalConsiderations": {
           "label": "Other Functional Considerations",
@@ -331,7 +338,8 @@
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Other Functional Considerations",
-          "pdfFieldType": "text"
+          "pdfFieldType": "text",
+          "llmInstruction": "Capture additional functional considerations not already covered, including medication effects if relevant."
         },
         "sit": {
           "label": "Sit",
@@ -367,7 +375,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on documented sitting tolerance."
         },
         "standWalk": {
           "label": "Stand/Walk",
@@ -403,7 +412,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on standing/walking tolerance and restrictions."
         },
         "bend": {
           "label": "Bend",
@@ -439,7 +449,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on bending tolerance."
         },
         "squat": {
           "label": "Squat",
@@ -475,7 +486,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on squat tolerance."
         },
         "kneel": {
           "label": "Kneel",
@@ -511,7 +523,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on kneeling tolerance."
         },
         "reachAboveShoulder": {
           "label": "Reach Above Shoulder",
@@ -547,7 +560,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on overhead reaching tolerance."
         },
         "useInjuredArmHand": {
           "label": "Use Injured Arm/Hand",
@@ -583,7 +597,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on ability to use the injured arm/hand."
         },
         "lift": {
           "label": "Lift",
@@ -619,7 +634,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on lifting restrictions."
         },
         "neckMovement": {
           "label": "Neck Movement",
@@ -655,7 +671,8 @@
               "with_modifications",
               "cannot"
             ]
-          }
+          },
+          "llmInstruction": "Classify as can, with_modifications, or cannot based on neck movement limitations."
         },
         "attention": {
           "label": "Attention/Concentration",
@@ -686,7 +703,8 @@
               "not_affected",
               "affected"
             ]
-          }
+          },
+          "llmInstruction": "Classify as not_affected or affected using evidence about concentration/attention limitations."
         },
         "memory": {
           "label": "Memory",
@@ -717,7 +735,8 @@
               "not_affected",
               "affected"
             ]
-          }
+          },
+          "llmInstruction": "Classify as not_affected or affected using evidence about memory limitations."
         },
         "judgement": {
           "label": "Judgement",
@@ -748,7 +767,8 @@
               "not_affected",
               "affected"
             ]
-          }
+          },
+          "llmInstruction": "Classify as not_affected or affected using evidence about decision-making/judgment limitations."
         },
         "incapacityStartDate": {
           "label": "No Capacity From",
@@ -760,7 +780,8 @@
             "Have no capacity for employment from Month 1",
             "Have no capacity for employment from Year 1"
           ],
-          "pdfFieldType": "split-date"
+          "pdfFieldType": "split-date",
+          "llmInstruction": "Extract no-capacity start date in YYYY-MM-DD when a no-capacity window is described."
         },
         "incapacityEndDate": {
           "label": "No Capacity To",
@@ -772,7 +793,8 @@
             "Have no capacity for employment to Month 2",
             "Have no capacity for employment to Year 2"
           ],
-          "pdfFieldType": "split-date"
+          "pdfFieldType": "split-date",
+          "llmInstruction": "Extract no-capacity end date in YYYY-MM-DD when a no-capacity window is described."
         },
         "returnToWorkDays": {
           "label": "Return to Work (days)",
@@ -784,7 +806,8 @@
           "validation": {
             "min": 0,
             "max": 365
-          }
+          },
+          "llmInstruction": "If return-to-work estimate is expressed in days, extract numeric day count."
         },
         "returnToWorkWeeks": {
           "label": "Return to Work (weeks)",
@@ -796,7 +819,8 @@
           "validation": {
             "min": 0,
             "max": 104
-          }
+          },
+          "llmInstruction": "If return-to-work estimate is expressed in weeks, extract numeric week count."
         },
         "treatment": {
           "label": "Treatment Plan",
@@ -808,12 +832,229 @@
           "required": true,
           "validation": {
             "required": true
-          }
+          },
+          "llmInstruction": "Summarize management plan and treatment strategy in concise clinical language."
         }
       }
     }
   },
   "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.",
   "allowedUnmappedPdfFields": [],
-  "advancedUnmappedPdfFields": []
+  "advancedUnmappedPdfFields": [],
+  "dictationGuide": [
+    {
+      "id": "claimAndCertificate",
+      "title": "Claim And Certificate",
+      "description": "Capture claim type and certificate selection.",
+      "questions": [
+        {
+          "key": "claimType",
+          "label": "Claim Type",
+          "inputType": "segmented",
+          "options": [
+            {
+              "value": "tac",
+              "label": "TAC"
+            },
+            {
+              "value": "vwa",
+              "label": "VWA/WorkSafe"
+            },
+            {
+              "value": "both",
+              "label": "Both"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ],
+          "valueOverrides": {
+            "tac": {
+              "tacClaim": "yes",
+              "vwaClaim": "no"
+            },
+            "vwa": {
+              "tacClaim": "no",
+              "vwaClaim": "yes"
+            },
+            "both": {
+              "tacClaim": "yes",
+              "vwaClaim": "yes"
+            },
+            "none": {
+              "tacClaim": "no",
+              "vwaClaim": "no"
+            }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "confirmAttendance",
+          "label": "Attendance Certificate Only",
+          "description": "Use yes only when this certificate confirms attendance only (sections 1, 2, 5, 6).",
+          "inputType": "segmented",
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "targetFieldKey": "confirmAttendance"
+        },
+        {
+          "key": "certificationOption",
+          "label": "Certification Option",
+          "inputType": "segmented",
+          "options": [
+            {
+              "value": "pre_injury_capacity",
+              "label": "Pre-injury Employment"
+            },
+            {
+              "value": "suitable_employment",
+              "label": "Suitable Employment"
+            },
+            {
+              "value": "no_capacity",
+              "label": "No Capacity"
+            }
+          ],
+          "targetFieldKey": "certificationOption",
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "capacityTimeline",
+      "title": "Capacity Timeline",
+      "description": "Capture no-capacity window and return estimate.",
+      "questions": [
+        {
+          "key": "incapacityStartDate",
+          "label": "No Capacity From",
+          "inputType": "date",
+          "targetFieldKey": "incapacityStartDate",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "incapacityEndDate",
+          "label": "No Capacity To",
+          "inputType": "date",
+          "targetFieldKey": "incapacityEndDate",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "returnToWorkEstimate",
+          "label": "Estimated Return To Work",
+          "inputType": "select",
+          "options": [
+            {
+              "value": "3_days",
+              "label": "3 days"
+            },
+            {
+              "value": "7_days",
+              "label": "7 days"
+            },
+            {
+              "value": "14_days",
+              "label": "14 days"
+            },
+            {
+              "value": "2_weeks",
+              "label": "2 weeks"
+            },
+            {
+              "value": "4_weeks",
+              "label": "4 weeks"
+            },
+            {
+              "value": "6_weeks",
+              "label": "6 weeks"
+            },
+            {
+              "value": "not_set",
+              "label": "Not set"
+            }
+          ],
+          "valueOverrides": {
+            "3_days": {
+              "returnToWorkDays": "3",
+              "returnToWorkWeeks": ""
+            },
+            "7_days": {
+              "returnToWorkDays": "7",
+              "returnToWorkWeeks": ""
+            },
+            "14_days": {
+              "returnToWorkDays": "14",
+              "returnToWorkWeeks": ""
+            },
+            "2_weeks": {
+              "returnToWorkDays": "",
+              "returnToWorkWeeks": "2"
+            },
+            "4_weeks": {
+              "returnToWorkDays": "",
+              "returnToWorkWeeks": "4"
+            },
+            "6_weeks": {
+              "returnToWorkDays": "",
+              "returnToWorkWeeks": "6"
+            },
+            "not_set": {
+              "returnToWorkDays": "",
+              "returnToWorkWeeks": ""
+            }
+          },
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "clinicalCore",
+      "title": "Clinical Core",
+      "description": "Provide the core clinical narrative used for autofill.",
+      "questions": [
+        {
+          "key": "primaryDiagnosis",
+          "label": "Primary Diagnosis",
+          "inputType": "textarea",
+          "placeholder": "Diagnosis and anatomical site.",
+          "targetFieldKey": "primaryDiagnosis",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "treatmentAndEnvironment",
+          "label": "Treatment Plan And Work Environment Considerations",
+          "inputType": "textarea",
+          "placeholder": "Current treatment, follow-up plan, and workplace/environment constraints.",
+          "targetFieldKeys": [
+            "treatment",
+            "workEnvironmentConsiderations"
+          ],
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "restrictions",
+      "title": "Restrictions Summary",
+      "description": "Summarize practical activity and cognitive limits to support matrix autofill.",
+      "questions": [
+        {
+          "key": "restrictionsSummary",
+          "label": "Restrictions Summary",
+          "inputType": "textarea",
+          "placeholder": "Example: sit 30 minutes, lift max 5kg occasionally, avoid kneeling, reduced concentration after 2 hours.",
+          "requiredForBestFill": true
+        }
+      ]
+    }
+  ]
 }

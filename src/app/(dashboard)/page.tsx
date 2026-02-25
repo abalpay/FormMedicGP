@@ -8,48 +8,60 @@ export default function DashboardPage() {
   return (
     <div className="max-w-4xl space-y-8">
       {/* Welcome */}
-      <div>
-        <h2 className="text-2xl font-semibold text-foreground">
+      <div
+        className="animate-fade-in-up rounded-2xl gradient-teal px-8 py-8 text-white"
+      >
+        <h2 className="text-2xl font-bold font-[family-name:var(--font-display)]">
           Welcome back, Doctor
         </h2>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-white/80 mt-1.5 max-w-lg">
           Complete government forms in under 2 minutes with AI-powered dictation.
         </p>
       </div>
 
       {/* Profile setup banner */}
-      <Card className="border-primary/20 bg-primary/5">
-        <CardContent className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5 text-primary" />
-            <div>
-              <p className="text-sm font-medium text-foreground">
-                Set up your profile to get started
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Your provider details will auto-fill on every form.
-              </p>
+      <div
+        className="animate-fade-in-up"
+        style={{ animationDelay: '50ms' }}
+      >
+        <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-transparent">
+          <CardContent className="flex items-center justify-between p-5">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10">
+                <Settings className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  Set up your profile to get started
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Your provider details will auto-fill on every form.
+                </p>
+              </div>
             </div>
-          </div>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/settings">
-              Set up
-              <ArrowRight className="w-3.5 h-3.5 ml-1" />
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/settings">
+                Set up
+                <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Quick actions */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 gap-5 animate-fade-in-up"
+        style={{ animationDelay: '100ms' }}
+      >
         <Link href="/forms/new" className="group">
-          <Card className="h-full transition-all hover:shadow-md hover:border-primary/30 group-focus-visible:ring-2 group-focus-visible:ring-ring">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/30 group-focus-visible:ring-2 group-focus-visible:ring-ring">
             <CardContent className="flex items-start gap-4 p-6">
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_24px_oklch(0.47_0.1_175/0.25)] transition-all duration-200">
                 <FilePlus className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">New Form</h3>
+                <h3 className="font-semibold text-foreground font-[family-name:var(--font-display)]">New Form</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Select a form, enter patient details, and dictate.
                 </p>
@@ -65,7 +77,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-foreground">Forms Today</h3>
+                <h3 className="font-semibold text-foreground font-[family-name:var(--font-display)]">Forms Today</h3>
                 <Badge variant="secondary" className="text-xs">
                   0
                 </Badge>
@@ -79,13 +91,18 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent forms — empty state */}
-      <div>
+      <div
+        className="animate-fade-in-up"
+        style={{ animationDelay: '150ms' }}
+      >
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
           Recent Forms
         </h3>
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <FileText className="w-10 h-10 text-muted-foreground/40 mb-3" />
+          <CardContent className="flex flex-col items-center justify-center py-14 text-center">
+            <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-muted/60 mb-4">
+              <FileText className="w-7 h-7 text-muted-foreground/40" />
+            </div>
             <p className="text-sm text-muted-foreground">
               No forms yet. Create your first form to get started.
             </p>

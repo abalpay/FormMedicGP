@@ -8,6 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -190,7 +191,7 @@
 }
 
 /* ==========================================================================
-   Custom Utility Classes — FormMedic Medical Theme
+   Custom Utility Classes — FormMedic "Clinical Luxury" Design System
    ========================================================================== */
 
 @layer utilities {
@@ -215,14 +216,40 @@
       box-shadow: 0 0 0 0 oklch(0.577 0.245 27.325 / 0.6);
     }
     50% {
-      box-shadow: 0 0 0 8px oklch(0.577 0.245 27.325 / 0);
+      box-shadow: 0 0 0 12px oklch(0.577 0.245 27.325 / 0);
     }
   }
 
-  /* Medical card — elevated surface with teal border accent */
+  /* Enhanced recording pulse with multiple rings */
+  .recording-pulse-rings {
+    animation: recording-rings 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes recording-rings {
+    0%, 100% {
+      box-shadow:
+        0 0 0 0 oklch(0.577 0.245 27.325 / 0.4),
+        0 0 0 0 oklch(0.577 0.245 27.325 / 0.2);
+    }
+    50% {
+      box-shadow:
+        0 0 0 10px oklch(0.577 0.245 27.325 / 0),
+        0 0 0 20px oklch(0.577 0.245 27.325 / 0);
+    }
+  }
+
+  /* Medical card — elevated surface with refined multi-layer shadows */
   .medical-card {
-    @apply bg-card text-card-foreground rounded-lg border border-border
-           shadow-sm hover:shadow-md transition-shadow;
+    @apply bg-card text-card-foreground rounded-xl border border-border;
+    box-shadow:
+      0 1px 2px oklch(0 0 0 / 0.04),
+      0 4px 12px oklch(0 0 0 / 0.03);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .medical-card:hover {
+    box-shadow:
+      0 2px 4px oklch(0 0 0 / 0.04),
+      0 8px 24px oklch(0 0 0 / 0.06);
   }
 
   /* Teal gradient for headers / hero sections */
@@ -243,11 +270,77 @@
     );
   }
 
+  /* Sidebar gradient */
+  .gradient-sidebar {
+    background: linear-gradient(
+      180deg,
+      oklch(0.24 0.04 175) 0%,
+      oklch(0.18 0.035 180) 100%
+    );
+  }
+
+  /* Glass morphism utility */
+  .glass {
+    backdrop-filter: blur(16px) saturate(1.8);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  }
+
+  /* Fade-in-up animation for staggered page entry */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out both;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Shimmer effect for loading skeletons */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      oklch(0.96 0 0) 0%,
+      oklch(0.92 0 0) 50%,
+      oklch(0.96 0 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
   /* Text helpers that map to the design system */
   .text-label {
     @apply text-muted-foreground text-sm font-medium;
   }
   .text-description {
     @apply text-muted-foreground text-sm;
+  }
+
+  /* Subtle content area gradient background */
+  .bg-content-gradient {
+    background:
+      radial-gradient(ellipse at 20% 0%, oklch(0.47 0.1 175 / 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, oklch(0.47 0.1 175 / 0.02) 0%, transparent 50%),
+      var(--background);
+  }
+
+  /* Input focus glow */
+  .input-focus-glow:focus {
+    box-shadow: 0 0 0 3px oklch(0.47 0.1 175 / 0.1);
   }
 }

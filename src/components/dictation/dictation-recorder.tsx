@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Mic, Square } from 'lucide-react';
+import { Mic, Square, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -286,34 +286,43 @@ export function DictationRecorder({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <button
-        type="button"
-        onClick={state === 'recording' ? stopRecording : startRecording}
-        disabled={state === 'stopped' || isStarting}
+      {/* Outer ring for idle state */}
+      <div
         className={cn(
-          'flex items-center justify-center w-16 h-16 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          state === 'idle' &&
-            'bg-primary text-primary-foreground hover:bg-primary/90',
-          state === 'recording' &&
-            'bg-destructive text-white recording-pulse',
-          state === 'stopped' &&
-            'bg-muted text-muted-foreground cursor-not-allowed'
+          'rounded-full p-1.5 transition-all duration-300',
+          state === 'idle' && 'ring-2 ring-primary/20',
+          state === 'recording' && 'ring-0'
         )}
       >
-        {state === 'recording' ? (
-          <Square className="w-6 h-6" />
-        ) : (
-          <Mic className="w-6 h-6" />
-        )}
-      </button>
+        <button
+          type="button"
+          onClick={state === 'recording' ? stopRecording : startRecording}
+          disabled={state === 'stopped' || isStarting}
+          className={cn(
+            'flex items-center justify-center w-20 h-20 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+            state === 'idle' &&
+              'gradient-teal text-white hover:shadow-[0_0_32px_oklch(0.47_0.1_175/0.3)]',
+            state === 'recording' &&
+              'bg-destructive text-white recording-pulse-rings',
+            state === 'stopped' &&
+              'bg-muted text-muted-foreground cursor-not-allowed'
+          )}
+        >
+          {state === 'recording' ? (
+            <Square className="w-7 h-7" />
+          ) : (
+            <Mic className="w-7 h-7" />
+          )}
+        </button>
+      </div>
 
       <div className="text-center">
         {state === 'idle' && (
           <p className="text-sm text-muted-foreground">Tap to record</p>
         )}
         {state === 'recording' && (
-          <p className="text-sm font-medium text-destructive">
-            Recording: {formatDuration(duration)}
+          <p className="text-lg font-semibold text-destructive font-[family-name:var(--font-display)] tabular-nums">
+            {formatDuration(duration)}
           </p>
         )}
         {state === 'stopped' && (
@@ -335,6 +344,7 @@ export function DictationRecorder({
             updateState('idle');
           }}
         >
+          <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
           Record again
         </Button>
       )}

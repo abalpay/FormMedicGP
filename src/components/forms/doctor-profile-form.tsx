@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AddressAutocomplete } from '@/components/ui/address-autocomplete';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -57,9 +56,9 @@ export function DoctorProfileForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Doctor details */}
-      <Card>
+      <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="text-base">Doctor Details</CardTitle>
+          <CardTitle className="text-base font-[family-name:var(--font-display)]">Doctor Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -68,6 +67,7 @@ export function DoctorProfileForm() {
               <Input
                 id="name"
                 placeholder="Dr. Jane Smith"
+                className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('name')}
               />
               {errors.name && (
@@ -79,6 +79,7 @@ export function DoctorProfileForm() {
               <Input
                 id="providerNumber"
                 placeholder="123456AB"
+                className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('providerNumber')}
               />
               {errors.providerNumber && (
@@ -93,6 +94,7 @@ export function DoctorProfileForm() {
             <Input
               id="qualifications"
               placeholder="MBBS, FRACGP"
+              className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
               {...register('qualifications')}
             />
             {errors.qualifications && (
@@ -104,12 +106,10 @@ export function DoctorProfileForm() {
         </CardContent>
       </Card>
 
-      <Separator />
-
       {/* Practice details */}
-      <Card>
+      <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="text-base">Practice Details</CardTitle>
+          <CardTitle className="text-base font-[family-name:var(--font-display)]">Practice Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -117,6 +117,7 @@ export function DoctorProfileForm() {
             <Input
               id="practiceName"
               placeholder="Sunrise Medical Centre"
+              className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
               {...register('practiceName')}
             />
             {errors.practiceName && (
@@ -144,6 +145,7 @@ export function DoctorProfileForm() {
               <Input
                 id="practicePhone"
                 placeholder="02 9876 5432"
+                className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('practicePhone')}
               />
               {errors.practicePhone && (
@@ -157,6 +159,7 @@ export function DoctorProfileForm() {
               <Input
                 id="practiceAbn"
                 placeholder="12345678901"
+                className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('practiceAbn')}
               />
               {errors.practiceAbn && (

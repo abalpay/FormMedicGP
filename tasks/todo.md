@@ -93,3 +93,49 @@
 - IDE diagnostics — 0 issues across all modified files
 - Test fill script produced valid filled PDF at `/tmp/test-su415-filled.pdf`
 - All text fields, split-date fields, split-char fields, and checkbox groups filled correctly
+
+---
+
+# Phase 6: UI Redesign — "Clinical Luxury"
+
+## Design System Foundation
+- [x] `globals.css` — Enhanced animations (fadeInUp, shimmer, recording-pulse-rings), medical-card multi-layer shadows, glass utility, gradient-sidebar, bg-content-gradient, input-focus-glow
+- [x] `layout.tsx` (root) — Added Plus Jakarta Sans as display font (`--font-display`)
+
+## Shell Components
+- [x] Dashboard layout — `bg-content-gradient`, increased padding `lg:p-8`
+- [x] Sidebar — Deep teal gradient, logo glow, white/opacity text palette
+- [x] Header — Glassmorphism (`glass` + `bg-card/80`), sticky z-30, avatar hover ring
+- [x] NavItem — Active left accent bar (3px white rounded), white/opacity palette
+- [x] MobileSidebar — Matches desktop gradient, stagger-in animation
+
+## Page Redesigns
+- [x] Dashboard — Gradient teal welcome hero, staggered fadeInUp, hover lift cards, icon glow
+- [x] NewForm — FadeInUp transitions between steps, shadow-sm card
+- [x] Dictate — Staggered fadeInUp, shadow-sm cards, guided panel animations
+- [x] FormReview — FadeInUp, display font headings, gradient-teal Download PDF CTA, responsive actions
+- [x] Settings — Display font, fadeInUp, increased spacing
+
+## Component Upgrades
+- [x] StepIndicator — Larger circles (w-8), current step glow ring, thicker connectors, semibold labels
+- [x] FormSelector — Card enter animations, selected left border accent, hover translateY, gradient icon bg
+- [x] PatientDetailsForm — Section header border accents, input focus glow, refined privacy notice
+- [x] DictationRecorder — Larger button (w-20 h-20), outer idle ring, gradient-teal, multi-ring pulse, RotateCcw icon
+- [x] TranscriptionDisplay — Inner shadow, recording state border/bg tint, rounded-xl
+- [x] DictationTips — Refined card with border + gradient bg, icon in rounded container
+- [x] FormSummary — Display font, section header border accents, table row hover, rounded-lg segmented
+- [x] MissingFieldPrompts — Display font, gradient bg, icon container, input focus glow
+- [x] DoctorProfileForm — Display font card titles, shadow-sm, input focus glow
+- [x] Button — rounded-lg, active:scale-[0.98], shadow-sm + hover:shadow-md on default
+
+## Auth & Edge States
+- [x] Auth layout — Gradient mesh bg, larger logo with glow shadow, display font
+- [x] Login — Shadow-lg card, fadeInUp, gradient-teal button, focus glow
+- [x] Register — Same treatment as login
+- [x] Loading — Shimmer animation on skeletons
+- [x] Error — FadeInUp, shadow-lg, larger icon container, display font
+
+## Phase 6 Verification
+- [x] `npm run build` — 0 TypeScript errors, all 13 routes compile
+- [x] No functionality changes — pure className/JSX visual upgrades
+- [x] Linter auto-fixed guided dictation panel (no features lost)

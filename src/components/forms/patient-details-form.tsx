@@ -78,7 +78,7 @@ export function PatientDetailsForm({
             <section key={section.id} className="space-y-4">
               <div>
                 {shouldRenderSectionTitle ? (
-                  <h4 className="text-sm font-medium text-foreground">
+                  <h4 className="text-sm font-medium text-foreground pl-3 border-l-2 border-primary/40">
                     {section.title}
                   </h4>
                 ) : null}
@@ -123,6 +123,7 @@ export function PatientDetailsForm({
                           }
                           max={field.inputType === 'date' ? todayIso : undefined}
                           placeholder={field.placeholder}
+                          className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                           {...register(field.key)}
                         />
                       )}
@@ -151,7 +152,7 @@ export function PatientDetailsForm({
       )}
 
       {/* Privacy notice */}
-      <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
         <ShieldCheck className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
         <p className="text-xs text-muted-foreground">
           Patient details are processed in your browser and never stored on our

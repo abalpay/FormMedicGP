@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { FileText, Stethoscope } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
 import { NavItem } from '@/components/layout/nav-item';
 
 const navItems = [
@@ -11,13 +10,13 @@ const navItems = [
 
 export function Sidebar() {
   return (
-    <aside className="hidden lg:flex lg:flex-col lg:w-[280px] lg:border-r lg:border-border bg-card h-screen sticky top-0">
+    <aside className="hidden lg:flex lg:flex-col lg:w-[280px] gradient-sidebar h-screen sticky top-0">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 h-16 border-b border-border">
-        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary">
-          <Stethoscope className="w-5 h-5 text-primary-foreground" />
+      <div className="flex items-center gap-3 px-6 h-16 border-b border-white/10">
+        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/15 shadow-[0_0_20px_oklch(0.6_0.1_175/0.3)]">
+          <Stethoscope className="w-5 h-5 text-white" />
         </div>
-        <Link href="/" className="font-semibold text-lg text-foreground">
+        <Link href="/" className="font-semibold text-lg text-white font-[family-name:var(--font-display)]">
           FormMedic
         </Link>
       </div>
@@ -29,11 +28,9 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <Separator />
-
       {/* Footer */}
-      <div className="px-6 py-4">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <div className="px-6 py-4 border-t border-white/10">
+        <div className="flex items-center gap-2 text-xs text-white/40">
           <FileText className="w-3.5 h-3.5" />
           <span>FormMedic v1.0</span>
         </div>

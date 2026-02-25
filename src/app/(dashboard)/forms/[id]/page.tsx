@@ -183,26 +183,28 @@ export default function FormReviewPage() {
     <div className="max-w-2xl space-y-6">
       <StepIndicator steps={steps} currentStep={3} />
 
-      <div>
-        <h2 className="text-lg font-semibold text-foreground">Form Review</h2>
+      <div className="animate-fade-in-up">
+        <h2 className="text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">Form Review</h2>
         <p className="text-sm text-muted-foreground mt-0.5">
           Review the extracted information before downloading.
         </p>
       </div>
 
-      <FormSummary
-        schema={reviewSchema}
-        data={data}
-        missingFields={unresolvedMissingFields}
-        errors={validationErrors}
-        onChange={(key, value) => {
-          setServerValidationErrors({});
-          setEditableData((prev) => ({ ...prev, [key]: value }));
-        }}
-      />
+      <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+        <FormSummary
+          schema={reviewSchema}
+          data={data}
+          missingFields={unresolvedMissingFields}
+          errors={validationErrors}
+          onChange={(key, value) => {
+            setServerValidationErrors({});
+            setEditableData((prev) => ({ ...prev, [key]: value }));
+          }}
+        />
+      </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <Button variant="ghost" asChild>
           <Link href="/dictate">
             <ArrowLeft className="w-4 h-4 mr-1.5" />
@@ -220,7 +222,11 @@ export default function FormReviewPage() {
             <FilePlus className="w-4 h-4 mr-1.5" />
             New Form
           </Button>
-          <Button onClick={handleDownload} disabled={!downloadState.canDownload}>
+          <Button
+            onClick={handleDownload}
+            disabled={!downloadState.canDownload}
+            className="gradient-teal text-white border-0 hover:opacity-90"
+          >
             <Download className="w-4 h-4 mr-1.5" />
             Download PDF
           </Button>

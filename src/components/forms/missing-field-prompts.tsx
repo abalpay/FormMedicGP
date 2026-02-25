@@ -21,10 +21,12 @@ export function MissingFieldPrompts({
   if (missingFields.length === 0) return null;
 
   return (
-    <Card className="border-warning/30 bg-warning/5">
+    <Card className="border-warning/30 bg-gradient-to-br from-warning/5 to-transparent shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-base flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-warning" />
+        <CardTitle className="text-base flex items-center gap-2.5 font-[family-name:var(--font-display)]">
+          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-warning/10">
+            <AlertTriangle className="w-4 h-4 text-warning" />
+          </div>
           Additional Information Needed
         </CardTitle>
       </CardHeader>
@@ -39,6 +41,7 @@ export function MissingFieldPrompts({
             <Input
               placeholder={`Enter ${field.toLowerCase()}`}
               value={answers[field] ?? ''}
+              className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
               onChange={(e) =>
                 setAnswers((prev) => ({ ...prev, [field]: e.target.value }))
               }

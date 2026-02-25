@@ -17,20 +17,22 @@ export function DictationTips({ tips = defaultTips, formName }: DictationTipsPro
     : 'What to cover';
 
   return (
-    <div className="border-l-2 border-l-amber-400 bg-amber-50/30 rounded-md pl-4 pr-3 py-3">
-      <div className="flex items-center gap-2 mb-2">
-        <Lightbulb className="w-4 h-4 text-amber-600" />
-        <span className="text-sm font-medium text-amber-900">
+    <div className="rounded-xl border border-amber-200/60 bg-gradient-to-br from-amber-50/80 to-amber-50/30 shadow-sm pl-4 pr-4 py-4">
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-100">
+          <Lightbulb className="w-4 h-4 text-amber-600" />
+        </div>
+        <span className="text-sm font-semibold text-amber-900">
           {heading}
         </span>
       </div>
-      <ul className="space-y-1.5">
+      <ul className="space-y-2 pl-9.5">
         {tips.map((tip) => (
           <li
             key={tip}
             className="text-xs text-amber-800 flex items-start gap-2"
           >
-            <span className="mt-1 block w-1 h-1 rounded-full bg-amber-400 flex-shrink-0" />
+            <span className="mt-1.5 block w-1 h-1 rounded-full bg-amber-400 flex-shrink-0" />
             {tip}
           </li>
         ))}

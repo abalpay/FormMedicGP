@@ -64,12 +64,38 @@ export interface FormSection {
   fields: Record<string, FormField>;
 }
 
+export interface DictationGuideOption {
+  value: string;
+  label: string;
+}
+
+export interface DictationGuideQuestion {
+  key: string;
+  label: string;
+  inputType: 'segmented' | 'select' | 'date' | 'textarea';
+  description?: string;
+  placeholder?: string;
+  options?: DictationGuideOption[];
+  targetFieldKey?: string;
+  targetFieldKeys?: string[];
+  valueOverrides?: Record<string, Record<string, string>>;
+  requiredForBestFill?: boolean;
+}
+
+export interface DictationGuideSection {
+  id: string;
+  title: string;
+  description?: string;
+  questions: DictationGuideQuestion[];
+}
+
 export interface FormSchema {
   formId: string;
   formName: string;
   formVersion?: string;
   templatePath: string;
   dictationTips?: string[];
+  dictationGuide?: DictationGuideSection[];
   allowedUnmappedPdfFields?: string[];
   advancedUnmappedPdfFields?: string[];
   sections: Record<string, FormSection>;
@@ -128,4 +154,5 @@ export interface FormCatalogItem {
   status: FormStatus;
   deferred: boolean;
   dictationTips: string[];
+  dictationGuide?: DictationGuideSection[];
 }

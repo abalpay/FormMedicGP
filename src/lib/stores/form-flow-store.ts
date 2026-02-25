@@ -16,6 +16,7 @@ interface FormFlowState {
   selectedFormType: string | null;
   patientDetails: Partial<PatientDetails>;
   transcription: string;
+  guidedAnswers: Record<string, string>;
   extractedData: Record<string, unknown> | null;
   missingFields: string[];
   reviewSchema: ReviewSchema | null;
@@ -25,6 +26,8 @@ interface FormFlowState {
   setFormType: (formType: string) => void;
   setPatientDetails: (details: Partial<PatientDetails>) => void;
   setTranscription: (text: string) => void;
+  setGuidedAnswers: (answers: Record<string, string>) => void;
+  setGuidedAnswer: (key: string, value: string) => void;
   setExtractedData: (data: Record<string, unknown>) => void;
   setMissingFields: (fields: string[]) => void;
   setReviewSchema: (schema: ReviewSchema | null) => void;
@@ -37,6 +40,7 @@ const initialState = {
   selectedFormType: null,
   patientDetails: {},
   transcription: '',
+  guidedAnswers: {},
   extractedData: null,
   missingFields: [],
   reviewSchema: null,
@@ -51,9 +55,18 @@ export const useFormFlowStore = create<FormFlowState>()(
       ...initialState,
 
       setStep: (step) => set({ currentStep: step }),
-      setFormType: (formType) => set({ selectedFormType: formType }),
+      setFormType: (formType) =>
+        set({ selectedFormType: formType, guidedAnswers: {} }),
       setPatientDetails: (details) => set({ patientDetails: details }),
       setTranscription: (text) => set({ transcription: text }),
+      setGuidedAnswers: (answers) => set({ guidedAnswers: answers }),
+      setGuidedAnswer: (key, value) =>
+        set((state) => ({
+          guidedAnswers: {
+            ...state.guidedAnswers,
+            [key]: value,
+          },
+        })),
       setExtractedData: (data) => set({ extractedData: data }),
       setMissingFields: (fields) => set({ missingFields: fields }),
       setReviewSchema: (schema) => set({ reviewSchema: schema }),

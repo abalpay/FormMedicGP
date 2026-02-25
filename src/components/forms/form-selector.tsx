@@ -66,7 +66,7 @@ export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
         </p>
       )}
       <div className="grid gap-3">
-        {availableForms.map((form) => {
+        {availableForms.map((form, index) => {
           const isSelected = selectedFormId === form.id;
           return (
             <button
@@ -74,23 +74,24 @@ export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
               type="button"
               onClick={() => onSelect(form.id)}
               disabled={form.deferred}
-              className="text-left w-full"
+              className="text-left w-full animate-fade-in-up"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               <Card
                 className={cn(
-                  'transition-all cursor-pointer',
+                  'transition-all duration-200 cursor-pointer',
                   isSelected
-                    ? 'border-primary ring-2 ring-primary/20'
-                    : 'hover:border-primary/30 hover:shadow-sm'
+                    ? 'border-primary ring-2 ring-primary/20 shadow-md -translate-y-0.5 border-l-4 border-l-primary'
+                    : 'hover:border-primary/30 hover:shadow-sm hover:-translate-y-px'
                 )}
               >
                 <CardContent className="flex items-start gap-4 p-4">
                   <div
                     className={cn(
-                      'flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0 transition-colors',
+                      'flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0 transition-all duration-200',
                       isSelected
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
+                        ? 'bg-primary text-primary-foreground shadow-[0_0_16px_oklch(0.47_0.1_175/0.3)]'
+                        : 'bg-gradient-to-br from-primary/10 to-primary/5 text-primary'
                     )}
                   >
                     {isSelected ? (

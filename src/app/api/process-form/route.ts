@@ -7,6 +7,10 @@ import { fillPdf } from '@/lib/pdf-filler';
 import { getTemplateTextFieldMultilineMap } from '@/lib/pdf-field-metadata';
 import { getPrimaryPatientName } from '@/lib/patient-identity';
 import { buildReviewSchema } from '@/lib/review-schema';
+import {
+  buildGuidedExtractionPayload,
+  mergeGuidedOverrides,
+} from '@/lib/guided-dictation';
 import type { PatientDetails, DoctorProfile } from '@/types';
 
 // Hardcoded doctor profile for testing (no Supabase needed yet)
@@ -28,10 +32,11 @@ export async function POST(request: Request) {
   let requestedFormType: string | undefined;
   try {
     const body = await request.json();
-    const { transcription, patientDetails, formType } = body as {
+    const { transcription, patientDetails, formType, guidedAnswers } = body as {
       transcription?: string;
       patientDetails?: Partial<PatientDetails>;
       formType?: string;
+      guidedAnswers?: Record<string, string>;
     };
     requestedFormType = formType;
 
@@ -59,9 +64,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const safeGuidedAnswers =
+      guidedAnswers && typeof guidedAnswers === 'object'
+        ? guidedAnswers
+        : undefined;
+    const { transcriptionForLlm, guidedOverrides } = buildGuidedExtractionPayload({
+      transcription,
+      schema,
+      guidedAnswers: safeGuidedAnswers,
+    });
+
     // 1. De-identify PII from transcription
     const { deidentifiedText } = deidentify(
-      transcription,
+      transcriptionForLlm,
       patientDetails
         ? getPrimaryPatientName({
             customerName: patientDetails.customerName ?? '',
@@ -82,10 +97,11 @@ export async function POST(request: Request) {
       deidentifiedText,
       schema
     );
+    const mergedClinicalData = mergeGuidedOverrides(llmData, guidedOverrides);
 
     // 3. Re-identify: merge patient + doctor data into extracted fields
     const mergedData = reidentify(
-      llmData,
+      mergedClinicalData,
       {
         customerName: patientDetails?.customerName ?? '',
         dateOfBirth: patientDetails?.dateOfBirth ?? '',
