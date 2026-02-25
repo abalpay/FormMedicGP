@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { AddressAutocomplete } from '@/components/ui/address-autocomplete';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Save } from 'lucide-react';
@@ -31,6 +32,8 @@ export function DoctorProfileForm() {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<DoctorProfileValues>({
     resolver: zodResolver(doctorProfileSchema),
@@ -124,10 +127,10 @@ export function DoctorProfileForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="practiceAddress">Practice Address</Label>
-            <Input
+            <AddressAutocomplete
               id="practiceAddress"
-              placeholder="123 Main St, Sydney NSW 2000"
-              {...register('practiceAddress')}
+              value={watch('practiceAddress') ?? ''}
+              onChange={(val) => setValue('practiceAddress', val, { shouldValidate: true })}
             />
             {errors.practiceAddress && (
               <p className="text-xs text-destructive">

@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { AddressAutocomplete } from '@/components/ui/address-autocomplete';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 
 const patientDetailsSchema = z.object({
@@ -26,6 +27,8 @@ export function PatientDetailsForm({ onSubmit, onBack }: PatientDetailsFormProps
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<PatientDetailsValues>({
     resolver: zodResolver(patientDetailsSchema),
@@ -79,10 +82,10 @@ export function PatientDetailsForm({ onSubmit, onBack }: PatientDetailsFormProps
 
         <div className="space-y-2">
           <Label htmlFor="address">Address</Label>
-          <Input
+          <AddressAutocomplete
             id="address"
-            placeholder="123 Main St, Sydney NSW 2000"
-            {...register('address')}
+            value={watch('address') ?? ''}
+            onChange={(val) => setValue('address', val, { shouldValidate: true })}
           />
           {errors.address && (
             <p className="text-xs text-destructive">{errors.address.message}</p>
