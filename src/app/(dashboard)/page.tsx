@@ -6,10 +6,10 @@ import { Badge } from '@/components/ui/badge';
 
 export default function DashboardPage() {
   return (
-    <div className="max-w-4xl space-y-8">
+    <div className="max-w-4xl mx-auto space-y-6">
       {/* Welcome */}
       <div
-        className="animate-fade-in-up rounded-2xl gradient-teal px-8 py-8 text-white"
+        className="animate-fade-in-up rounded-2xl gradient-teal px-6 py-5 text-white"
       >
         <h2 className="text-2xl font-bold font-[family-name:var(--font-display)]">
           Welcome back, Doctor

@@ -39,6 +39,7 @@ export default function DictatePage() {
   const router = useRouter();
   const {
     selectedFormType,
+    selectedFormLabel,
     patientDetails,
     transcription,
     guidedAnswers,
@@ -91,7 +92,9 @@ export default function DictatePage() {
   const selectedForm = formCatalog.find((form) => form.id === selectedFormType);
   const formLabel = selectedForm
     ? `${selectedForm.id} — ${selectedForm.label}`
-    : selectedFormType ?? 'No form selected';
+    : selectedFormLabel
+      ? `${selectedFormType} — ${selectedFormLabel}`
+      : selectedFormType ?? 'No form selected';
   const activeTips = selectedForm?.dictationTips;
 
   const isCapacityGuided = selectedFormType === 'CAPACITY';
@@ -194,7 +197,7 @@ export default function DictatePage() {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6">
       <StepIndicator steps={steps} currentStep={2} />
 
       <div className="flex items-center gap-2 animate-fade-in-up">

@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 export default function DashboardLoading() {
   return (
-    <div className="max-w-4xl space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8">
       <div className="space-y-2">
         <Skeleton className="h-8 w-64 shimmer" />
         <Skeleton className="h-4 w-96 shimmer" />

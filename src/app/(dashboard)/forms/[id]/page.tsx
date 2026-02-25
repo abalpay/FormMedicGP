@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Download, FilePlus, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSummary } from '@/components/forms/form-summary';
@@ -27,6 +28,7 @@ export default function FormReviewPage() {
   const router = useRouter();
   const {
     selectedFormType,
+    selectedFormLabel,
     extractedData,
     missingFields,
     reviewSchema,
@@ -180,8 +182,13 @@ export default function FormReviewPage() {
   const data = editableData;
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6">
       <StepIndicator steps={steps} currentStep={3} />
+
+      <div className="flex items-center gap-2 animate-fade-in-up">
+        <span className="text-sm text-muted-foreground">Form:</span>
+        <Badge variant="secondary">{selectedFormLabel ?? selectedFormType}</Badge>
+      </div>
 
       <div className="animate-fade-in-up">
         <h2 className="text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">Form Review</h2>
@@ -204,7 +211,7 @@ export default function FormReviewPage() {
       </div>
 
       {/* Actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <Button variant="ghost" asChild>
           <Link href="/dictate">
             <ArrowLeft className="w-4 h-4 mr-1.5" />

@@ -2,7 +2,7 @@ import { DoctorProfileForm } from '@/components/forms/doctor-profile-form';
 
 export default function SettingsPage() {
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl mx-auto">
       <div className="mb-8 animate-fade-in-up">
         <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-display)]">
           Doctor Profile

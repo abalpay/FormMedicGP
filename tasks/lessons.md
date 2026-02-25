@@ -20,3 +20,9 @@
 - Each widget has different "on values" in its appearance dictionary (`/AP` → `/N` → keys besides `/Off`)
 - To select an option: set `/AS` on the correct widget AND `/V` on the field's acroField dict
 - Access field dict via `field.acroField.dict` (property), NOT `field.acroField.dict()` (not a method)
+
+## Sticky bars inside constrained layouts
+- `sticky bottom-0` with negative margins doesn't work inside a `max-w-*` container within a scrollable `<main>` — it creates a floating element that overlaps content
+- For action buttons below the fold: prefer tightening spacing (reduce padding, gaps) over bolting on sticky bars
+- If sticky is truly needed, it must be placed at the layout level (outside the content max-width container), not inside it
+- **Rule:** Fix the root cause (too much spacing pushing content down) rather than patching with sticky positioning

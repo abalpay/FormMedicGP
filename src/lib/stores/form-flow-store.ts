@@ -14,6 +14,7 @@ export type FormFlowStep =
 interface FormFlowState {
   currentStep: FormFlowStep;
   selectedFormType: string | null;
+  selectedFormLabel: string | null;
   patientDetails: Partial<PatientDetails>;
   transcription: string;
   guidedAnswers: Record<string, string>;
@@ -23,7 +24,7 @@ interface FormFlowState {
   pdfBlobUrl: string | null;
 
   setStep: (step: FormFlowStep) => void;
-  setFormType: (formType: string) => void;
+  setFormType: (formType: string, label?: string) => void;
   setPatientDetails: (details: Partial<PatientDetails>) => void;
   setTranscription: (text: string) => void;
   setGuidedAnswers: (answers: Record<string, string>) => void;
@@ -38,6 +39,7 @@ interface FormFlowState {
 const initialState = {
   currentStep: 'select-form' as FormFlowStep,
   selectedFormType: null,
+  selectedFormLabel: null,
   patientDetails: {},
   transcription: '',
   guidedAnswers: {},
@@ -55,8 +57,8 @@ export const useFormFlowStore = create<FormFlowState>()(
       ...initialState,
 
       setStep: (step) => set({ currentStep: step }),
-      setFormType: (formType) =>
-        set({ selectedFormType: formType, guidedAnswers: {} }),
+      setFormType: (formType, label) =>
+        set({ selectedFormType: formType, selectedFormLabel: label ?? formType, guidedAnswers: {} }),
       setPatientDetails: (details) => set({ patientDetails: details }),
       setTranscription: (text) => set({ transcription: text }),
       setGuidedAnswers: (answers) => set({ guidedAnswers: answers }),
