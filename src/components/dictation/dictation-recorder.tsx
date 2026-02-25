@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
   createDeepgramLiveSocketConfig,
+  getDeepgramKeepAliveMessage,
   getDeepgramStopMessages,
 } from '@/lib/deepgram-live-config';
 import {
@@ -24,23 +25,28 @@ interface DictationRecorderProps {
 }
 
 const FORCE_SOCKET_CLOSE_TIMEOUT_MS = 2000;
+const KEEPALIVE_INTERVAL_MS = 8000;
 
 export function DictationRecorder({
   onTranscriptionUpdate,
   onRecordingStateChange,
 }: DictationRecorderProps) {
   const [state, setState] = useState<RecordingState>('idle');
+  const [isStarting, setIsStarting] = useState(false);
   const [duration, setDuration] = useState(0);
+  const isStartingRef = useRef(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const socketCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+  const keepAliveRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const queuedChunksRef = useRef<Blob[]>([]);
   const transcriptStateRef = useRef<DeepgramTranscriptState>(
     INITIAL_DEEPGRAM_TRANSCRIPT_STATE
   );
+  const stateRef = useRef<RecordingState>(state);
 
   const updateState = useCallback(
     (newState: RecordingState) => {
@@ -50,6 +56,17 @@ export function DictationRecorder({
     [onRecordingStateChange]
   );
 
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
+  const clearKeepAlive = useCallback(() => {
+    if (keepAliveRef.current) {
+      clearInterval(keepAliveRef.current);
+      keepAliveRef.current = null;
+    }
+  }, []);
+
   const clearSocketCloseTimeout = useCallback(() => {
     if (socketCloseTimeoutRef.current) {
       clearTimeout(socketCloseTimeoutRef.current);
@@ -58,6 +75,10 @@ export function DictationRecorder({
   }, []);
 
   const startRecording = useCallback(async () => {
+    if (isStartingRef.current || stateRef.current !== 'idle') return;
+    isStartingRef.current = true;
+    setIsStarting(true);
+
     let stream: MediaStream | null = null;
     try {
       // Get temporary Deepgram token
@@ -99,6 +120,13 @@ export function DictationRecorder({
             socket.send(chunk);
           }
         }
+
+        clearKeepAlive();
+        keepAliveRef.current = setInterval(() => {
+          if (socket.readyState === WebSocket.OPEN) {
+            socket.send(getDeepgramKeepAliveMessage());
+          }
+        }, KEEPALIVE_INTERVAL_MS);
       };
 
       socket.onmessage = (event) => {
@@ -135,11 +163,16 @@ export function DictationRecorder({
 
       socket.onerror = (err) => {
         console.error('Deepgram WebSocket error:', err);
+        toast.error('Live transcription error — you can type your notes manually.');
       };
 
       socket.onclose = (event) => {
+        clearKeepAlive();
         clearSocketCloseTimeout();
         console.log('Deepgram WebSocket closed:', event.code, event.reason);
+        if (event.code !== 1000 && stateRef.current === 'recording') {
+          toast.error('Live transcription disconnected — you can type your notes manually.');
+        }
       };
 
       mediaRecorder.ondataavailable = (event) => {
@@ -165,8 +198,12 @@ export function DictationRecorder({
       timerRef.current = setInterval(() => {
         setDuration((d) => d + 1);
       }, 1000);
+
+      isStartingRef.current = false;
+      setIsStarting(false);
     } catch (err) {
       console.error('Failed to start recording:', err);
+      clearKeepAlive();
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
       }
@@ -175,11 +212,15 @@ export function DictationRecorder({
       }
       socketRef.current = null;
       mediaRecorderRef.current = null;
+      isStartingRef.current = false;
+      setIsStarting(false);
       toast.error('Unable to start live dictation. Please try again.');
     }
-  }, [updateState, onTranscriptionUpdate, clearSocketCloseTimeout]);
+  }, [updateState, onTranscriptionUpdate, clearSocketCloseTimeout, clearKeepAlive]);
 
   const stopRecording = useCallback(() => {
+    clearKeepAlive();
+
     if (mediaRecorderRef.current?.state !== 'inactive') {
       mediaRecorderRef.current?.stop();
       mediaRecorderRef.current?.stream
@@ -217,11 +258,12 @@ export function DictationRecorder({
     }
 
     updateState('stopped');
-  }, [updateState, clearSocketCloseTimeout]);
+  }, [updateState, clearSocketCloseTimeout, clearKeepAlive]);
 
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      clearKeepAlive();
       clearSocketCloseTimeout();
       if (mediaRecorderRef.current?.state !== 'inactive') {
         mediaRecorderRef.current?.stop();
@@ -234,7 +276,7 @@ export function DictationRecorder({
         socketRef.current.close();
       }
     };
-  }, [clearSocketCloseTimeout]);
+  }, [clearKeepAlive, clearSocketCloseTimeout]);
 
   const formatDuration = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -247,7 +289,7 @@ export function DictationRecorder({
       <button
         type="button"
         onClick={state === 'recording' ? stopRecording : startRecording}
-        disabled={state === 'stopped'}
+        disabled={state === 'stopped' || isStarting}
         className={cn(
           'flex items-center justify-center w-16 h-16 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           state === 'idle' &&
