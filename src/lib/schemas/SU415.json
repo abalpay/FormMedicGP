@@ -7,51 +7,99 @@
       "source": "manual_entry",
       "fields": {
         "familyName": {
+          "label": "Family Name",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.FamilyName",
           "pdfFieldType": "text",
-          "required": true
+          "required": true,
+          "validation": {
+            "required": true
+          }
         },
         "firstName": {
+          "label": "First Name",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.FirstName",
           "pdfFieldType": "text",
-          "required": true
+          "required": true,
+          "validation": {
+            "required": true
+          }
         },
         "secondName": {
+          "label": "Second Name",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.SecondName",
           "pdfFieldType": "text"
         },
         "dateOfBirth": {
+          "label": "Date Of Birth",
+          "inputType": "date",
+          "reviewEditable": true,
           "type": "date",
-          "pdfField": ["Patient.DOB1.D", "Patient.DOB1.M", "Patient.DOB1.Y"],
+          "pdfField": [
+            "Patient.DOB1.D",
+            "Patient.DOB1.M",
+            "Patient.DOB1.Y"
+          ],
           "pdfFieldType": "split-date",
-          "required": true
+          "required": true,
+          "validation": {
+            "required": true
+          }
         },
         "crn": {
+          "label": "Crn",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
-          "pdfField": ["Q1CRN.0", "Q1CRN.1", "Q1CRN.2", "Q1CRN.3"],
+          "pdfField": [
+            "Q1CRN.0",
+            "Q1CRN.1",
+            "Q1CRN.2",
+            "Q1CRN.3"
+          ],
           "pdfFieldType": "split-chars",
           "optional": true
         },
         "address1": {
+          "label": "Address1",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.Address1",
           "pdfFieldType": "text",
-          "required": true
+          "required": true,
+          "validation": {
+            "required": true
+          }
         },
         "address2": {
+          "label": "Address2",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.Address2",
           "pdfFieldType": "text"
         },
         "address3": {
+          "label": "Address3",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.Address3",
           "pdfFieldType": "text"
         },
         "postcode": {
+          "label": "Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Patient.Postcode",
           "pdfFieldType": "text"
@@ -62,55 +110,95 @@
       "source": "doctor_profile",
       "fields": {
         "doctorName": {
+          "label": "Doctor Name",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.Name",
           "pdfFieldType": "text",
-          "required": true
+          "required": true,
+          "validation": {
+            "required": true
+          }
         },
         "qualifications": {
+          "label": "Qualifications",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.Quals",
           "pdfFieldType": "text"
         },
         "providerNumber": {
+          "label": "Provider Number",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.ProvNo",
           "pdfFieldType": "text",
-          "required": true
+          "required": true,
+          "validation": {
+            "required": true
+          }
         },
         "surgeryName": {
+          "label": "Surgery Name",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.SurgeryName",
           "pdfFieldType": "text"
         },
         "doctorAddress1": {
+          "label": "Doctor Address1",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.Address1",
           "pdfFieldType": "text"
         },
         "doctorAddress2": {
+          "label": "Doctor Address2",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.Address2",
           "pdfFieldType": "text"
         },
         "doctorAddress3": {
+          "label": "Doctor Address3",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.Address3",
           "pdfFieldType": "text"
         },
         "doctorPostcode": {
+          "label": "Doctor Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.Postcode",
           "pdfFieldType": "text"
         },
         "phone": {
+          "label": "Phone",
+          "inputType": "text",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Dr.PhoneNo",
           "pdfFieldType": "text"
         },
         "dateSigned": {
+          "label": "Date Signed",
+          "inputType": "date",
+          "reviewEditable": true,
           "type": "date",
-          "pdfField": ["DateSigned1.D", "DateSigned1.M", "DateSigned1.Y"],
+          "pdfField": [
+            "DateSigned1.D",
+            "DateSigned1.M",
+            "DateSigned1.Y"
+          ],
           "pdfFieldType": "split-date",
           "default": "today"
         }
@@ -120,135 +208,276 @@
       "source": "llm_extraction",
       "fields": {
         "primaryDiagnosis": {
+          "label": "Primary Diagnosis",
+          "inputType": "textarea",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "PC.Diagnosis",
           "pdfFieldType": "text",
           "required": true,
-          "llmInstruction": "Extract the primary diagnosis using proper medical terminology."
+          "llmInstruction": "Extract the primary diagnosis using proper medical terminology.",
+          "validation": {
+            "required": true
+          }
         },
         "primaryOnsetDate": {
+          "label": "Primary Onset Date",
+          "inputType": "date",
+          "reviewEditable": true,
           "type": "date",
-          "pdfField": ["PC.OnsetDate1.D", "PC.OnsetDate1.M", "PC.OnsetDate1.Y"],
+          "pdfField": [
+            "PC.OnsetDate1.D",
+            "PC.OnsetDate1.M",
+            "PC.OnsetDate1.Y"
+          ],
           "pdfFieldType": "split-date",
           "required": true,
-          "llmInstruction": "Date the primary condition began or was first diagnosed. Use YYYY-MM-DD format."
+          "llmInstruction": "Date the primary condition began or was first diagnosed. Use YYYY-MM-DD format.",
+          "validation": {
+            "required": true
+          }
         },
         "primaryPrognosis": {
+          "label": "Primary Prognosis",
+          "inputType": "select",
+          "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "PC.Prognosis",
           "pdfFieldType": "checkbox",
-          "options": ["up_to_13_weeks", "13_to_24_months", "more_than_24_months"],
+          "options": [
+            "up_to_13_weeks",
+            "13_to_24_months",
+            "more_than_24_months"
+          ],
           "pdfOptions": {
             "up_to_13_weeks": "#233c3",
             "13_to_24_months": "13-24",
             "more_than_24_months": "24+"
           },
           "required": true,
-          "llmInstruction": "Expected duration of the primary condition: 'up_to_13_weeks' for temporary/short-term, '13_to_24_months' for medium-term, 'more_than_24_months' for chronic/permanent. Most acute conditions are 'up_to_13_weeks'."
+          "llmInstruction": "Expected duration of the primary condition: 'up_to_13_weeks' for temporary/short-term, '13_to_24_months' for medium-term, 'more_than_24_months' for chronic/permanent. Most acute conditions are 'up_to_13_weeks'.",
+          "validation": {
+            "required": true,
+            "enum": [
+              "up_to_13_weeks",
+              "13_to_24_months",
+              "more_than_24_months"
+            ]
+          }
         },
         "terminalIllness": {
+          "label": "Terminal Illness",
+          "inputType": "select",
+          "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "PC.LE24OrLess",
           "pdfFieldType": "checkbox",
-          "options": ["yes", "no"],
+          "options": [
+            "yes",
+            "no"
+          ],
           "pdfOptions": {
             "yes": "Yes",
             "no": "No"
           },
           "required": true,
           "default": "no",
-          "llmInstruction": "Is the patient's life expectancy 24 months or less? Default 'no' unless explicitly stated."
+          "llmInstruction": "Is the patient's life expectancy 24 months or less? Default 'no' unless explicitly stated.",
+          "validation": {
+            "required": true,
+            "enum": [
+              "yes",
+              "no"
+            ]
+          }
         },
         "seriousIllness": {
+          "label": "Serious Illness",
+          "inputType": "select",
+          "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "PC.MeetSeriousIllness",
           "pdfFieldType": "checkbox",
-          "options": ["yes", "no"],
+          "options": [
+            "yes",
+            "no"
+          ],
           "pdfOptions": {
             "yes": "Yes",
             "no": "No"
           },
           "required": true,
           "default": "no",
-          "llmInstruction": "Does the condition meet Centrelink's serious illness criteria? Default 'no' unless the condition is clearly severe (e.g., cancer, organ failure, major trauma)."
+          "llmInstruction": "Does the condition meet Centrelink's serious illness criteria? Default 'no' unless the condition is clearly severe (e.g., cancer, organ failure, major trauma).",
+          "validation": {
+            "required": true,
+            "enum": [
+              "yes",
+              "no"
+            ]
+          }
         },
         "secondaryDiagnosis": {
+          "label": "Secondary Diagnosis",
+          "inputType": "textarea",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "SC.Diagnosis",
           "pdfFieldType": "text",
           "llmInstruction": "Extract any secondary/additional diagnosis if mentioned. Omit if only one condition discussed."
         },
         "secondaryOnsetDate": {
+          "label": "Secondary Onset Date",
+          "inputType": "date",
+          "reviewEditable": true,
           "type": "date",
-          "pdfField": ["SC.OnsetDate1.D", "SC.OnsetDate1.M", "SC.OnsetDate1.Y"],
+          "pdfField": [
+            "SC.OnsetDate1.D",
+            "SC.OnsetDate1.M",
+            "SC.OnsetDate1.Y"
+          ],
           "pdfFieldType": "split-date",
           "llmInstruction": "Date the secondary condition began. Only extract if a secondary diagnosis exists."
         },
         "secondaryPrognosis": {
+          "label": "Secondary Prognosis",
+          "inputType": "select",
+          "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "SC.Prognosis",
           "pdfFieldType": "checkbox",
-          "options": ["up_to_13_weeks", "13_to_24_months", "more_than_24_months"],
+          "options": [
+            "up_to_13_weeks",
+            "13_to_24_months",
+            "more_than_24_months"
+          ],
           "pdfOptions": {
             "up_to_13_weeks": "#233c3",
             "13_to_24_months": "13-24",
             "more_than_24_months": "24+"
           },
-          "llmInstruction": "Expected duration of the secondary condition. Only extract if a secondary diagnosis exists."
+          "llmInstruction": "Expected duration of the secondary condition. Only extract if a secondary diagnosis exists.",
+          "validation": {
+            "enum": [
+              "up_to_13_weeks",
+              "13_to_24_months",
+              "more_than_24_months"
+            ]
+          }
         },
         "functionalImpact": {
+          "label": "Functional Impact",
+          "inputType": "textarea",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "FunctionalImpact",
           "pdfFieldType": "text",
           "required": true,
-          "llmInstruction": "Describe the functional impact of the conditions on the patient's ability to work, study, or participate. Be specific about limitations (e.g., 'unable to sit for >20 minutes', 'cannot lift >5kg'). This is critical for Centrelink acceptance."
+          "llmInstruction": "Describe the functional impact of the conditions on the patient's ability to work, study, or participate. Be specific about limitations (e.g., 'unable to sit for >20 minutes', 'cannot lift >5kg'). This is critical for Centrelink acceptance.",
+          "validation": {
+            "required": true
+          }
         },
         "treatment": {
+          "label": "Treatment",
+          "inputType": "textarea",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "Treatment",
           "pdfFieldType": "text",
           "required": true,
-          "llmInstruction": "Describe past, current, and planned treatment. Include medications, therapies, and follow-up plans."
+          "llmInstruction": "Describe past, current, and planned treatment. Include medications, therapies, and follow-up plans.",
+          "validation": {
+            "required": true
+          }
         },
         "otherConditions": {
+          "label": "Other Conditions",
+          "inputType": "select",
+          "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "OC.OtherConditions",
           "pdfFieldType": "checkbox",
-          "options": ["yes", "no"],
+          "options": [
+            "yes",
+            "no"
+          ],
           "pdfOptions": {
             "yes": "Yes",
             "no": "No"
           },
           "default": "no",
-          "llmInstruction": "Are there other conditions affecting the patient? Default 'no' unless multiple conditions are discussed beyond primary and secondary."
+          "llmInstruction": "Are there other conditions affecting the patient? Default 'no' unless multiple conditions are discussed beyond primary and secondary.",
+          "validation": {
+            "enum": [
+              "yes",
+              "no"
+            ]
+          }
         },
         "incapacityStartDate": {
+          "label": "Incapacity Start Date",
+          "inputType": "date",
+          "reviewEditable": true,
           "type": "date",
-          "pdfField": ["Incapacity.From1.D", "Incapacity.From1.M", "Incapacity.From1.Y"],
+          "pdfField": [
+            "Incapacity.From1.D",
+            "Incapacity.From1.M",
+            "Incapacity.From1.Y"
+          ],
           "pdfFieldType": "split-date",
           "required": true,
-          "llmInstruction": "When the patient became unfit for work/study. If not stated, use today's date."
+          "llmInstruction": "When the patient became unfit for work/study. If not stated, use today's date.",
+          "validation": {
+            "required": true
+          }
         },
         "incapacityEndDate": {
+          "label": "Incapacity End Date",
+          "inputType": "date",
+          "reviewEditable": true,
           "type": "date",
-          "pdfField": ["Incapacity.To1.D", "Incapacity.To1.M", "Incapacity.To1.Y"],
+          "pdfField": [
+            "Incapacity.To1.D",
+            "Incapacity.To1.M",
+            "Incapacity.To1.Y"
+          ],
           "pdfFieldType": "split-date",
           "required": true,
-          "llmInstruction": "Expected date the patient can return to work/study. Calculate from duration mentioned. Max 13 weeks (91 days) for standard exemption."
+          "llmInstruction": "Expected date the patient can return to work/study. Calculate from duration mentioned. Max 13 weeks (91 days) for standard exemption.",
+          "validation": {
+            "required": true
+          }
         },
         "workCapacity": {
+          "label": "Work Capacity",
+          "inputType": "select",
+          "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Capacity.8HoursPlus",
           "pdfFieldType": "checkbox",
-          "options": ["yes", "no"],
+          "options": [
+            "yes",
+            "no"
+          ],
           "pdfOptions": {
             "yes": "Yes",
             "no": "No"
           },
           "required": true,
-          "llmInstruction": "Can the patient work, study, or do training for 8 or more hours per week? 'yes' if partially capable, 'no' if completely incapacitated."
+          "llmInstruction": "Can the patient work, study, or do training for 8 or more hours per week? 'yes' if partially capable, 'no' if completely incapacitated.",
+          "validation": {
+            "required": true,
+            "enum": [
+              "yes",
+              "no"
+            ]
+          }
         },
         "hoursPerWeek": {
+          "label": "Hours Per Week",
+          "inputType": "textarea",
+          "reviewEditable": true,
           "type": "text",
           "pdfField": "HoursWork",
           "pdfFieldType": "text",
@@ -258,5 +487,18 @@
       }
     }
   },
-  "systemPromptAdditions": "For Centrelink SU415 medical certificates:\n- The 'functionalImpact' field is CRITICAL — describe HOW conditions affect daily functioning and work capacity with specific limitations (e.g., 'cannot stand >15min', 'unable to concentrate for sustained periods').\n- The 'treatment' field should cover past, current, and planned treatment to show the condition is being properly managed.\n- For prognosis fields, choose the most appropriate duration category.\n- Default 'terminalIllness' and 'seriousIllness' to 'no' unless clearly indicated.\n- 'incapacityStartDate' is when the patient became unfit; use today if not specified.\n- 'incapacityEndDate' should not exceed 13 weeks (91 days) from start for standard exemptions."
+  "systemPromptAdditions": "For Centrelink SU415 medical certificates:\n- The 'functionalImpact' field is CRITICAL — describe HOW conditions affect daily functioning and work capacity with specific limitations (e.g., 'cannot stand >15min', 'unable to concentrate for sustained periods').\n- The 'treatment' field should cover past, current, and planned treatment to show the condition is being properly managed.\n- For prognosis fields, choose the most appropriate duration category.\n- Default 'terminalIllness' and 'seriousIllness' to 'no' unless clearly indicated.\n- 'incapacityStartDate' is when the patient became unfit; use today if not specified.\n- 'incapacityEndDate' should not exceed 13 weeks (91 days) from start for standard exemptions.",
+  "formVersion": "2024-12",
+  "dictationTips": [
+    "State primary diagnosis clearly using medical terminology.",
+    "Describe specific functional impact on work/study participation.",
+    "Include treatment history and active management plan.",
+    "Mention incapacity start/end dates and expected recovery window.",
+    "Confirm capacity in hours per week if partially fit for work."
+  ],
+  "allowedUnmappedPdfFields": [
+    "Clear",
+    "Instructions",
+    "Sign"
+  ]
 }

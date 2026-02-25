@@ -110,6 +110,23 @@ function fillSplitDate(
   fillTextField(form, fieldNames[2], year);
 }
 
+function fillDateTextField(
+  form: ReturnType<PDFDocument['getForm']>,
+  fieldName: string,
+  value: string
+): void {
+  if (!value) return;
+
+  // Normalize ISO date to DD/MM/YYYY for single text date fields.
+  let dateText = value;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const [y, m, d] = value.split('-');
+    dateText = `${d}/${m}/${y}`;
+  }
+
+  fillTextField(form, fieldName, dateText);
+}
+
 /**
  * Splits a string across multiple character-box fields.
  * For CRN: Q1CRN.0 (3 chars), Q1CRN.1 (3 chars), Q1CRN.2 (3 chars), Q1CRN.3 (1 char)
@@ -168,6 +185,12 @@ function fillField(
       }
       break;
 
+    case 'date-text':
+      if (typeof field.pdfField === 'string') {
+        fillDateTextField(form, field.pdfField, strValue);
+      }
+      break;
+
     case 'split-chars':
       if (Array.isArray(field.pdfField)) {
         fillSplitChars(form, field.pdfField, strValue);
@@ -183,6 +206,7 @@ export async function fillPdf(
   const templateBytes = loadTemplate(schema.templatePath);
   const doc = await PDFDocument.load(templateBytes, {
     ignoreEncryption: true,
+    throwOnInvalidObject: false,
   });
   const form = doc.getForm();
 

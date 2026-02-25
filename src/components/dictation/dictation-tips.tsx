@@ -1,15 +1,17 @@
 import { Lightbulb } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
-const tips = [
-  'Mention the diagnosis and functional impact on daily activities',
-  'Specify work capacity in hours per week',
-  'State the condition duration (temporary, permanent, or uncertain)',
-  'Include treatment history and management plan',
-  'Note any dates — when the condition started, expected recovery',
+const defaultTips = [
+  'Mention the diagnosis and functional impact on daily activities.',
+  'Include treatment history and the current management plan.',
+  'Add specific dates when condition onset or incapacity windows are known.',
 ];
 
-export function DictationTips() {
+interface DictationTipsProps {
+  tips?: string[];
+}
+
+export function DictationTips({ tips = defaultTips }: DictationTipsProps) {
   return (
     <Card className="border-amber-200 bg-amber-50/50">
       <CardContent className="p-4">

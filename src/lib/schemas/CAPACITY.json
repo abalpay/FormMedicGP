@@ -1,0 +1,371 @@
+{
+  "formId": "CAPACITY",
+  "formName": "Certificate of Capacity (Victoria TAC/WorkCover)",
+  "formVersion": "2024-11",
+  "templatePath": "templates/CAPACITY.pdf",
+  "dictationTips": [
+    "Capture diagnosis and explicit physical/mental functional restrictions.",
+    "Include current work capacity window (from/to dates) and duties tolerance.",
+    "Document treatment plan and return-to-work considerations.",
+    "Specify examination date and certificate issue date clearly.",
+    "Use concrete restrictions (lifting, standing, concentration, driving, etc)."
+  ],
+  "sections": {
+    "patient": {
+      "source": "manual_entry",
+      "fields": {
+        "firstName": {
+          "label": "Worker First Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Worker First Name",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "familyName": {
+          "label": "Worker Last Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Worker Last Name",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "secondName": {
+          "label": "Additional Last Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Worker Last Name cont",
+          "pdfFieldType": "text"
+        },
+        "address1": {
+          "label": "Worker Address",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Worker Address",
+          "pdfFieldType": "text"
+        },
+        "address2": {
+          "label": "Worker Address Continued",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Worker Address cont",
+          "pdfFieldType": "text"
+        },
+        "postcode": {
+          "label": "Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Postcode",
+          "pdfFieldType": "text",
+          "validation": {
+            "pattern": "^\\d{4}$"
+          }
+        },
+        "dateOfBirth": {
+          "label": "Date Of Birth",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Date of Birth Day",
+            "Date of Birth Month",
+            "Date of Birth Year"
+          ],
+          "pdfFieldType": "split-date",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "claimNumber": {
+          "label": "Claim Number",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Claim Number if known",
+          "pdfFieldType": "text"
+        }
+      }
+    },
+    "doctor": {
+      "source": "doctor_profile",
+      "fields": {
+        "doctorName": {
+          "label": "Provider/Hospital Name 1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Provider number or hospital name 1",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "providerNumber": {
+          "label": "Provider/Hospital Name 2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Provider number or hospital name 2",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "doctorAddress1": {
+          "label": "Provider Address/Phone Block",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Provider name address and phone no or practice stamp",
+          "pdfFieldType": "text"
+        },
+        "doctorPostcode": {
+          "label": "Provider Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Postcode_2",
+          "pdfFieldType": "text"
+        },
+        "doctorPhoneAreaCode": {
+          "label": "Provider Area Code",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Area Code",
+          "pdfFieldType": "text"
+        },
+        "doctorPhoneNumber": {
+          "label": "Provider Telephone",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Telephone",
+          "pdfFieldType": "text"
+        },
+        "dateSigned": {
+          "label": "Date Issued",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Date issued Day",
+            "Date issued Month",
+            "Date issued Year"
+          ],
+          "pdfFieldType": "split-date",
+          "required": true,
+          "default": "today",
+          "validation": {
+            "required": true
+          }
+        }
+      }
+    },
+    "clinical": {
+      "source": "llm_extraction",
+      "fields": {
+        "examinationDate": {
+          "label": "Date of Examination",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Date of Examination Day",
+            "Date of Examination Month",
+            "Date of Examination Year"
+          ],
+          "pdfFieldType": "split-date",
+          "required": true,
+          "llmInstruction": "Use the consultation examination date when available; otherwise use today.",
+          "validation": {
+            "required": true
+          }
+        },
+        "primaryDiagnosis": {
+          "label": "Clinical Diagnosis",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "My Clinical Diagnosis/es",
+          "pdfFieldType": "text",
+          "required": true,
+          "llmInstruction": "Provide specific diagnosis and anatomical site, not generic symptoms.",
+          "validation": {
+            "required": true
+          }
+        },
+        "workEnvironmentConsiderations": {
+          "label": "Work Environment Considerations",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Work Environment Considerations",
+          "pdfFieldType": "text"
+        },
+        "physicalFunction": {
+          "label": "Physical Function",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Physical Function",
+          "pdfFieldType": "text"
+        },
+        "mentalHealthFunction": {
+          "label": "Mental Health Function",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Mental Health Function",
+          "pdfFieldType": "text"
+        },
+        "otherFunctionalConsiderations": {
+          "label": "Other Functional Considerations",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Other Functional Considerations",
+          "pdfFieldType": "text"
+        },
+        "incapacityStartDate": {
+          "label": "No Capacity From",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Have no capacity for employment from Day 1",
+            "Have no capacity for employment from Month 1",
+            "Have no capacity for employment from Year 1"
+          ],
+          "pdfFieldType": "split-date"
+        },
+        "incapacityEndDate": {
+          "label": "No Capacity To",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Have no capacity for employment to Day 2",
+            "Have no capacity for employment to Month 2",
+            "Have no capacity for employment to Year 2"
+          ],
+          "pdfFieldType": "split-date"
+        },
+        "returnToWorkDays": {
+          "label": "Return to Work (days)",
+          "inputType": "number",
+          "reviewEditable": true,
+          "type": "number",
+          "pdfField": "Return to work (days)",
+          "pdfFieldType": "text",
+          "validation": {
+            "min": 0,
+            "max": 365
+          }
+        },
+        "returnToWorkWeeks": {
+          "label": "Return to Work (weeks)",
+          "inputType": "number",
+          "reviewEditable": true,
+          "type": "number",
+          "pdfField": "Return to work (weeks)",
+          "pdfFieldType": "text",
+          "validation": {
+            "min": 0,
+            "max": 104
+          }
+        },
+        "treatment": {
+          "label": "Treatment Plan",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Treatment Plan",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        }
+      }
+    }
+  },
+  "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.",
+  "allowedUnmappedPdfFields": [
+    "4A",
+    "4B",
+    "4C",
+    "Check Box1",
+    "Check Box10",
+    "Check Box11",
+    "Check Box12",
+    "Check Box13",
+    "Check Box14",
+    "Check Box15",
+    "Check Box16",
+    "Check Box17",
+    "Check Box18",
+    "Check Box19",
+    "Check Box2",
+    "Check Box20",
+    "Check Box21",
+    "Check Box22",
+    "Check Box23",
+    "Check Box24",
+    "Check Box25",
+    "Check Box26",
+    "Check Box27",
+    "Check Box28",
+    "Check Box29",
+    "Check Box3",
+    "Check Box30",
+    "Check Box31",
+    "Check Box32",
+    "Check Box33",
+    "Check Box4",
+    "Check Box5",
+    "Check Box6",
+    "Check Box7",
+    "Check Box8",
+    "Check Box9",
+    "Confirm Attendance",
+    "Date of Injury Day",
+    "Date of Injury Month",
+    "Date of Injury Year",
+    "Date of Signature of Worker Day",
+    "Details of any voluntary work, employment or self-employment you have engaged in",
+    "Have a capacity for pre-injury employment from Day",
+    "Have a capacity for pre-injury employment from Month",
+    "Have a capacity for pre-injury employment from Year",
+    "Have a capacity for suitable employment from Day 1",
+    "Have a capacity for suitable employment from Month 1",
+    "Have a capacity for suitable employment from Year 1",
+    "Have a capacity for suitable employment to Day 2",
+    "Have a capacity for suitable employment to Month 2",
+    "Have a capacity for suitable employment to Year 2",
+    "Mandatory No",
+    "Mandatory Yes",
+    "Other Functional Considerations - not listed above (1)",
+    "Other Functional Considerations - not listed above (2)",
+    "Other Functional Considerations - not listed above (3)",
+    "Signature of Certifier",
+    "Signature of Worker",
+    "TAC Claim",
+    "VWA Claim"
+  ]
+}

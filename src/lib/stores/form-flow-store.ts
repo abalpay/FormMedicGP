@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import type { ReviewSchema } from '@/types';
 
 export type FormFlowStep =
   | 'select-form'
@@ -16,6 +17,8 @@ interface FormFlowState {
   patientDetails: Record<string, string>;
   transcription: string;
   extractedData: Record<string, unknown> | null;
+  missingFields: string[];
+  reviewSchema: ReviewSchema | null;
   pdfBlobUrl: string | null;
 
   setStep: (step: FormFlowStep) => void;
@@ -23,6 +26,8 @@ interface FormFlowState {
   setPatientDetails: (details: Record<string, string>) => void;
   setTranscription: (text: string) => void;
   setExtractedData: (data: Record<string, unknown>) => void;
+  setMissingFields: (fields: string[]) => void;
+  setReviewSchema: (schema: ReviewSchema | null) => void;
   setPdfBlobUrl: (url: string) => void;
   reset: () => void;
 }
@@ -33,6 +38,8 @@ const initialState = {
   patientDetails: {},
   transcription: '',
   extractedData: null,
+  missingFields: [],
+  reviewSchema: null,
   pdfBlobUrl: null,
 };
 
@@ -48,6 +55,8 @@ export const useFormFlowStore = create<FormFlowState>()(
       setPatientDetails: (details) => set({ patientDetails: details }),
       setTranscription: (text) => set({ transcription: text }),
       setExtractedData: (data) => set({ extractedData: data }),
+      setMissingFields: (fields) => set({ missingFields: fields }),
+      setReviewSchema: (schema) => set({ reviewSchema: schema }),
       setPdfBlobUrl: (url) => set({ pdfBlobUrl: url }),
 
       reset: () => {

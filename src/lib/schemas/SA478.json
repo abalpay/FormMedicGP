@@ -1,0 +1,249 @@
+{
+  "formId": "SA478",
+  "formName": "Disability Support Pension Medical Evidence (SA478)",
+  "formVersion": "2026-01",
+  "templatePath": "templates/SA478.pdf",
+  "dictationTips": [
+    "Cover all diagnosed conditions and their cumulative impact on function.",
+    "Describe severity, persistence and response to treatment.",
+    "Include specialist assessments and objective findings where known.",
+    "Highlight barriers to sustained work capacity and daily functioning.",
+    "Mention foreseeable progression and expected permanence where applicable."
+  ],
+  "sections": {
+    "patient": {
+      "source": "manual_entry",
+      "fields": {
+        "familyName": {
+          "label": "Family Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "FamilyName",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "givenNames": {
+          "label": "Given Names",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "GivenNames",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "dateOfBirth": {
+          "label": "Date Of Birth",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "DOB1.D",
+            "DOB1.M",
+            "DOB1.Y"
+          ],
+          "pdfFieldType": "split-date",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "crn": {
+          "label": "CRN",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": [
+            "1_CRN.0",
+            "1_CRN.1",
+            "1_CRN.2",
+            "1_CRN.3"
+          ],
+          "pdfFieldType": "split-chars",
+          "validation": {
+            "pattern": "^\\d{9}[A-Za-z]$"
+          }
+        }
+      }
+    },
+    "doctor": {
+      "source": "doctor_profile",
+      "fields": {
+        "doctorName": {
+          "label": "Doctor Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8Name",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "qualifications": {
+          "label": "Qualifications",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8Qual",
+          "pdfFieldType": "text"
+        },
+        "providerNumber": {
+          "label": "Provider Number",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8ProvNo",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "surgeryName": {
+          "label": "Practice Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8Surgery",
+          "pdfFieldType": "text"
+        },
+        "doctorAddress1": {
+          "label": "Doctor Address1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8_Details.Address1",
+          "pdfFieldType": "text"
+        },
+        "doctorAddress2": {
+          "label": "Doctor Address2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8_Details.Address2",
+          "pdfFieldType": "text"
+        },
+        "doctorAddress3": {
+          "label": "Doctor Address3",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8_Details.Address3",
+          "pdfFieldType": "text"
+        },
+        "doctorPostcode": {
+          "label": "Doctor Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8_Details.Postcode",
+          "pdfFieldType": "text",
+          "validation": {
+            "pattern": "^\\d{4}$"
+          }
+        },
+        "phone": {
+          "label": "Phone",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q8PhoneNo",
+          "pdfFieldType": "text"
+        },
+        "dateSigned": {
+          "label": "Date Signed",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "SignDate.D",
+            "SignDate.M",
+            "SignDate.Y"
+          ],
+          "pdfFieldType": "split-date",
+          "default": "today",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        }
+      }
+    },
+    "clinical": {
+      "source": "llm_extraction",
+      "fields": {
+        "dspPrimaryConditions": {
+          "label": "Primary Conditions and Functional Impact",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q7",
+          "pdfFieldType": "text",
+          "required": true,
+          "llmInstruction": "Summarize diagnosed medical conditions and explain functional impact on work capacity and daily activities in plain clinical language.",
+          "validation": {
+            "required": true
+          }
+        },
+        "dspSpecialistEvidence": {
+          "label": "Specialist/Supporting Evidence",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q5Details",
+          "pdfFieldType": "text",
+          "llmInstruction": "Summarize specialist reports, objective findings, investigations, and prior treatment outcomes relevant to DSP evidence."
+        },
+        "dspTreatmentPlan": {
+          "label": "Current and Planned Treatment",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q6Details",
+          "pdfFieldType": "text",
+          "llmInstruction": "Describe ongoing treatment, medication, therapy, and expected outcomes."
+        }
+      }
+    }
+  },
+  "systemPromptAdditions": "For SA478 DSP medical evidence: focus on severity, permanence, and functional impairment across work-related tasks. Prefer objective findings and explicit functional limitations over vague descriptors.",
+  "allowedUnmappedPdfFields": [
+    "1.0",
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4",
+    "1.5",
+    "Clear",
+    "DummyCalcQ1",
+    "DummyCalcQ5",
+    "DummyCalcQ6",
+    "Q1.0",
+    "Q1.1",
+    "Q1.2",
+    "Q1.3",
+    "Q1.4",
+    "Q1.5",
+    "Q2",
+    "Q3",
+    "Q41",
+    "Q42",
+    "Q4Day1",
+    "Q4Day2",
+    "Q4Time1.0",
+    "Q4Time1.1",
+    "Q4Time2.0",
+    "Q4Time2.1",
+    "Q5",
+    "Q6",
+    "Sign"
+  ]
+}

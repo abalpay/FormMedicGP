@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
@@ -13,6 +13,7 @@ import { DictationRecorder } from '@/components/dictation/dictation-recorder';
 import { TranscriptionDisplay } from '@/components/dictation/transcription-display';
 import { DictationTips } from '@/components/dictation/dictation-tips';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
+import type { FormCatalogItem, ReviewSchema } from '@/types';
 import { toast } from 'sonner';
 
 const steps = [
@@ -33,11 +34,34 @@ export default function DictatePage() {
     setTranscription,
     setStep,
     setExtractedData,
+    setMissingFields,
+    setReviewSchema,
     setPdfBlobUrl,
   } = useFormFlowStore();
 
   const [recordingState, setRecordingState] = useState<RecordingState>('idle');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [formCatalog, setFormCatalog] = useState<FormCatalogItem[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadCatalog() {
+      try {
+        const res = await fetch('/api/forms', { cache: 'no-store' });
+        if (!res.ok) return;
+        const body = (await res.json()) as { forms?: FormCatalogItem[] };
+        if (!cancelled) {
+          setFormCatalog(body.forms ?? []);
+        }
+      } catch {
+        // Non-blocking fetch for display tips.
+      }
+    }
+    loadCatalog();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleTranscriptionUpdate = useCallback(
     (text: string) => {
@@ -78,10 +102,17 @@ export default function DictatePage() {
         throw new Error(errBody?.error ?? `Server error (${res.status})`);
       }
 
-      const { extractedData, missingFields, pdfBase64 } = await res.json();
+      const { extractedData, missingFields, pdfBase64, reviewSchema } =
+        (await res.json()) as {
+          extractedData: Record<string, unknown>;
+          missingFields: string[];
+          pdfBase64?: string;
+          reviewSchema?: ReviewSchema;
+        };
 
-      // Store extracted data (include missingFields for the review page)
-      setExtractedData({ ...extractedData, missingFields });
+      setExtractedData(extractedData);
+      setMissingFields(missingFields ?? []);
+      setReviewSchema(reviewSchema ?? null);
 
       // Convert base64 PDF to Blob URL
       if (pdfBase64) {
@@ -102,10 +133,11 @@ export default function DictatePage() {
     }
   };
 
-  const formLabel =
-    selectedFormType === 'SU415'
-      ? 'SU415 — Centrelink Medical Certificate'
-      : selectedFormType ?? 'No form selected';
+  const selectedForm = formCatalog.find((form) => form.id === selectedFormType);
+  const formLabel = selectedForm
+    ? `${selectedForm.id} — ${selectedForm.label}`
+    : selectedFormType ?? 'No form selected';
+  const activeTips = selectedForm?.dictationTips;
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -137,7 +169,7 @@ export default function DictatePage() {
       </Card>
 
       {/* Tips */}
-      <DictationTips />
+      <DictationTips tips={activeTips} />
 
       {/* Navigation */}
       <div className="flex items-center justify-between">

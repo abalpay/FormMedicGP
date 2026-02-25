@@ -4,6 +4,7 @@ import { deidentify } from '@/lib/deidentify';
 import { extractFormData } from '@/lib/llm';
 import { reidentify } from '@/lib/reidentify';
 import { fillPdf } from '@/lib/pdf-filler';
+import { buildReviewSchema } from '@/lib/review-schema';
 import type { PatientDetails, DoctorProfile } from '@/types';
 
 // Hardcoded doctor profile for testing (no Supabase needed yet)
@@ -22,6 +23,7 @@ const MOCK_DOCTOR: DoctorProfile = {
 };
 
 export async function POST(request: Request) {
+  let requestedFormType: string | undefined;
   try {
     const body = await request.json();
     const { transcription, patientDetails, formType } = body as {
@@ -29,6 +31,7 @@ export async function POST(request: Request) {
       patientDetails?: PatientDetails;
       formType?: string;
     };
+    requestedFormType = formType;
 
     // Validate inputs
     if (!transcription?.trim()) {
@@ -74,14 +77,19 @@ export async function POST(request: Request) {
     // 4. Generate PDF
     const pdfBytes = await fillPdf(schema, mergedData);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+    const reviewSchema = buildReviewSchema(schema);
 
     return NextResponse.json({
       extractedData: mergedData,
       missingFields,
       pdfBase64,
+      reviewSchema,
     });
   } catch (err) {
-    console.error('[process-form] Pipeline error:', err);
+    console.error('[process-form] pipeline error', {
+      formType: requestedFormType,
+      error: err instanceof Error ? err.message : String(err),
+    });
     const message =
       err instanceof Error ? err.message : 'Unknown error during processing';
     return NextResponse.json({ error: message }, { status: 500 });

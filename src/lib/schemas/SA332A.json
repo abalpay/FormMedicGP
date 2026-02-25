@@ -1,0 +1,197 @@
+{
+  "formId": "SA332A",
+  "formName": "Carer Payment/Allowance Medical Report 16+ (SA332A)",
+  "formVersion": "2025-04",
+  "templatePath": "templates/SA332A.pdf",
+  "dictationTips": [
+    "Identify the person being cared for and date of birth precisely.",
+    "Clearly describe care needs and functional limitations.",
+    "State expected duration and variability of support needs.",
+    "Include contact details that match claim records.",
+    "Mention co-morbidities affecting care intensity where relevant."
+  ],
+  "sections": {
+    "patient": {
+      "source": "manual_entry",
+      "fields": {
+        "firstName": {
+          "label": "Given Name 1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Name1",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "secondName": {
+          "label": "Given Name 2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Name2",
+          "pdfFieldType": "text"
+        },
+        "familyName": {
+          "label": "Family Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Name3",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "address1": {
+          "label": "Address1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Address1",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "address2": {
+          "label": "Address2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Address2",
+          "pdfFieldType": "text"
+        },
+        "address3": {
+          "label": "Address3",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Address3",
+          "pdfFieldType": "text"
+        },
+        "postcode": {
+          "label": "Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Postcode",
+          "pdfFieldType": "text",
+          "validation": {
+            "pattern": "^\\d{4}$"
+          }
+        },
+        "dateOfBirth": {
+          "label": "Date Of Birth",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Cust_DOBDD",
+            "Cust_DOBMM",
+            "Cust_DOBYYYY"
+          ],
+          "pdfFieldType": "split-date",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "crn": {
+          "label": "Customer CRN",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_RefNo",
+          "pdfFieldType": "text"
+        },
+        "caredPersonName": {
+          "label": "Cared Person Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "CaredPerson.Name",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "caredPersonDateOfBirth": {
+          "label": "Cared Person DOB",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": "CaredPerson.DOB",
+          "pdfFieldType": "date-text"
+        }
+      }
+    },
+    "doctor": {
+      "source": "doctor_profile",
+      "fields": {
+        "doctorName": {
+          "label": "Assessor Signature Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Sign",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "dateSigned": {
+          "label": "Date Signed",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Signed_DateDD",
+            "Signed_DateMM",
+            "Signed_DateYYYY"
+          ],
+          "pdfFieldType": "split-date",
+          "required": true,
+          "default": "today",
+          "validation": {
+            "required": true
+          }
+        }
+      }
+    },
+    "clinical": {
+      "source": "llm_extraction",
+      "fields": {
+        "careNeedsSummary": {
+          "label": "Care Needs Summary",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "PBC_Name1",
+          "pdfFieldType": "text",
+          "llmInstruction": "Briefly summarize care needs to support claimant review. Keep concise and clinically factual."
+        }
+      }
+    }
+  },
+  "systemPromptAdditions": "For SA332A focus on care needs, functional dependency, and duration/intensity of required assistance.",
+  "allowedUnmappedPdfFields": [
+    "AssessType",
+    "Clear",
+    "Cust_Email1",
+    "Cust_PhoneNo",
+    "Instructions",
+    "PBC_DOBDD",
+    "PBC_DOBMM",
+    "PBC_DOBYYYY",
+    "PBC_Name2",
+    "PBC_Name3",
+    "PBC_RefNo"
+  ]
+}

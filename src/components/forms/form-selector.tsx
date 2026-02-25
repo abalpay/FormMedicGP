@@ -1,23 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { FileText, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import type { FormCatalogItem } from '@/types';
 
-interface FormOption {
-  id: string;
-  name: string;
-  description: string;
-}
-
-const availableForms: FormOption[] = [
-  {
-    id: 'SU415',
-    name: 'Centrelink Medical Certificate (SU415)',
-    description:
-      'For patients requiring temporary incapacity exemption from mutual obligations. Covers work capacity, condition duration, and functional impact.',
-  },
-];
+type FormOption = FormCatalogItem;
 
 interface FormSelectorProps {
   selectedFormId: string | null;
@@ -25,6 +14,41 @@ interface FormSelectorProps {
 }
 
 export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
+  const [availableForms, setAvailableForms] = useState<FormOption[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadForms() {
+      try {
+        const res = await fetch('/api/forms', { cache: 'no-store' });
+        if (!res.ok) {
+          throw new Error(`Failed to load forms (${res.status})`);
+        }
+        const body = (await res.json()) as { forms?: FormOption[] };
+        if (!cancelled) {
+          setAvailableForms(body.forms ?? []);
+          setLoadError(null);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          const message =
+            err instanceof Error ? err.message : 'Failed to load forms';
+          setLoadError(message);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadForms();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="space-y-3">
       <div>
@@ -33,6 +57,14 @@ export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
           Choose the government form you need to complete.
         </p>
       </div>
+      {loading && (
+        <p className="text-xs text-muted-foreground">Loading available forms...</p>
+      )}
+      {loadError && (
+        <p className="text-xs text-destructive">
+          Could not load forms: {loadError}
+        </p>
+      )}
       <div className="grid gap-3">
         {availableForms.map((form) => {
           const isSelected = selectedFormId === form.id;
@@ -41,6 +73,7 @@ export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
               key={form.id}
               type="button"
               onClick={() => onSelect(form.id)}
+              disabled={form.deferred}
               className="text-left w-full"
             >
               <Card
@@ -68,10 +101,13 @@ export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      {form.name}
+                      {form.label}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       {form.description}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-1">
+                      Version {form.version}
                     </p>
                   </div>
                 </CardContent>

@@ -69,10 +69,14 @@ export function reidentify(
     ...extractedData,
 
     // Patient section
+    fullName: patientDetails.customerName,
+    givenNames: [firstName, secondName].filter(Boolean).join(' '),
     familyName,
     firstName,
     secondName,
     dateOfBirth: patientDetails.dateOfBirth,
+    caredPersonName: patientDetails.customerName,
+    caredPersonDateOfBirth: patientDetails.dateOfBirth,
     ...(patientDetails.crn ? { crn: patientDetails.crn } : {}),
     address1: patientAddr.line1,
     address2: patientAddr.line2,
@@ -89,7 +93,10 @@ export function reidentify(
     doctorAddress3: doctorAddr.line3,
     doctorPostcode,
     phone: doctorProfile.practicePhone.replace(/\s/g, ''),
+    doctorPhoneAreaCode: doctorProfile.practicePhone.replace(/\s/g, '').slice(0, 2),
+    doctorPhoneNumber: doctorProfile.practicePhone.replace(/\s/g, '').slice(2),
     dateSigned: today,
+    examinationDate: today,
   };
 
   // Replace [PATIENT] placeholders in any string values

@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
+import { getFormCatalog } from '@/lib/forms/registry';
 
 export async function GET() {
-  return NextResponse.json({ status: 'not implemented' }, { status: 501 });
-}
-
-export async function POST() {
-  return NextResponse.json({ status: 'not implemented' }, { status: 501 });
+  const forms = getFormCatalog(false);
+  return NextResponse.json({ forms });
 }

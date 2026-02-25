@@ -1,0 +1,265 @@
+{
+  "formId": "MA002",
+  "formName": "Mobility Allowance Medical Report (MA002)",
+  "formVersion": "2006-06",
+  "templatePath": "templates/MA002.pdf",
+  "dictationTips": [
+    "Describe mobility-related condition and how it limits transport/use of public transport.",
+    "Document severity, frequency, and expected duration of limitations.",
+    "Include treatment history and rehabilitation progress.",
+    "State whether limitations are temporary or long-term.",
+    "Use concrete functional examples (distance, standing tolerance, transfers)."
+  ],
+  "sections": {
+    "patient": {
+      "source": "manual_entry",
+      "fields": {
+        "fullName": {
+          "label": "Customer Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "CustName",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "address1": {
+          "label": "Address1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "CustAddress1",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "address2": {
+          "label": "Address2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "CustAddress2",
+          "pdfFieldType": "text"
+        },
+        "postcode": {
+          "label": "Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "CustPostcode",
+          "pdfFieldType": "text",
+          "validation": {
+            "pattern": "^\\d{4}$"
+          }
+        },
+        "dateOfBirth": {
+          "label": "Date Of Birth",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": "CustDateOfBirth",
+          "pdfFieldType": "date-text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "crn": {
+          "label": "CRN",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": [
+            "CustCRN.0",
+            "CustCRN.1",
+            "CustCRN.2",
+            "CustCRN.3"
+          ],
+          "pdfFieldType": "split-chars"
+        }
+      }
+    },
+    "doctor": {
+      "source": "doctor_profile",
+      "fields": {
+        "doctorName": {
+          "label": "Doctor Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorName",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "qualifications": {
+          "label": "Qualifications",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorQual",
+          "pdfFieldType": "text"
+        },
+        "providerNumber": {
+          "label": "Provider Number",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "ProviderNo",
+          "pdfFieldType": "text",
+          "required": true,
+          "validation": {
+            "required": true
+          }
+        },
+        "doctorAddress1": {
+          "label": "Doctor Address1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorAddress1",
+          "pdfFieldType": "text"
+        },
+        "doctorAddress2": {
+          "label": "Doctor Address2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorAddress2",
+          "pdfFieldType": "text"
+        },
+        "doctorAddress3": {
+          "label": "Doctor Address3",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorAddress3",
+          "pdfFieldType": "text"
+        },
+        "doctorPostcode": {
+          "label": "Doctor Postcode",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorPostcode",
+          "pdfFieldType": "text",
+          "validation": {
+            "pattern": "^\\d{4}$"
+          }
+        },
+        "doctorPhoneAreaCode": {
+          "label": "Doctor Phone Area Code",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorPhoneAC",
+          "pdfFieldType": "text"
+        },
+        "doctorPhoneNumber": {
+          "label": "Doctor Phone Number",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "DoctorPhoneNo",
+          "pdfFieldType": "text"
+        },
+        "dateSigned": {
+          "label": "Date Signed",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": "DoctorSignDate",
+          "pdfFieldType": "date-text",
+          "required": true,
+          "default": "today",
+          "validation": {
+            "required": true
+          }
+        }
+      }
+    },
+    "clinical": {
+      "source": "llm_extraction",
+      "fields": {
+        "mobilityClinicalSummary": {
+          "label": "Clinical Mobility Summary",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q10Details",
+          "pdfFieldType": "text",
+          "required": true,
+          "llmInstruction": "Summarize clinical diagnosis and mobility impact relevant to allowance eligibility.",
+          "validation": {
+            "required": true
+          }
+        },
+        "mobilityFunctionalImpact": {
+          "label": "Functional Impact",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q7Details",
+          "pdfFieldType": "text",
+          "llmInstruction": "Describe practical mobility restrictions and transport barriers."
+        },
+        "treatmentPlan": {
+          "label": "Treatment Plan",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q3Details",
+          "pdfFieldType": "text",
+          "llmInstruction": "Summarize treatment, rehabilitation, and expected trajectory."
+        }
+      }
+    }
+  },
+  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.",
+  "allowedUnmappedPdfFields": [
+    "Clear",
+    "CliamNo",
+    "CustPhoneAC",
+    "CustPhoneNo",
+    "DummyCalcQ10",
+    "DummyCalcQ2",
+    "DummyCalcQ3",
+    "DummyCalcQ5",
+    "DummyCalcQ7",
+    "DummyCalcQ8",
+    "Instructions",
+    "Print",
+    "Q10",
+    "Q2",
+    "Q2GoToQ11",
+    "Q2PatientSince",
+    "Q2PracticeSince",
+    "Q3",
+    "Q3GoToQ5",
+    "Q41",
+    "Q42",
+    "Q43",
+    "Q44",
+    "Q45",
+    "Q46",
+    "Q5",
+    "Q5Details",
+    "Q5GoToQ7",
+    "Q61",
+    "Q62",
+    "Q63",
+    "Q64",
+    "Q7",
+    "Q8",
+    "Q8GoToQ10",
+    "Q9",
+    "Sign"
+  ]
+}

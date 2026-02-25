@@ -1,12 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Download, FilePlus, ArrowLeft } from 'lucide-react';
+import { Download, FilePlus, ArrowLeft, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSummary } from '@/components/forms/form-summary';
-import { MissingFieldPrompts } from '@/components/forms/missing-field-prompts';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import { toast } from 'sonner';
 
@@ -19,7 +19,26 @@ const steps = [
 
 export default function FormReviewPage() {
   const router = useRouter();
-  const { extractedData, pdfBlobUrl, reset } = useFormFlowStore();
+  const {
+    selectedFormType,
+    extractedData,
+    missingFields,
+    reviewSchema,
+    pdfBlobUrl,
+    setExtractedData,
+    setMissingFields,
+    setPdfBlobUrl,
+    reset,
+  } = useFormFlowStore();
+  const [editableData, setEditableData] = useState<Record<string, unknown>>({});
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>(
+    {}
+  );
+  const [isApplying, setIsApplying] = useState(false);
+
+  useEffect(() => {
+    setEditableData(extractedData ?? {});
+  }, [extractedData]);
 
   const handleDownload = () => {
     if (pdfBlobUrl) {
@@ -33,21 +52,69 @@ export default function FormReviewPage() {
     }
   };
 
+  const handleApplyChanges = async () => {
+    if (!selectedFormType) {
+      toast.error('No form type selected.');
+      return;
+    }
+
+    setIsApplying(true);
+    try {
+      const res = await fetch('/api/process-form/regenerate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: selectedFormType,
+          editedData: editableData,
+        }),
+      });
+
+      if (res.status === 400) {
+        const body = (await res.json()) as { errors?: Record<string, string> };
+        setValidationErrors(body.errors ?? {});
+        toast.error('Please fix highlighted fields before regenerating.');
+        return;
+      }
+
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(body?.error ?? `Regeneration failed (${res.status})`);
+      }
+
+      const { validatedData, pdfBase64 } = (await res.json()) as {
+        validatedData: Record<string, unknown>;
+        pdfBase64: string;
+      };
+
+      setValidationErrors({});
+      setExtractedData(validatedData);
+      setMissingFields([]);
+      setEditableData(validatedData);
+
+      if (pdfBase64) {
+        const bytes = Uint8Array.from(atob(pdfBase64), (c) => c.charCodeAt(0));
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        setPdfBlobUrl(URL.createObjectURL(blob));
+      }
+
+      toast.success('PDF regenerated with your edits.');
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to regenerate PDF';
+      toast.error(message);
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
   const handleNewForm = () => {
     reset();
     router.push('/forms/new');
   };
 
-  const handleMissingFieldsSubmit = (answers: Record<string, string>) => {
-    // TODO: Re-call /api/process-form with supplementary data
-    console.log('Missing field answers:', answers);
-    toast.info('Re-processing not yet implemented');
-  };
-
-  const data = extractedData ?? {
-    diagnosis: 'Demo — complete the backend pipeline to see real data',
-  };
-  const missingFields = (extractedData?.missingFields as string[]) ?? [];
+  const data = editableData;
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -60,14 +127,15 @@ export default function FormReviewPage() {
         </p>
       </div>
 
-      <FormSummary data={data} missingFields={missingFields} />
-
-      {missingFields.length > 0 && (
-        <MissingFieldPrompts
-          missingFields={missingFields}
-          onSubmit={handleMissingFieldsSubmit}
-        />
-      )}
+      <FormSummary
+        schema={reviewSchema}
+        data={data}
+        missingFields={missingFields}
+        errors={validationErrors}
+        onChange={(key, value) => {
+          setEditableData((prev) => ({ ...prev, [key]: value }));
+        }}
+      />
 
       {/* Actions */}
       <div className="flex items-center justify-between pt-2">
@@ -78,6 +146,12 @@ export default function FormReviewPage() {
           </Link>
         </Button>
         <div className="flex items-center gap-3">
+          <Button variant="secondary" onClick={handleApplyChanges} disabled={isApplying}>
+            <RefreshCw
+              className={`w-4 h-4 mr-1.5 ${isApplying ? 'animate-spin' : ''}`}
+            />
+            {isApplying ? 'Applying...' : 'Apply Changes'}
+          </Button>
           <Button variant="outline" onClick={handleNewForm}>
             <FilePlus className="w-4 h-4 mr-1.5" />
             New Form
