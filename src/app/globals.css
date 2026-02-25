@@ -1,0 +1,253 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* ==========================================================================
+   FormMedic — "Medical Trust" Design System
+   Primary: Deep Teal (#0F766E)  — trust, medical authority
+   Accent:  Warm Amber (#F59E0B) — CTAs, "Record" button
+   ========================================================================== */
+
+:root {
+  --radius: 0.625rem;
+
+  /* ---- Core surfaces ---- */
+  --background: oklch(0.985 0 0);              /* #FAFAFA  off-white */
+  --foreground: oklch(0.15 0.02 260);           /* #0F172A  slate-900 */
+
+  --card: oklch(1 0 0);                         /* #FFFFFF  white */
+  --card-foreground: oklch(0.15 0.02 260);      /* #0F172A */
+
+  --popover: oklch(1 0 0);                      /* #FFFFFF */
+  --popover-foreground: oklch(0.15 0.02 260);   /* #0F172A */
+
+  /* ---- Primary — deep teal ---- */
+  --primary: oklch(0.47 0.1 175);               /* #0F766E */
+  --primary-foreground: oklch(0.985 0 0);       /* white-ish for contrast */
+
+  /* ---- Secondary — light teal tint ---- */
+  --secondary: oklch(0.93 0.03 175);            /* pale teal surface */
+  --secondary-foreground: oklch(0.30 0.08 175); /* dark teal text */
+
+  /* ---- Muted — light gray ---- */
+  --muted: oklch(0.96 0.004 265);               /* slate-100 equivalent */
+  --muted-foreground: oklch(0.55 0.02 260);     /* #64748B  slate-500 */
+
+  /* ---- Accent — warm amber ---- */
+  --accent: oklch(0.795 0.177 78);              /* #F59E0B */
+  --accent-foreground: oklch(0.15 0.02 260);    /* dark text on amber */
+
+  /* ---- Destructive — red-600 ---- */
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* ---- Borders & inputs ---- */
+  --border: oklch(0.928 0.006 265);             /* #E2E8F0  slate-200 */
+  --input: oklch(0.928 0.006 265);              /* same as border */
+  --ring: oklch(0.47 0.1 175);                  /* teal focus ring */
+
+  /* ---- Warning — orange-600 ---- */
+  --warning: oklch(0.70 0.16 55);               /* orange-600 */
+  --warning-foreground: oklch(1 0 0);           /* white */
+
+  /* ---- Success — green-600 ---- */
+  --success: oklch(0.55 0.16 145);              /* green-600 */
+  --success-foreground: oklch(1 0 0);           /* white */
+
+  /* ---- Chart palette (teal-anchored) ---- */
+  --chart-1: oklch(0.47 0.1 175);              /* deep teal */
+  --chart-2: oklch(0.795 0.177 78);            /* amber */
+  --chart-3: oklch(0.55 0.16 145);             /* green */
+  --chart-4: oklch(0.60 0.12 250);             /* blue */
+  --chart-5: oklch(0.70 0.16 55);              /* orange */
+
+  /* ---- Sidebar — teal-tinted dark background ---- */
+  --sidebar: oklch(0.22 0.04 175);              /* dark teal bg */
+  --sidebar-foreground: oklch(0.92 0.01 175);   /* light teal text */
+  --sidebar-primary: oklch(0.60 0.1 175);       /* brighter teal */
+  --sidebar-primary-foreground: oklch(1 0 0);   /* white */
+  --sidebar-accent: oklch(0.30 0.05 175);       /* subtle teal highlight */
+  --sidebar-accent-foreground: oklch(0.92 0.01 175); /* light text */
+  --sidebar-border: oklch(1 0 0 / 10%);        /* subtle white border */
+  --sidebar-ring: oklch(0.60 0.1 175);          /* teal ring */
+}
+
+.dark {
+  /* ---- Core surfaces ---- */
+  --background: oklch(0.16 0.02 175);           /* dark teal-tinted bg */
+  --foreground: oklch(0.96 0.004 265);          /* near-white text */
+
+  --card: oklch(0.21 0.025 175);                /* raised surface */
+  --card-foreground: oklch(0.96 0.004 265);
+
+  --popover: oklch(0.21 0.025 175);
+  --popover-foreground: oklch(0.96 0.004 265);
+
+  /* ---- Primary — lighter teal for dark mode ---- */
+  --primary: oklch(0.60 0.1 175);               /* brighter teal */
+  --primary-foreground: oklch(0.15 0.02 175);   /* dark text on teal */
+
+  /* ---- Secondary ---- */
+  --secondary: oklch(0.26 0.035 175);           /* dark teal surface */
+  --secondary-foreground: oklch(0.92 0.01 175); /* light teal text */
+
+  /* ---- Muted ---- */
+  --muted: oklch(0.26 0.02 260);                /* dark muted surface */
+  --muted-foreground: oklch(0.65 0.02 260);     /* subdued text */
+
+  /* ---- Accent — amber stays vivid ---- */
+  --accent: oklch(0.795 0.177 78);              /* #F59E0B */
+  --accent-foreground: oklch(0.15 0.02 260);    /* dark text on amber */
+
+  /* ---- Destructive ---- */
+  --destructive: oklch(0.704 0.191 22.216);
+
+  /* ---- Borders & inputs ---- */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.60 0.1 175);                  /* teal ring */
+
+  /* ---- Warning ---- */
+  --warning: oklch(0.75 0.16 55);               /* lighter orange */
+  --warning-foreground: oklch(0.15 0.02 260);
+
+  /* ---- Success ---- */
+  --success: oklch(0.62 0.16 145);              /* lighter green */
+  --success-foreground: oklch(0.15 0.02 260);
+
+  /* ---- Chart palette (dark mode) ---- */
+  --chart-1: oklch(0.60 0.1 175);
+  --chart-2: oklch(0.795 0.177 78);
+  --chart-3: oklch(0.62 0.16 145);
+  --chart-4: oklch(0.65 0.14 250);
+  --chart-5: oklch(0.75 0.16 55);
+
+  /* ---- Sidebar (dark mode — deeper teal) ---- */
+  --sidebar: oklch(0.14 0.03 175);
+  --sidebar-foreground: oklch(0.92 0.01 175);
+  --sidebar-primary: oklch(0.60 0.1 175);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.24 0.04 175);
+  --sidebar-accent-foreground: oklch(0.92 0.01 175);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.60 0.1 175);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ==========================================================================
+   Custom Utility Classes — FormMedic Medical Theme
+   ========================================================================== */
+
+@layer utilities {
+  /* Medical status indicators */
+  .status-success {
+    @apply bg-success text-success-foreground;
+  }
+  .status-warning {
+    @apply bg-warning text-warning-foreground;
+  }
+  .status-destructive {
+    @apply bg-destructive text-white;
+  }
+
+  /* Recording state pulse (for "Record" button active state) */
+  .recording-pulse {
+    animation: recording-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes recording-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 oklch(0.577 0.245 27.325 / 0.6);
+    }
+    50% {
+      box-shadow: 0 0 0 8px oklch(0.577 0.245 27.325 / 0);
+    }
+  }
+
+  /* Medical card — elevated surface with teal border accent */
+  .medical-card {
+    @apply bg-card text-card-foreground rounded-lg border border-border
+           shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  /* Teal gradient for headers / hero sections */
+  .gradient-teal {
+    background: linear-gradient(
+      135deg,
+      oklch(0.47 0.1 175),
+      oklch(0.38 0.08 180)
+    );
+  }
+
+  /* Amber CTA gradient */
+  .gradient-amber {
+    background: linear-gradient(
+      135deg,
+      oklch(0.795 0.177 78),
+      oklch(0.75 0.165 72)
+    );
+  }
+
+  /* Text helpers that map to the design system */
+  .text-label {
+    @apply text-muted-foreground text-sm font-medium;
+  }
+  .text-description {
+    @apply text-muted-foreground text-sm;
+  }
+}

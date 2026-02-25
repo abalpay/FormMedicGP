@@ -1,0 +1,78 @@
+{
+  "formId": "SU415",
+  "formName": "Centrelink Medical Certificate",
+  "templatePath": "templates/SU415.pdf",
+  "sections": {
+    "patient": {
+      "source": "manual_entry",
+      "fields": {
+        "customerName": { "type": "text", "pdfField": "CustomerName" },
+        "dateOfBirth": { "type": "date", "pdfField": "DOB" },
+        "crn": { "type": "text", "pdfField": "CRN", "optional": true },
+        "address": { "type": "text", "pdfField": "Address" }
+      }
+    },
+    "doctor": {
+      "source": "doctor_profile",
+      "fields": {
+        "doctorName": { "type": "text", "pdfField": "DoctorName" },
+        "providerNumber": { "type": "text", "pdfField": "ProviderNo" },
+        "practiceAddress": { "type": "text", "pdfField": "PracticeAddress" },
+        "phone": { "type": "text", "pdfField": "Phone" },
+        "dateOfExamination": { "type": "date", "pdfField": "ExamDate", "default": "today" }
+      }
+    },
+    "clinical": {
+      "source": "llm_extraction",
+      "fields": {
+        "diagnosis": {
+          "type": "text",
+          "pdfField": "Diagnosis",
+          "required": true,
+          "llmInstruction": "Extract primary diagnosis using proper medical terminology. Use ICD-10 appropriate language."
+        },
+        "workCapacity": {
+          "type": "radio",
+          "pdfField": "WorkCapacity",
+          "options": ["yes_8_or_more", "no_less_than_8"],
+          "required": true,
+          "llmInstruction": "Determine if patient can work/study/participate 8+ hours per week. If doctor mentions specific hours, use that."
+        },
+        "hoursPerWeek": {
+          "type": "number",
+          "pdfField": "Hours",
+          "conditional": "workCapacity === 'yes_8_or_more'",
+          "llmInstruction": "If patient can work some hours, extract the number mentioned."
+        },
+        "conditionDuration": {
+          "type": "radio",
+          "pdfField": "Duration",
+          "options": ["temporary", "permanent", "uncertain"],
+          "required": true,
+          "llmInstruction": "Classify condition duration. Most SU415s are temporary."
+        },
+        "incapacityStartDate": {
+          "type": "date",
+          "pdfField": "StartDate",
+          "required": true,
+          "llmInstruction": "Extract when the patient became unfit. If not explicitly stated, use today's date."
+        },
+        "incapacityEndDate": {
+          "type": "date",
+          "pdfField": "EndDate",
+          "required": true,
+          "llmInstruction": "Calculate end date from duration mentioned. Max 13 weeks (91 days) for standard exemption."
+        },
+        "terminalIllness": {
+          "type": "radio",
+          "pdfField": "Terminal",
+          "options": ["yes", "no"],
+          "required": true,
+          "default": "no",
+          "llmInstruction": "Life expectancy <24 months? Default to 'no' unless explicitly mentioned."
+        }
+      }
+    }
+  },
+  "systemPromptAdditions": "For Centrelink SU415 forms, use clinical language that clearly communicates functional impact. Centrelink assessors look for specifics about HOW the condition affects work capacity, not just the diagnosis name. Include treatment history to demonstrate the condition has been properly managed."
+}
