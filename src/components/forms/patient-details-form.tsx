@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AddressAutocomplete } from '@/components/ui/address-autocomplete';
@@ -36,8 +37,6 @@ export function PatientDetailsForm({
     () => getPatientDetailsFormConfig(formType),
     [formType]
   );
-
-  const todayIso = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   const {
     register,
@@ -109,19 +108,26 @@ export function PatientDetailsForm({
                             setValue(field.key, value, { shouldValidate: true })
                           }
                         />
+                      ) : field.inputType === 'date' ? (
+                        <DatePicker
+                          id={String(field.key)}
+                          value={watch(field.key) || null}
+                          onChange={(value) =>
+                            setValue(field.key, value ?? '', { shouldValidate: true })
+                          }
+                          mode="dob"
+                          isInvalid={Boolean(errors[field.key])}
+                        />
                       ) : (
                         <Input
                           id={String(field.key)}
                           type={
-                            field.inputType === 'date'
-                              ? 'date'
-                              : field.inputType === 'email'
-                                ? 'email'
-                                : field.inputType === 'tel'
-                                  ? 'tel'
-                                  : 'text'
+                            field.inputType === 'email'
+                              ? 'email'
+                              : field.inputType === 'tel'
+                                ? 'tel'
+                                : 'text'
                           }
-                          max={field.inputType === 'date' ? todayIso : undefined}
                           placeholder={field.placeholder}
                           className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                           {...register(field.key)}
@@ -160,14 +166,17 @@ export function PatientDetailsForm({
         </p>
       </div>
 
-      <div className="flex items-center justify-between">
-        <Button type="button" variant="ghost" onClick={onBack}>
-          Back
-        </Button>
-        <Button type="submit">
-          Continue to Dictation
-          <ArrowRight className="w-4 h-4 ml-1.5" />
-        </Button>
+      {/* Sticky pill footer */}
+      <div className="sticky bottom-4 z-20 mx-auto max-w-md w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg">
+        <div className="flex items-center justify-between">
+          <Button type="button" variant="ghost" onClick={onBack}>
+            Back
+          </Button>
+          <Button type="submit">
+            Continue to Describe
+            <ArrowRight className="w-4 h-4 ml-1.5" />
+          </Button>
+        </div>
       </div>
     </form>
   );

@@ -21,8 +21,11 @@
 - To select an option: set `/AS` on the correct widget AND `/V` on the field's acroField dict
 - Access field dict via `field.acroField.dict` (property), NOT `field.acroField.dict()` (not a method)
 
-## Sticky bars inside constrained layouts
-- `sticky bottom-0` with negative margins doesn't work inside a `max-w-*` container within a scrollable `<main>` — it creates a floating element that overlaps content
-- For action buttons below the fold: prefer tightening spacing (reduce padding, gaps) over bolting on sticky bars
-- If sticky is truly needed, it must be placed at the layout level (outside the content max-width container), not inside it
-- **Rule:** Fix the root cause (too much spacing pushing content down) rather than patching with sticky positioning
+## Pinning a footer inside a flex-based dashboard layout
+- `sticky bottom-0` fails when the element is the last child — nothing below to stick against
+- `h-full` (height: 100%) on a child of a flex item often doesn't resolve reliably, even when the parent has a definite flex-computed height
+- Negative vertical margins (`-m-4`) break height constraints — the element becomes taller than `h-full`, causing the parent to scroll the whole thing
+- `calc(100vh - Xrem)` is fragile — requires knowing exact header height, padding values, and breakpoint-specific adjustments
+- **Solution that works:** Add `relative` to the scroll container (`<main>`), then use `absolute inset-0` on the page div. This fills the parent's padding box exactly — no percentage chain, no calc, no guessing.
+- Structure: `absolute inset-0 flex flex-col` → `shrink-0` header + `flex-1 min-h-0` content + `shrink-0` footer
+- **Rule:** When you need a page to fill its parent container exactly inside a flex layout, reach for `relative` on parent + `absolute inset-0` on child — it's the most robust CSS pattern for this.

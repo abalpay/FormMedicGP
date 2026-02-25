@@ -16,7 +16,7 @@ import { MobileSidebar } from '@/components/layout/mobile-sidebar';
 const pageTitles: Record<string, string> = {
   '/': 'Dashboard',
   '/forms/new': 'New Form',
-  '/dictate': 'Dictation',
+  '/dictate': 'Describe',
   '/settings': 'Settings',
 };
 

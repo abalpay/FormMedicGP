@@ -200,6 +200,24 @@ function validateFieldValue(
   return normalized;
 }
 
+function isFieldHidden(
+  field: FormField,
+  editedData: Record<string, unknown>
+): boolean {
+  if (field.conditional) {
+    const match = field.conditional.match(/^(\w+)\s*===\s*'([^']*)'$/);
+    if (match) {
+      const refValue = String(editedData[match[1]] ?? '').trim();
+      if (refValue !== match[2]) return true;
+    }
+  }
+  if (field.hiddenWhenEmpty) {
+    const refValue = editedData[field.hiddenWhenEmpty];
+    if (refValue == null || String(refValue).trim() === '') return true;
+  }
+  return false;
+}
+
 export function validateEditedData(
   schema: FormSchema,
   editedData: Record<string, unknown>
@@ -217,6 +235,7 @@ export function validateEditedData(
   for (const section of Object.values(schema.sections)) {
     for (const [fieldKey, field] of Object.entries(section.fields)) {
       if (field.reviewEditable === false) continue;
+      if (isFieldHidden(field, editedData)) continue;
       const rawValue = editedData[fieldKey];
       const value = validateFieldValue(fieldKey, field, rawValue, errors);
       validatedData[fieldKey] = value;

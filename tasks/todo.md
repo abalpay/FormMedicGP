@@ -139,3 +139,22 @@
 - [x] `npm run build` — 0 TypeScript errors, all 13 routes compile
 - [x] No functionality changes — pure className/JSX visual upgrades
 - [x] Linter auto-fixed guided dictation panel (no features lost)
+
+---
+
+# Phase 7: Live PDF Preview on SU415 Review Page
+
+## Implementation
+- [x] 7.1 Extract isomorphic `fillPdfFromBytes()` into `src/lib/pdf-fill-core.ts` — no Node.js APIs
+- [x] 7.2 Simplify `src/lib/pdf-filler.ts` to thin server-only wrapper re-exporting from core
+- [x] 7.3 Create `src/app/api/form-template/[formType]/route.ts` — serves raw PDF template bytes
+- [x] 7.4 Create `src/hooks/use-pdf-preview.ts` — fetches template once, fills client-side on every data change
+- [x] 7.5 Create `src/components/forms/pdf-preview-panel.tsx` — iframe-based preview with loading states
+- [x] 7.6 Integrate into `forms/[id]/page.tsx` — two-column layout for SU415, single-column for others, mobile toggle
+
+## Phase 7 Verification
+- [x] `pnpm build` — 0 TypeScript errors
+- [ ] Manual: Navigate to SU415 review page — PDF preview appears in right column
+- [ ] Manual: Edit a field — preview updates near-instantly
+- [ ] Manual: Mobile — preview hidden by default, toggle button works
+- [ ] Manual: Non-SU415 form — single-column layout, no preview

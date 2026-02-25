@@ -3,6 +3,7 @@
 import { ClipboardList } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { InlineMicButton } from '@/components/dictation/inline-mic-button';
 import type { DictationGuideQuestion, DictationGuideSection } from '@/types';
 
 interface GuidedDictationPanelProps {
@@ -21,6 +23,7 @@ interface GuidedDictationPanelProps {
   answers: Record<string, string>;
   missingRequiredKeys: string[];
   onAnswerChange: (key: string, value: string) => void;
+  isMainRecorderActive?: boolean;
 }
 
 function renderQuestionControl({
@@ -28,11 +31,13 @@ function renderQuestionControl({
   value,
   hasError,
   onAnswerChange,
+  isMainRecorderActive,
 }: {
   question: DictationGuideQuestion;
   value: string;
   hasError: boolean;
   onAnswerChange: (key: string, value: string) => void;
+  isMainRecorderActive?: boolean;
 }) {
   if (question.inputType === 'segmented' && question.options?.length) {
     return (
@@ -96,26 +101,56 @@ function renderQuestionControl({
     );
   }
 
-  if (question.inputType === 'date') {
+  if (question.inputType === 'number') {
     return (
       <Input
-        type="date"
+        type="number"
+        min={0}
         value={value}
-        className={hasError ? 'border-destructive' : ''}
+        placeholder={question.placeholder}
+        className={cn('w-32', hasError ? 'border-destructive' : '')}
         onChange={(event) => onAnswerChange(question.key, event.target.value)}
       />
     );
   }
 
+  if (question.inputType === 'date') {
+    return (
+      <DatePicker
+        value={value || null}
+        onChange={(v) => onAnswerChange(question.key, v ?? '')}
+        isInvalid={hasError}
+      />
+    );
+  }
+
   return (
-    <Textarea
-      value={value}
-      rows={3}
-      placeholder={question.placeholder}
-      className={hasError ? 'border-destructive' : ''}
-      onChange={(event) => onAnswerChange(question.key, event.target.value)}
-    />
+    <div className="flex gap-1.5 items-start">
+      <Textarea
+        value={value}
+        rows={3}
+        placeholder={question.placeholder}
+        className={cn('flex-1', hasError ? 'border-destructive' : '')}
+        onChange={(event) => onAnswerChange(question.key, event.target.value)}
+      />
+      <InlineMicButton
+        currentValue={value}
+        onValueChange={(v) => onAnswerChange(question.key, v)}
+        disabled={isMainRecorderActive}
+      />
+    </div>
   );
+}
+
+function isQuestionVisible(
+  question: DictationGuideQuestion,
+  answers: Record<string, string>
+): boolean {
+  if (!question.visibleWhen) return true;
+  const { key, equals } = question.visibleWhen;
+  const current = answers[key] ?? '';
+  if (Array.isArray(equals)) return equals.includes(current);
+  return current === equals;
 }
 
 export function GuidedDictationPanel({
@@ -123,11 +158,13 @@ export function GuidedDictationPanel({
   answers,
   missingRequiredKeys,
   onAnswerChange,
+  isMainRecorderActive,
 }: GuidedDictationPanelProps) {
   const questions = sections.flatMap((section) => section.questions);
-  const requiredQuestions = questions.filter((question) => question.requiredForBestFill);
+  const visibleQuestions = questions.filter((q) => isQuestionVisible(q, answers));
+  const requiredQuestions = visibleQuestions.filter((q) => q.requiredForBestFill);
 
-  const answeredCount = questions.filter((question) => {
+  const answeredCount = visibleQuestions.filter((question) => {
     const value = answers[question.key];
     return typeof value === 'string' && value.trim().length > 0;
   }).length;
@@ -149,7 +186,7 @@ export function GuidedDictationPanel({
           </CardTitle>
           <div className="flex items-center gap-2">
             <Badge variant="secondary">
-              {answeredCount}/{questions.length} answered
+              {answeredCount}/{visibleQuestions.length} answered
             </Badge>
             <Badge variant="secondary">
               {answeredRequiredCount}/{requiredQuestions.length} high-value
@@ -171,6 +208,7 @@ export function GuidedDictationPanel({
 
             <div className="grid gap-4">
               {section.questions.map((question) => {
+                if (!isQuestionVisible(question, answers)) return null;
                 const value = answers[question.key] ?? '';
                 const hasError = missingSet.has(question.key);
                 return (
@@ -187,6 +225,7 @@ export function GuidedDictationPanel({
                       value,
                       hasError,
                       onAnswerChange,
+                      isMainRecorderActive,
                     })}
                     {hasError ? (
                       <p className="text-xs text-warning">

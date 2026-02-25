@@ -41,7 +41,13 @@ export async function POST(request: Request) {
     requestedFormType = formType;
 
     // Validate inputs
-    if (!transcription?.trim()) {
+    const hasGuidedContent =
+      guidedAnswers &&
+      typeof guidedAnswers === 'object' &&
+      Object.values(guidedAnswers).some(
+        (v) => typeof v === 'string' && v.trim().length > 0
+      );
+    if (!transcription?.trim() && !hasGuidedContent) {
       return NextResponse.json(
         { error: 'Transcription text is required' },
         { status: 400 }
@@ -69,7 +75,7 @@ export async function POST(request: Request) {
         ? guidedAnswers
         : undefined;
     const { transcriptionForLlm, guidedOverrides } = buildGuidedExtractionPayload({
-      transcription,
+      transcription: transcription ?? '',
       schema,
       guidedAnswers: safeGuidedAnswers,
     });

@@ -56,6 +56,10 @@ export interface FormField {
   options?: string[];
   default?: string;
   conditional?: string;
+  hiddenWhenEmpty?: string;
+  emptyHint?: string;
+  tooltip?: string;
+  highlight?: boolean;
   llmInstruction?: string;
 }
 
@@ -72,7 +76,7 @@ export interface DictationGuideOption {
 export interface DictationGuideQuestion {
   key: string;
   label: string;
-  inputType: 'segmented' | 'select' | 'date' | 'textarea';
+  inputType: 'segmented' | 'select' | 'date' | 'textarea' | 'number';
   description?: string;
   placeholder?: string;
   options?: DictationGuideOption[];
@@ -80,6 +84,8 @@ export interface DictationGuideQuestion {
   targetFieldKeys?: string[];
   valueOverrides?: Record<string, Record<string, string>>;
   requiredForBestFill?: boolean;
+  visibleWhen?: { key: string; equals: string | string[] };
+  defaultValue?: string;
 }
 
 export interface DictationGuideSection {
@@ -117,6 +123,11 @@ export interface ReviewFieldConfig {
   advanced?: boolean;
   group?: string;
   required: boolean;
+  conditional?: string;
+  hiddenWhenEmpty?: string;
+  emptyHint?: string;
+  tooltip?: string;
+  highlight?: boolean;
   options: Array<{
     value: string;
     label: string;
@@ -129,6 +140,7 @@ export interface ReviewSchema {
   sections: Array<{
     id: string;
     title: string;
+    initiallyCollapsed?: boolean;
     fields: ReviewFieldConfig[];
   }>;
 }

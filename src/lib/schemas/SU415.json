@@ -246,7 +246,7 @@
           }
         },
         "primaryPrognosis": {
-          "label": "Primary Prognosis",
+          "label": "Expected Duration of Impact",
           "inputType": "select",
           "reviewControl": "select",
           "reviewEditable": true,
@@ -265,11 +265,11 @@
           },
           "optionLabels": {
             "up_to_13_weeks": "Up to 13 weeks",
-            "13_to_24_months": "13 to 24 months",
+            "13_to_24_months": "13 weeks to 24 months",
             "more_than_24_months": "More than 24 months"
           },
           "required": true,
-          "llmInstruction": "Expected duration of the primary condition: 'up_to_13_weeks' for temporary/short-term, '13_to_24_months' for medium-term, 'more_than_24_months' for chronic/permanent. Most acute conditions are 'up_to_13_weeks'.",
+          "llmInstruction": "Expected duration of functional impact for the primary condition: 'up_to_13_weeks' for temporary/short-term, '13_to_24_months' for medium-term, 'more_than_24_months' for chronic/permanent. Most acute conditions are 'up_to_13_weeks'.",
           "validation": {
             "required": true,
             "enum": [
@@ -324,6 +324,7 @@
           },
           "required": true,
           "default": "no",
+          "tooltip": "Serious illness includes conditions such as cancer, organ failure, major trauma, or severe mental health conditions requiring intensive treatment.",
           "llmInstruction": "Does the condition meet Centrelink's serious illness criteria? Default 'no' unless the condition is clearly severe (e.g., cancer, organ failure, major trauma).",
           "validation": {
             "required": true,
@@ -340,6 +341,7 @@
           "type": "text",
           "pdfField": "SC.Diagnosis",
           "pdfFieldType": "text",
+          "emptyHint": "No secondary condition detected from your description.",
           "llmInstruction": "Extract any secondary/additional diagnosis if mentioned. Omit if only one condition discussed."
         },
         "secondaryOnsetDate": {
@@ -353,10 +355,11 @@
             "SC.OnsetDate1.Y"
           ],
           "pdfFieldType": "split-date",
+          "hiddenWhenEmpty": "secondaryDiagnosis",
           "llmInstruction": "Date the secondary condition began. Only extract if a secondary diagnosis exists."
         },
         "secondaryPrognosis": {
-          "label": "Secondary Prognosis",
+          "label": "Expected Duration of Impact",
           "inputType": "select",
           "reviewControl": "select",
           "reviewEditable": true,
@@ -375,10 +378,11 @@
           },
           "optionLabels": {
             "up_to_13_weeks": "Up to 13 weeks",
-            "13_to_24_months": "13 to 24 months",
+            "13_to_24_months": "13 weeks to 24 months",
             "more_than_24_months": "More than 24 months"
           },
-          "llmInstruction": "Expected duration of the secondary condition. Only extract if a secondary diagnosis exists.",
+          "hiddenWhenEmpty": "secondaryDiagnosis",
+          "llmInstruction": "Expected duration of functional impact for the secondary condition. Only extract if a secondary diagnosis exists.",
           "validation": {
             "enum": [
               "up_to_13_weeks",
@@ -395,6 +399,7 @@
           "pdfField": "FunctionalImpact",
           "pdfFieldType": "text",
           "required": true,
+          "highlight": true,
           "llmInstruction": "Describe the functional impact of the conditions on the patient's ability to work, study, or participate. Be specific about limitations (e.g., 'unable to sit for >20 minutes', 'cannot lift >5kg'). This is critical for Centrelink acceptance.",
           "validation": {
             "required": true
@@ -408,6 +413,7 @@
           "pdfField": "Treatment",
           "pdfFieldType": "text",
           "required": true,
+          "highlight": true,
           "llmInstruction": "Describe past, current, and planned treatment. Include medications, therapies, and follow-up plans.",
           "validation": {
             "required": true
@@ -513,6 +519,111 @@
   },
   "systemPromptAdditions": "For Centrelink SU415 medical certificates:\n- The 'functionalImpact' field is CRITICAL — describe HOW conditions affect daily functioning and work capacity with specific limitations (e.g., 'cannot stand >15min', 'unable to concentrate for sustained periods').\n- The 'treatment' field should cover past, current, and planned treatment to show the condition is being properly managed.\n- For prognosis fields, choose the most appropriate duration category.\n- Default 'terminalIllness' and 'seriousIllness' to 'no' unless clearly indicated.\n- 'incapacityStartDate' is when the patient became unfit; use today if not specified.\n- 'incapacityEndDate' should not exceed 13 weeks (91 days) from start for standard exemptions.",
   "formVersion": "2024-12",
+  "dictationGuide": [
+    {
+      "id": "diagnosisTreatment",
+      "title": "Diagnosis & Treatment",
+      "description": "Describe the condition, functional impact, and treatment plan",
+      "questions": [
+        {
+          "key": "diagnosisNarrative",
+          "label": "Clinical Narrative",
+          "inputType": "textarea",
+          "description": "What is the condition, how does it affect function, and what's the treatment?",
+          "placeholder": "e.g. Lumbar disc herniation L4/5 causing radiculopathy. Unable to sit >20min or lift >5kg. On pregabalin 75mg BD, referred for physio and epidural injection.",
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "workCapacitySection",
+      "title": "Work Capacity",
+      "description": "Can the patient work 8+ hours per week?",
+      "questions": [
+        {
+          "key": "workCapacity",
+          "label": "Work Capacity (8+ hrs/week)",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "targetFieldKey": "workCapacity",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "hoursPerWeek",
+          "label": "Hours Per Week",
+          "inputType": "number",
+          "placeholder": "e.g. 15",
+          "targetFieldKey": "hoursPerWeek",
+          "visibleWhen": { "key": "workCapacity", "equals": "yes" }
+        }
+      ]
+    },
+    {
+      "id": "durationIncapacity",
+      "title": "Duration & Incapacity Period",
+      "description": "Expected duration of functional impact and incapacity dates",
+      "questions": [
+        {
+          "key": "primaryPrognosis",
+          "label": "Expected Duration of Impact",
+          "inputType": "segmented",
+          "options": [
+            { "value": "up_to_13_weeks", "label": "Up to 13 weeks" },
+            { "value": "13_to_24_months", "label": "13 weeks – 24 months" },
+            { "value": "more_than_24_months", "label": "24+ months" }
+          ],
+          "targetFieldKey": "primaryPrognosis",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "incapacityStartDate",
+          "label": "Incapacity Start Date",
+          "inputType": "date",
+          "targetFieldKey": "incapacityStartDate",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "incapacityEndDate",
+          "label": "Incapacity End Date",
+          "inputType": "date",
+          "targetFieldKey": "incapacityEndDate",
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "terminalSerious",
+      "title": "Terminal & Serious Illness",
+      "description": "Usually both No — only select Yes if clearly indicated",
+      "questions": [
+        {
+          "key": "terminalIllness",
+          "label": "Terminal Illness (life expectancy ≤24 months)",
+          "inputType": "segmented",
+          "options": [
+            { "value": "no", "label": "No" },
+            { "value": "yes", "label": "Yes" }
+          ],
+          "targetFieldKey": "terminalIllness",
+          "defaultValue": "no"
+        },
+        {
+          "key": "seriousIllness",
+          "label": "Serious Illness",
+          "inputType": "segmented",
+          "options": [
+            { "value": "no", "label": "No" },
+            { "value": "yes", "label": "Yes" }
+          ],
+          "targetFieldKey": "seriousIllness",
+          "defaultValue": "no"
+        }
+      ]
+    }
+  ],
   "dictationTips": [
     "What is the primary diagnosis?",
     "When did the condition start, and how long is recovery expected to take?",

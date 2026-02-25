@@ -1,11 +1,12 @@
 'use client';
 
-import { Check } from 'lucide-react';
+import { Check, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Step {
   label: string;
   description?: string;
+  icon?: LucideIcon;
 }
 
 interface StepIndicatorProps {
@@ -47,11 +48,14 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
               </div>
               <span
                 className={cn(
-                  'text-sm hidden sm:inline transition-colors',
+                  'relative text-sm hidden sm:inline transition-colors',
                   isCurrent ? 'font-semibold text-foreground' : 'text-muted-foreground'
                 )}
               >
                 {step.label}
+                {step.icon && (
+                  <step.icon className="absolute -top-1.5 -right-3.5 w-3 h-3 text-amber-500" />
+                )}
               </span>
             </div>
           </div>

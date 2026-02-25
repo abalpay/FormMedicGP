@@ -26,10 +26,12 @@ import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import type { FormCatalogItem, ReviewSchema } from '@/types';
 import { toast } from 'sonner';
 
+import { Sparkles } from 'lucide-react';
+
 const steps = [
   { label: 'Select Form' },
   { label: 'Patient Details' },
-  { label: 'Dictate' },
+  { label: 'Describe', icon: Sparkles },
   { label: 'Review' },
 ];
 
@@ -97,11 +99,11 @@ export default function DictatePage() {
       : selectedFormType ?? 'No form selected';
   const activeTips = selectedForm?.dictationTips;
 
-  const isCapacityGuided = selectedFormType === 'CAPACITY';
   const activeGuide = useMemo(
-    () => (isCapacityGuided ? selectedForm?.dictationGuide ?? [] : []),
-    [isCapacityGuided, selectedForm?.dictationGuide]
+    () => selectedForm?.dictationGuide ?? [],
+    [selectedForm?.dictationGuide]
   );
+  const hasGuidedDictation = activeGuide.length > 0;
 
   const missingRequiredGuideKeys = useMemo(
     () => getMissingRequiredGuidedQuestionKeys(activeGuide, guidedAnswers),
@@ -119,10 +121,28 @@ export default function DictatePage() {
   }, [activeGuide, missingRequiredGuideKeys]);
 
   useEffect(() => {
-    if (!isCapacityGuided && Object.keys(guidedAnswers).length > 0) {
+    if (!hasGuidedDictation && Object.keys(guidedAnswers).length > 0) {
       setGuidedAnswers({});
     }
-  }, [guidedAnswers, isCapacityGuided, setGuidedAnswers]);
+  }, [guidedAnswers, hasGuidedDictation, setGuidedAnswers]);
+
+  // Seed default values from the guide when it first loads
+  useEffect(() => {
+    if (activeGuide.length === 0) return;
+    const defaults: Record<string, string> = {};
+    for (const section of activeGuide) {
+      for (const question of section.questions) {
+        if (question.defaultValue) {
+          defaults[question.key] = question.defaultValue;
+        }
+      }
+    }
+    if (Object.keys(defaults).length > 0) {
+      // Only set defaults for keys not already answered
+      setGuidedAnswers({ ...defaults, ...guidedAnswers });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeGuide]);
 
   useEffect(() => {
     if (showGuidedWarning && missingRequiredGuideKeys.length === 0) {
@@ -131,13 +151,13 @@ export default function DictatePage() {
   }, [missingRequiredGuideKeys.length, showGuidedWarning]);
 
   const handleProcessForm = async (forceContinue = false) => {
-    if (!transcription.trim()) {
+    if (!hasGuidedDictation && !transcription.trim()) {
       toast.error('Please record or type your clinical notes first.');
       return;
     }
 
     if (
-      isCapacityGuided &&
+      hasGuidedDictation &&
       !forceContinue &&
       shouldShowGuidedSoftGate(activeGuide, guidedAnswers)
     ) {
@@ -157,7 +177,7 @@ export default function DictatePage() {
           transcription,
           patientDetails,
           formType: selectedFormType,
-          guidedAnswers: isCapacityGuided ? guidedAnswers : undefined,
+          guidedAnswers: hasGuidedDictation ? guidedAnswers : undefined,
         }),
       });
 
@@ -205,17 +225,20 @@ export default function DictatePage() {
         <Badge variant="secondary">{formLabel}</Badge>
       </div>
 
-      <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
-        <DictationTips tips={activeTips} formName={selectedForm?.id} />
-      </div>
+      {!hasGuidedDictation && (
+        <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+          <DictationTips tips={activeTips} formName={selectedForm?.id} />
+        </div>
+      )}
 
-      {isCapacityGuided && activeGuide.length > 0 ? (
+      {hasGuidedDictation ? (
         <div className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
           <GuidedDictationPanel
             sections={activeGuide}
             answers={guidedAnswers}
             missingRequiredKeys={showGuidedWarning ? missingRequiredGuideKeys : []}
             onAnswerChange={setGuidedAnswer}
+            isMainRecorderActive={recordingState === 'recording'}
           />
         </div>
       ) : null}
@@ -225,7 +248,7 @@ export default function DictatePage() {
           <CardContent className="p-4 space-y-3">
             <p className="text-sm font-medium text-foreground flex items-start gap-2">
               <AlertTriangle className="w-4 h-4 mt-0.5 text-warning" />
-              Guided prompts can improve autofill quality for this CAPACITY form.
+              Guided prompts can improve autofill quality for this form.
             </p>
             <p className="text-xs text-muted-foreground">
               Missing high-value prompts:
@@ -258,6 +281,12 @@ export default function DictatePage() {
 
       <Card className="shadow-sm animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <CardContent className="p-6 space-y-6">
+          {hasGuidedDictation && (
+            <div>
+              <h3 className="text-sm font-medium">Additional Information / Context</h3>
+              <p className="text-xs text-muted-foreground">Optional — add any extra notes not covered by the guided prompts above.</p>
+            </div>
+          )}
           <TranscriptionDisplay
             text={transcription}
             isRecording={recordingState === 'recording'}
@@ -272,31 +301,34 @@ export default function DictatePage() {
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-between animate-fade-in-up" style={{ animationDelay: '150ms' }}>
-        <Button variant="ghost" asChild>
-          <Link href="/forms/new">
-            <ArrowLeft className="w-4 h-4 mr-1.5" />
-            Back
-          </Link>
-        </Button>
-        <Button
-          onClick={() => handleProcessForm(false)}
-          disabled={
-            !transcription.trim() || recordingState === 'recording' || isProcessing
-          }
-        >
-          {isProcessing ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            <>
-              Process Form
-              <ArrowRight className="w-4 h-4 ml-1.5" />
-            </>
-          )}
-        </Button>
+      {/* Sticky pill footer */}
+      <div className="sticky bottom-4 z-20 mx-auto max-w-xl w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" asChild>
+            <Link href="/forms/new">
+              <ArrowLeft className="w-4 h-4 mr-1.5" />
+              Back
+            </Link>
+          </Button>
+          <Button
+            onClick={() => handleProcessForm(false)}
+            disabled={
+              (!hasGuidedDictation && !transcription.trim()) || recordingState === 'recording' || isProcessing
+            }
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                Process Form
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );

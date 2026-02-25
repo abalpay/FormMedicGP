@@ -264,6 +264,11 @@ export function buildReviewSchema(
           reviewControl: resolveReviewControl(field, inputType, optionValues),
           group: field.reviewGroup,
           required: Boolean(field.validation?.required ?? field.required),
+          conditional: field.conditional,
+          hiddenWhenEmpty: field.hiddenWhenEmpty,
+          emptyHint: field.emptyHint,
+          tooltip: field.tooltip,
+          highlight: field.highlight,
           options: optionValues.map((value) => ({
             value,
             label: field.optionLabels?.[value] ?? fallbackOptionLabel(value),
@@ -271,9 +276,13 @@ export function buildReviewSchema(
         };
       });
 
+    const initiallyCollapsed =
+      section.source === 'manual_entry' || section.source === 'doctor_profile';
+
     return {
       id: sectionId,
       title,
+      initiallyCollapsed,
       fields,
     };
   });
@@ -291,6 +300,7 @@ export function buildReviewSchema(
       sections.push({
         id: DEFAULT_TEMPLATE_SECTION_ID,
         title: DEFAULT_TEMPLATE_SECTION_TITLE,
+        initiallyCollapsed: false,
         fields: defaultFields,
       });
     }
@@ -299,6 +309,7 @@ export function buildReviewSchema(
       sections.push({
         id: ADVANCED_TEMPLATE_SECTION_ID,
         title: ADVANCED_TEMPLATE_SECTION_TITLE,
+        initiallyCollapsed: false,
         fields: advancedFields,
       });
     }

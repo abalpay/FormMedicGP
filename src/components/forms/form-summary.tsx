@@ -1,9 +1,10 @@
 'use client';
 
 import { Fragment, useState } from 'react';
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, CheckCircle2, ChevronRight, Info, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -40,6 +41,21 @@ function isBlankValue(value: unknown): boolean {
   if (typeof value === 'string') return value.trim() === '';
   if (Array.isArray(value)) return value.length === 0;
   return false;
+}
+
+function isFieldVisible(field: ReviewFieldConfig, data: Record<string, unknown>): boolean {
+  if (field.conditional) {
+    const match = field.conditional.match(/^(\w+)\s*===\s*'([^']*)'$/);
+    if (match) {
+      const refValue = String(data[match[1]] ?? '').trim();
+      if (refValue !== match[2]) return false;
+    }
+  }
+  if (field.hiddenWhenEmpty) {
+    const refValue = data[field.hiddenWhenEmpty];
+    if (refValue == null || String(refValue).trim() === '') return false;
+  }
+  return true;
 }
 
 function defaultGroupLabel(group: string): string {
@@ -83,7 +99,10 @@ function renderFieldControl({
       <Textarea
         id={fieldId}
         value={value}
-        className={hasError ? 'border-destructive' : ''}
+        className={cn(
+          hasError ? 'border-destructive' : '',
+          field.highlight ? 'min-h-[120px]' : ''
+        )}
         aria-invalid={hasError}
         aria-describedby={describedBy || undefined}
         onChange={(e) => onChange(field.key, e.target.value)}
@@ -183,16 +202,21 @@ function renderFieldControl({
     );
   }
 
+  if (field.inputType === 'date') {
+    return (
+      <DatePicker
+        id={fieldId}
+        value={value || null}
+        onChange={(v) => onChange(field.key, v ?? '')}
+        isInvalid={hasError}
+      />
+    );
+  }
+
   return (
     <Input
       id={fieldId}
-      type={
-        field.inputType === 'number'
-          ? 'number'
-          : field.inputType === 'date'
-            ? 'date'
-            : 'text'
-      }
+      type={field.inputType === 'number' ? 'number' : 'text'}
       value={value}
       className={hasError ? 'border-destructive' : ''}
       aria-invalid={hasError}
@@ -230,6 +254,7 @@ export function FormSummary({
   for (const section of schema.sections) {
     for (const field of section.fields) {
       if (!field.required) continue;
+      if (!isFieldVisible(field, data)) continue;
       if (isBlankValue(data[field.key])) requiredMissing.add(field.key);
     }
   }
@@ -296,12 +321,16 @@ export function FormSummary({
             return null;
           }
 
+          const visibleFields = section.fields.filter((field) =>
+            isFieldVisible(field, data)
+          );
+
           const groupedFields: Array<{
             key: string;
             title: string | null;
             fields: ReviewFieldConfig[];
           }> = [];
-          for (const field of section.fields) {
+          for (const field of visibleFields) {
             const groupKey = field.group ?? '__default';
             const current = groupedFields[groupedFields.length - 1];
             if (current && current.key === groupKey) {
@@ -480,16 +509,29 @@ export function FormSummary({
                             .filter(Boolean)
                             .join(' ');
 
-                          return (
-                            <div key={`${section.id}-${field.key}`} className="space-y-1.5">
-                              <Label
-                                id={labelId}
-                                htmlFor={fieldId}
-                                className="text-xs text-muted-foreground"
-                              >
-                                {field.label}
-                                {field.required ? ' *' : ''}
-                              </Label>
+                          const fieldContent = (
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-1.5">
+                                <Label
+                                  id={labelId}
+                                  htmlFor={fieldId}
+                                  className="text-xs text-muted-foreground"
+                                >
+                                  {field.label}
+                                  {field.required ? ' *' : ''}
+                                </Label>
+                                {field.tooltip && (
+                                  <span title={field.tooltip} className="shrink-0 cursor-help">
+                                    <Info className="w-3.5 h-3.5 text-muted-foreground/60" />
+                                  </span>
+                                )}
+                                {field.highlight && (
+                                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 gap-0.5">
+                                    <Sparkles className="w-2.5 h-2.5" />
+                                    AI Generated
+                                  </Badge>
+                                )}
+                              </div>
 
                               {renderFieldControl({
                                 field,
@@ -511,6 +553,24 @@ export function FormSummary({
                                   This field was not confidently extracted and should be reviewed.
                                 </p>
                               )}
+                              {!hasError && !isMissingHint && field.emptyHint && isBlankValue(data[field.key]) && (
+                                <p className="text-xs text-muted-foreground/60 italic">
+                                  {field.emptyHint}
+                                </p>
+                              )}
+                            </div>
+                          );
+
+                          return (
+                            <div
+                              key={`${section.id}-${field.key}`}
+                              className={
+                                field.highlight
+                                  ? 'bg-primary/5 border border-primary/10 rounded-lg p-3'
+                                  : ''
+                              }
+                            >
+                              {fieldContent}
                             </div>
                           );
                         })}
@@ -535,6 +595,18 @@ export function FormSummary({
                   Low-level template fields for edge cases.
                 </p>
                 <div className="mt-4">{sectionBody}</div>
+              </details>
+            );
+          }
+
+          if (section.initiallyCollapsed) {
+            return (
+              <details key={section.id} className="group">
+                <summary className="flex items-center gap-1.5 cursor-pointer list-none text-sm font-semibold text-muted-foreground pl-3 border-l-2 border-primary/30">
+                  <ChevronRight className="w-3.5 h-3.5 transition-transform group-open:rotate-90" />
+                  {section.title}
+                </summary>
+                <div className="mt-3">{sectionBody}</div>
               </details>
             );
           }

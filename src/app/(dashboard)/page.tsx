@@ -63,7 +63,7 @@ export default function DashboardPage() {
               <div>
                 <h3 className="font-semibold text-foreground font-[family-name:var(--font-display)]">New Form</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Select a form, enter patient details, and dictate.
+                  Select a form, enter patient details, and describe.
                 </p>
               </div>
             </CardContent>

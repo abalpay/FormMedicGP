@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSummary } from '@/components/forms/form-summary';
+import { PdfPreviewPanel } from '@/components/forms/pdf-preview-panel';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import { getFormSchema } from '@/lib/schemas';
 import { validateEditedData } from '@/lib/form-validation';
@@ -15,6 +16,7 @@ import {
   evaluateReviewDownloadState,
   hasUnappliedEdits,
 } from '@/lib/review-download-gating';
+import { usePdfPreview } from '@/hooks/use-pdf-preview';
 import { toast } from 'sonner';
 
 const steps = [
@@ -46,6 +48,14 @@ export default function FormReviewPage() {
   );
   const [isApplying, setIsApplying] = useState(false);
 
+  const isSU415 = selectedFormType === 'SU415';
+
+  const { previewUrl, isGenerating } = usePdfPreview({
+    formType: selectedFormType,
+    editableData,
+    enabled: isSU415,
+  });
+
   const schema = useMemo(
     () => (selectedFormType ? getFormSchema(selectedFormType) : null),
     [selectedFormType]
@@ -57,6 +67,12 @@ export default function FormReviewPage() {
     setLastAppliedData(next);
     setServerValidationErrors({});
   }, [extractedData]);
+
+  useEffect(() => {
+    if (isSU415) {
+      toast.info('Click any field in the PDF to edit it directly. Use the download button (↓) to save.', { id: 'pdf-edit-hint', duration: 6000 });
+    }
+  }, [isSU415]);
 
   const liveValidationErrors = useMemo(() => {
     if (!schema) return {};
@@ -92,7 +108,23 @@ export default function FormReviewPage() {
     [pdfBlobUrl, validationErrors, hasPendingEdits]
   );
 
+  // SU415: download from previewUrl (client-generated live PDF)
+  // Non-SU415: download from pdfBlobUrl with validation gating
   const handleDownload = () => {
+    if (isSU415) {
+      const url = previewUrl ?? pdfBlobUrl;
+      if (!url) {
+        toast.info('PDF is still generating. Please wait.');
+        return;
+      }
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'completed-form.pdf';
+      a.click();
+      toast.success('PDF downloaded');
+      return;
+    }
+
     if (!downloadState.canDownload) {
       if (downloadState.reason === 'validation_errors') {
         toast.error('Please fix highlighted fields before downloading.');
@@ -181,8 +213,50 @@ export default function FormReviewPage() {
 
   const data = editableData;
 
-  return (
-    <div className="max-w-2xl mx-auto space-y-6">
+  // ---------- SU415: PDF-primary layout ----------
+  // No outer scroll — the page is a flex column that fills the viewport.
+  // The compact header and footer are fixed-size; the PDF iframe fills
+  // everything in between via flex-1. Only the PDF viewer scrolls internally.
+  if (isSU415) {
+    return (
+      <div className="flex-1 min-h-0 flex flex-col -m-4 lg:-m-6">
+        {/* PDF panel fills all available space */}
+        <div className="flex-1 min-h-0 max-w-5xl mx-auto w-full px-4 pt-2 pb-1">
+          <PdfPreviewPanel
+            previewUrl={previewUrl}
+            isLoading={isGenerating}
+            fullWidth
+            fillContainer
+          />
+        </div>
+
+        {/* Pinned footer — solid, no scroll on this page */}
+        <div className="shrink-0 border-t bg-card py-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <div className="max-w-5xl mx-auto w-full px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <Button variant="ghost" asChild>
+              <Link href="/dictate">
+                <ArrowLeft className="w-4 h-4 mr-1.5" />
+                Back to Describe
+              </Link>
+            </Button>
+            <div className="flex items-center gap-3">
+              <p className="text-xs text-muted-foreground hidden sm:block">
+                Use the download button in the PDF viewer toolbar to save your edits
+              </p>
+              <Button variant="outline" onClick={handleNewForm}>
+                <FilePlus className="w-4 h-4 mr-1.5" />
+                New Form
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------- Non-SU415: existing single-column layout ----------
+  const formColumn = (
+    <div className="space-y-6">
       <StepIndicator steps={steps} currentStep={3} />
 
       <div className="flex items-center gap-2 animate-fade-in-up">
@@ -197,7 +271,7 @@ export default function FormReviewPage() {
         </p>
       </div>
 
-      <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+      <div className="animate-fade-in-up pb-24" style={{ animationDelay: '50ms' }}>
         <FormSummary
           schema={reviewSchema}
           data={data}
@@ -209,13 +283,17 @@ export default function FormReviewPage() {
           }}
         />
       </div>
+    </div>
+  );
 
-      {/* Actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+  return (
+    <div className="max-w-2xl mx-auto space-y-6">
+      {formColumn}
+      <div className="sticky bottom-4 z-20 mx-auto max-w-2xl w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg flex items-center justify-between gap-3 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <Button variant="ghost" asChild>
           <Link href="/dictate">
             <ArrowLeft className="w-4 h-4 mr-1.5" />
-            Back to Dictation
+            Back to Description
           </Link>
         </Button>
         <div className="flex items-center gap-3">
@@ -223,7 +301,7 @@ export default function FormReviewPage() {
             <RefreshCw
               className={`w-4 h-4 mr-1.5 ${isApplying ? 'animate-spin' : ''}`}
             />
-            {isApplying ? 'Applying...' : 'Apply Changes'}
+            {isApplying ? 'Re-extracting...' : 'Re-extract from Description'}
           </Button>
           <Button variant="outline" onClick={handleNewForm}>
             <FilePlus className="w-4 h-4 mr-1.5" />

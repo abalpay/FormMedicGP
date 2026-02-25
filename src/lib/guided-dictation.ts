@@ -24,6 +24,17 @@ function getGuidedQuestions(guide?: DictationGuideSection[]): DictationGuideQues
   return (guide ?? []).flatMap((section) => section.questions ?? []);
 }
 
+function isQuestionVisible(
+  question: DictationGuideQuestion,
+  answers: Record<string, string>
+): boolean {
+  if (!question.visibleWhen) return true;
+  const { key, equals } = question.visibleWhen;
+  const current = answers[key] ?? '';
+  if (Array.isArray(equals)) return equals.includes(current);
+  return current === equals;
+}
+
 function getDisplayValue(question: DictationGuideQuestion, value: string): string {
   const option = question.options?.find((candidate) => candidate.value === value);
   if (!option) return value;
@@ -37,6 +48,7 @@ function getGuidedOverrides(
   const overrides: Record<string, string> = {};
 
   for (const question of questions) {
+    if (!isQuestionVisible(question, answers)) continue;
     const value = answers[question.key];
     if (!value) continue;
 
@@ -68,7 +80,7 @@ export function getMissingRequiredGuidedQuestionKeys(
   const questions = getGuidedQuestions(guide);
 
   return questions
-    .filter((question) => question.requiredForBestFill)
+    .filter((question) => question.requiredForBestFill && isQuestionVisible(question, answers))
     .map((question) => question.key)
     .filter((questionKey) => !answers[questionKey]);
 }
