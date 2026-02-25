@@ -47,4 +47,4 @@ next-env.d.ts
 .claude/
 
 # original form PDFs (templates are in src/lib/schemas/templates/)
-Forms/
+/Forms/
