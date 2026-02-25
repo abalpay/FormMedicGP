@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getFormSchema } from '@/lib/schemas';
+import { getFormSchema, getFormManifest } from '@/lib/schemas';
 import { deidentify } from '@/lib/deidentify';
 import { extractFormData } from '@/lib/llm';
 import { reidentify } from '@/lib/reidentify';
 import { fillPdf } from '@/lib/pdf-filler';
+import { getTemplateTextFieldMultilineMap } from '@/lib/pdf-field-metadata';
+import { getPrimaryPatientName } from '@/lib/patient-identity';
 import { buildReviewSchema } from '@/lib/review-schema';
 import type { PatientDetails, DoctorProfile } from '@/types';
 
@@ -28,7 +30,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { transcription, patientDetails, formType } = body as {
       transcription?: string;
-      patientDetails?: PatientDetails;
+      patientDetails?: Partial<PatientDetails>;
       formType?: string;
     };
     requestedFormType = formType;
@@ -47,6 +49,8 @@ export async function POST(request: Request) {
       );
     }
 
+    const manifest = getFormManifest(formType);
+
     const schema = getFormSchema(formType);
     if (!schema) {
       return NextResponse.json(
@@ -58,7 +62,19 @@ export async function POST(request: Request) {
     // 1. De-identify PII from transcription
     const { deidentifiedText } = deidentify(
       transcription,
-      patientDetails?.customerName
+      patientDetails
+        ? getPrimaryPatientName({
+            customerName: patientDetails.customerName ?? '',
+            dateOfBirth: patientDetails.dateOfBirth ?? '',
+            address: patientDetails.address ?? '',
+            crn: patientDetails.crn,
+            caredPersonName: patientDetails.caredPersonName,
+            caredPersonDateOfBirth: patientDetails.caredPersonDateOfBirth,
+            caredPersonCrn: patientDetails.caredPersonCrn,
+            customerPhone: patientDetails.customerPhone,
+            customerEmail: patientDetails.customerEmail,
+          })
+        : undefined
     );
 
     // 2. Extract clinical data via LLM
@@ -70,14 +86,30 @@ export async function POST(request: Request) {
     // 3. Re-identify: merge patient + doctor data into extracted fields
     const mergedData = reidentify(
       llmData,
-      patientDetails ?? { customerName: '', dateOfBirth: '', address: '' },
+      {
+        customerName: patientDetails?.customerName ?? '',
+        dateOfBirth: patientDetails?.dateOfBirth ?? '',
+        address: patientDetails?.address ?? '',
+        crn: patientDetails?.crn,
+        caredPersonName: patientDetails?.caredPersonName,
+        caredPersonDateOfBirth: patientDetails?.caredPersonDateOfBirth,
+        caredPersonCrn: patientDetails?.caredPersonCrn,
+        customerPhone: patientDetails?.customerPhone,
+        customerEmail: patientDetails?.customerEmail,
+      },
       MOCK_DOCTOR
     );
 
     // 4. Generate PDF
     const pdfBytes = await fillPdf(schema, mergedData);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
-    const reviewSchema = buildReviewSchema(schema);
+    const textFieldMultilineMap = await getTemplateTextFieldMultilineMap(schema);
+    const reviewSchema = buildReviewSchema(schema, {
+      manifestFields: manifest?.fields ?? [],
+      textFieldMultilineMap,
+      defaultUnmappedPdfFields: schema.allowedUnmappedPdfFields ?? [],
+      advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields ?? [],
+    });
 
     return NextResponse.json({
       extractedData: mergedData,

@@ -37,7 +37,8 @@ Rules:
 - Use the exact field keys provided.
 - For radio fields, use one of the listed options exactly.
 - For date fields, use YYYY-MM-DD format.
-- If information is not mentioned, omit the field (do not guess).
+- Use best-guess inference when evidence is moderate and clinically reasonable.
+- If information is truly unknown or unsupported, omit the field.
 - Apply defaults only when the field has a default and no information contradicts it.
 - Today's date is ${today}.
 

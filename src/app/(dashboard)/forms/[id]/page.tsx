@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Download, FilePlus, ArrowLeft, RefreshCw } from 'lucide-react';
@@ -8,6 +8,12 @@ import { Button } from '@/components/ui/button';
 import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSummary } from '@/components/forms/form-summary';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
+import { getFormSchema } from '@/lib/schemas';
+import { validateEditedData } from '@/lib/form-validation';
+import {
+  evaluateReviewDownloadState,
+  hasUnappliedEdits,
+} from '@/lib/review-download-gating';
 import { toast } from 'sonner';
 
 const steps = [
@@ -26,35 +32,92 @@ export default function FormReviewPage() {
     reviewSchema,
     pdfBlobUrl,
     setExtractedData,
-    setMissingFields,
     setPdfBlobUrl,
     reset,
   } = useFormFlowStore();
   const [editableData, setEditableData] = useState<Record<string, unknown>>({});
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>(
+  const [serverValidationErrors, setServerValidationErrors] = useState<Record<string, string>>(
     {}
+  );
+  const [lastAppliedData, setLastAppliedData] = useState<Record<string, unknown> | null>(
+    null
   );
   const [isApplying, setIsApplying] = useState(false);
 
+  const schema = useMemo(
+    () => (selectedFormType ? getFormSchema(selectedFormType) : null),
+    [selectedFormType]
+  );
+
   useEffect(() => {
-    setEditableData(extractedData ?? {});
+    const next = extractedData ?? {};
+    setEditableData(next);
+    setLastAppliedData(next);
+    setServerValidationErrors({});
   }, [extractedData]);
 
+  const liveValidationErrors = useMemo(() => {
+    if (!schema) return {};
+    return validateEditedData(schema, editableData).errors;
+  }, [schema, editableData]);
+
+  const validationErrors = useMemo(
+    () => ({ ...liveValidationErrors, ...serverValidationErrors }),
+    [liveValidationErrors, serverValidationErrors]
+  );
+
+  const unresolvedMissingFields = useMemo(
+    () =>
+      missingFields.filter((fieldKey) => {
+        const value = editableData[fieldKey];
+        return value == null || String(value).trim() === '';
+      }),
+    [missingFields, editableData]
+  );
+
+  const hasPendingEdits = useMemo(
+    () => hasUnappliedEdits(lastAppliedData, editableData),
+    [lastAppliedData, editableData]
+  );
+
+  const downloadState = useMemo(
+    () =>
+      evaluateReviewDownloadState({
+        hasPdfBlob: Boolean(pdfBlobUrl),
+        validationErrors,
+        hasUnappliedEdits: hasPendingEdits,
+      }),
+    [pdfBlobUrl, validationErrors, hasPendingEdits]
+  );
+
   const handleDownload = () => {
-    if (pdfBlobUrl) {
-      const a = document.createElement('a');
-      a.href = pdfBlobUrl;
-      a.download = 'completed-form.pdf';
-      a.click();
-      toast.success('PDF downloaded');
-    } else {
-      toast.info('PDF generation not yet connected. This is a demo.');
+    if (!downloadState.canDownload) {
+      if (downloadState.reason === 'validation_errors') {
+        toast.error('Please fix highlighted fields before downloading.');
+      } else if (downloadState.reason === 'unapplied_edits') {
+        toast.error('Apply changes before downloading the updated PDF.');
+      } else {
+        toast.info('Generate a PDF first.');
+      }
+      return;
     }
+
+    const a = document.createElement('a');
+    a.href = pdfBlobUrl!;
+    a.download = 'completed-form.pdf';
+    a.click();
+    toast.success('PDF downloaded');
   };
 
   const handleApplyChanges = async () => {
     if (!selectedFormType) {
       toast.error('No form type selected.');
+      return;
+    }
+
+    if (Object.keys(liveValidationErrors).length > 0) {
+      setServerValidationErrors(liveValidationErrors);
+      toast.error('Please fix highlighted fields before regenerating.');
       return;
     }
 
@@ -71,7 +134,7 @@ export default function FormReviewPage() {
 
       if (res.status === 400) {
         const body = (await res.json()) as { errors?: Record<string, string> };
-        setValidationErrors(body.errors ?? {});
+        setServerValidationErrors(body.errors ?? {});
         toast.error('Please fix highlighted fields before regenerating.');
         return;
       }
@@ -88,10 +151,10 @@ export default function FormReviewPage() {
         pdfBase64: string;
       };
 
-      setValidationErrors({});
+      setServerValidationErrors({});
       setExtractedData(validatedData);
-      setMissingFields([]);
       setEditableData(validatedData);
+      setLastAppliedData(validatedData);
 
       if (pdfBase64) {
         const bytes = Uint8Array.from(atob(pdfBase64), (c) => c.charCodeAt(0));
@@ -130,9 +193,10 @@ export default function FormReviewPage() {
       <FormSummary
         schema={reviewSchema}
         data={data}
-        missingFields={missingFields}
+        missingFields={unresolvedMissingFields}
         errors={validationErrors}
         onChange={(key, value) => {
+          setServerValidationErrors({});
           setEditableData((prev) => ({ ...prev, [key]: value }));
         }}
       />
@@ -156,7 +220,7 @@ export default function FormReviewPage() {
             <FilePlus className="w-4 h-4 mr-1.5" />
             New Form
           </Button>
-          <Button onClick={handleDownload}>
+          <Button onClick={handleDownload} disabled={!downloadState.canDownload}>
             <Download className="w-4 h-4 mr-1.5" />
             Download PDF
           </Button>

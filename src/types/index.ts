@@ -17,6 +17,11 @@ export interface PatientDetails {
   dateOfBirth: string;
   crn?: string;
   address: string;
+  caredPersonName?: string;
+  caredPersonDateOfBirth?: string;
+  caredPersonCrn?: string;
+  customerPhone?: string;
+  customerEmail?: string;
 }
 
 export interface FormField {
@@ -24,11 +29,13 @@ export interface FormField {
   type: 'text' | 'date' | 'number' | 'radio' | 'checkbox';
   inputType?: 'text' | 'textarea' | 'date' | 'number' | 'select' | 'checkbox';
   reviewControl?: 'auto' | 'select' | 'segmented';
+  reviewGroup?: string;
   pdfField: string | string[];
   pdfFieldType?:
     | 'text'
     | 'checkbox'
     | 'radio'
+    | 'checkbox-group'
     | 'split-date'
     | 'split-chars'
     | 'date-text';
@@ -42,6 +49,7 @@ export interface FormField {
     min?: number;
     max?: number;
     maxLength?: number;
+    dateMax?: 'today' | string;
   };
   required?: boolean;
   optional?: boolean;
@@ -63,6 +71,7 @@ export interface FormSchema {
   templatePath: string;
   dictationTips?: string[];
   allowedUnmappedPdfFields?: string[];
+  advancedUnmappedPdfFields?: string[];
   sections: Record<string, FormSection>;
   systemPromptAdditions: string;
 }
@@ -79,6 +88,8 @@ export interface ReviewFieldConfig {
   type: FormField['type'];
   inputType: NonNullable<FormField['inputType']>;
   reviewControl?: 'select' | 'segmented';
+  advanced?: boolean;
+  group?: string;
   required: boolean;
   options: Array<{
     value: string;

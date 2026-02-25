@@ -1,12 +1,11 @@
-import 'server-only';
-
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { PDFDocument, PDFName, PDFDict } from 'pdf-lib';
-import { normalizeMultilineAutoSizedFont } from '@/lib/pdf-text-field-style';
+import { PDFDocument } from 'pdf-lib';
+import { normalizeMultilineAutoSizedFont } from './pdf-text-field-style.ts';
+import { fillUnmappedPdfField } from './pdf-unmapped-fields.ts';
+import { setCheckboxChecked, setCheckboxGroupValue } from './pdf-checkbox.ts';
 import type { ExtractedFormData, FormSchema, FormField } from '@/types';
 
-// Module-level template cache (avoids re-reading from disk on every request)
 let templateCache: { path: string; bytes: Uint8Array } | null = null;
 
 function loadTemplate(templatePath: string): Uint8Array {
@@ -29,7 +28,10 @@ function fillTextField(
     normalizeMultilineAutoSizedFont(field);
     field.setText(value);
   } catch (e) {
-    console.warn(`[pdf-filler] Could not fill text field "${fieldName}":`, e instanceof Error ? e.message : e);
+    console.warn(
+      `[pdf-filler] Could not fill text field "${fieldName}":`,
+      e instanceof Error ? e.message : e
+    );
   }
 }
 
@@ -39,59 +41,72 @@ function fillCheckBox(
   value: string,
   pdfOptions?: Record<string, string>
 ): void {
-  try {
-    const onValue = pdfOptions?.[value] ?? value;
-    const field = form.getCheckBox(fieldName);
+  const normalized = value.trim().toLowerCase();
+  const shouldCheck = ['yes', 'true', '1', 'on', 'checked'].includes(normalized);
+  const onValueHint = pdfOptions?.[value] ?? (shouldCheck ? 'Yes' : undefined);
 
-    // For checkbox groups acting as radios, we need to set the appearance state
-    // to the specific on-value matching the option
-    const widgets = field.acroField.getWidgets();
-    for (const widget of widgets) {
-      const ap = widget.dict.lookup(PDFName.of('AP'));
-      if (ap instanceof PDFDict) {
-        const normal = ap.lookup(PDFName.of('N'));
-        if (normal instanceof PDFDict) {
-          const keys = Array.from(normal.entries())
-            .map(([k]) => k.toString().replace(/^\//, ''))
-            .filter(k => k !== 'Off');
-          if (keys.includes(onValue)) {
-            // Set appearance state to this widget's on-value
-            widget.dict.set(PDFName.of('AS'), PDFName.of(onValue));
-            // Also set the field value
-            field.acroField.dict.set(PDFName.of('V'), PDFName.of(onValue));
-            return;
-          }
-        }
-      }
-    }
-
-    // Fallback: simple check/uncheck
-    if (value === 'yes' || value === 'true' || value === 'Yes') {
-      field.check();
-    } else {
-      field.uncheck();
-    }
-  } catch (e) {
-    console.warn(`[pdf-filler] Could not fill checkbox "${fieldName}" with "${value}":`, e instanceof Error ? e.message : e);
+  const changed = setCheckboxChecked(form, fieldName, shouldCheck, onValueHint);
+  if (!changed) {
+    console.warn(
+      `[pdf-filler] Could not fill checkbox "${fieldName}" with "${value}"`
+    );
   }
 }
 
-/**
- * Splits a YYYY-MM-DD date into DD, MM, YYYY components
- * and fills the corresponding split fields.
- */
+function resolveGroupFieldSelection(
+  fieldNames: string[],
+  rawValue: string,
+  pdfOptions?: Record<string, string>
+): string | null {
+  const selectedByOption = pdfOptions?.[rawValue];
+  if (selectedByOption && fieldNames.includes(selectedByOption)) {
+    return selectedByOption;
+  }
+
+  if (fieldNames.includes(rawValue)) {
+    return rawValue;
+  }
+
+  const index = Number(rawValue);
+  if (!Number.isNaN(index) && index >= 0 && index < fieldNames.length) {
+    return fieldNames[index];
+  }
+
+  return null;
+}
+
+function fillCheckboxGroup(
+  form: ReturnType<PDFDocument['getForm']>,
+  fieldNames: string[],
+  value: string,
+  pdfOptions?: Record<string, string>
+): void {
+  const selectedField = resolveGroupFieldSelection(fieldNames, value, pdfOptions);
+  if (!selectedField) {
+    console.warn(
+      `[pdf-filler] Could not resolve checkbox-group selection "${value}" for [${fieldNames.join(', ')}]`
+    );
+    return;
+  }
+
+  setCheckboxGroupValue(form, fieldNames, selectedField);
+}
+
 function fillSplitDate(
   form: ReturnType<PDFDocument['getForm']>,
   fieldNames: string[],
   value: string
 ): void {
   if (fieldNames.length !== 3) {
-    console.warn(`[pdf-filler] Split date expects 3 fields (D, M, Y), got ${fieldNames.length}`);
+    console.warn(
+      `[pdf-filler] Split date expects 3 fields (D, M, Y), got ${fieldNames.length}`
+    );
     return;
   }
 
-  // Handle YYYY-MM-DD or DD/MM/YYYY
-  let day: string, month: string, year: string;
+  let day: string;
+  let month: string;
+  let year: string;
   if (value.includes('-')) {
     const [y, m, d] = value.split('-');
     day = d;
@@ -119,7 +134,6 @@ function fillDateTextField(
 ): void {
   if (!value) return;
 
-  // Normalize ISO date to DD/MM/YYYY for single text date fields.
   let dateText = value;
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     const [y, m, d] = value.split('-');
@@ -129,16 +143,11 @@ function fillDateTextField(
   fillTextField(form, fieldName, dateText);
 }
 
-/**
- * Splits a string across multiple character-box fields.
- * For CRN: Q1CRN.0 (3 chars), Q1CRN.1 (3 chars), Q1CRN.2 (3 chars), Q1CRN.3 (1 char)
- */
 function fillSplitChars(
   form: ReturnType<PDFDocument['getForm']>,
   fieldNames: string[],
   value: string
 ): void {
-  // Determine the max length per field by trying to read it, fallback to even split
   const chars = value.replace(/\s/g, '');
   let offset = 0;
 
@@ -147,12 +156,13 @@ function fillSplitChars(
       const field = form.getTextField(fieldName);
       const maxLen = field.getMaxLength() ?? Math.ceil(chars.length / fieldNames.length);
       const chunk = chars.slice(offset, offset + maxLen);
-      if (chunk) {
-        field.setText(chunk);
-      }
+      if (chunk) field.setText(chunk);
       offset += maxLen;
     } catch (e) {
-      console.warn(`[pdf-filler] Could not fill split field "${fieldName}":`, e instanceof Error ? e.message : e);
+      console.warn(
+        `[pdf-filler] Could not fill split field "${fieldName}":`,
+        e instanceof Error ? e.message : e
+      );
     }
   }
 }
@@ -178,6 +188,12 @@ function fillField(
     case 'radio':
       if (typeof field.pdfField === 'string') {
         fillCheckBox(form, field.pdfField, strValue, field.pdfOptions);
+      }
+      break;
+
+    case 'checkbox-group':
+      if (Array.isArray(field.pdfField)) {
+        fillCheckboxGroup(form, field.pdfField, strValue, field.pdfOptions);
       }
       break;
 
@@ -212,7 +228,6 @@ export async function fillPdf(
   });
   const form = doc.getForm();
 
-  // Iterate all sections and fill matching fields
   for (const section of Object.values(schema.sections)) {
     for (const [fieldKey, fieldDef] of Object.entries(section.fields)) {
       const value = data[fieldKey];
@@ -222,6 +237,9 @@ export async function fillPdf(
     }
   }
 
-  // Keep form editable so doctors can manually correct
+  for (const [fieldKey, value] of Object.entries(data)) {
+    fillUnmappedPdfField(form, fieldKey, value);
+  }
+
   return doc.save();
 }

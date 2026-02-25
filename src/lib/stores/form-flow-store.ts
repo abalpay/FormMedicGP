@@ -2,7 +2,7 @@
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { ReviewSchema } from '@/types';
+import type { PatientDetails, ReviewSchema } from '@/types';
 
 export type FormFlowStep =
   | 'select-form'
@@ -14,7 +14,7 @@ export type FormFlowStep =
 interface FormFlowState {
   currentStep: FormFlowStep;
   selectedFormType: string | null;
-  patientDetails: Record<string, string>;
+  patientDetails: Partial<PatientDetails>;
   transcription: string;
   extractedData: Record<string, unknown> | null;
   missingFields: string[];
@@ -23,7 +23,7 @@ interface FormFlowState {
 
   setStep: (step: FormFlowStep) => void;
   setFormType: (formType: string) => void;
-  setPatientDetails: (details: Record<string, string>) => void;
+  setPatientDetails: (details: Partial<PatientDetails>) => void;
   setTranscription: (text: string) => void;
   setExtractedData: (data: Record<string, unknown>) => void;
   setMissingFields: (fields: string[]) => void;

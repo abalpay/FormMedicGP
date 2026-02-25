@@ -30,6 +30,11 @@ function normalizeDateValue(value: string): string {
   return `${m[3]}-${m[2]}-${m[1]}`;
 }
 
+function compareIsoDate(a: string, b: string): number {
+  if (a === b) return 0;
+  return a < b ? -1 : 1;
+}
+
 function normalizePrimitive(value: unknown): string | number | boolean | string[] | null {
   if (value == null) return null;
   if (typeof value === 'string') return value.trim();
@@ -156,7 +161,22 @@ function validateFieldValue(
         errors[fieldKey] = `${field.label ?? fieldKey} must be a valid date (YYYY-MM-DD or DD/MM/YYYY).`;
         return normalizedString;
       }
-      return normalizeDateValue(normalizedString);
+      const isoDate = normalizeDateValue(normalizedString);
+      const dateMax = field.validation?.dateMax;
+      if (dateMax) {
+        const maxIso =
+          dateMax === 'today'
+            ? new Date().toISOString().slice(0, 10)
+            : normalizeDateValue(dateMax);
+
+        if (isValidIsoDate(maxIso) && compareIsoDate(isoDate, maxIso) > 0) {
+          errors[fieldKey] =
+            dateMax === 'today'
+              ? `${field.label ?? fieldKey} must not be in the future.`
+              : `${field.label ?? fieldKey} must be on or before ${maxIso}.`;
+        }
+      }
+      return isoDate;
     }
 
     if (field.type === 'number') {

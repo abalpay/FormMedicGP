@@ -86,7 +86,8 @@
           "pdfFieldType": "split-date",
           "required": true,
           "validation": {
-            "required": true
+            "required": true,
+            "dateMax": "today"
           }
         },
         "claimNumber": {
@@ -210,6 +211,96 @@
             "required": true
           }
         },
+        "tacClaim": {
+          "label": "TAC Claim",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "claimAndCertificate",
+          "pdfField": "TAC Claim",
+          "pdfFieldType": "checkbox",
+          "options": [
+            "yes",
+            "no"
+          ],
+          "optionLabels": {
+            "yes": "Yes",
+            "no": "No"
+          },
+          "reviewControl": "segmented"
+        },
+        "vwaClaim": {
+          "label": "VWA Claim",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "claimAndCertificate",
+          "pdfField": "VWA Claim",
+          "pdfFieldType": "checkbox",
+          "options": [
+            "yes",
+            "no"
+          ],
+          "optionLabels": {
+            "yes": "Yes",
+            "no": "No"
+          },
+          "reviewControl": "segmented"
+        },
+        "confirmAttendance": {
+          "label": "Confirm Attendance",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "claimAndCertificate",
+          "pdfField": "Confirm Attendance",
+          "pdfFieldType": "checkbox",
+          "options": [
+            "yes",
+            "no"
+          ],
+          "optionLabels": {
+            "yes": "Yes",
+            "no": "No"
+          },
+          "reviewControl": "segmented"
+        },
+        "certificationOption": {
+          "label": "Certification Option",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "claimAndCertificate",
+          "pdfField": [
+            "4A",
+            "4B",
+            "4C"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "pre_injury_capacity": "4A",
+            "suitable_employment": "4B",
+            "no_capacity": "4C"
+          },
+          "options": [
+            "pre_injury_capacity",
+            "suitable_employment",
+            "no_capacity"
+          ],
+          "optionLabels": {
+            "pre_injury_capacity": "Pre-injury Employment",
+            "suitable_employment": "Suitable Employment",
+            "no_capacity": "No Capacity"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "pre_injury_capacity",
+              "suitable_employment",
+              "no_capacity"
+            ]
+          }
+        },
         "workEnvironmentConsiderations": {
           "label": "Work Environment Considerations",
           "inputType": "textarea",
@@ -241,6 +332,423 @@
           "type": "text",
           "pdfField": "Other Functional Considerations",
           "pdfFieldType": "text"
+        },
+        "sit": {
+          "label": "Sit",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box1",
+            "Check Box2",
+            "Check Box3"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box1",
+            "with_modifications": "Check Box2",
+            "cannot": "Check Box3"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "standWalk": {
+          "label": "Stand/Walk",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box4",
+            "Check Box5",
+            "Check Box6"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box4",
+            "with_modifications": "Check Box5",
+            "cannot": "Check Box6"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "bend": {
+          "label": "Bend",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box7",
+            "Check Box8",
+            "Check Box9"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box7",
+            "with_modifications": "Check Box8",
+            "cannot": "Check Box9"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "squat": {
+          "label": "Squat",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box10",
+            "Check Box11",
+            "Check Box12"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box10",
+            "with_modifications": "Check Box11",
+            "cannot": "Check Box12"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "kneel": {
+          "label": "Kneel",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box13",
+            "Check Box14",
+            "Check Box15"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box13",
+            "with_modifications": "Check Box14",
+            "cannot": "Check Box15"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "reachAboveShoulder": {
+          "label": "Reach Above Shoulder",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box16",
+            "Check Box17",
+            "Check Box18"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box16",
+            "with_modifications": "Check Box17",
+            "cannot": "Check Box18"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "useInjuredArmHand": {
+          "label": "Use Injured Arm/Hand",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box19",
+            "Check Box20",
+            "Check Box21"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box19",
+            "with_modifications": "Check Box20",
+            "cannot": "Check Box21"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "lift": {
+          "label": "Lift",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box22",
+            "Check Box23",
+            "Check Box24"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box22",
+            "with_modifications": "Check Box23",
+            "cannot": "Check Box24"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "neckMovement": {
+          "label": "Neck Movement",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "physicalCapacity",
+          "pdfField": [
+            "Check Box25",
+            "Check Box26",
+            "Check Box27"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "can": "Check Box25",
+            "with_modifications": "Check Box26",
+            "cannot": "Check Box27"
+          },
+          "options": [
+            "can",
+            "with_modifications",
+            "cannot"
+          ],
+          "optionLabels": {
+            "can": "Can",
+            "with_modifications": "With Modifications",
+            "cannot": "Cannot"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "can",
+              "with_modifications",
+              "cannot"
+            ]
+          }
+        },
+        "attention": {
+          "label": "Attention/Concentration",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "mentalCapacity",
+          "pdfField": [
+            "Check Box28",
+            "Check Box29"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "not_affected": "Check Box28",
+            "affected": "Check Box29"
+          },
+          "options": [
+            "not_affected",
+            "affected"
+          ],
+          "optionLabels": {
+            "not_affected": "Not Affected",
+            "affected": "Affected"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "not_affected",
+              "affected"
+            ]
+          }
+        },
+        "memory": {
+          "label": "Memory",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "mentalCapacity",
+          "pdfField": [
+            "Check Box30",
+            "Check Box31"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "not_affected": "Check Box30",
+            "affected": "Check Box31"
+          },
+          "options": [
+            "not_affected",
+            "affected"
+          ],
+          "optionLabels": {
+            "not_affected": "Not Affected",
+            "affected": "Affected"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "not_affected",
+              "affected"
+            ]
+          }
+        },
+        "judgement": {
+          "label": "Judgement",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "reviewGroup": "mentalCapacity",
+          "pdfField": [
+            "Check Box32",
+            "Check Box33"
+          ],
+          "pdfFieldType": "checkbox-group",
+          "pdfOptions": {
+            "not_affected": "Check Box32",
+            "affected": "Check Box33"
+          },
+          "options": [
+            "not_affected",
+            "affected"
+          ],
+          "optionLabels": {
+            "not_affected": "Not Affected",
+            "affected": "Affected"
+          },
+          "reviewControl": "segmented",
+          "validation": {
+            "enum": [
+              "not_affected",
+              "affected"
+            ]
+          }
         },
         "incapacityStartDate": {
           "label": "No Capacity From",
@@ -306,66 +814,6 @@
     }
   },
   "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.",
-  "allowedUnmappedPdfFields": [
-    "4A",
-    "4B",
-    "4C",
-    "Check Box1",
-    "Check Box10",
-    "Check Box11",
-    "Check Box12",
-    "Check Box13",
-    "Check Box14",
-    "Check Box15",
-    "Check Box16",
-    "Check Box17",
-    "Check Box18",
-    "Check Box19",
-    "Check Box2",
-    "Check Box20",
-    "Check Box21",
-    "Check Box22",
-    "Check Box23",
-    "Check Box24",
-    "Check Box25",
-    "Check Box26",
-    "Check Box27",
-    "Check Box28",
-    "Check Box29",
-    "Check Box3",
-    "Check Box30",
-    "Check Box31",
-    "Check Box32",
-    "Check Box33",
-    "Check Box4",
-    "Check Box5",
-    "Check Box6",
-    "Check Box7",
-    "Check Box8",
-    "Check Box9",
-    "Confirm Attendance",
-    "Date of Injury Day",
-    "Date of Injury Month",
-    "Date of Injury Year",
-    "Date of Signature of Worker Day",
-    "Details of any voluntary work, employment or self-employment you have engaged in",
-    "Have a capacity for pre-injury employment from Day",
-    "Have a capacity for pre-injury employment from Month",
-    "Have a capacity for pre-injury employment from Year",
-    "Have a capacity for suitable employment from Day 1",
-    "Have a capacity for suitable employment from Month 1",
-    "Have a capacity for suitable employment from Year 1",
-    "Have a capacity for suitable employment to Day 2",
-    "Have a capacity for suitable employment to Month 2",
-    "Have a capacity for suitable employment to Year 2",
-    "Mandatory No",
-    "Mandatory Yes",
-    "Other Functional Considerations - not listed above (1)",
-    "Other Functional Considerations - not listed above (2)",
-    "Other Functional Considerations - not listed above (3)",
-    "Signature of Certifier",
-    "Signature of Worker",
-    "TAC Claim",
-    "VWA Claim"
-  ]
+  "allowedUnmappedPdfFields": [],
+  "advancedUnmappedPdfFields": []
 }

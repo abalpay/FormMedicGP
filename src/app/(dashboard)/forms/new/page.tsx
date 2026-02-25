@@ -8,6 +8,7 @@ import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSelector } from '@/components/forms/form-selector';
 import { PatientDetailsForm } from '@/components/forms/patient-details-form';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
+import type { PatientDetails } from '@/types';
 import { ArrowRight } from 'lucide-react';
 
 const steps = [
@@ -21,7 +22,8 @@ export default function NewFormPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
-  const { setFormType, setPatientDetails, setStep } = useFormFlowStore();
+  const { selectedFormType, patientDetails, setFormType, setPatientDetails, setStep } =
+    useFormFlowStore();
 
   const handleFormSelect = (formId: string) => {
     setSelectedFormId(formId);
@@ -34,7 +36,7 @@ export default function NewFormPage() {
     }
   };
 
-  const handlePatientDetailsSubmit = (data: Record<string, string>) => {
+  const handlePatientDetailsSubmit = (data: PatientDetails) => {
     setPatientDetails(data);
     setStep('dictate');
     router.push('/dictate');
@@ -70,6 +72,8 @@ export default function NewFormPage() {
 
           {currentStep === 1 && (
             <PatientDetailsForm
+              formType={selectedFormType}
+              initialValues={patientDetails}
               onSubmit={handlePatientDetailsSubmit}
               onBack={handleBackToFormSelection}
             />
