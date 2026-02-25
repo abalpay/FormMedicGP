@@ -28,6 +28,7 @@ export default function DictatePage() {
   const router = useRouter();
   const {
     selectedFormType,
+    patientDetails,
     transcription,
     setTranscription,
     setStep,
@@ -62,19 +63,39 @@ export default function DictatePage() {
     setStep('processing');
 
     try {
-      // TODO: Call /api/process-form with transcription + patient details
-      // For now, simulate processing
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Mock result — will be replaced with real API call
-      setExtractedData({
-        diagnosis: 'Demo — backend not yet connected',
+      const res = await fetch('/api/process-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transcription,
+          patientDetails,
+          formType: selectedFormType,
+        }),
       });
 
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        throw new Error(errBody?.error ?? `Server error (${res.status})`);
+      }
+
+      const { extractedData, missingFields, pdfBase64 } = await res.json();
+
+      // Store extracted data (include missingFields for the review page)
+      setExtractedData({ ...extractedData, missingFields });
+
+      // Convert base64 PDF to Blob URL
+      if (pdfBase64) {
+        const bytes = Uint8Array.from(atob(pdfBase64), (c) => c.charCodeAt(0));
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        setPdfBlobUrl(URL.createObjectURL(blob));
+      }
+
       setStep('review');
-      router.push('/forms/demo-review');
-    } catch {
-      toast.error('Failed to process form. Please try again.');
+      router.push('/forms/review');
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to process form';
+      toast.error(message);
       setStep('dictate');
     } finally {
       setIsProcessing(false);
@@ -97,11 +118,11 @@ export default function DictatePage() {
 
       <Card>
         <CardContent className="p-6 space-y-6">
-          {/* Transcription area */}
+          {/* Transcription area — editable when not actively recording */}
           <TranscriptionDisplay
             text={transcription}
             isRecording={recordingState === 'recording'}
-            isEditable={recordingState === 'stopped'}
+            isEditable={recordingState !== 'recording'}
             onChange={handleTranscriptionUpdate}
           />
 

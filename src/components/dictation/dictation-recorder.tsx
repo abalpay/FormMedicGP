@@ -21,6 +21,7 @@ export function DictationRecorder({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const transcriptRef = useRef('');
 
   const updateState = useCallback(
     (newState: RecordingState) => {
@@ -33,10 +34,15 @@ export function DictationRecorder({
   const startRecording = useCallback(async () => {
     try {
       // Get temporary Deepgram token
-      const tokenRes = await fetch('/api/deepgram-token', { method: 'POST' });
-      if (!tokenRes.ok) {
-        // Fallback: use demo mode with simulated transcription
-        console.warn('Deepgram token not available — using demo mode');
+      let token: string | null = null;
+      try {
+        const tokenRes = await fetch('/api/deepgram-token', { method: 'POST' });
+        if (tokenRes.ok) {
+          const data = await tokenRes.json();
+          token = data.token;
+        }
+      } catch {
+        console.warn('Deepgram token not available — recording without live transcription');
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -45,9 +51,41 @@ export function DictationRecorder({
       });
       mediaRecorderRef.current = mediaRecorder;
 
-      // TODO: Connect to Deepgram WebSocket with temp token
-      // wss://api.deepgram.com/v1/listen?model=nova-3-medical
-      // For now, just record audio locally
+      // Connect to Deepgram WebSocket if we have a token
+      if (token) {
+        const wsUrl =
+          'wss://api.deepgram.com/v1/listen?model=nova-3-medical&language=en-AU&punctuate=true&smart_format=true';
+        const socket = new WebSocket(wsUrl, ['token', token]);
+        socketRef.current = socket;
+
+        socket.onopen = () => {
+          console.log('Deepgram WebSocket connected');
+        };
+
+        socket.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data);
+            const transcript =
+              msg?.channel?.alternatives?.[0]?.transcript ?? '';
+            if (transcript && msg.is_final) {
+              transcriptRef.current = transcriptRef.current
+                ? `${transcriptRef.current} ${transcript}`
+                : transcript;
+              onTranscriptionUpdate(transcriptRef.current);
+            }
+          } catch {
+            // Ignore non-JSON messages (e.g. metadata)
+          }
+        };
+
+        socket.onerror = (err) => {
+          console.error('Deepgram WebSocket error:', err);
+        };
+
+        socket.onclose = () => {
+          console.log('Deepgram WebSocket closed');
+        };
+      }
 
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0 && socketRef.current?.readyState === WebSocket.OPEN) {
@@ -65,7 +103,7 @@ export function DictationRecorder({
     } catch (err) {
       console.error('Failed to start recording:', err);
     }
-  }, [updateState]);
+  }, [updateState, onTranscriptionUpdate]);
 
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current?.state !== 'inactive') {
@@ -150,6 +188,7 @@ export function DictationRecorder({
           size="sm"
           onClick={() => {
             setDuration(0);
+            transcriptRef.current = '';
             onTranscriptionUpdate('');
             updateState('idle');
           }}

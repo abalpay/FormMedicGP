@@ -1,5 +1,89 @@
 import { NextResponse } from 'next/server';
+import { getFormSchema } from '@/lib/schemas';
+import { deidentify } from '@/lib/deidentify';
+import { extractFormData } from '@/lib/llm';
+import { reidentify } from '@/lib/reidentify';
+import { fillPdf } from '@/lib/pdf-filler';
+import type { PatientDetails, DoctorProfile } from '@/types';
 
-export async function POST() {
-  return NextResponse.json({ status: 'not implemented' }, { status: 501 });
+// Hardcoded doctor profile for testing (no Supabase needed yet)
+const MOCK_DOCTOR: DoctorProfile = {
+  id: 'mock-001',
+  userId: 'mock-user-001',
+  name: 'Dr. Sarah Chen',
+  providerNumber: '456789AB',
+  qualifications: 'MBBS, FRACGP',
+  practiceName: 'Melbourne Medical Centre',
+  practiceAddress: '42 Collins Street, Melbourne VIC 3000',
+  practicePhone: '03 9000 1234',
+  practiceAbn: '12 345 678 901',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { transcription, patientDetails, formType } = body as {
+      transcription?: string;
+      patientDetails?: PatientDetails;
+      formType?: string;
+    };
+
+    // Validate inputs
+    if (!transcription?.trim()) {
+      return NextResponse.json(
+        { error: 'Transcription text is required' },
+        { status: 400 }
+      );
+    }
+    if (!formType) {
+      return NextResponse.json(
+        { error: 'Form type is required' },
+        { status: 400 }
+      );
+    }
+
+    const schema = getFormSchema(formType);
+    if (!schema) {
+      return NextResponse.json(
+        { error: `Unknown form type: ${formType}` },
+        { status: 400 }
+      );
+    }
+
+    // 1. De-identify PII from transcription
+    const { deidentifiedText } = deidentify(
+      transcription,
+      patientDetails?.customerName
+    );
+
+    // 2. Extract clinical data via LLM
+    const { data: llmData, missingFields } = await extractFormData(
+      deidentifiedText,
+      schema
+    );
+
+    // 3. Re-identify: merge patient + doctor data into extracted fields
+    const mergedData = reidentify(
+      llmData,
+      patientDetails ?? { customerName: '', dateOfBirth: '', address: '' },
+      MOCK_DOCTOR
+    );
+
+    // 4. Generate PDF
+    const pdfBytes = await fillPdf(schema, mergedData);
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+
+    return NextResponse.json({
+      extractedData: mergedData,
+      missingFields,
+      pdfBase64,
+    });
+  } catch (err) {
+    console.error('[process-form] Pipeline error:', err);
+    const message =
+      err instanceof Error ? err.message : 'Unknown error during processing';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
