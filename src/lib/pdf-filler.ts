@@ -3,6 +3,7 @@ import 'server-only';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { PDFDocument, PDFName, PDFDict } from 'pdf-lib';
+import { normalizeMultilineAutoSizedFont } from '@/lib/pdf-text-field-style';
 import type { ExtractedFormData, FormSchema, FormField } from '@/types';
 
 // Module-level template cache (avoids re-reading from disk on every request)
@@ -25,6 +26,7 @@ function fillTextField(
 ): void {
   try {
     const field = form.getTextField(fieldName);
+    normalizeMultilineAutoSizedFont(field);
     field.setText(value);
   } catch (e) {
     console.warn(`[pdf-filler] Could not fill text field "${fieldName}":`, e instanceof Error ? e.message : e);

@@ -4,11 +4,11 @@
   "formVersion": "2006-06",
   "templatePath": "templates/MA002.pdf",
   "dictationTips": [
-    "Describe mobility-related condition and how it limits transport/use of public transport.",
-    "Document severity, frequency, and expected duration of limitations.",
-    "Include treatment history and rehabilitation progress.",
-    "State whether limitations are temporary or long-term.",
-    "Use concrete functional examples (distance, standing tolerance, transfers)."
+    "What condition affects the patient's mobility?",
+    "How does it limit their ability to use public transport?",
+    "What are their specific physical limitations — walking distance, standing tolerance, transfers?",
+    "What treatment or rehabilitation have they had, and what is the outlook?",
+    "Is this limitation temporary or long-term?"
   ],
   "sections": {
     "patient": {

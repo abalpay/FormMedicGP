@@ -96,6 +96,7 @@ export function reidentify(
     doctorPhoneAreaCode: doctorProfile.practicePhone.replace(/\s/g, '').slice(0, 2),
     doctorPhoneNumber: doctorProfile.practicePhone.replace(/\s/g, '').slice(2),
     dateSigned: today,
+    signature: doctorProfile.name,
     examinationDate: today,
   };
 

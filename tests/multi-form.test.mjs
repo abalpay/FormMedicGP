@@ -7,6 +7,20 @@ const ROOT = process.cwd();
 
 const EXPECTED_FORMS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY'];
 
+function fallbackOptionLabel(value) {
+  return String(value)
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((token) => {
+      if (/^\d+$/.test(token)) return token;
+      return token.charAt(0).toUpperCase() + token.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
 test('registry exists and lists 5 active forms', () => {
   const registryPath = path.join(ROOT, 'src/lib/forms/registry.ts');
   assert.equal(fs.existsSync(registryPath), true, 'registry.ts should exist');
@@ -30,6 +44,30 @@ test('all form schemas exist with upgraded schema metadata', () => {
   }
 });
 
+test('select enum fields have display labels (explicit or formatter-safe)', () => {
+  for (const id of EXPECTED_FORMS) {
+    const schemaPath = path.join(ROOT, `src/lib/schemas/${id}.json`);
+    const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+
+    for (const section of Object.values(schema.sections)) {
+      for (const [fieldKey, field] of Object.entries(section.fields)) {
+        const enumValues = field.validation?.enum ?? field.options ?? [];
+        const optionLabels = field.optionLabels ?? {};
+
+        for (const enumValue of enumValues) {
+          const label = optionLabels[enumValue] ?? fallbackOptionLabel(enumValue);
+          assert.ok(label.length > 0, `${id}.${fieldKey} option ${enumValue} should have a display label`);
+          assert.equal(
+            label.includes('_'),
+            false,
+            `${id}.${fieldKey} option ${enumValue} display label should not contain underscores`
+          );
+        }
+      }
+    }
+  }
+});
+
 test('manifest files exist for all forms', () => {
   for (const id of EXPECTED_FORMS) {
     const manifestPath = path.join(ROOT, `src/lib/schemas/manifests/${id}.json`);
@@ -39,6 +77,35 @@ test('manifest files exist for all forms', () => {
     assert.ok(Array.isArray(manifest.fields), `${id} manifest.fields should be array`);
     assert.ok(manifest.fields.length > 0, `${id} manifest should contain fields`);
   }
+});
+
+test('SU415 maps all text fields in the PDF manifest', () => {
+  const schemaPath = path.join(ROOT, 'src/lib/schemas/SU415.json');
+  const manifestPath = path.join(ROOT, 'src/lib/schemas/manifests/SU415.json');
+
+  const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+  const mappedPdfFields = new Set();
+  for (const section of Object.values(schema.sections)) {
+    for (const field of Object.values(section.fields)) {
+      if (Array.isArray(field.pdfField)) {
+        for (const name of field.pdfField) mappedPdfFields.add(name);
+      } else {
+        mappedPdfFields.add(field.pdfField);
+      }
+    }
+  }
+
+  const unmappedTextFields = manifest.fields
+    .filter((field) => field.isText && !mappedPdfFields.has(field.name))
+    .map((field) => field.name);
+
+  assert.deepEqual(
+    unmappedTextFields,
+    [],
+    `SU415 unmapped text fields: ${unmappedTextFields.join(', ')}`
+  );
 });
 
 test('api/forms GET is implemented (not 501 placeholder)', () => {

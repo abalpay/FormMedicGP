@@ -4,11 +4,10 @@
   "formVersion": "2025-04",
   "templatePath": "templates/SA332A.pdf",
   "dictationTips": [
-    "Identify the person being cared for and date of birth precisely.",
-    "Clearly describe care needs and functional limitations.",
-    "State expected duration and variability of support needs.",
-    "Include contact details that match claim records.",
-    "Mention co-morbidities affecting care intensity where relevant."
+    "What condition does the person being cared for have?",
+    "What specific care and support do they need on a daily basis?",
+    "How long are these care needs expected to last?",
+    "Are there any co-morbidities that increase the level of care required?"
   ],
   "sections": {
     "patient": {

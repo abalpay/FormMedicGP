@@ -4,11 +4,11 @@
   "formVersion": "2024-11",
   "templatePath": "templates/CAPACITY.pdf",
   "dictationTips": [
-    "Capture diagnosis and explicit physical/mental functional restrictions.",
-    "Include current work capacity window (from/to dates) and duties tolerance.",
-    "Document treatment plan and return-to-work considerations.",
-    "Specify examination date and certificate issue date clearly.",
-    "Use concrete restrictions (lifting, standing, concentration, driving, etc)."
+    "What is the clinical diagnosis and anatomical site?",
+    "What are the specific physical or mental restrictions — lifting, standing, concentration, driving?",
+    "From when to when is the patient unfit for work?",
+    "What is the treatment plan and expected return-to-work timeline?",
+    "Are there any work environment considerations or duties they can still perform?"
   ],
   "sections": {
     "patient": {

@@ -201,6 +201,14 @@
           ],
           "pdfFieldType": "split-date",
           "default": "today"
+        },
+        "signature": {
+          "label": "Signature",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Sign",
+          "pdfFieldType": "text"
         }
       }
     },
@@ -240,6 +248,7 @@
         "primaryPrognosis": {
           "label": "Primary Prognosis",
           "inputType": "select",
+          "reviewControl": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "PC.Prognosis",
@@ -253,6 +262,11 @@
             "up_to_13_weeks": "#233c3",
             "13_to_24_months": "13-24",
             "more_than_24_months": "24+"
+          },
+          "optionLabels": {
+            "up_to_13_weeks": "Up to 13 weeks",
+            "13_to_24_months": "13 to 24 months",
+            "more_than_24_months": "More than 24 months"
           },
           "required": true,
           "llmInstruction": "Expected duration of the primary condition: 'up_to_13_weeks' for temporary/short-term, '13_to_24_months' for medium-term, 'more_than_24_months' for chronic/permanent. Most acute conditions are 'up_to_13_weeks'.",
@@ -268,6 +282,7 @@
         "terminalIllness": {
           "label": "Terminal Illness",
           "inputType": "select",
+          "reviewControl": "segmented",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "PC.LE24OrLess",
@@ -294,6 +309,7 @@
         "seriousIllness": {
           "label": "Serious Illness",
           "inputType": "select",
+          "reviewControl": "segmented",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "PC.MeetSeriousIllness",
@@ -342,6 +358,7 @@
         "secondaryPrognosis": {
           "label": "Secondary Prognosis",
           "inputType": "select",
+          "reviewControl": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "SC.Prognosis",
@@ -355,6 +372,11 @@
             "up_to_13_weeks": "#233c3",
             "13_to_24_months": "13-24",
             "more_than_24_months": "24+"
+          },
+          "optionLabels": {
+            "up_to_13_weeks": "Up to 13 weeks",
+            "13_to_24_months": "13 to 24 months",
+            "more_than_24_months": "More than 24 months"
           },
           "llmInstruction": "Expected duration of the secondary condition. Only extract if a secondary diagnosis exists.",
           "validation": {
@@ -394,6 +416,7 @@
         "otherConditions": {
           "label": "Other Conditions",
           "inputType": "select",
+          "reviewControl": "segmented",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "OC.OtherConditions",
@@ -452,6 +475,7 @@
         "workCapacity": {
           "label": "Work Capacity",
           "inputType": "select",
+          "reviewControl": "segmented",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Capacity.8HoursPlus",
@@ -490,15 +514,15 @@
   "systemPromptAdditions": "For Centrelink SU415 medical certificates:\n- The 'functionalImpact' field is CRITICAL — describe HOW conditions affect daily functioning and work capacity with specific limitations (e.g., 'cannot stand >15min', 'unable to concentrate for sustained periods').\n- The 'treatment' field should cover past, current, and planned treatment to show the condition is being properly managed.\n- For prognosis fields, choose the most appropriate duration category.\n- Default 'terminalIllness' and 'seriousIllness' to 'no' unless clearly indicated.\n- 'incapacityStartDate' is when the patient became unfit; use today if not specified.\n- 'incapacityEndDate' should not exceed 13 weeks (91 days) from start for standard exemptions.",
   "formVersion": "2024-12",
   "dictationTips": [
-    "State primary diagnosis clearly using medical terminology.",
-    "Describe specific functional impact on work/study participation.",
-    "Include treatment history and active management plan.",
-    "Mention incapacity start/end dates and expected recovery window.",
-    "Confirm capacity in hours per week if partially fit for work."
+    "What is the primary diagnosis?",
+    "When did the condition start, and how long is recovery expected to take?",
+    "How does this condition affect their ability to work or study day-to-day?",
+    "What treatment have they had, and what is the current management plan?",
+    "When did they become unfit, and when can they return to work?",
+    "Can they do any work at all — if so, how many hours per week?"
   ],
   "allowedUnmappedPdfFields": [
     "Clear",
-    "Instructions",
-    "Sign"
+    "Instructions"
   ]
 }

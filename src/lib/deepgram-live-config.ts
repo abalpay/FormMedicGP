@@ -11,6 +11,8 @@ export function createDeepgramLiveSocketConfig(
     language: 'en-AU',
     punctuate: 'true',
     smart_format: 'true',
+    interim_results: 'true',
+    utterance_end_ms: '1000',
   });
 
   return {
@@ -18,6 +20,10 @@ export function createDeepgramLiveSocketConfig(
     // Access tokens must use Bearer auth in the websocket subprotocol.
     protocols: ['bearer', accessToken],
   };
+}
+
+export function getDeepgramKeepAliveMessage(): string {
+  return JSON.stringify({ type: 'KeepAlive' });
 }
 
 export function getDeepgramStopMessages(): [string, string] {

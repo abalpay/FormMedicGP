@@ -7,7 +7,7 @@ import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+
 import { StepIndicator } from '@/components/ui/step-indicator';
 import { DictationRecorder } from '@/components/dictation/dictation-recorder';
 import { TranscriptionDisplay } from '@/components/dictation/transcription-display';
@@ -148,6 +148,9 @@ export default function DictatePage() {
         <Badge variant="secondary">{formLabel}</Badge>
       </div>
 
+      {/* Tips */}
+      <DictationTips tips={activeTips} formName={selectedForm?.id} />
+
       <Card>
         <CardContent className="p-6 space-y-6">
           {/* Transcription area — editable when not actively recording */}
@@ -158,8 +161,6 @@ export default function DictatePage() {
             onChange={handleTranscriptionUpdate}
           />
 
-          <Separator />
-
           {/* Recorder */}
           <DictationRecorder
             onTranscriptionUpdate={handleTranscriptionUpdate}
@@ -167,9 +168,6 @@ export default function DictatePage() {
           />
         </CardContent>
       </Card>
-
-      {/* Tips */}
-      <DictationTips tips={activeTips} />
 
       {/* Navigation */}
       <div className="flex items-center justify-between">

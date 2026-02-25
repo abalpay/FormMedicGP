@@ -4,11 +4,10 @@
   "formVersion": "2026-01",
   "templatePath": "templates/SA478.pdf",
   "dictationTips": [
-    "Cover all diagnosed conditions and their cumulative impact on function.",
-    "Describe severity, persistence and response to treatment.",
-    "Include specialist assessments and objective findings where known.",
-    "Highlight barriers to sustained work capacity and daily functioning.",
-    "Mention foreseeable progression and expected permanence where applicable."
+    "What conditions does the patient have, and how do they affect daily functioning and work capacity?",
+    "How severe and persistent are the conditions — are they likely to be permanent?",
+    "What specialist assessments, investigations, or objective findings support this?",
+    "What treatment has been tried, and how has the patient responded?"
   ],
   "sections": {
     "patient": {

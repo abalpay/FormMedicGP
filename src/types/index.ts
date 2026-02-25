@@ -23,6 +23,7 @@ export interface FormField {
   label?: string;
   type: 'text' | 'date' | 'number' | 'radio' | 'checkbox';
   inputType?: 'text' | 'textarea' | 'date' | 'number' | 'select' | 'checkbox';
+  reviewControl?: 'auto' | 'select' | 'segmented';
   pdfField: string | string[];
   pdfFieldType?:
     | 'text'
@@ -33,6 +34,7 @@ export interface FormField {
     | 'date-text';
   pdfOptions?: Record<string, string>;
   reviewEditable?: boolean;
+  optionLabels?: Record<string, string>;
   validation?: {
     required?: boolean;
     enum?: string[];
@@ -76,8 +78,12 @@ export interface ReviewFieldConfig {
   sectionTitle: string;
   type: FormField['type'];
   inputType: NonNullable<FormField['inputType']>;
+  reviewControl?: 'select' | 'segmented';
   required: boolean;
-  options: string[];
+  options: Array<{
+    value: string;
+    label: string;
+  }>;
 }
 
 export interface ReviewSchema {

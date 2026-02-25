@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
   createDeepgramLiveSocketConfig,
+  getDeepgramKeepAliveMessage,
   getDeepgramStopMessages,
 } from '../src/lib/deepgram-live-config.ts';
 
@@ -23,6 +24,13 @@ test('uses expected live transcription query parameters', () => {
   assert.equal(url.searchParams.get('language'), 'en-AU');
   assert.equal(url.searchParams.get('punctuate'), 'true');
   assert.equal(url.searchParams.get('smart_format'), 'true');
+  assert.equal(url.searchParams.get('interim_results'), 'true');
+  assert.equal(url.searchParams.get('utterance_end_ms'), '1000');
+});
+
+test('returns valid KeepAlive message', () => {
+  const msg = getDeepgramKeepAliveMessage();
+  assert.deepEqual(JSON.parse(msg), { type: 'KeepAlive' });
 });
 
 test('sends finalize then close-stream messages on stop', () => {

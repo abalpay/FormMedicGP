@@ -38,6 +38,61 @@ function normalizePrimitive(value: unknown): string | number | boolean | string[
   return String(value);
 }
 
+function fallbackOptionLabel(value: string): string {
+  return value
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((token) => {
+      if (/^\d+$/.test(token)) return token;
+      return token.charAt(0).toUpperCase() + token.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
+function normalizeLookupToken(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ');
+}
+
+function resolveEnumValue(
+  value: string,
+  enumValues: string[],
+  optionLabels?: Record<string, string>
+): string | null {
+  const lookup = normalizeLookupToken(value);
+
+  for (const enumValue of enumValues) {
+    const candidates = [
+      enumValue,
+      optionLabels?.[enumValue],
+      fallbackOptionLabel(enumValue),
+    ].filter((candidate): candidate is string => Boolean(candidate));
+
+    for (const candidate of candidates) {
+      if (normalizeLookupToken(candidate) === lookup) {
+        return enumValue;
+      }
+    }
+  }
+
+  return null;
+}
+
+function formatAllowedEnumValues(
+  enumValues: string[],
+  optionLabels?: Record<string, string>
+): string {
+  return enumValues
+    .map((value) => optionLabels?.[value] ?? fallbackOptionLabel(value))
+    .join(', ');
+}
+
 function validateFieldValue(
   fieldKey: string,
   field: FormField,
@@ -57,38 +112,58 @@ function validateFieldValue(
   }
 
   if (typeof normalized === 'string') {
+    let normalizedString = normalized;
+
     const enumValues = field.validation?.enum ?? field.options;
-    if (enumValues && enumValues.length > 0 && !enumValues.includes(normalized)) {
-      errors[fieldKey] = `${field.label ?? fieldKey} must be one of: ${enumValues.join(', ')}.`;
-      return normalized;
+    if (enumValues && enumValues.length > 0) {
+      const canonical = resolveEnumValue(
+        normalizedString,
+        enumValues,
+        field.optionLabels
+      );
+
+      if (!canonical) {
+        errors[fieldKey] = `${
+          field.label ?? fieldKey
+        } must be one of: ${formatAllowedEnumValues(
+          enumValues,
+          field.optionLabels
+        )}.`;
+        return normalizedString;
+      }
+
+      normalizedString = canonical;
     }
 
     if (field.validation?.pattern) {
       const re = new RegExp(field.validation.pattern);
-      if (!re.test(normalized)) {
+      if (!re.test(normalizedString)) {
         errors[fieldKey] = `${field.label ?? fieldKey} has an invalid format.`;
-        return normalized;
+        return normalizedString;
       }
     }
 
-    if (field.validation?.maxLength && normalized.length > field.validation.maxLength) {
+    if (
+      field.validation?.maxLength &&
+      normalizedString.length > field.validation.maxLength
+    ) {
       errors[fieldKey] = `${field.label ?? fieldKey} must be ${field.validation.maxLength} characters or fewer.`;
-      return normalized;
+      return normalizedString;
     }
 
     if (field.type === 'date') {
-      if (!isValidIsoDate(normalized) && !isValidSlashDate(normalized)) {
+      if (!isValidIsoDate(normalizedString) && !isValidSlashDate(normalizedString)) {
         errors[fieldKey] = `${field.label ?? fieldKey} must be a valid date (YYYY-MM-DD or DD/MM/YYYY).`;
-        return normalized;
+        return normalizedString;
       }
-      return normalizeDateValue(normalized);
+      return normalizeDateValue(normalizedString);
     }
 
     if (field.type === 'number') {
-      const parsed = Number(normalized);
+      const parsed = Number(normalizedString);
       if (Number.isNaN(parsed)) {
         errors[fieldKey] = `${field.label ?? fieldKey} must be a number.`;
-        return normalized;
+        return normalizedString;
       }
       if (field.validation?.min != null && parsed < field.validation.min) {
         errors[fieldKey] = `${field.label ?? fieldKey} must be at least ${field.validation.min}.`;
@@ -98,6 +173,8 @@ function validateFieldValue(
       }
       return parsed;
     }
+
+    return normalizedString;
   }
 
   return normalized;
