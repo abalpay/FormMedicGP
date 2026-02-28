@@ -205,7 +205,7 @@ export default function DictatePage() {
       }
 
       setStep('review');
-      router.push('/forms/review');
+      router.push('/dashboard/forms/review');
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to process form';
@@ -305,7 +305,7 @@ export default function DictatePage() {
       <div className="sticky bottom-4 z-20 mx-auto max-w-xl w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg animate-fade-in-up" style={{ animationDelay: '150ms' }}>
         <div className="flex items-center justify-between">
           <Button variant="ghost" asChild>
-            <Link href="/forms/new">
+            <Link href="/dashboard/forms/new">
               <ArrowLeft className="w-4 h-4 mr-1.5" />
               Back
             </Link>

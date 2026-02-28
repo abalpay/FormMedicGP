@@ -14,17 +14,17 @@ import {
 import { MobileSidebar } from '@/components/layout/mobile-sidebar';
 
 const pageTitles: Record<string, string> = {
-  '/': 'Dashboard',
-  '/forms/new': 'New Form',
-  '/dictate': 'Describe',
-  '/settings': 'Settings',
+  '/dashboard': 'Dashboard',
+  '/dashboard/forms/new': 'New Form',
+  '/dashboard/dictate': 'Describe',
+  '/dashboard/settings': 'Settings',
 };
 
 export function Header() {
   const pathname = usePathname();
 
   const getTitle = () => {
-    if (pathname.startsWith('/forms/') && pathname !== '/forms/new') {
+    if (pathname.startsWith('/dashboard/forms/') && pathname !== '/dashboard/forms/new') {
       return 'Form Review';
     }
     return pageTitles[pathname] ?? 'FormMedic';
@@ -51,7 +51,7 @@ export function Header() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem asChild>
-            <a href="/settings" className="flex items-center gap-2">
+            <a href="/dashboard/settings" className="flex items-center gap-2">
               <User className="w-4 h-4" />
               Profile
             </a>

@@ -37,7 +37,7 @@ export default function NewFormPage() {
   const handlePatientDetailsSubmit = (data: PatientDetails) => {
     setPatientDetails(data);
     setStep('dictate');
-    router.push('/dictate');
+    router.push('/dashboard/dictate');
   };
 
   const handleBackToFormSelection = () => {

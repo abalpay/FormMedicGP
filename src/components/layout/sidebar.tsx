@@ -7,9 +7,9 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { NavItem } from '@/components/layout/nav-item';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: 'layout-dashboard' as const },
-  { href: '/forms/new', label: 'New Form', icon: 'file-plus' as const },
-  { href: '/settings', label: 'Settings', icon: 'settings' as const },
+  { href: '/dashboard', label: 'Dashboard', icon: 'layout-dashboard' as const },
+  { href: '/dashboard/forms/new', label: 'New Form', icon: 'file-plus' as const },
+  { href: '/dashboard/settings', label: 'Settings', icon: 'settings' as const },
 ];
 
 export function Sidebar() {
@@ -29,7 +29,7 @@ export function Sidebar() {
             <Stethoscope className="w-5 h-5 text-white" />
           </div>
           <Link
-            href="/"
+            href="/dashboard"
             className="font-semibold text-lg text-white font-[family-name:var(--font-display)] whitespace-nowrap transition-opacity duration-300"
             style={{ opacity: expanded ? 1 : 0 }}
             tabIndex={expanded ? 0 : -1}

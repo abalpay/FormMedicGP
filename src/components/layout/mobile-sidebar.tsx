@@ -14,9 +14,9 @@ import {
 import { NavItem } from '@/components/layout/nav-item';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: 'layout-dashboard' as const },
-  { href: '/forms/new', label: 'New Form', icon: 'file-plus' as const },
-  { href: '/settings', label: 'Settings', icon: 'settings' as const },
+  { href: '/dashboard', label: 'Dashboard', icon: 'layout-dashboard' as const },
+  { href: '/dashboard/forms/new', label: 'New Form', icon: 'file-plus' as const },
+  { href: '/dashboard/settings', label: 'Settings', icon: 'settings' as const },
 ];
 
 export function MobileSidebar() {
@@ -36,7 +36,7 @@ export function MobileSidebar() {
             <Stethoscope className="w-5 h-5 text-white" />
           </div>
           <SheetTitle>
-            <Link href="/" onClick={() => setOpen(false)} className="font-semibold text-lg text-white font-[family-name:var(--font-display)]">
+            <Link href="/dashboard" onClick={() => setOpen(false)} className="font-semibold text-lg text-white font-[family-name:var(--font-display)]">
               FormMedic
             </Link>
           </SheetTitle>

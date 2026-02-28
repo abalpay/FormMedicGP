@@ -40,7 +40,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/settings">
+              <Link href="/dashboard/settings">
                 Set up
                 <ArrowRight className="w-3.5 h-3.5 ml-1" />
               </Link>
@@ -54,7 +54,7 @@ export default function DashboardPage() {
         className="grid grid-cols-1 sm:grid-cols-2 gap-5 animate-fade-in-up"
         style={{ animationDelay: '100ms' }}
       >
-        <Link href="/forms/new" className="group">
+        <Link href="/dashboard/forms/new" className="group">
           <Card className="h-full transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/30 group-focus-visible:ring-2 group-focus-visible:ring-ring">
             <CardContent className="flex items-start gap-4 p-6">
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_24px_oklch(0.47_0.1_175/0.25)] transition-all duration-200">
@@ -107,7 +107,7 @@ export default function DashboardPage() {
               No forms yet. Create your first form to get started.
             </p>
             <Button variant="outline" size="sm" className="mt-4" asChild>
-              <Link href="/forms/new">
+              <Link href="/dashboard/forms/new">
                 <FilePlus className="w-4 h-4 mr-1.5" />
                 New Form
               </Link>

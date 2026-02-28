@@ -208,7 +208,7 @@ export default function FormReviewPage() {
 
   const handleNewForm = () => {
     reset();
-    router.push('/forms/new');
+    router.push('/dashboard/forms/new');
   };
 
   const data = editableData;
@@ -234,7 +234,7 @@ export default function FormReviewPage() {
         <div className="shrink-0 border-t bg-card py-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
           <div className="max-w-5xl mx-auto w-full px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <Button variant="ghost" asChild>
-              <Link href="/dictate">
+              <Link href="/dashboard/dictate">
                 <ArrowLeft className="w-4 h-4 mr-1.5" />
                 Back to Describe
               </Link>
@@ -291,7 +291,7 @@ export default function FormReviewPage() {
       {formColumn}
       <div className="sticky bottom-4 z-20 mx-auto max-w-2xl w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg flex items-center justify-between gap-3 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <Button variant="ghost" asChild>
-          <Link href="/dictate">
+          <Link href="/dashboard/dictate">
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Back to Description
           </Link>

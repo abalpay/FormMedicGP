@@ -158,3 +158,160 @@
 - [ ] Manual: Edit a field — preview updates near-instantly
 - [ ] Manual: Mobile — preview hidden by default, toggle button works
 - [ ] Manual: Non-SU415 form — single-column layout, no preview
+
+---
+
+# Phase 8: Marketing Landing Page (Claude Code — Frontend)
+
+## Objective
+Build a full marketing landing page for unauthenticated visitors. This is the entry point before sign-in.
+
+## Tasks
+- [ ] 8.1 Create `(marketing)` route group with its own layout (no sidebar/header)
+- [ ] 8.2 Hero section — headline, tagline, CTA buttons (Sign In / Get Started)
+- [ ] 8.3 Features section — key benefits with icons (AI dictation, 2-min forms, privacy-first, multi-form support)
+- [ ] 8.4 How It Works section — 3-4 step visual flow (Select Form → Dictate → Review → Download)
+- [ ] 8.5 Supported Forms section — showcase the 5 government forms with descriptions
+- [ ] 8.6 Privacy & Security section — explain the privacy-first architecture
+- [ ] 8.7 FAQ section — common questions (collapsible accordion)
+- [ ] 8.8 Footer — links, copyright, tagline
+- [ ] 8.9 Responsive design — mobile, tablet, desktop
+- [ ] 8.10 Navigation bar — logo, nav links (scroll-to-section), Sign In / Register buttons
+
+## Design Direction
+- Match existing "clinical luxury" design system (OKLCH teal/amber, Plus Jakarta Sans, glassmorphism)
+- Professional, trustworthy feel — this is medical software
+- Gradient hero, clean sections, subtle animations (fadeInUp)
+
+## Verification
+- [ ] `pnpm build` — 0 TypeScript errors
+- [ ] Landing page renders at `/` for unauthenticated users
+- [ ] All sections responsive on mobile/tablet/desktop
+- [ ] CTA buttons link to `/login` and `/register`
+
+---
+
+# Phase 9: Auth UI (Claude Code — Frontend)
+
+## Objective
+Replace the placeholder login/register pages with functional auth UI that connects to Supabase Auth.
+
+## Tasks
+- [ ] 9.1 Login page — email/password form + Google OAuth button
+- [ ] 9.2 Register page — email/password form + Google OAuth button + name field
+- [ ] 9.3 Forgot password page — email input, sends reset link
+- [ ] 9.4 Auth state management — client-side auth listener, redirect after login
+- [ ] 9.5 Update header/sidebar — show real user name/email, sign-out functionality
+- [ ] 9.6 Loading states during auth operations
+
+## Design
+- Use existing auth layout (gradient mesh bg, centered card)
+- Google OAuth button prominent (most doctors will use Google Workspace)
+- Divider between OAuth and email/password ("or continue with email")
+- Form validation with react-hook-form + zod
+
+## Verification
+- [ ] `pnpm build` — 0 TypeScript errors
+- [ ] Login page renders with both auth methods
+- [ ] Register page renders with both auth methods
+- [ ] Forms validate inputs before submission
+
+---
+
+# Phase 10: Patient Management UI (Claude Code — Frontend)
+
+> **BLOCKED:** Wait until the form flow rework (in-progress in another session) stabilizes. Patient selector lives inside the form wizard — building it against a moving target wastes work.
+
+## Objective
+Add patient persistence — doctors can save, search, and reuse patient details across forms.
+
+## Tasks
+- [ ] 10.1 Patient selector component — searchable dropdown/combobox on the patient details step
+- [ ] 10.2 "Select Existing Patient" flow — search by name, select, auto-fill details
+- [ ] 10.3 "Save Patient" checkbox — option to save new patient details during form creation
+- [ ] 10.4 Patient list page — view all saved patients (accessible from dashboard or settings)
+- [ ] 10.5 Edit patient details — update saved patient info
+- [ ] 10.6 Delete patient — with confirmation dialog
+
+## Integration Points
+- Patient selector appears in Step 2 (Patient Details) of the form wizard
+- When an existing patient is selected, all fields auto-populate
+- New patients can be saved during the form flow (checkbox: "Save this patient for future forms")
+
+## Verification
+- [ ] `pnpm build` — 0 TypeScript errors
+- [ ] Patient search filters results as user types
+- [ ] Selecting a patient fills all detail fields
+- [ ] New patient save works during form creation
+
+---
+
+# Phase 11: Form Saving & History (Claude Code — Frontend)
+
+> **BLOCKED:** Wait until the form flow rework stabilizes. Save button placement depends on the final review page structure.
+
+## Objective
+Allow doctors to save completed forms and revisit them from the dashboard.
+
+## Tasks
+- [ ] 11.1 "Save Form" button on review page — saves extracted data + PDF to Supabase
+- [ ] 11.2 Saved forms list on dashboard — replace empty state with real form history
+- [ ] 11.3 Saved form detail page — view saved form data, re-download PDF
+- [ ] 11.4 Delete saved form — with confirmation dialog
+- [ ] 11.5 Form status badges — completed, draft (future)
+
+## Integration Points
+- Save button appears alongside Download on the review page
+- Dashboard shows recent forms with patient name, form type, date
+- Click a saved form to view details and re-download
+
+## Verification
+- [ ] `pnpm build` — 0 TypeScript errors
+- [ ] Save button persists form to Supabase
+- [ ] Dashboard lists saved forms
+- [ ] Re-download produces the same PDF
+
+---
+
+# Phase 12: Backend Integration & Wiring (Claude Code — Orchestration)
+
+## Objective
+Wire all frontend components to the real backend APIs after reviewing Codex's handoff.
+
+## Prerequisites
+- Codex has completed all backend phases and delivered HANDOFF.md
+- Claude Code has reviewed and approved the handoff
+
+## Tasks
+- [ ] 12.1 Review Codex HANDOFF.md — verify API contracts, test endpoints
+- [ ] 12.2 Wire auth middleware — verify protected routes redirect correctly
+- [ ] 12.3 Wire doctor profile — settings page saves/loads from Supabase
+- [ ] 12.4 Wire patient management — patient CRUD connects to `/api/patients`
+- [ ] 12.5 Wire form saving — save/load connects to `/api/saved-forms`
+- [ ] 12.6 Wire dashboard — real data from Supabase (saved forms, patient count)
+- [ ] 12.7 Remove all mock data — delete MOCK_DOCTOR, hardcoded values
+- [ ] 12.8 Error handling — toast notifications for API errors, network failures
+- [ ] 12.9 Loading states — skeleton loaders while fetching data
+
+## Verification
+- [ ] `pnpm build` — 0 TypeScript errors
+- [ ] Full auth flow: register → login → dashboard
+- [ ] Full form flow: select form → select/create patient → dictate → process → review → save → view in dashboard
+- [ ] Sign out and verify data isolation (can't see another doctor's data)
+- [ ] Error states display correctly (network error, auth error)
+
+---
+
+# Phase 13: Polish & End-to-End Verification
+
+## Tasks
+- [ ] 13.1 End-to-end smoke test — complete flow from landing page to saved form
+- [ ] 13.2 Mobile responsiveness check — all new pages/components
+- [ ] 13.3 Edge cases — empty states, long names, special characters, slow network
+- [ ] 13.4 Accessibility basics — focus management, aria labels, keyboard navigation
+- [ ] 13.5 Performance — no unnecessary re-renders, efficient data fetching
+
+## Verification
+- [ ] `pnpm build` — 0 TypeScript errors
+- [ ] Full flow works on desktop and mobile
+- [ ] No console errors or warnings in production build
