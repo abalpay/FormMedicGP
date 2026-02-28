@@ -3,20 +3,18 @@ import type { User } from '@supabase/supabase-js';
 import type { DoctorProfile, SavedFormSummary } from '@/types';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
-import { mapDoctorProfileRow, mapSavedFormSummaryRow, type SavedFormSummaryRow } from '@/lib/backend-mappers';
+import { mapDoctorProfileRow, mapDashboardFormRow, mapSavedFormSummaryRow, type DashboardFormRow, type SavedFormSummaryRow } from '@/lib/backend-mappers';
+import type { Database } from '@/types/database';
+
+type DoctorProfileRow = Database['public']['Tables']['doctor_profiles']['Row'];
 
 export const getCurrentUser = cache(async (): Promise<User | null> => {
   const supabase = await createServerClient();
   const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (error) {
-    return null;
-  }
-
-  return user;
+  return session?.user ?? null;
 });
 
 export const getCurrentDoctorProfile = cache(async (): Promise<DoctorProfile | null> => {
@@ -50,6 +48,23 @@ export async function getSavedFormSummaries(doctorId: string): Promise<SavedForm
 
   return (data as SavedFormSummaryRow[]).map(mapSavedFormSummaryRow);
 }
+
+export const getDashboardData = cache(async () => {
+  const supabase = await createServerClient();
+  const { data, error } = await supabase.rpc('get_dashboard_data');
+
+  if (error || !data) return { profile: null, forms: [] as SavedFormSummary[] };
+
+  const raw = data as {
+    profile: DoctorProfileRow | null;
+    forms: DashboardFormRow[] | null;
+  };
+
+  return {
+    profile: raw.profile ? mapDoctorProfileRow(raw.profile) : null,
+    forms: (raw.forms ?? []).map(mapDashboardFormRow),
+  };
+});
 
 export async function signOut() {
   const supabase = createBrowserClient();
