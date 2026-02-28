@@ -30,6 +30,20 @@ export const metadata: Metadata = {
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
     shortcut: ['/favicon.ico'],
   },
+  openGraph: {
+    title: 'FormBridge GP',
+    description:
+      'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
+    siteName: 'FormBridge GP',
+    type: 'website',
+    locale: 'en_AU',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FormBridge GP',
+    description:
+      'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
+  },
 };
 
 export default function RootLayout({

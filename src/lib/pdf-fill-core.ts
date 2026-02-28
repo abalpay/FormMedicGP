@@ -65,9 +65,7 @@ function fillCheckBox(
 
   const changed = setCheckboxChecked(form, fieldName, shouldCheck, onValueHint);
   if (!changed) {
-    console.warn(
-      `[pdf-filler] Could not fill checkbox "${fieldName}" with "${value}"`
-    );
+    console.warn(`[pdf-filler] Could not fill checkbox "${fieldName}"`);
   }
 }
 
@@ -102,7 +100,7 @@ function fillCheckboxGroup(
   const selectedField = resolveGroupFieldSelection(fieldNames, value, pdfOptions);
   if (!selectedField) {
     console.warn(
-      `[pdf-filler] Could not resolve checkbox-group selection "${value}" for [${fieldNames.join(', ')}]`
+      `[pdf-filler] Could not resolve checkbox-group selection for [${fieldNames.join(', ')}]`
     );
     return;
   }
@@ -136,7 +134,7 @@ function fillSplitDate(
     month = m;
     year = y;
   } else {
-    console.warn(`[pdf-filler] Unrecognized date format: "${value}"`);
+    console.warn('[pdf-filler] Unrecognized date format for split-date field');
     return;
   }
 

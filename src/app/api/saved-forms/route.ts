@@ -63,9 +63,27 @@ export const POST = withAuth(async ({ request, auth }) => {
     return apiError('pdfBase64 is required', 400);
   }
 
+  const patientId = body.patientId?.trim() || null;
+  if (patientId) {
+    const { data: patient, error: patientError } = await auth.supabase
+      .from('patients')
+      .select('id')
+      .eq('id', patientId)
+      .eq('doctor_id', auth.doctorProfileRow.id)
+      .maybeSingle();
+
+    if (patientError) {
+      return apiError('Failed to validate patient', 500);
+    }
+
+    if (!patient) {
+      return apiError('Invalid patientId', 400);
+    }
+  }
+
   const insertPayload = {
     doctor_id: auth.doctorProfileRow.id,
-    patient_id: body.patientId ?? null,
+    patient_id: patientId,
     form_type: body.formType.trim(),
     form_name: body.formName.trim(),
     extracted_data: body.extractedData as import('@/types/database').Json,
@@ -85,4 +103,3 @@ export const POST = withAuth(async ({ request, auth }) => {
 
   return apiSuccess({ form: mapSavedFormRow(data) }, 201);
 });
-

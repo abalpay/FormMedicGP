@@ -1095,6 +1095,27 @@ export type Database = {
           },
         ]
       }
+      rate_limit_windows: {
+        Row: {
+          key: string
+          request_count: number
+          updated_at: string
+          window_start: string
+        }
+        Insert: {
+          key: string
+          request_count?: number
+          updated_at?: string
+          window_start: string
+        }
+        Update: {
+          key?: string
+          request_count?: number
+          updated_at?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           id: string
@@ -1118,7 +1139,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_rate_limit: {
+        Args: {
+          p_key: string
+          p_limit: number
+          p_window_seconds: number
+        }
+        Returns: {
+          allowed: boolean
+          request_limit: number
+          remaining: number
+          reset_at: string
+          retry_after_seconds: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
@@ -1271,4 +1305,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-
