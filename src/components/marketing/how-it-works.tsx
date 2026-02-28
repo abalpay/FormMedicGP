@@ -107,7 +107,7 @@ export function HowItWorks() {
                   <div className="w-16 h-16 rounded-2xl gradient-teal flex items-center justify-center shadow-[0_4px_20px_oklch(0.47_0.1_175/0.2)] group-hover:shadow-[0_4px_28px_oklch(0.47_0.1_175/0.35)] transition-shadow duration-300">
                     <item.icon className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-5xl font-extrabold text-muted-foreground/15 font-[family-name:var(--font-display)] select-none">
+                  <span className="text-5xl text-muted-foreground/15 font-[family-name:var(--font-display)] select-none">
                     {item.step}
                   </span>
                 </div>

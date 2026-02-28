@@ -22,7 +22,7 @@ export function Navbar() {
             priority
             sizes="36px"
           />
-          <span className="font-extrabold text-lg tracking-tight font-[family-name:var(--font-display)] leading-none text-foreground">
+          <span className="text-lg tracking-tight font-[family-name:var(--font-display)] leading-none text-foreground">
             FormBridge
             <span className="text-primary text-[0.9em] ml-0.5">GP</span>
           </span>
