@@ -149,18 +149,18 @@ export function Hero() {
                     ))}
                   </div>
                 </div>
-              </div>
 
-              {/* Accent badges — just 2, tucked close to the card */}
-              <div className="absolute -top-3 -right-3 z-10 rounded-xl bg-card border border-border shadow-md px-3 py-2 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-primary" />
-                <span className="text-xs font-semibold">De-identified</span>
-              </div>
-
-              <div className="absolute -bottom-3 -right-3 z-10 rounded-xl bg-card border border-border shadow-md px-3 py-2 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-accent-foreground" />
-                <span className="text-xs font-bold">1:47</span>
-                <span className="text-[10px] text-muted-foreground">avg</span>
+                {/* Status footer bar */}
+                <div className="flex items-center justify-between px-5 py-3 border-t border-border/60 bg-muted/20">
+                  <div className="flex items-center gap-1.5 text-primary">
+                    <Shield className="w-3.5 h-3.5" />
+                    <span className="text-[11px] font-medium">De-identified processing</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span className="text-[11px] font-medium"><span className="text-foreground font-semibold">1:47</span> avg completion</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
