@@ -1,4 +1,4 @@
-import { apiError, apiSuccess, withAuth } from '@/lib/api-utils';
+import { apiError, apiSuccess, withDoctorId } from '@/lib/api-utils';
 import {
   mapSavedFormSummaryRow,
   type SavedFormSummaryRow,
@@ -13,11 +13,7 @@ interface CreateSavedFormBody {
   status?: string;
 }
 
-export const GET = withAuth(async ({ request, auth }) => {
-  if (!auth.doctorProfileRow) {
-    return apiError('Doctor profile not found', 404);
-  }
-
+export const GET = withDoctorId(async ({ request, auth }) => {
   const url = new URL(request.url);
   const patientId = url.searchParams.get('patient_id');
 
@@ -26,7 +22,7 @@ export const GET = withAuth(async ({ request, auth }) => {
     .select(
       'id, form_type, form_name, status, created_at, updated_at, patients(customer_name)'
     )
-    .eq('doctor_id', auth.doctorProfileRow.id)
+    .eq('doctor_id', auth.doctorId)
     .order('created_at', { ascending: false });
 
   if (patientId) {
@@ -43,11 +39,7 @@ export const GET = withAuth(async ({ request, auth }) => {
   });
 });
 
-export const POST = withAuth(async ({ request, auth }) => {
-  if (!auth.doctorProfileRow) {
-    return apiError('Doctor profile not found', 404);
-  }
-
+export const POST = withDoctorId(async ({ request, auth }) => {
   const body = (await request.json()) as CreateSavedFormBody;
   if (!body.formType?.trim()) {
     return apiError('formType is required', 400);
@@ -68,7 +60,7 @@ export const POST = withAuth(async ({ request, auth }) => {
       .from('patients')
       .select('id')
       .eq('id', patientId)
-      .eq('doctor_id', auth.doctorProfileRow.id)
+      .eq('doctor_id', auth.doctorId)
       .maybeSingle();
 
     if (patientError) {
@@ -81,7 +73,7 @@ export const POST = withAuth(async ({ request, auth }) => {
   }
 
   const insertPayload = {
-    doctor_id: auth.doctorProfileRow.id,
+    doctor_id: auth.doctorId,
     patient_id: patientId,
     form_type: body.formType.trim(),
     form_name: body.formName.trim(),

@@ -112,7 +112,7 @@ export default async function Image() {
               lineHeight: 1.3,
             }}
           >
-            Dictate. Don't type.
+            Dictate. Don&apos;t type.
           </span>
           <span
             style={{

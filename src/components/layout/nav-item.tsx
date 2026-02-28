@@ -31,6 +31,7 @@ export function NavItem({ href, label, icon, expanded = true }: NavItemProps) {
   const link = (
     <Link
       href={href}
+      prefetch={true}
       className={cn(
         'relative flex items-center h-10 rounded-lg text-sm font-medium transition-all duration-200',
         expanded ? 'gap-3 px-3' : 'justify-center px-0',

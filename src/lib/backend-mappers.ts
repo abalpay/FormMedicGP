@@ -1,9 +1,13 @@
-import type { DoctorProfile, Patient, SavedForm, SavedFormMeta, SavedFormSummary } from '@/types';
+import type { DoctorProfile, Patient, PatientListItem, SavedForm, SavedFormMeta, SavedFormSummary } from '@/types';
 import type { Database } from '@/types/database';
 
 type DoctorProfileRow = Database['public']['Tables']['doctor_profiles']['Row'];
 type PatientRow = Database['public']['Tables']['patients']['Row'];
 type SavedFormRow = Database['public']['Tables']['saved_forms']['Row'];
+type PatientListRow = Pick<
+  PatientRow,
+  'id' | 'customer_name' | 'date_of_birth' | 'address' | 'updated_at'
+>;
 
 export type SavedFormSummaryRow = Pick<
   SavedFormRow,
@@ -53,6 +57,16 @@ export function mapPatientRow(row: PatientRow): Patient {
     caredPersonDob: row.cared_person_dob,
     caredPersonCrn: toText(row.cared_person_crn),
     createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export function mapPatientListRow(row: PatientListRow): PatientListItem {
+  return {
+    id: row.id,
+    customerName: row.customer_name,
+    dateOfBirth: row.date_of_birth,
+    address: toText(row.address),
     updatedAt: row.updated_at,
   };
 }
@@ -125,4 +139,3 @@ export function mapSavedFormSummaryRow(row: SavedFormSummaryRow): SavedFormSumma
     updatedAt: row.updated_at,
   };
 }
-

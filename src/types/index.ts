@@ -40,6 +40,14 @@ export interface Patient {
   updatedAt: string;
 }
 
+export interface PatientListItem {
+  id: string;
+  customerName: string;
+  dateOfBirth: string | null;
+  address: string;
+  updatedAt: string;
+}
+
 export interface SavedForm {
   id: string;
   doctorId: string;

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { BrandLogo } from '@/components/brand/brand-logo';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,11 @@ const navItems = [
 
 export function MobileSidebar() {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    navItems.forEach((item) => router.prefetch(item.href));
+  }, [router]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen} modal={true}>

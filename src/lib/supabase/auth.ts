@@ -53,16 +53,24 @@ export const getDashboardData = cache(async () => {
   const supabase = await createServerClient();
   const { data, error } = await supabase.rpc('get_dashboard_data');
 
-  if (error || !data) return { profile: null, forms: [] as SavedFormSummary[] };
+  if (error || !data) {
+    return {
+      profile: null,
+      recentForms: [] as SavedFormSummary[],
+      todayFormsCount: 0,
+    };
+  }
 
   const raw = data as {
     profile: DoctorProfileRow | null;
-    forms: DashboardFormRow[] | null;
+    recent_forms: DashboardFormRow[] | null;
+    today_forms_count: number | null;
   };
 
   return {
     profile: raw.profile ? mapDoctorProfileRow(raw.profile) : null,
-    forms: (raw.forms ?? []).map(mapDashboardFormRow),
+    recentForms: (raw.recent_forms ?? []).map(mapDashboardFormRow),
+    todayFormsCount: raw.today_forms_count ?? 0,
   };
 });
 
@@ -73,4 +81,3 @@ export async function signOut() {
     throw error;
   }
 }
-

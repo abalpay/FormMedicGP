@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { BrandLogo } from '@/components/brand/brand-logo';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { NavItem } from '@/components/layout/nav-item';
@@ -14,6 +15,11 @@ const navItems = [
 
 export function Sidebar() {
   const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    navItems.forEach((item) => router.prefetch(item.href));
+  }, [router]);
 
   return (
     <TooltipProvider>

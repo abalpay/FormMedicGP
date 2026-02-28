@@ -28,24 +28,19 @@ function isProfileComplete(profile: DoctorProfile): boolean {
 interface DashboardContentProps {
   profile: DoctorProfile | null;
   forms: SavedFormSummary[];
+  todayFormsCount: number;
 }
 
-export function DashboardContent({ profile, forms }: DashboardContentProps) {
+export function DashboardContent({
+  profile,
+  forms,
+  todayFormsCount,
+}: DashboardContentProps) {
   const doctorName = profile?.name || 'Doctor';
   const showProfileBanner = !profile || !isProfileComplete(profile);
 
-  const todayForms = forms.filter((f) => {
-    const created = new Date(f.createdAt);
-    const now = new Date();
-    return (
-      created.getFullYear() === now.getFullYear() &&
-      created.getMonth() === now.getMonth() &&
-      created.getDate() === now.getDate()
-    );
-  });
-
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6" data-testid="dashboard-content">
       {/* Welcome */}
       <div className="animate-fade-in-up rounded-2xl gradient-teal px-6 py-5 text-white">
         <h2 className="text-2xl font-bold font-[family-name:var(--font-display)]">
@@ -115,13 +110,13 @@ export function DashboardContent({ profile, forms }: DashboardContentProps) {
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-foreground font-[family-name:var(--font-display)]">Forms Today</h3>
                 <Badge variant="secondary" className="text-xs">
-                  {todayForms.length}
+                  {todayFormsCount}
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                {todayForms.length === 0
+                {todayFormsCount === 0
                   ? 'No forms completed today.'
-                  : `${todayForms.length} form${todayForms.length !== 1 ? 's' : ''} completed today.`}
+                  : `${todayFormsCount} form${todayFormsCount !== 1 ? 's' : ''} completed today.`}
               </p>
             </div>
           </CardContent>

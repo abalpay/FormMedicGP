@@ -32,7 +32,7 @@ export function PatientSearchCombobox({ onSelect }: PatientSearchComboboxProps) 
       setLoading(true);
       try {
         const res = await fetch(
-          `/api/patients?search=${encodeURIComponent(trimmed)}`
+          `/api/patients?detail=full&limit=10&search=${encodeURIComponent(trimmed)}`
         );
         if (!res.ok) throw new Error();
         const data = await res.json();

@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useTransition } from 'react';
+import { Suspense, useEffect, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
@@ -32,11 +32,21 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isNavigating, startTransition] = useTransition();
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const nextPath = searchParams.get('next') || '/dashboard';
 
   useEffect(() => {
     router.prefetch(nextPath);
   }, [router, nextPath]);
+
+  useEffect(() => {
+    const callbackError = searchParams.get('error');
+    if (callbackError) {
+      toast.error('Authentication failed. Please try again.', {
+        id: 'auth-callback-error',
+      });
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -62,19 +72,18 @@ function LoginForm() {
       return;
     }
 
+    setIsRedirecting(true);
+    router.prefetch(nextPath);
+
     startTransition(() => {
       router.replace(nextPath);
       router.refresh();
     });
-  };
 
-  // Show error from callback if present
-  const callbackError = searchParams.get('error');
-  if (callbackError) {
-    toast.error('Authentication failed. Please try again.', {
-      id: 'auth-callback-error',
-    });
-  }
+    setTimeout(() => {
+      window.location.assign(nextPath);
+    }, 1800);
+  };
 
   return (
     <div className="space-y-6 animate-fade-in-up">
@@ -88,7 +97,7 @@ function LoginForm() {
       </div>
 
       {/* Email/password form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" data-testid="login-form">
         <div className="space-y-2">
           <Label htmlFor="email" className="text-[13px] font-medium">
             Email
@@ -133,9 +142,10 @@ function LoginForm() {
         <Button
           type="submit"
           variant="teal" className="w-full h-11 font-semibold"
-          disabled={isSubmitting || isNavigating}
+          disabled={isSubmitting || isNavigating || isRedirecting}
+          data-testid="login-submit"
         >
-          {isSubmitting || isNavigating ? (
+          {isSubmitting || isNavigating || isRedirecting ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Signing in...

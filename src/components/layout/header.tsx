@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LogOut, User } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -105,10 +106,10 @@ export function Header({ userName, userEmail }: HeaderProps) {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <a href="/dashboard/settings" className="flex items-center gap-2">
+            <Link href="/dashboard/settings" className="flex items-center gap-2">
               <User className="w-4 h-4" />
               Profile
-            </a>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

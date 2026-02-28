@@ -1,0 +1,50 @@
+{
+  "base_url": "http://127.0.0.1:3007",
+  "iterations": 5,
+  "results": {
+    "login_redirect": {
+      "samples_ms": [
+        241.84
+      ],
+      "p50_ms": 241.84,
+      "p95_ms": 241.84,
+      "avg_ms": 241.84
+    },
+    "dashboard_to_settings": {
+      "samples_ms": [
+        34.36,
+        39.11,
+        42.86,
+        439.16,
+        812.48
+      ],
+      "p50_ms": 42.86,
+      "p95_ms": 812.48,
+      "avg_ms": 273.59
+    },
+    "settings_to_dashboard": {
+      "samples_ms": [
+        30.36,
+        31.12,
+        42.41,
+        44.54,
+        54.06
+      ],
+      "p50_ms": 42.41,
+      "p95_ms": 54.06,
+      "avg_ms": 40.5
+    },
+    "settings_patients_tab": {
+      "samples_ms": [
+        9.22,
+        9.94,
+        12.56,
+        12.71,
+        17.14
+      ],
+      "p50_ms": 12.56,
+      "p95_ms": 17.14,
+      "avg_ms": 12.31
+    }
+  }
+}
