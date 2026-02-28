@@ -76,96 +76,91 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right -- Floating UI cards collage */}
+          {/* Right -- Single cohesive app preview */}
           <div
-            className="hidden lg:block relative h-[460px] animate-fade-in-up"
+            className="hidden lg:block animate-fade-in-up"
             style={{ animationDelay: '300ms' }}
           >
-            {/* Privacy badge — floating top-right, slightly overlaps main card */}
-            <div className="absolute -top-2 right-4 z-30 rounded-xl bg-card border border-border shadow-md px-3.5 py-2.5 flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold">De-identified</p>
-                <p className="text-[10px] text-muted-foreground">PII never reaches AI</p>
-              </div>
-            </div>
-
-            {/* Main dictation card */}
-            <div className="absolute top-8 left-4 right-12 rounded-2xl bg-card border border-border shadow-xl p-5 z-20">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl gradient-teal flex items-center justify-center">
-                    <FileText className="w-4.5 h-4.5 text-white" />
+            <div className="relative">
+              {/* Main app card — the whole story in one panel */}
+              <div className="rounded-2xl bg-card border border-border shadow-[0_8px_40px_oklch(0_0_0/0.08)] overflow-hidden">
+                {/* Form header bar */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-border/60">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl gradient-teal flex items-center justify-center">
+                      <FileText className="w-4.5 h-4.5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Centrelink Medical Certificate</p>
+                      <p className="text-[11px] text-muted-foreground">SU415 — Temporary incapacity</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold">Centrelink Medical Certificate</p>
-                    <p className="text-[11px] text-muted-foreground">SU415</p>
+                  <div className="px-2.5 py-1 rounded-full bg-red-50 border border-red-200">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      <span className="text-[11px] font-medium text-red-600">Recording</span>
+                    </div>
                   </div>
                 </div>
-                <div className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                    <span className="text-[11px] font-medium text-red-600">Recording</span>
-                  </div>
-                </div>
-              </div>
 
-              {/* Waveform */}
-              <div className="rounded-xl bg-muted/50 p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
-                    <Mic className="w-4 h-4 text-red-500" />
+                {/* Dictation area */}
+                <div className="px-5 py-4 border-b border-border/60">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
+                      <Mic className="w-4 h-4 text-red-500" />
+                    </div>
+                    <div className="flex-1 flex items-end gap-[2px] h-8">
+                      {[3, 5, 2, 7, 4, 6, 2, 8, 4, 5, 3, 6, 5, 7, 3, 6, 4, 2, 5, 4, 7, 3, 5, 6, 4, 3, 6, 5, 7, 4, 3, 5, 6, 4, 2, 5, 7, 3, 6, 4].map((h, i) => (
+                        <div
+                          key={i}
+                          className="flex-1 rounded-[1px] bg-primary/50"
+                          style={{ height: `${h * 11}%` }}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">0:47</span>
                   </div>
-                  <div className="flex-1 flex items-end gap-[2px] h-7">
-                    {[3, 5, 2.5, 7, 4.5, 6, 2, 8, 4, 5.5, 3, 6.5, 5, 7.5, 3.5, 6, 4.5, 2.5, 5.5, 4, 7, 3, 5, 6.5, 4.5, 3.5, 6, 5, 7, 4, 3, 5.5, 6.5, 4.5, 2.5].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-sm bg-primary/50"
-                        style={{ height: `${h * 10}%` }}
-                      />
+                  <p className="text-[13px] text-foreground/70 leading-relaxed">
+                    <span className="text-foreground">&quot;Patient presents with lower back pain of three weeks duration,</span>{' '}
+                    radiating to the left leg. Unable to perform usual work duties. Currently managed with physiotherapy and NSAIDs...&quot;
+                  </p>
+                </div>
+
+                {/* Extracted fields */}
+                <div className="px-5 py-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Extracted Fields</p>
+                    <div className="flex items-center gap-1.5 text-primary">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span className="text-[11px] font-medium">14 fields mapped</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { label: 'Diagnosis', value: 'Lumbar radiculopathy' },
+                      { label: 'Duration', value: '3 weeks' },
+                      { label: 'Work capacity', value: 'Unfit for usual duties' },
+                      { label: 'Treatment', value: 'Physiotherapy, NSAIDs' },
+                    ].map((field) => (
+                      <div key={field.label} className="rounded-lg bg-muted/40 border border-border/50 px-3 py-2">
+                        <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-wider">{field.label}</p>
+                        <p className="text-[12px] font-medium text-foreground mt-0.5">{field.value}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground italic leading-relaxed">
-                  &quot;Patient presents with lower back pain of three weeks duration, radiating to the left leg...&quot;
-                </p>
               </div>
-            </div>
 
-            {/* Extracted fields card — overlaps main card bottom */}
-            <div className="absolute top-[255px] -left-2 z-30 rounded-2xl bg-card border border-border shadow-lg p-4 w-[260px]">
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2.5">Extracted Fields</p>
-              <div className="grid grid-cols-2 gap-1.5">
-                {[
-                  { label: 'Diagnosis', value: 'Lumbar radiculopathy' },
-                  { label: 'Duration', value: '3 weeks' },
-                  { label: 'Capacity', value: 'Unfit for work' },
-                  { label: 'Treatment', value: 'Physio, NSAIDs' },
-                ].map((field) => (
-                  <div key={field.label} className="rounded-lg bg-muted/50 px-2.5 py-1.5">
-                    <p className="text-[8px] text-muted-foreground font-medium uppercase tracking-wider">{field.label}</p>
-                    <p className="text-[11px] font-medium text-foreground mt-0.5">{field.value}</p>
-                  </div>
-                ))}
+              {/* Accent badges — just 2, tucked close to the card */}
+              <div className="absolute -top-3 -right-3 z-10 rounded-xl bg-card border border-border shadow-md px-3 py-2 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" />
+                <span className="text-xs font-semibold">De-identified</span>
               </div>
-            </div>
 
-            {/* Auto-filled badge — between main card and extracted fields, right side */}
-            <div className="absolute top-[270px] right-8 z-30 rounded-full bg-primary/10 border border-primary/15 px-3 py-1.5 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-xs font-medium text-primary">14 fields auto-filled</span>
-            </div>
-
-            {/* Time badge — bottom-right, overlapping extracted fields area */}
-            <div className="absolute bottom-2 right-12 z-30 rounded-xl bg-card border border-border shadow-md px-3.5 py-2.5 flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center">
+              <div className="absolute -bottom-3 -right-3 z-10 rounded-xl bg-card border border-border shadow-md px-3 py-2 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-accent-foreground" />
-              </div>
-              <div>
-                <p className="text-lg font-bold text-foreground leading-none">1:47</p>
-                <p className="text-[10px] text-muted-foreground">Average completion</p>
+                <span className="text-xs font-bold">1:47</span>
+                <span className="text-[10px] text-muted-foreground">avg</span>
               </div>
             </div>
           </div>
