@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { DoctorProfile, SavedFormSummary } from '@/types';
+import { isDashboardProfileComplete } from '@/lib/doctor-profile-requirements';
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-AU', {
@@ -11,18 +12,6 @@ function formatDate(iso: string): string {
     month: 'short',
     year: 'numeric',
   });
-}
-
-function isProfileComplete(profile: DoctorProfile): boolean {
-  return Boolean(
-    profile.name &&
-    profile.providerNumber &&
-    profile.qualifications &&
-    profile.practiceName &&
-    profile.practiceAddress &&
-    profile.practicePhone &&
-    profile.practiceAbn
-  );
 }
 
 interface DashboardContentProps {
@@ -37,7 +26,8 @@ export function DashboardContent({
   todayFormsCount,
 }: DashboardContentProps) {
   const doctorName = profile?.name || 'Doctor';
-  const showProfileBanner = !profile || !isProfileComplete(profile);
+  const showProfileBanner =
+    !profile || !isDashboardProfileComplete(profile);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6" data-testid="dashboard-content">

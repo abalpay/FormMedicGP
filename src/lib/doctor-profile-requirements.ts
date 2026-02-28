@@ -23,6 +23,10 @@ interface DoctorProfileLike {
   practicePhone?: string;
 }
 
+function hasValue(value: string | undefined): boolean {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
 function isRequiredField(field: FormField): boolean {
   return Boolean(field.required || field.validation?.required);
 }
@@ -72,8 +76,14 @@ export function getMissingDoctorProfileFields(
 
   return getRequiredDoctorProfileFields(schema).filter((key) => {
     const value = profile[key];
-    return typeof value !== 'string' || value.trim().length === 0;
+    return !hasValue(value);
   });
+}
+
+export function isDashboardProfileComplete(
+  profile: Pick<DoctorProfileLike, 'name' | 'providerNumber'>
+): boolean {
+  return hasValue(profile.name) && hasValue(profile.providerNumber);
 }
 
 export function formatDoctorProfileFieldLabel(
@@ -96,4 +106,3 @@ export function formatDoctorProfileFieldLabel(
       return field;
   }
 }
-

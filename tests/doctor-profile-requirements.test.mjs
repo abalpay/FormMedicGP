@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   getRequiredDoctorProfileFields,
   getMissingDoctorProfileFields,
+  isDashboardProfileComplete,
 } from '../src/lib/doctor-profile-requirements.ts';
 
 function makeSchema(requiredDoctorKeys) {
@@ -41,4 +42,32 @@ test('getMissingDoctorProfileFields only reports schema-required blanks', () => 
   });
 
   assert.deepEqual(missing, ['providerNumber']);
+});
+
+test('isDashboardProfileComplete requires only name and provider number', () => {
+  assert.equal(
+    isDashboardProfileComplete({
+      name: 'Dr Jane Smith',
+      providerNumber: '123456AB',
+      qualifications: '',
+      practiceName: '',
+      practiceAddress: '',
+      practicePhone: '',
+      practiceAbn: '',
+    }),
+    true
+  );
+
+  assert.equal(
+    isDashboardProfileComplete({
+      name: 'Dr Jane Smith',
+      providerNumber: '',
+      qualifications: 'MBBS',
+      practiceName: 'Clinic',
+      practiceAddress: '1 Main St, Sydney NSW 2000',
+      practicePhone: '0299999999',
+      practiceAbn: '12345678901',
+    }),
+    false
+  );
 });
