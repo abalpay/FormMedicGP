@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,23 +8,33 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AddressAutocomplete } from '@/components/ui/address-autocomplete';
+import { PracticeAutocomplete } from '@/components/ui/practice-autocomplete';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Save } from 'lucide-react';
 import { toast } from 'sonner';
+import {
+  GP_QUALIFICATION_OPTIONS,
+  parseQualificationsValue,
+  setOtherQualifications,
+  toggleKnownQualification,
+  type KnownQualification,
+} from '@/lib/doctor-profile-qualifications';
+import { cn } from '@/lib/utils';
 
 const doctorProfileSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   providerNumber: z
     .string()
-    .regex(/^(\d{6}[A-Z]{2})?$/, 'Provider number must be 6 digits followed by 2 letters (e.g. 123456AB)'),
-  qualifications: z.string(),
+    .min(1, 'Provider number is required')
+    .regex(
+      /^\d{6}[A-Za-z]{2}$/,
+      'Provider number must be 6 digits followed by 2 letters (e.g. 123456AB)'
+    ),
+  qualifications: z.string().min(1, 'Select at least one qualification'),
   practiceName: z.string().min(2, 'Practice name is required'),
   practiceAddress: z.string().min(5, 'Practice address is required'),
   practicePhone: z.string(),
-  practiceAbn: z
-    .string()
-    .regex(/^(\d{11})?$/, 'ABN must be exactly 11 digits'),
 });
 
 type DoctorProfileValues = z.infer<typeof doctorProfileSchema>;
@@ -43,6 +53,7 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
     handleSubmit,
     watch,
     setValue,
+    getValues,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<DoctorProfileValues>({
@@ -55,7 +66,6 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
           practiceName: initialData.practiceName ?? '',
           practiceAddress: initialData.practiceAddress ?? '',
           practicePhone: initialData.practicePhone ?? '',
-          practiceAbn: initialData.practiceAbn ?? '',
         }
       : {
           name: '',
@@ -64,9 +74,16 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
           practiceName: '',
           practiceAddress: '',
           practicePhone: '',
-          practiceAbn: '',
         },
   });
+
+  const qualificationsValue = watch('qualifications') ?? '';
+  const parsedQualifications = useMemo(
+    () => parseQualificationsValue(qualificationsValue),
+    [qualificationsValue]
+  );
+  const selectedKnownQualifications = parsedQualifications.selectedKnown;
+  const otherQualificationsInput = parsedQualifications.otherQualifications.join(', ');
 
   useEffect(() => {
     if (initialData !== undefined) return; // Skip fetch when server data provided
@@ -83,7 +100,6 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
           practiceName: profile.practiceName ?? '',
           practiceAddress: profile.practiceAddress ?? '',
           practicePhone: profile.practicePhone ?? '',
-          practiceAbn: profile.practiceAbn ?? '',
         });
       } catch {
         toast.error('Failed to load your profile');
@@ -94,12 +110,38 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
     loadProfile();
   }, [reset, initialData]);
 
+  const handleQualificationToggle = (qualification: KnownQualification) => {
+    const nextValue = toggleKnownQualification(qualificationsValue, qualification);
+    setValue('qualifications', nextValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const handleOtherQualificationsChange = (value: string) => {
+    const nextValue = setOtherQualifications(qualificationsValue, value);
+    setValue('qualifications', nextValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
   const onSubmit = async (data: DoctorProfileValues) => {
     try {
+      const payload = {
+        ...data,
+        name: data.name.trim(),
+        providerNumber: data.providerNumber.trim().toUpperCase(),
+        qualifications: data.qualifications.trim(),
+        practiceName: data.practiceName.trim(),
+        practiceAddress: data.practiceAddress.trim(),
+        practicePhone: data.practicePhone.trim(),
+      };
+
       const res = await fetch('/api/doctor-profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
@@ -146,6 +188,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <p className="text-xs text-muted-foreground">
+        Fields marked <span className="text-destructive">*</span> are required.
+      </p>
       {/* Doctor details */}
       <Card className="shadow-sm">
         <CardHeader>
@@ -154,7 +199,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">
+                Full Name <span className="text-destructive">*</span>
+              </Label>
               <Input
                 id="name"
                 placeholder="Dr. Jane Smith"
@@ -167,7 +214,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="providerNumber">Provider Number</Label>
+              <Label htmlFor="providerNumber">
+                Provider Number <span className="text-destructive">*</span>
+              </Label>
               <Input
                 id="providerNumber"
                 placeholder="123456AB"
@@ -177,6 +226,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
                 className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('providerNumber')}
               />
+              <p className="text-xs text-muted-foreground">
+                Required to generate most forms.
+              </p>
               {errors.providerNumber && (
                 <p className="text-xs text-destructive">
                   {errors.providerNumber.message}
@@ -185,12 +237,39 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="qualifications">Qualifications</Label>
+            <Label>
+              Qualifications <span className="text-destructive">*</span>
+            </Label>
+            <input type="hidden" {...register('qualifications')} />
+            <div className="flex flex-wrap gap-2">
+              {GP_QUALIFICATION_OPTIONS.map((option) => {
+                const isSelected = selectedKnownQualifications.includes(option.value);
+                return (
+                  <Button
+                    key={option.value}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    aria-pressed={isSelected}
+                    className={cn(
+                      isSelected &&
+                        'border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+                    )}
+                    onClick={() => handleQualificationToggle(option.value)}
+                  >
+                    {option.label}
+                  </Button>
+                );
+              })}
+            </div>
             <Input
-              id="qualifications"
-              placeholder="MBBS, FRACGP"
+              id="qualificationsOther"
+              placeholder="Other (e.g. Skin Cancer Cert)"
+              value={otherQualificationsInput}
+              onChange={(event) =>
+                handleOtherQualificationsChange(event.target.value)
+              }
               className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
-              {...register('qualifications')}
             />
             {errors.qualifications && (
               <p className="text-xs text-destructive">
@@ -208,13 +287,33 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="practiceName">Practice Name</Label>
-            <Input
+            <Label htmlFor="practiceName">
+              Practice Name <span className="text-destructive">*</span>
+            </Label>
+            <PracticeAutocomplete
               id="practiceName"
+              value={watch('practiceName') ?? ''}
+              onChange={(value) =>
+                setValue('practiceName', value, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              onAddressSelect={(address) => {
+                const currentAddress = getValues('practiceAddress')?.trim() ?? '';
+                if (!currentAddress || currentAddress !== address) {
+                  setValue('practiceAddress', address, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  });
+                }
+              }}
               placeholder="Sunrise Medical Centre"
               className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
-              {...register('practiceName')}
             />
+            <p className="text-xs text-muted-foreground">
+              Select a suggested practice to auto-fill address.
+            </p>
             {errors.practiceName && (
               <p className="text-xs text-destructive">
                 {errors.practiceName.message}
@@ -222,7 +321,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="practiceAddress">Practice Address</Label>
+            <Label htmlFor="practiceAddress">
+              Practice Address <span className="text-destructive">*</span>
+            </Label>
             <AddressAutocomplete
               id="practiceAddress"
               value={watch('practiceAddress') ?? ''}
@@ -249,22 +350,6 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
               {errors.practicePhone && (
                 <p className="text-xs text-destructive">
                   {errors.practicePhone.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="practiceAbn">ABN</Label>
-              <Input
-                id="practiceAbn"
-                placeholder="12345678901"
-                inputMode="numeric"
-                autoComplete="off"
-                className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
-                {...register('practiceAbn')}
-              />
-              {errors.practiceAbn && (
-                <p className="text-xs text-destructive">
-                  {errors.practiceAbn.message}
                 </p>
               )}
             </div>

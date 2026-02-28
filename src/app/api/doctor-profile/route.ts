@@ -8,7 +8,6 @@ interface UpdateDoctorProfileBody {
   practiceName?: string;
   practiceAddress?: string;
   practicePhone?: string;
-  practiceAbn?: string;
 }
 
 export const GET = withAuth(async ({ auth }) => {
@@ -24,15 +23,21 @@ export const PUT = withAuth(async ({ request, auth }) => {
   if (!body.name || body.name.trim().length === 0) {
     return apiError('name is required', 400);
   }
+  const providerNumber = body.providerNumber?.trim() ?? '';
+  if (!/^\d{6}[A-Za-z]{2}$/.test(providerNumber)) {
+    return apiError(
+      'providerNumber is required and must be 6 digits followed by 2 letters (e.g. 123456AB)',
+      400
+    );
+  }
 
   const updatePayload = {
     name: body.name.trim(),
-    provider_number: body.providerNumber?.trim() ?? '',
+    provider_number: providerNumber.toUpperCase(),
     qualifications: body.qualifications?.trim() ?? '',
     practice_name: body.practiceName?.trim() ?? '',
     practice_address: body.practiceAddress?.trim() ?? '',
     practice_phone: body.practicePhone?.trim() ?? '',
-    practice_abn: body.practiceAbn?.trim() ?? '',
   };
 
   const { data, error } = await auth.supabase
@@ -48,4 +53,3 @@ export const PUT = withAuth(async ({ request, auth }) => {
 
   return apiSuccess({ profile: mapDoctorProfileRow(data) });
 });
-
