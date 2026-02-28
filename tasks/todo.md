@@ -167,27 +167,29 @@
 Build a full marketing landing page for unauthenticated visitors. This is the entry point before sign-in.
 
 ## Tasks
-- [ ] 8.1 Create `(marketing)` route group with its own layout (no sidebar/header)
-- [ ] 8.2 Hero section — headline, tagline, CTA buttons (Sign In / Get Started)
-- [ ] 8.3 Features section — key benefits with icons (AI dictation, 2-min forms, privacy-first, multi-form support)
-- [ ] 8.4 How It Works section — 3-4 step visual flow (Select Form → Dictate → Review → Download)
-- [ ] 8.5 Supported Forms section — showcase the 5 government forms with descriptions
-- [ ] 8.6 Privacy & Security section — explain the privacy-first architecture
-- [ ] 8.7 FAQ section — common questions (collapsible accordion)
-- [ ] 8.8 Footer — links, copyright, tagline
-- [ ] 8.9 Responsive design — mobile, tablet, desktop
-- [ ] 8.10 Navigation bar — logo, nav links (scroll-to-section), Sign In / Register buttons
+- [x] 8.1 Create `(marketing)` route group with its own layout (no sidebar/header)
+- [x] 8.2 Hero section — "Dictate. Don't type." headline, eyebrow badge, floating product mockup, dual CTAs
+- [x] 8.3 Features section — editorial 2x2 grid with left-aligned header, icon+text layout
+- [x] 8.4 How It Works section — connected 4-step timeline with watermark step numbers
+- [x] 8.5 Supported Forms section — form library cards with tags + "More coming" placeholder
+- [x] 8.6 Privacy & Security section — dark teal reversal with "Privacy isn't a feature. It's the architecture."
+- [x] 8.7 FAQ section — split layout with sticky left header + accordion
+- [x] 8.8 Footer — editorial grid, logo, nav links, copyright
+- [x] 8.9 Responsive design — mobile, tablet, desktop (verified via Playwright screenshots)
+- [x] 8.10 Navigation bar — fixed glass navbar, logo, nav links, Sign In / Get Started buttons
+- [x] 8.11 CTA banner — "Stop typing. Start dictating." with gradient background
+- [x] 8.12 Dashboard routes moved to `/dashboard` prefix (all Link hrefs and router.push updated)
 
-## Design Direction
-- Match existing "clinical luxury" design system (OKLCH teal/amber, Plus Jakarta Sans, glassmorphism)
-- Professional, trustworthy feel — this is medical software
-- Gradient hero, clean sections, subtle animations (fadeInUp)
+## Design
+- Editorial medical luxury aesthetic — asymmetric hero, generous whitespace, dramatic typography
+- Dot grid background patterns, radial gradient overlays, teal/amber OKLCH palette
+- Dark section reversal for privacy, split-panel layout for FAQ
 
 ## Verification
-- [ ] `pnpm build` — 0 TypeScript errors
-- [ ] Landing page renders at `/` for unauthenticated users
-- [ ] All sections responsive on mobile/tablet/desktop
-- [ ] CTA buttons link to `/login` and `/register`
+- [x] `pnpm build` — 0 TypeScript errors
+- [x] Landing page renders at `/` for unauthenticated users
+- [x] All sections responsive on mobile/tablet/desktop
+- [x] CTA buttons link to `/login` and `/register`
 
 ---
 
@@ -197,24 +199,25 @@ Build a full marketing landing page for unauthenticated visitors. This is the en
 Replace the placeholder login/register pages with functional auth UI that connects to Supabase Auth.
 
 ## Tasks
-- [ ] 9.1 Login page — email/password form + Google OAuth button
-- [ ] 9.2 Register page — email/password form + Google OAuth button + name field
-- [ ] 9.3 Forgot password page — email input, sends reset link
-- [ ] 9.4 Auth state management — client-side auth listener, redirect after login
-- [ ] 9.5 Update header/sidebar — show real user name/email, sign-out functionality
-- [ ] 9.6 Loading states during auth operations
+- [x] 9.1 Login page — email/password form + Google OAuth button
+- [x] 9.2 Register page — email/password form + Google OAuth button + name field
+- [x] 9.3 Forgot password page — email input, sends reset link
+- [x] 9.4 Auth state management — middleware route protection, redirect after login
+- [x] 9.5 Update header/sidebar — show real user name/email, sign-out functionality
+- [x] 9.6 Loading states during auth operations
 
 ## Design
-- Use existing auth layout (gradient mesh bg, centered card)
+- Split-panel auth layout (45% teal branding left, 55% form right on desktop)
 - Google OAuth button prominent (most doctors will use Google Workspace)
-- Divider between OAuth and email/password ("or continue with email")
+- Divider between OAuth and email/password ("or")
 - Form validation with react-hook-form + zod
+- Lazy Supabase client creation to avoid SSR prerender failures
 
 ## Verification
-- [ ] `pnpm build` — 0 TypeScript errors
-- [ ] Login page renders with both auth methods
-- [ ] Register page renders with both auth methods
-- [ ] Forms validate inputs before submission
+- [x] `pnpm build` — 0 TypeScript errors
+- [x] Login page renders with both auth methods
+- [x] Register page renders with both auth methods
+- [x] Forms validate inputs before submission
 
 ---
 
