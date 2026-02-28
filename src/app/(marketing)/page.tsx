@@ -270,9 +270,9 @@ export default function LandingPage() {
               Why FormMedic
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-[family-name:var(--font-display)]">
-              Built for clinicians who&nbsp;value
+              Built for clinicians who
               <br className="hidden sm:block" />
-              their time.
+              value their time.
             </h2>
           </div>
 

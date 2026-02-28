@@ -24,6 +24,45 @@ export interface PatientDetails {
   customerEmail?: string;
 }
 
+export interface Patient {
+  id: string;
+  doctorId: string;
+  customerName: string;
+  dateOfBirth: string | null;
+  crn: string;
+  address: string;
+  phone: string;
+  email: string;
+  caredPersonName: string;
+  caredPersonDob: string | null;
+  caredPersonCrn: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SavedForm {
+  id: string;
+  doctorId: string;
+  patientId: string | null;
+  formType: string;
+  formName: string;
+  extractedData: Record<string, unknown>;
+  pdfBase64: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SavedFormSummary {
+  id: string;
+  formType: string;
+  formName: string;
+  patientName: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface FormField {
   label?: string;
   type: 'text' | 'date' | 'number' | 'radio' | 'checkbox';
