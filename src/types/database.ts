@@ -1139,6 +1139,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_dashboard_data: {
+        Args: Record<string, never>
+        Returns: Json
+      }
       check_rate_limit: {
         Args: {
           p_key: string

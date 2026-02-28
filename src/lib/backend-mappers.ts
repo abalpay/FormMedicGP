@@ -88,6 +88,28 @@ export function mapSavedFormMetaRow(row: SavedFormMetaRow): SavedFormMeta {
   };
 }
 
+export interface DashboardFormRow {
+  id: string;
+  form_type: string;
+  form_name: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  patient_name: string | null;
+}
+
+export function mapDashboardFormRow(row: DashboardFormRow): SavedFormSummary {
+  return {
+    id: row.id,
+    formType: row.form_type,
+    formName: row.form_name,
+    patientName: row.patient_name,
+    status: row.status,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
 export function mapSavedFormSummaryRow(row: SavedFormSummaryRow): SavedFormSummary {
   const joinedPatients = Array.isArray(row.patients)
     ? row.patients[0]
