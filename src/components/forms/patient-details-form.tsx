@@ -178,16 +178,15 @@ export function PatientDetailsForm({
         </div>
       )}
 
-      {/* Privacy notice — only shown when save option is off */}
-      {!showSaveOption && (
-        <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
-          <ShieldCheck className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-muted-foreground">
-            Patient details are processed in your browser and never stored on our
-            servers. They are only used to fill the PDF form.
-          </p>
-        </div>
-      )}
+      {/* Privacy notice */}
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
+        <ShieldCheck className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+        <p className="text-xs text-muted-foreground">
+          {showSaveOption
+            ? 'Patient details are only used to fill the PDF form. If you check "Save patient", they will be stored securely in your account for future use.'
+            : 'Patient details are processed in your browser and never stored on our servers. They are only used to fill the PDF form.'}
+        </p>
+      </div>
 
       {/* Sticky pill footer */}
       <div className="sticky bottom-4 z-20 mx-auto max-w-md w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg">
