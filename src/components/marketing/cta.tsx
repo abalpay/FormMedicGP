@@ -7,7 +7,7 @@ import { AnimateOnScroll } from '@/components/marketing/animate-on-scroll';
 
 export function CTA() {
   return (
-    <section className="relative py-20 sm:py-28 overflow-hidden">
+    <section className="grain-overlay relative py-20 sm:py-28 overflow-hidden">
       <div className="absolute inset-0 gradient-teal" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-20%,oklch(0.55_0.12_175/0.4),transparent)]" />
       <div

@@ -201,7 +201,7 @@ function PipelineNode({ stage }: { stage: PipelineStage }) {
 
 export function Privacy() {
   return (
-    <section id="privacy" className="relative py-20 sm:py-32 overflow-hidden">
+    <section id="privacy" className="grain-overlay relative py-20 sm:py-32 overflow-hidden">
       {/* Dark teal background */}
       <div className="absolute inset-0 bg-[oklch(0.18_0.035_180)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_70%_30%,oklch(0.25_0.06_175/0.6),transparent)]" />
