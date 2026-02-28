@@ -29,8 +29,14 @@ const doctorProfileSchema = z.object({
 
 type DoctorProfileValues = z.infer<typeof doctorProfileSchema>;
 
-export function DoctorProfileForm() {
-  const [isLoading, setIsLoading] = useState(true);
+import type { DoctorProfile } from '@/types';
+
+interface DoctorProfileFormProps {
+  initialData?: DoctorProfile | null;
+}
+
+export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
+  const [isLoading, setIsLoading] = useState(!initialData);
 
   const {
     register,
@@ -41,18 +47,29 @@ export function DoctorProfileForm() {
     formState: { errors, isSubmitting },
   } = useForm<DoctorProfileValues>({
     resolver: zodResolver(doctorProfileSchema),
-    defaultValues: {
-      name: '',
-      providerNumber: '',
-      qualifications: '',
-      practiceName: '',
-      practiceAddress: '',
-      practicePhone: '',
-      practiceAbn: '',
-    },
+    defaultValues: initialData
+      ? {
+          name: initialData.name ?? '',
+          providerNumber: initialData.providerNumber ?? '',
+          qualifications: initialData.qualifications ?? '',
+          practiceName: initialData.practiceName ?? '',
+          practiceAddress: initialData.practiceAddress ?? '',
+          practicePhone: initialData.practicePhone ?? '',
+          practiceAbn: initialData.practiceAbn ?? '',
+        }
+      : {
+          name: '',
+          providerNumber: '',
+          qualifications: '',
+          practiceName: '',
+          practiceAddress: '',
+          practicePhone: '',
+          practiceAbn: '',
+        },
   });
 
   useEffect(() => {
+    if (initialData !== undefined) return; // Skip fetch when server data provided
     async function loadProfile() {
       try {
         const res = await fetch('/api/doctor-profile');
@@ -75,7 +92,7 @@ export function DoctorProfileForm() {
       }
     }
     loadProfile();
-  }, [reset]);
+  }, [reset, initialData]);
 
   const onSubmit = async (data: DoctorProfileValues) => {
     try {

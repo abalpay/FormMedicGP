@@ -1,10 +1,11 @@
-'use client';
-
+import { getCurrentDoctorProfile } from '@/lib/supabase/auth';
 import { DoctorProfileForm } from '@/components/forms/doctor-profile-form';
 import { PatientList } from '@/components/patients/patient-list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const profile = await getCurrentDoctorProfile();
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8 animate-fade-in-up">
@@ -23,7 +24,7 @@ export default function SettingsPage() {
         </TabsList>
 
         <TabsContent value="profile" className="mt-6">
-          <DoctorProfileForm />
+          <DoctorProfileForm initialData={profile} />
         </TabsContent>
 
         <TabsContent value="patients" className="mt-6">

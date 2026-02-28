@@ -1,10 +1,11 @@
+import { cache } from 'react';
 import type { User } from '@supabase/supabase-js';
-import type { DoctorProfile } from '@/types';
+import type { DoctorProfile, SavedFormSummary } from '@/types';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
-import { mapDoctorProfileRow } from '@/lib/backend-mappers';
+import { mapDoctorProfileRow, mapSavedFormSummaryRow, type SavedFormSummaryRow } from '@/lib/backend-mappers';
 
-export async function getCurrentUser(): Promise<User | null> {
+export const getCurrentUser = cache(async (): Promise<User | null> => {
   const supabase = await createServerClient();
   const {
     data: { user },
@@ -16,9 +17,9 @@ export async function getCurrentUser(): Promise<User | null> {
   }
 
   return user;
-}
+});
 
-export async function getCurrentDoctorProfile(): Promise<DoctorProfile | null> {
+export const getCurrentDoctorProfile = cache(async (): Promise<DoctorProfile | null> => {
   const supabase = await createServerClient();
   const {
     data: { user },
@@ -40,6 +41,34 @@ export async function getCurrentDoctorProfile(): Promise<DoctorProfile | null> {
   }
 
   return mapDoctorProfileRow(data);
+});
+
+export async function getSavedFormSummaries(): Promise<SavedFormSummary[]> {
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) return [];
+
+  const { data: profileRow } = await supabase
+    .from('doctor_profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (!profileRow) return [];
+
+  const { data, error } = await supabase
+    .from('saved_forms')
+    .select('id, form_type, form_name, status, created_at, updated_at, patients(customer_name)')
+    .eq('doctor_id', profileRow.id)
+    .order('created_at', { ascending: false });
+
+  if (error || !data) return [];
+
+  return (data as SavedFormSummaryRow[]).map(mapSavedFormSummaryRow);
 }
 
 export async function signOut() {
