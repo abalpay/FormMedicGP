@@ -38,7 +38,7 @@ export function CTA() {
           <Button
             size="lg"
             variant="ghost"
-            className="h-12 px-8 text-[15px] font-medium border border-white/20 text-white/90 bg-transparent hover:bg-white/10 hover:text-white hover:border-white/30"
+            className="h-12 px-8 text-[15px] font-medium border border-white/30 text-white bg-white/10 hover:bg-white/20 hover:border-white/40"
             asChild
           >
             <Link href="/login">Sign In</Link>
