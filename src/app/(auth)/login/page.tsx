@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
@@ -31,6 +31,12 @@ export default function LoginPage() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isNavigating, startTransition] = useTransition();
+  const nextPath = searchParams.get('next') || '/dashboard';
+
+  useEffect(() => {
+    router.prefetch(nextPath);
+  }, [router, nextPath]);
 
   const {
     register,
@@ -56,8 +62,10 @@ function LoginForm() {
       return;
     }
 
-    const next = searchParams.get('next') || '/dashboard';
-    router.push(next);
+    startTransition(() => {
+      router.replace(nextPath);
+      router.refresh();
+    });
   };
 
   // Show error from callback if present
@@ -125,9 +133,9 @@ function LoginForm() {
         <Button
           type="submit"
           variant="teal" className="w-full h-11 font-semibold"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isNavigating}
         >
-          {isSubmitting ? (
+          {isSubmitting || isNavigating ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Signing in...
