@@ -48,6 +48,18 @@ function LoginForm() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if (!isRedirecting) return;
+
+    const timeoutId = window.setTimeout(() => {
+      window.location.assign(nextPath);
+    }, 1800);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isRedirecting, nextPath]);
+
   const {
     register,
     handleSubmit,
@@ -77,12 +89,7 @@ function LoginForm() {
 
     startTransition(() => {
       router.replace(nextPath);
-      router.refresh();
     });
-
-    setTimeout(() => {
-      window.location.assign(nextPath);
-    }, 1800);
   };
 
   return (
