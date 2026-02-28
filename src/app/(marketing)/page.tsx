@@ -7,7 +7,6 @@ import {
   FileStack,
   FileText,
   ArrowRight,
-  CheckCircle2,
   Lock,
   EyeOff,
   Server,
@@ -17,6 +16,7 @@ import {
   AudioLines,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Hero } from '@/components/marketing/hero';
 import {
   Accordion,
   AccordionContent,
@@ -95,171 +95,7 @@ const faqItems = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* ── Navbar ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/70 glass">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg gradient-teal shadow-[0_0_24px_oklch(0.47_0.1_175/0.25)] group-hover:shadow-[0_0_32px_oklch(0.47_0.1_175/0.4)] transition-shadow duration-300">
-              <Stethoscope className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-extrabold text-lg tracking-tight font-[family-name:var(--font-display)]">
-              FormMedic
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8 text-[13px] font-medium text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors duration-200">Features</a>
-            <a href="#how-it-works" className="hover:text-foreground transition-colors duration-200">How It Works</a>
-            <a href="#forms" className="hover:text-foreground transition-colors duration-200">Forms</a>
-            <a href="#privacy" className="hover:text-foreground transition-colors duration-200">Privacy</a>
-            <a href="#faq" className="hover:text-foreground transition-colors duration-200">FAQ</a>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-[13px] font-medium" asChild>
-              <Link href="/login">Sign In</Link>
-            </Button>
-            <Button size="sm" className="text-[13px] font-semibold gradient-teal border-0 text-white shadow-[0_2px_12px_oklch(0.47_0.1_175/0.3)] hover:shadow-[0_4px_20px_oklch(0.47_0.1_175/0.4)] transition-shadow duration-300" asChild>
-              <Link href="/register">Get Started</Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
-
-      {/* ── Hero ── */}
-      <section className="relative pt-16 overflow-hidden">
-        {/* Background: layered depth */}
-        <div className="absolute inset-0 gradient-teal" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_20%_-10%,oklch(0.55_0.12_175/0.5),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_80%_110%,oklch(0.35_0.08_185/0.6),transparent)]" />
-        {/* Subtle dot grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
-
-        <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-24 sm:py-32 lg:py-40">
-          <div className="max-w-3xl">
-            {/* Eyebrow */}
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/90 text-xs font-medium tracking-wide uppercase animate-fade-in-up"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              AI-Powered Medical Forms for Australian GPs
-            </div>
-
-            {/* Headline */}
-            <h1
-              className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight text-white font-[family-name:var(--font-display)] animate-fade-in-up"
-              style={{ animationDelay: '80ms' }}
-            >
-              Dictate.
-              <br />
-              <span className="text-white/50">Don&apos;t type.</span>
-            </h1>
-
-            {/* Subheading */}
-            <p
-              className="mt-6 text-lg sm:text-xl leading-relaxed text-white/70 max-w-xl animate-fade-in-up"
-              style={{ animationDelay: '160ms' }}
-            >
-              Speak your clinical notes naturally. FormMedic fills out Centrelink,
-              WorkCover, and DSP forms in under two minutes — with patient
-              privacy built into every step.
-            </p>
-
-            {/* CTAs */}
-            <div
-              className="mt-10 flex flex-col sm:flex-row items-start gap-3 animate-fade-in-up"
-              style={{ animationDelay: '240ms' }}
-            >
-              <Button
-                size="lg"
-                className="h-12 px-7 text-[15px] font-semibold gradient-amber text-foreground border-0 shadow-[0_4px_24px_oklch(0.795_0.177_78/0.4)] hover:shadow-[0_6px_32px_oklch(0.795_0.177_78/0.5)] hover:scale-[1.02] transition-all duration-300"
-                asChild
-              >
-                <Link href="/register">
-                  Start For Free
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-12 px-7 text-[15px] font-medium border-white/20 text-white/90 hover:bg-white/10 hover:text-white hover:border-white/30 transition-all duration-300"
-                asChild
-              >
-                <Link href="/login">Sign In</Link>
-              </Button>
-            </div>
-
-            {/* Social proof micro-stat */}
-            <div
-              className="mt-12 flex items-center gap-6 text-white/50 text-sm animate-fade-in-up"
-              style={{ animationDelay: '320ms' }}
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-white/40" />
-                <span>5 government forms</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-white/40" />
-                <span>Privacy-first pipeline</span>
-              </div>
-              <div className="flex items-center gap-2 hidden sm:flex">
-                <CheckCircle2 className="w-4 h-4 text-white/40" />
-                <span>Free early access</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Decorative floating card — right side on large screens */}
-          <div
-            className="hidden lg:block absolute top-32 right-8 xl:right-16 w-[340px] animate-fade-in-up"
-            style={{ animationDelay: '400ms' }}
-          >
-            <div className="rounded-2xl bg-white/[0.08] border border-white/[0.12] p-6 backdrop-blur-sm shadow-[0_8px_40px_oklch(0_0_0/0.3)]">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl gradient-amber flex items-center justify-center shadow-[0_0_20px_oklch(0.795_0.177_78/0.3)]">
-                  <AudioLines className="w-5 h-5 text-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">Recording...</p>
-                  <p className="text-xs text-white/50">SU415 — Centrelink</p>
-                </div>
-              </div>
-              <div className="space-y-2.5">
-                <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-white/30 to-white/15" />
-                </div>
-                <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-white/25 to-white/10" />
-                </div>
-                <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div className="h-full w-5/6 rounded-full bg-gradient-to-r from-white/30 to-white/15" />
-                </div>
-              </div>
-              <p className="mt-4 text-xs text-white/40 leading-relaxed italic">
-                &quot;Patient presents with lower back pain of three weeks duration, radiating to the left leg...&quot;
-              </p>
-            </div>
-
-            {/* Small floating badge */}
-            <div className="absolute -bottom-4 -left-6 px-3 py-2 rounded-xl bg-white/[0.1] border border-white/[0.15] backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[oklch(0.55_0.16_145)] shadow-[0_0_8px_oklch(0.55_0.16_145)]" />
-                <span className="text-xs font-medium text-white/80">14 fields auto-filled</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom gradient fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
-      </section>
+      <Hero />
 
       {/* ── Features ── */}
       <section id="features" className="py-24 sm:py-32">
