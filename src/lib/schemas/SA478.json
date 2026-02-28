@@ -9,6 +9,51 @@
     "What specialist assessments, investigations, or objective findings support this?",
     "What treatment has been tried, and how has the patient responded?"
   ],
+  "dictationGuide": [
+    {
+      "id": "assessmentContext",
+      "title": "Assessment Context",
+      "description": "Indicate whether specialist evidence and treatment information is available.",
+      "questions": [
+        {
+          "key": "hasSpecialistEvidence",
+          "label": "Specialist/Supporting Evidence Available?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "targetFieldKey": "hasSpecialistEvidence",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "hasTreatmentPlan",
+          "label": "Current or Planned Treatment?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "targetFieldKey": "hasTreatmentPlan",
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "clinicalEvidence",
+      "title": "Clinical Evidence Summary",
+      "description": "Summarize the patient's conditions, functional impact, treatment, and prognosis for DSP assessment.",
+      "questions": [
+        {
+          "key": "clinicalNarrative",
+          "label": "Clinical Evidence",
+          "inputType": "textarea",
+          "placeholder": "e.g. Chronic lumbar spondylosis with bilateral L4/5 foraminal stenosis (MRI 2025). Bilateral knee OA. Unable to stand >15min, sit >30min, lift >3kg. Tried duloxetine, physio, cortisone injections — partial relief only. Condition fully treated and stabilised. Cannot work 15+ hrs/week.",
+          "requiredForBestFill": true
+        }
+      ]
+    }
+  ],
   "sections": {
     "patient": {
       "source": "manual_entry",
@@ -209,11 +254,35 @@
           "pdfField": "Q6Details",
           "pdfFieldType": "text",
           "llmInstruction": "Describe ongoing treatment, medication, therapy, and expected outcomes."
+        },
+        "hasSpecialistEvidence": {
+          "label": "Has Specialist/Supporting Evidence",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q5",
+          "pdfFieldType": "checkbox",
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes", "no": "No" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' if specialist reports, investigations, or supporting evidence is described in the narrative. Otherwise 'no'."
+        },
+        "hasTreatmentPlan": {
+          "label": "Has Current/Planned Treatment",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q6",
+          "pdfFieldType": "checkbox",
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes", "no": "No" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' if any current or planned treatment is described. Otherwise 'no'."
         }
       }
     }
   },
-  "systemPromptAdditions": "For SA478 DSP medical evidence: focus on severity, permanence, and functional impairment across work-related tasks. Prefer objective findings and explicit functional limitations over vague descriptors.",
+  "systemPromptAdditions": "For SA478 DSP medical evidence: focus on severity, permanence, and functional impairment across work-related tasks. Prefer objective findings and explicit functional limitations over vague descriptors.\n- Extract conditions and functional impact into 'dspPrimaryConditions'.\n- If hasSpecialistEvidence is 'yes', extract specialist evidence into 'dspSpecialistEvidence'. If 'no', omit the field.\n- If hasTreatmentPlan is 'yes', extract treatment details into 'dspTreatmentPlan'. If 'no', omit the field.",
   "allowedUnmappedPdfFields": [
     "1.0",
     "1.1",
@@ -241,8 +310,6 @@
     "Q4Time1.1",
     "Q4Time2.0",
     "Q4Time2.1",
-    "Q5",
-    "Q6",
     "Sign"
   ]
 }
