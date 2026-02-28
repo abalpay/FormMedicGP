@@ -7,8 +7,10 @@ import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSelector } from '@/components/forms/form-selector';
 import { PatientDetailsForm } from '@/components/forms/patient-details-form';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
+import { formDetailsToPatientBody } from '@/lib/patient-mappers';
 import { Badge } from '@/components/ui/badge';
 import type { PatientDetails } from '@/types';
+import { toast } from 'sonner';
 
 import { Sparkles } from 'lucide-react';
 
@@ -24,6 +26,7 @@ export default function NewFormPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const [savePatient, setSavePatient] = useState(false);
   const { selectedFormType, selectedFormLabel, patientDetails, setFormType, setPatientDetails, setStep } =
     useFormFlowStore();
 
@@ -35,6 +38,18 @@ export default function NewFormPage() {
   };
 
   const handlePatientDetailsSubmit = (data: PatientDetails) => {
+    if (savePatient) {
+      fetch('/api/patients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formDetailsToPatientBody(data)),
+      })
+        .then((res) => {
+          if (res.ok) toast.success('Patient saved');
+          else toast.error('Failed to save patient');
+        })
+        .catch(() => toast.error('Failed to save patient'));
+    }
     setPatientDetails(data);
     setStep('dictate');
     router.push('/dashboard/dictate');
@@ -71,6 +86,8 @@ export default function NewFormPage() {
                 initialValues={patientDetails}
                 onSubmit={handlePatientDetailsSubmit}
                 onBack={handleBackToFormSelection}
+                showSaveOption
+                onSavePatientChange={setSavePatient}
               />
             </div>
           </CardContent>
