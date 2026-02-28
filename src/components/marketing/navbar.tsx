@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Stethoscope, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -21,12 +22,16 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/70 glass">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg gradient-teal shadow-[0_0_24px_oklch(0.47_0.1_175/0.25)] group-hover:shadow-[0_0_32px_oklch(0.47_0.1_175/0.4)] transition-shadow duration-300">
-            <Stethoscope className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-extrabold text-lg tracking-tight font-[family-name:var(--font-display)]">
-            FormBridge GP
+        <Link href="/" className="flex items-center gap-2.5 group" aria-label="FormBridge GP home">
+          <BrandLogo
+            variant="icon"
+            className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-opacity duration-200 group-hover:opacity-90"
+            priority
+            sizes="36px"
+          />
+          <span className="font-extrabold text-lg tracking-tight font-[family-name:var(--font-display)] leading-none text-foreground">
+            FormBridge
+            <span className="text-primary text-[0.9em] ml-0.5">GP</span>
           </span>
         </Link>
 

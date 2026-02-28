@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Stethoscope } from 'lucide-react';
+import { BrandLogo } from '@/components/brand/brand-logo';
 
 export default function AuthLayout({
   children,
@@ -23,11 +23,14 @@ export default function AuthLayout({
         {/* Logo — top */}
         <div className="relative z-10">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/15 shadow-[0_0_24px_oklch(0.6_0.1_175/0.3)] group-hover:shadow-[0_0_32px_oklch(0.6_0.1_175/0.4)] transition-shadow duration-300">
-              <Stethoscope className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-extrabold text-xl text-white tracking-tight font-[family-name:var(--font-display)]">
-              FormBridge GP
+            <BrandLogo
+              variant="iconOnDark"
+              className="w-10 h-10 transition-opacity duration-200 group-hover:opacity-90"
+              sizes="40px"
+            />
+            <span className="font-extrabold text-xl text-white tracking-tight font-[family-name:var(--font-display)] leading-none">
+              FormBridge
+              <span className="text-[#B7E8DE] ml-0.5">GP</span>
             </span>
           </Link>
         </div>
@@ -102,9 +105,11 @@ export default function AuthLayout({
         {/* Mobile logo (shown only on mobile) */}
         <div className="lg:hidden mb-8 flex flex-col items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex items-center justify-center w-11 h-11 rounded-xl gradient-teal shadow-[0_4px_24px_oklch(0.47_0.1_175/0.25)]">
-              <Stethoscope className="w-6 h-6 text-white" />
-            </div>
+            <BrandLogo
+              variant="icon"
+              className="w-11 h-11"
+              sizes="44px"
+            />
             <span className="font-extrabold text-xl tracking-tight font-[family-name:var(--font-display)]">
               FormBridge GP
             </span>

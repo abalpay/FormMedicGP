@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 84" role="img" aria-labelledby="fbg-title-sd fbg-desc-sd">
+  <title id="fbg-title-sd">FormBridge GP sidebar logo on dark backgrounds</title>
+  <desc id="fbg-desc-sd">Compact lockup with high-contrast bridge icon and white wordmark for dark surfaces.</desc>
+  <g transform="translate(2 4) scale(0.54)">
+    <path fill="#FFFFFF" d="M16 52Q76 14 136 52L136 70Q76 42 16 70Z" />
+    <path fill="#B7E8DE" d="M16 78Q76 66 136 78L136 87Q76 75 16 87Z" />
+    <rect x="36" y="94" width="20" height="36" rx="4" fill="#FFFFFF" />
+    <rect x="96" y="94" width="20" height="36" rx="4" fill="#FFFFFF" />
+  </g>
+  <text x="90" y="50" fill="#FFFFFF" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="46" font-weight="700">FormBridge</text>
+  <text x="336" y="50" fill="#B7E8DE" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="700">GP</text>
+</svg>

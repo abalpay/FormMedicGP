@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, Stethoscope } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -32,9 +33,11 @@ export function MobileSidebar() {
       </SheetTrigger>
       <SheetContent side="left" className="w-[220px] p-0 gradient-sidebar border-r-0">
         <SheetHeader className="px-6 h-16 flex flex-row items-center gap-3 border-b border-white/10">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/15 shadow-[0_0_20px_oklch(0.6_0.1_175/0.3)]">
-            <Stethoscope className="w-5 h-5 text-white" />
-          </div>
+          <BrandLogo
+            variant="iconOnDark"
+            className="w-9 h-9"
+            sizes="36px"
+          />
           <SheetTitle>
             <Link href="/dashboard" onClick={() => setOpen(false)} className="font-semibold text-lg text-white font-[family-name:var(--font-display)]">
               FormBridge GP

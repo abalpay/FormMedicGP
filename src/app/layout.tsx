@@ -18,6 +18,18 @@ export const metadata: Metadata = {
   title: 'FormBridge GP',
   description:
     'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
+  manifest: '/site.webmanifest',
+  themeColor: '#0E7C66',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+    shortcut: ['/favicon.ico'],
+  },
 };
 
 export default function RootLayout({

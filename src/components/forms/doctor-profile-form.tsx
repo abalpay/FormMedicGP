@@ -17,14 +17,14 @@ const doctorProfileSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   providerNumber: z
     .string()
-    .regex(/^\d{6}[A-Z]{2}$/, 'Provider number must be 6 digits followed by 2 letters (e.g. 123456AB)'),
-  qualifications: z.string().min(2, 'Qualifications are required'),
+    .regex(/^(\d{6}[A-Z]{2})?$/, 'Provider number must be 6 digits followed by 2 letters (e.g. 123456AB)'),
+  qualifications: z.string(),
   practiceName: z.string().min(2, 'Practice name is required'),
   practiceAddress: z.string().min(5, 'Practice address is required'),
-  practicePhone: z.string().min(8, 'Phone number is required'),
+  practicePhone: z.string(),
   practiceAbn: z
     .string()
-    .regex(/^\d{11}$/, 'ABN must be exactly 11 digits'),
+    .regex(/^(\d{11})?$/, 'ABN must be exactly 11 digits'),
 });
 
 type DoctorProfileValues = z.infer<typeof doctorProfileSchema>;

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Stethoscope } from 'lucide-react';
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { NavItem } from '@/components/layout/nav-item';
 
@@ -25,9 +25,11 @@ export function Sidebar() {
       >
         {/* Logo */}
         <div className="flex items-center h-16 px-4 gap-3 shrink-0">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/15 shadow-[0_0_20px_oklch(0.6_0.1_175/0.3)] shrink-0">
-            <Stethoscope className="w-5 h-5 text-white" />
-          </div>
+          <BrandLogo
+            variant="iconOnDark"
+            className="w-10 h-10 shrink-0"
+            sizes="40px"
+          />
           <Link
             href="/dashboard"
             className="font-semibold text-lg text-white font-[family-name:var(--font-display)] whitespace-nowrap transition-opacity duration-300"

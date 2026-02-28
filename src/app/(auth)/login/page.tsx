@@ -31,7 +31,6 @@ export default function LoginPage() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const {
     register,
@@ -40,24 +39,6 @@ function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
-  const handleGoogleSignIn = async () => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    setIsGoogleLoading(true);
-    const supabase = createClient();
-    const redirectTo = `${window.location.origin}/auth/callback`;
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo },
-    });
-    if (error) {
-      toast.error(error.message);
-      setIsGoogleLoading(false);
-    }
-  };
 
   const onSubmit = async (data: LoginFormData) => {
     if (typeof window === 'undefined') {
@@ -83,12 +64,9 @@ function LoginForm() {
   // Show error from callback if present
   const callbackError = searchParams.get('error');
   if (callbackError) {
-    toast.error(
-      callbackError === 'oauth_callback_failed'
-        ? 'Google sign-in failed. Please try again.'
-        : 'Authentication failed. Please try again.',
-      { id: 'auth-callback-error' }
-    );
+    toast.error('Authentication failed. Please try again.', {
+      id: 'auth-callback-error',
+    });
   }
 
   return (
@@ -100,34 +78,6 @@ function LoginForm() {
         <p className="text-sm text-muted-foreground mt-1">
           Sign in to continue to FormBridge GP.
         </p>
-      </div>
-
-      {/* Google OAuth */}
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full h-11 font-medium"
-        onClick={handleGoogleSignIn}
-        disabled={isGoogleLoading || isSubmitting}
-      >
-        {isGoogleLoading ? (
-          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-        ) : (
-          <GoogleIcon className="w-4 h-4 mr-2" />
-        )}
-        Continue with Google
-      </Button>
-
-      {/* Divider */}
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border/60" />
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-background px-3 text-muted-foreground/60 uppercase tracking-wider font-medium">
-            or
-          </span>
-        </div>
       </div>
 
       {/* Email/password form */}
