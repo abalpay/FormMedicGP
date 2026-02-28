@@ -6,6 +6,7 @@ import { SocialProof } from '@/components/marketing/social-proof';
 import { Privacy } from '@/components/marketing/privacy';
 import { FAQ } from '@/components/marketing/faq';
 import { CTA } from '@/components/marketing/cta';
+import { ComplianceStrip } from '@/components/marketing/compliance-strip';
 import { Footer } from '@/components/marketing/footer';
 
 export default function LandingPage() {
@@ -19,6 +20,7 @@ export default function LandingPage() {
       <Privacy />
       <FAQ />
       <CTA />
+      <ComplianceStrip />
       <Footer />
     </div>
   );
