@@ -17,6 +17,7 @@
     <rect class="fbg-primary" x="96" y="94" width="20" height="36" rx="4" />
   </g>
 
-  <text x="90" y="50" class="fbg-dark" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="46" font-weight="700">FormBridge</text>
-  <text x="336" y="50" class="fbg-primary" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="700">GP</text>
+  <text y="50" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-weight="700">
+    <tspan x="90" class="fbg-dark" font-size="46">FormBridge</tspan><tspan class="fbg-primary" font-size="30"> GP</tspan>
+  </text>
 </svg>
