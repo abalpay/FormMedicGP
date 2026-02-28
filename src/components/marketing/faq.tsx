@@ -16,7 +16,7 @@ const faqItems = [
   {
     question: 'How does the de-identification pipeline protect patient data?',
     answer:
-      'Patient identifying information — name, date of birth, address, Medicare number — is separated from clinical data before it reaches the AI model. The AI only ever processes de-identified clinical notes. Patient details are merged back into the final PDF server-side, ensuring PII never touches external AI services.',
+      'Dictation audio is transcribed by Deepgram first. Before clinical notes are sent to the extraction LLM, known identifiers (name, DOB, address, Medicare/CRN, phone, email) are de-identified from the text where detected. Patient details are merged back server-side only for final PDF generation.',
   },
   {
     question: 'How accurate is the AI extraction?',
@@ -26,7 +26,7 @@ const faqItems = [
   {
     question: 'Is any patient data stored on your servers?',
     answer:
-      'No. Form data is processed in-memory during your session and is not persisted. PDF generation happens server-side and the result is streamed directly to your browser. Nothing is retained after the session ends.',
+      'Processing runs in-memory, but data can be stored when you choose to save it. Using Save Patient or Save Form persists records so you can search patients and revisit completed forms later.',
   },
   {
     question: 'Does it work on mobile and tablet?',

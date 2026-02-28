@@ -3,21 +3,21 @@ import { EyeOff, Server, Lock } from 'lucide-react';
 const privacyFeatures = [
   {
     icon: EyeOff,
-    title: 'De-identified Processing',
+    title: 'De-identified Extraction',
     description:
-      'Name, DOB, address, Medicare number — all PII is separated from clinical data before the AI model processes anything. The model never sees who the patient is.',
+      'Clinical notes are de-identified before LLM extraction. Known names, DOBs, addresses, Medicare/CRN, and contact details are removed from notes where detected.',
   },
   {
     icon: Server,
-    title: 'Zero Retention',
+    title: 'Controlled Retention',
     description:
-      'Form data lives in-memory during your session and is never written to disk. PDFs are generated and streamed directly to your browser, then discarded.',
+      'Form processing runs in-memory. Data is persisted only when you explicitly save a patient or save a completed form.',
   },
   {
     icon: Lock,
-    title: 'Server-Side Merge',
+    title: 'Per-Doctor Isolation',
     description:
-      'Patient details are re-merged into the completed form on our server after AI processing — PII never reaches any external AI service at any point.',
+      'Saved records are scoped to each authenticated doctor account with Supabase auth and row-level security policies.',
   },
 ];
 
@@ -46,8 +46,8 @@ export function Privacy() {
             It&apos;s the architecture.
           </h2>
           <p className="mt-4 text-base text-white/50 leading-relaxed max-w-lg">
-            Patient data protection is built into every layer — not bolted on as
-            an afterthought.
+            Clear controls over what is sent for AI processing and what is
+            intentionally saved.
           </p>
         </div>
 

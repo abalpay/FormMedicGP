@@ -17,7 +17,7 @@ const features = [
     icon: Shield,
     title: 'Privacy by Architecture',
     description:
-      'Not a policy — a pipeline. Patient PII is stripped before your notes reach the AI model. Identifying details never leave your control.',
+      'Not a policy — a pipeline. Patient PII is stripped from clinical notes before LLM extraction, and saved records are isolated per doctor account.',
   },
   {
     icon: FileStack,

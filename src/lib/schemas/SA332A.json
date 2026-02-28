@@ -286,7 +286,7 @@
       ]
     }
   ],
-  "systemPromptAdditions": "For SA332A focus on care needs, functional dependency, and duration/intensity of required assistance.\n- The guided answers provide disability type, prognosis, and whether daily help is required — use these as context when writing the care needs summary.\n- Extract a comprehensive 'careNeedsSummary' covering: conditions, specific care activities needed, level of assistance, supervision requirements, and expected duration.",
+  "systemPromptAdditions": "For SA332A focus on care needs, functional dependency, and duration/intensity of required assistance.\n- The guided answers provide disability type, prognosis, and whether daily help is required — use these as context for the clinical extraction.\n- This form has no LLM-extracted text fields — the clinical section is empty. The guided dictation answers (disability type, prognosis, daily help) and the care narrative are used as context only.\n- Patient and cared person identity fields are filled from manual entry, not from the narrative.",
   "allowedUnmappedPdfFields": [
     "AssessType",
     "Clear",

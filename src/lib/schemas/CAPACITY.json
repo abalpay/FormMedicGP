@@ -206,7 +206,7 @@
           "pdfField": "My Clinical Diagnosis/es",
           "pdfFieldType": "text",
           "required": true,
-          "llmInstruction": "Provide specific diagnosis and anatomical site, not generic symptoms.",
+          "llmInstruction": "Provide specific diagnosis and anatomical site, not generic symptoms. Keep to 1-2 short sentences — the field is a single line on the PDF.",
           "validation": {
             "required": true
           }
@@ -312,7 +312,7 @@
           "type": "text",
           "pdfField": "Work Environment Considerations",
           "pdfFieldType": "text",
-          "llmInstruction": "Describe workplace/environment factors that affect safe duties (e.g., driving, heights, repetitive load, temperature, pace)."
+          "llmInstruction": "Describe workplace/environment factors that affect safe duties (e.g., driving, heights, repetitive load, temperature, pace). Keep to 2-3 short sentences."
         },
         "physicalFunction": {
           "label": "Physical Function",
@@ -321,7 +321,7 @@
           "type": "text",
           "pdfField": "Physical Function",
           "pdfFieldType": "text",
-          "llmInstruction": "Summarize overall physical capacity limits and relevant lifting/posture tolerances."
+          "llmInstruction": "Summarize overall physical capacity limits and relevant lifting/posture tolerances. Keep to 2-3 short sentences."
         },
         "mentalHealthFunction": {
           "label": "Mental Health Function",
@@ -330,7 +330,7 @@
           "type": "text",
           "pdfField": "Mental Health Function",
           "pdfFieldType": "text",
-          "llmInstruction": "Summarize mental/cognitive impacts relevant to work function, attention, memory, and judgment."
+          "llmInstruction": "Summarize mental/cognitive impacts relevant to work function, attention, memory, and judgment. Keep to 2-3 short sentences. Leave empty if no mental health impact described."
         },
         "otherFunctionalConsiderations": {
           "label": "Other Functional Considerations",
@@ -339,7 +339,7 @@
           "type": "text",
           "pdfField": "Other Functional Considerations",
           "pdfFieldType": "text",
-          "llmInstruction": "Capture additional functional considerations not already covered, including medication effects if relevant."
+          "llmInstruction": "Capture additional functional considerations not already covered, including medication effects if relevant. Keep to 1-2 short sentences. Leave empty if nothing additional to add."
         },
         "sit": {
           "label": "Sit",
@@ -376,7 +376,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on documented sitting tolerance."
+          "llmInstruction": "Classify as 'can', 'with_modifications' (e.g. limited duration, ergonomic chair), or 'cannot' based on sitting tolerance. Default 'can' if not restricted."
         },
         "standWalk": {
           "label": "Stand/Walk",
@@ -413,7 +413,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on standing/walking tolerance and restrictions."
+          "llmInstruction": "Classify as 'can', 'with_modifications' (e.g. limited distance/duration, requires aids), or 'cannot' based on standing/walking tolerance. Default 'can' if not restricted."
         },
         "bend": {
           "label": "Bend",
@@ -450,7 +450,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on bending tolerance."
+          "llmInstruction": "Classify as 'can', 'with_modifications', or 'cannot' based on bending tolerance. Default 'can' if not restricted."
         },
         "squat": {
           "label": "Squat",
@@ -487,7 +487,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on squat tolerance."
+          "llmInstruction": "Classify as 'can', 'with_modifications', or 'cannot' based on squat tolerance. Default 'can' if not restricted."
         },
         "kneel": {
           "label": "Kneel",
@@ -524,7 +524,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on kneeling tolerance."
+          "llmInstruction": "Classify as 'can', 'with_modifications', or 'cannot' based on kneeling tolerance. Default 'can' if not restricted."
         },
         "reachAboveShoulder": {
           "label": "Reach Above Shoulder",
@@ -561,7 +561,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on overhead reaching tolerance."
+          "llmInstruction": "Classify as 'can', 'with_modifications', or 'cannot' based on overhead reaching tolerance. Default 'can' if not restricted."
         },
         "useInjuredArmHand": {
           "label": "Use Injured Arm/Hand",
@@ -598,7 +598,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on ability to use the injured arm/hand."
+          "llmInstruction": "Classify as 'can', 'with_modifications', or 'cannot' based on ability to use the injured arm/hand. Default 'can' if upper limb not injured."
         },
         "lift": {
           "label": "Lift",
@@ -635,7 +635,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on lifting restrictions."
+          "llmInstruction": "Classify as 'can', 'with_modifications' (e.g. weight limit like '<5kg'), or 'cannot' based on lifting restrictions. Default 'can' if not restricted."
         },
         "neckMovement": {
           "label": "Neck Movement",
@@ -672,7 +672,7 @@
               "cannot"
             ]
           },
-          "llmInstruction": "Classify as can, with_modifications, or cannot based on neck movement limitations."
+          "llmInstruction": "Classify as 'can', 'with_modifications', or 'cannot' based on neck movement limitations. Default 'can' if neck not injured."
         },
         "attention": {
           "label": "Attention/Concentration",
@@ -704,7 +704,7 @@
               "affected"
             ]
           },
-          "llmInstruction": "Classify as not_affected or affected using evidence about concentration/attention limitations."
+          "llmInstruction": "Classify as 'not_affected' or 'affected' based on concentration/attention limitations. Default 'not_affected' if no mental health impact described."
         },
         "memory": {
           "label": "Memory",
@@ -736,7 +736,7 @@
               "affected"
             ]
           },
-          "llmInstruction": "Classify as not_affected or affected using evidence about memory limitations."
+          "llmInstruction": "Classify as 'not_affected' or 'affected' based on memory limitations. Default 'not_affected' if no memory issues described."
         },
         "judgement": {
           "label": "Judgement",
@@ -768,7 +768,7 @@
               "affected"
             ]
           },
-          "llmInstruction": "Classify as not_affected or affected using evidence about decision-making/judgment limitations."
+          "llmInstruction": "Classify as 'not_affected' or 'affected' based on decision-making/judgment limitations. Default 'not_affected' if no judgment issues described."
         },
         "incapacityStartDate": {
           "label": "No Capacity From",
@@ -833,7 +833,7 @@
           "validation": {
             "required": true
           },
-          "llmInstruction": "Summarize management plan and treatment strategy in concise clinical language."
+          "llmInstruction": "Summarize management plan and treatment strategy in concise clinical language. Keep to 2-3 short sentences."
         },
         "dateOfInjury": {
           "label": "Date of Injury",
@@ -890,7 +890,7 @@
       }
     }
   },
-  "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.\n- The clinical narrative contains ALL clinical information — extract diagnosis, restrictions, treatment, work environment, and capacity matrix ratings from it.\n- For the 9 physical capacity items (sit, stand/walk, bend, squat, kneel, reach, arm/hand, lift, neck): classify each as 'can', 'with_modifications', or 'cannot' based on evidence in the narrative. Default to 'can' if no restriction is mentioned for that activity.\n- For the 3 mental capacity items (attention, memory, judgement): classify each as 'not_affected' or 'affected'. Default to 'not_affected' if no mental health impact is described.",
+  "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.\n\nIMPORTANT: Text area fields on this form are compact. Keep all text responses concise — 1-3 short sentences maximum. Use clinical shorthand where appropriate.\n\n- The clinical narrative contains ALL clinical information — extract diagnosis, restrictions, treatment, work environment, and capacity matrix ratings from it.\n- 'primaryDiagnosis' should be specific and brief (e.g. 'Right rotator cuff tear, supraspinatus') — not a paragraph.\n- For the 9 physical capacity items (sit, stand/walk, bend, squat, kneel, reach, arm/hand, lift, neck): classify each as 'can', 'with_modifications', or 'cannot' based on evidence in the narrative. Default to 'can' if no restriction is mentioned for that activity.\n- For the 3 mental capacity items (attention, memory, judgement): classify each as 'not_affected' or 'affected'. Default to 'not_affected' if no mental health impact is described.",
   "allowedUnmappedPdfFields": [],
   "advancedUnmappedPdfFields": [],
   "dictationGuide": [

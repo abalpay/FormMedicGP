@@ -2,11 +2,37 @@
  * Isomorphic PDF fill core — no Node.js APIs (fs, path).
  * Safe to import from both server and client code.
  */
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, PDFName, PDFNumber } from 'pdf-lib';
 import { normalizeMultilineAutoSizedFont } from './pdf-text-field-style.ts';
 import { fillUnmappedPdfField } from './pdf-unmapped-fields.ts';
 import { setCheckboxChecked, setCheckboxGroupValue } from './pdf-checkbox.ts';
 import type { ExtractedFormData, FormSchema, FormField } from '@/types';
+
+/**
+ * Some government PDF forms hide text fields by default and use JavaScript
+ * actions to show them when a related checkbox is ticked. Since pdf-lib
+ * doesn't execute JavaScript, we clear the Hidden annotation flag (bit 1)
+ * on every widget of a field we're about to fill.
+ */
+const HIDDEN_FLAG = 1 << 1; // annotation flag bit 1
+
+function unhideField(
+  form: ReturnType<PDFDocument['getForm']>,
+  fieldName: string
+): void {
+  try {
+    const field = form.getField(fieldName);
+    for (const widget of field.acroField.getWidgets()) {
+      const raw = widget.dict.get(PDFName.of('F'));
+      const flags = raw instanceof PDFNumber ? raw.asNumber() : 0;
+      if (flags & HIDDEN_FLAG) {
+        widget.dict.set(PDFName.of('F'), PDFNumber.of(flags & ~HIDDEN_FLAG));
+      }
+    }
+  } catch {
+    // Field not found — nothing to unhide
+  }
+}
 
 function fillTextField(
   form: ReturnType<PDFDocument['getForm']>,
@@ -165,6 +191,10 @@ function fillField(
   value: string | number | boolean | string[] | null
 ): void {
   if (value == null) return;
+
+  // Unhide any widgets for the field(s) we're about to fill
+  const fieldNames = Array.isArray(field.pdfField) ? field.pdfField : [field.pdfField];
+  for (const name of fieldNames) unhideField(form, name);
 
   const strValue = String(value);
   const pdfFieldType = field.pdfFieldType ?? 'text';

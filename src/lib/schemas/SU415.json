@@ -223,7 +223,7 @@
           "pdfField": "PC.Diagnosis",
           "pdfFieldType": "text",
           "required": true,
-          "llmInstruction": "Extract the primary diagnosis using proper medical terminology.",
+          "llmInstruction": "Extract the primary diagnosis using proper medical terminology. Keep brief — 1-2 short sentences max.",
           "validation": {
             "required": true
           }
@@ -414,7 +414,7 @@
           "pdfFieldType": "text",
           "required": true,
           "highlight": true,
-          "llmInstruction": "Describe past, current, and planned treatment. Include medications, therapies, and follow-up plans.",
+          "llmInstruction": "Describe past, current, and planned treatment. Include medications, therapies, and follow-up plans. Keep to 2-3 short sentences — the text area is compact.",
           "validation": {
             "required": true
           }
@@ -512,7 +512,7 @@
           "pdfField": "HoursWork",
           "pdfFieldType": "text",
           "conditional": "workCapacity === 'yes'",
-          "llmInstruction": "If the patient can do some work, how many hours per week? Only extract if workCapacity is 'yes'."
+          "llmInstruction": "If the patient can do some work, how many hours per week? Output a NUMBER ONLY (e.g. '15'), not a sentence. Only extract if workCapacity is 'yes'."
         }
       }
     }

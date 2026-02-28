@@ -4,7 +4,6 @@ import { extractFormData } from '@/lib/llm';
 import { reidentify } from '@/lib/reidentify';
 import { fillPdf } from '@/lib/pdf-filler';
 import { getTemplateTextFieldMultilineMap } from '@/lib/pdf-field-metadata';
-import { getPrimaryPatientName } from '@/lib/patient-identity';
 import { buildReviewSchema } from '@/lib/review-schema';
 import {
   buildGuidedExtractionPayload,
@@ -82,22 +81,30 @@ export const POST = withAuth(async ({ request, auth }) => {
         guidedAnswers: safeGuidedAnswers,
       });
 
-    const { deidentifiedText } = deidentify(
-      transcriptionForLlm,
-      patientDetails
-        ? getPrimaryPatientName({
-            customerName: patientDetails.customerName ?? '',
-            dateOfBirth: patientDetails.dateOfBirth ?? '',
-            address: patientDetails.address ?? '',
-            crn: patientDetails.crn,
-            caredPersonName: patientDetails.caredPersonName,
-            caredPersonDateOfBirth: patientDetails.caredPersonDateOfBirth,
-            caredPersonCrn: patientDetails.caredPersonCrn,
-            customerPhone: patientDetails.customerPhone,
-            customerEmail: patientDetails.customerEmail,
-          })
-        : undefined
-    );
+    const { deidentifiedText } = deidentify(transcriptionForLlm, {
+      patientNames: [
+        patientDetails?.customerName,
+        patientDetails?.caredPersonName,
+      ].filter(
+        (value): value is string =>
+          typeof value === 'string' && value.trim().length > 0
+      ),
+      dateOfBirths: [
+        patientDetails?.dateOfBirth,
+        patientDetails?.caredPersonDateOfBirth,
+      ].filter(
+        (value): value is string =>
+          typeof value === 'string' && value.trim().length > 0
+      ),
+      addresses: [patientDetails?.address].filter(
+        (value): value is string =>
+          typeof value === 'string' && value.trim().length > 0
+      ),
+      emails: [patientDetails?.customerEmail].filter(
+        (value): value is string =>
+          typeof value === 'string' && value.trim().length > 0
+      ),
+    });
 
     const { data: llmData, missingFields } = await extractFormData(
       deidentifiedText,
