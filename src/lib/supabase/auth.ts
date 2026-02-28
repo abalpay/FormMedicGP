@@ -51,7 +51,17 @@ export async function getSavedFormSummaries(doctorId: string): Promise<SavedForm
 
 export const getDashboardData = cache(async () => {
   const supabase = await createServerClient();
-  const { data, error } = await supabase.rpc('get_dashboard_data');
+  let rpcResult = await supabase.rpc(
+    'get_dashboard_data',
+    { recent_limit: 20 } as never
+  );
+
+  // Backward compatibility for environments that still only have the legacy signature.
+  if (rpcResult.error) {
+    rpcResult = await supabase.rpc('get_dashboard_data');
+  }
+
+  const { data, error } = rpcResult;
 
   if (error || !data) {
     return {
@@ -63,14 +73,29 @@ export const getDashboardData = cache(async () => {
 
   const raw = data as {
     profile: DoctorProfileRow | null;
-    recent_forms: DashboardFormRow[] | null;
-    today_forms_count: number | null;
+    recent_forms?: DashboardFormRow[] | null;
+    forms?: DashboardFormRow[] | null;
+    today_forms_count?: number | null;
   };
+  const recentForms = (raw.recent_forms ?? raw.forms ?? []).map(mapDashboardFormRow);
+
+  // Compatibility fallback: older RPC signature returns `forms` and no today count.
+  const todayFormsCount =
+    raw.today_forms_count ??
+    recentForms.filter((form) => {
+      const created = new Date(form.createdAt);
+      const now = new Date();
+      return (
+        created.getFullYear() === now.getFullYear() &&
+        created.getMonth() === now.getMonth() &&
+        created.getDate() === now.getDate()
+      );
+    }).length;
 
   return {
     profile: raw.profile ? mapDoctorProfileRow(raw.profile) : null,
-    recentForms: (raw.recent_forms ?? []).map(mapDashboardFormRow),
-    todayFormsCount: raw.today_forms_count ?? 0,
+    recentForms,
+    todayFormsCount,
   };
 });
 

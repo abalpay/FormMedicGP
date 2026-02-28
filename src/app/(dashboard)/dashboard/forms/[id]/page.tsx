@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { FilePlus, ArrowLeft, Save, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PdfPreviewPanel } from '@/components/forms/pdf-preview-panel';
@@ -37,9 +36,29 @@ export default function FormReviewPage() {
     toast.info('Click any field in the PDF to edit it directly. Use the download button (↓) to save.', { id: 'pdf-edit-hint', duration: 6000 });
   }, []);
 
+  useEffect(() => {
+    if (!isSaving) return;
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isSaving]);
+
   const handleNewForm = () => {
+    if (isSaving) return;
     reset();
     router.push('/dashboard/forms/new');
+  };
+
+  const handleBackToDescribe = () => {
+    if (isSaving) return;
+    router.push('/dashboard/dictate');
   };
 
   const handleSave = async () => {
@@ -116,11 +135,11 @@ export default function FormReviewPage() {
       {/* Pinned footer — solid, no scroll on this page */}
       <div className="shrink-0 border-t bg-card py-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <div className="max-w-5xl mx-auto w-full px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <Button variant="ghost" asChild>
-            <Link href="/dashboard/dictate">
+          <Button variant="ghost" onClick={handleBackToDescribe} disabled={isSaving}>
+            <>
               <ArrowLeft className="w-4 h-4 mr-1.5" />
               Back to Describe
-            </Link>
+            </>
           </Button>
           <div className="flex items-center gap-3">
             <p className="text-xs text-muted-foreground hidden sm:block">
@@ -138,7 +157,7 @@ export default function FormReviewPage() {
               )}
               {isSaving ? 'Saving...' : isSaved ? 'Saved' : 'Save Form'}
             </Button>
-            <Button variant="outline" onClick={handleNewForm}>
+            <Button variant="outline" onClick={handleNewForm} disabled={isSaving}>
               <FilePlus className="w-4 h-4 mr-1.5" />
               New Form
             </Button>
