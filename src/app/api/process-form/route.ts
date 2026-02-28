@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import { getFormSchema, getFormManifest } from '@/lib/schemas';
 import { deidentify } from '@/lib/deidentify';
 import { extractFormData } from '@/lib/llm';
@@ -11,25 +10,16 @@ import {
   buildGuidedExtractionPayload,
   mergeGuidedOverrides,
 } from '@/lib/guided-dictation';
-import type { PatientDetails, DoctorProfile } from '@/types';
+import type { PatientDetails } from '@/types';
+import { apiError, apiSuccess, withAuth } from '@/lib/api-utils';
+import {
+  formatDoctorProfileFieldLabel,
+  getMissingDoctorProfileFields,
+} from '@/lib/doctor-profile-requirements';
 
-// Hardcoded doctor profile for testing (no Supabase needed yet)
-const MOCK_DOCTOR: DoctorProfile = {
-  id: 'mock-001',
-  userId: 'mock-user-001',
-  name: 'Dr. Sarah Chen',
-  providerNumber: '456789AB',
-  qualifications: 'MBBS, FRACGP',
-  practiceName: 'Melbourne Medical Centre',
-  practiceAddress: '42 Collins Street, Melbourne VIC 3000',
-  practicePhone: '03 9000 1234',
-  practiceAbn: '12 345 678 901',
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
-
-export async function POST(request: Request) {
+export const POST = withAuth(async ({ request, auth }) => {
   let requestedFormType: string | undefined;
+
   try {
     const body = await request.json();
     const { transcription, patientDetails, formType, guidedAnswers } = body as {
@@ -40,33 +30,44 @@ export async function POST(request: Request) {
     };
     requestedFormType = formType;
 
-    // Validate inputs
     const hasGuidedContent =
       guidedAnswers &&
       typeof guidedAnswers === 'object' &&
       Object.values(guidedAnswers).some(
-        (v) => typeof v === 'string' && v.trim().length > 0
+        (value) => typeof value === 'string' && value.trim().length > 0
       );
+
     if (!transcription?.trim() && !hasGuidedContent) {
-      return NextResponse.json(
-        { error: 'Transcription text is required' },
-        { status: 400 }
-      );
+      return apiError('Transcription text is required', 400);
     }
     if (!formType) {
-      return NextResponse.json(
-        { error: 'Form type is required' },
-        { status: 400 }
-      );
+      return apiError('Form type is required', 400);
     }
 
     const manifest = getFormManifest(formType);
-
     const schema = getFormSchema(formType);
     if (!schema) {
-      return NextResponse.json(
-        { error: `Unknown form type: ${formType}` },
-        { status: 400 }
+      return apiError(`Unknown form type: ${formType}`, 400);
+    }
+
+    if (!auth.doctorProfile) {
+      return apiError(
+        'Doctor profile not found. Complete your profile in Settings before processing forms.',
+        400
+      );
+    }
+
+    const missingDoctorFields = getMissingDoctorProfileFields(
+      schema,
+      auth.doctorProfile
+    );
+    if (missingDoctorFields.length > 0) {
+      const formatted = missingDoctorFields
+        .map(formatDoctorProfileFieldLabel)
+        .join(', ');
+      return apiError(
+        `Doctor profile is incomplete for this form. Missing required fields: ${formatted}.`,
+        400
       );
     }
 
@@ -74,13 +75,13 @@ export async function POST(request: Request) {
       guidedAnswers && typeof guidedAnswers === 'object'
         ? guidedAnswers
         : undefined;
-    const { transcriptionForLlm, guidedOverrides } = buildGuidedExtractionPayload({
-      transcription: transcription ?? '',
-      schema,
-      guidedAnswers: safeGuidedAnswers,
-    });
+    const { transcriptionForLlm, guidedOverrides } =
+      buildGuidedExtractionPayload({
+        transcription: transcription ?? '',
+        schema,
+        guidedAnswers: safeGuidedAnswers,
+      });
 
-    // 1. De-identify PII from transcription
     const { deidentifiedText } = deidentify(
       transcriptionForLlm,
       patientDetails
@@ -98,14 +99,12 @@ export async function POST(request: Request) {
         : undefined
     );
 
-    // 2. Extract clinical data via LLM
     const { data: llmData, missingFields } = await extractFormData(
       deidentifiedText,
       schema
     );
     const mergedClinicalData = mergeGuidedOverrides(llmData, guidedOverrides);
 
-    // 3. Re-identify: merge patient + doctor data into extracted fields
     const mergedData = reidentify(
       mergedClinicalData,
       {
@@ -119,10 +118,9 @@ export async function POST(request: Request) {
         customerPhone: patientDetails?.customerPhone,
         customerEmail: patientDetails?.customerEmail,
       },
-      MOCK_DOCTOR
+      auth.doctorProfile
     );
 
-    // 4. Generate PDF
     const pdfBytes = await fillPdf(schema, mergedData);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
     const textFieldMultilineMap = await getTemplateTextFieldMultilineMap(schema);
@@ -133,7 +131,7 @@ export async function POST(request: Request) {
       advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields ?? [],
     });
 
-    return NextResponse.json({
+    return apiSuccess({
       extractedData: mergedData,
       missingFields,
       pdfBase64,
@@ -146,6 +144,6 @@ export async function POST(request: Request) {
     });
     const message =
       err instanceof Error ? err.message : 'Unknown error during processing';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return apiError(message, 500);
   }
-}
+});

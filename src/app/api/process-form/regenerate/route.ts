@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 import { getFormSchema } from '@/lib/schemas';
 import { validateEditedData } from '@/lib/form-validation';
 import { fillPdf } from '@/lib/pdf-filler';
+import { apiError, apiSuccess, withAuth } from '@/lib/api-utils';
 
-export async function POST(request: Request) {
+export const POST = withAuth(async ({ request }) => {
   try {
     const body = await request.json();
     const { formType, editedData } = body as {
@@ -12,22 +13,16 @@ export async function POST(request: Request) {
     };
 
     if (!formType) {
-      return NextResponse.json({ error: 'Form type is required' }, { status: 400 });
+      return apiError('Form type is required', 400);
     }
 
     if (!editedData || typeof editedData !== 'object') {
-      return NextResponse.json(
-        { error: 'editedData must be an object' },
-        { status: 400 }
-      );
+      return apiError('editedData must be an object', 400);
     }
 
     const schema = getFormSchema(formType);
     if (!schema) {
-      return NextResponse.json(
-        { error: `Unknown form type: ${formType}` },
-        { status: 400 }
-      );
+      return apiError(`Unknown form type: ${formType}`, 400);
     }
 
     const { validatedData, errors } = validateEditedData(schema, editedData);
@@ -44,11 +39,11 @@ export async function POST(request: Request) {
     const pdfBytes = await fillPdf(schema, validatedData);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
 
-    return NextResponse.json({ validatedData, pdfBase64 });
+    return apiSuccess({ validatedData, pdfBase64 });
   } catch (err) {
     console.error('[process-form/regenerate] unexpected error', err);
     const message =
       err instanceof Error ? err.message : 'Unknown error during regeneration';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return apiError(message, 500);
   }
-}
+});
