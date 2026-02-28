@@ -179,7 +179,64 @@
       }
     }
   },
-  "systemPromptAdditions": "For SA332A focus on care needs, functional dependency, and duration/intensity of required assistance.",
+  "dictationGuide": [
+    {
+      "id": "disabilityAndCondition",
+      "title": "Disability & Condition",
+      "description": "Describe the type and prognosis of the person's condition.",
+      "questions": [
+        {
+          "key": "disabilityType",
+          "label": "Disability Type",
+          "inputType": "segmented",
+          "options": [
+            { "value": "physical", "label": "Physical" },
+            { "value": "intellectual", "label": "Intellectual" },
+            { "value": "psychiatric", "label": "Psychiatric" },
+            { "value": "multiple", "label": "Multiple" }
+          ],
+          "requiredForBestFill": true
+        },
+        {
+          "key": "conditionPrognosis",
+          "label": "Condition Prognosis",
+          "inputType": "segmented",
+          "options": [
+            { "value": "terminal_3mo", "label": "Terminal (< 3 months)" },
+            { "value": "terminal_over_3mo", "label": "Terminal (> 3 months)" },
+            { "value": "permanent_not_improving", "label": "Permanent" },
+            { "value": "temporary", "label": "Temporary" }
+          ],
+          "requiredForBestFill": true
+        },
+        {
+          "key": "dailyHelpRequired",
+          "label": "Daily Help Required",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
+      "id": "careNeedsNarrative",
+      "title": "Care Needs Narrative",
+      "description": "Describe the person's conditions, care needs, and level of daily assistance required.",
+      "questions": [
+        {
+          "key": "careNarrative",
+          "label": "Care Needs",
+          "inputType": "textarea",
+          "placeholder": "e.g. Advanced dementia with significant cognitive decline. Requires full assistance with bathing, dressing, toileting. Incontinent of bowel and bladder. Cannot prepare meals or manage medications. Needs constant supervision due to wandering risk. Condition permanent and progressive.",
+          "requiredForBestFill": true
+        }
+      ]
+    }
+  ],
+  "systemPromptAdditions": "For SA332A focus on care needs, functional dependency, and duration/intensity of required assistance.\n- The guided answers provide disability type, prognosis, and whether daily help is required — use these as context when writing the care needs summary.\n- Extract a comprehensive 'careNeedsSummary' covering: conditions, specific care activities needed, level of assistance, supervision requirements, and expected duration.",
   "allowedUnmappedPdfFields": [
     "AssessType",
     "Clear",
