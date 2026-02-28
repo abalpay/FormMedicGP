@@ -37,18 +37,19 @@ export default function NewFormPage() {
     setCurrentStep(1);
   };
 
-  const handlePatientDetailsSubmit = (data: PatientDetails) => {
+  const handlePatientDetailsSubmit = async (data: PatientDetails) => {
     if (savePatient) {
-      fetch('/api/patients', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formDetailsToPatientBody(data)),
-      })
-        .then((res) => {
-          if (res.ok) toast.success('Patient saved');
-          else toast.error('Failed to save patient');
-        })
-        .catch(() => toast.error('Failed to save patient'));
+      try {
+        const res = await fetch('/api/patients', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formDetailsToPatientBody(data)),
+        });
+        if (res.ok) toast.success('Patient saved');
+        else toast.error('Failed to save patient');
+      } catch {
+        toast.error('Failed to save patient');
+      }
     }
     setPatientDetails(data);
     setStep('dictate');

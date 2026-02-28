@@ -76,13 +76,15 @@ export function PatientDetailsForm({
         </p>
       </div>
 
-      {/* Patient search */}
-      <div className="rounded-lg border border-dashed border-muted-foreground/25 p-3 space-y-2">
-        <p className="text-xs text-muted-foreground">
-          Have a saved patient? Search to auto-fill.
-        </p>
-        <PatientSearchCombobox onSelect={handlePatientSelect} />
-      </div>
+      {/* Patient search — only shown when save option is available */}
+      {showSaveOption && (
+        <div className="rounded-lg border border-dashed border-muted-foreground/25 p-3 space-y-2">
+          <p className="text-xs text-muted-foreground">
+            Have a saved patient? Search to auto-fill.
+          </p>
+          <PatientSearchCombobox onSelect={handlePatientSelect} />
+        </div>
+      )}
 
       <div className="space-y-6">
         {formConfig.sections.map((section) => {

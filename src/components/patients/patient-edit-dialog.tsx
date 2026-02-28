@@ -47,7 +47,7 @@ export function PatientEditDialog({
     reset,
     watch,
     setValue,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<PatientFormValues>();
 
   useEffect(() => {
@@ -104,8 +104,13 @@ export function PatientEditDialog({
             <Label htmlFor="edit-customerName">Name</Label>
             <Input
               id="edit-customerName"
-              {...register('customerName', { required: true })}
+              {...register('customerName', { required: 'Name is required' })}
             />
+            {errors.customerName && (
+              <p className="text-xs text-destructive">
+                {errors.customerName.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">

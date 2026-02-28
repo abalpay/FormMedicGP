@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PatientEditDialog } from '@/components/patients/patient-edit-dialog';
+import { formatPatientDob } from '@/lib/patient-mappers';
 import { toast } from 'sonner';
 import { Pencil, Trash2, Search, RefreshCw, Users } from 'lucide-react';
 import type { Patient } from '@/types';
@@ -62,19 +63,6 @@ export function PatientList() {
     } finally {
       setIsDeleting(false);
       setConfirmDeleteId(null);
-    }
-  };
-
-  const formatDob = (dob: string | null) => {
-    if (!dob) return null;
-    try {
-      return new Date(dob).toLocaleDateString('en-AU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      });
-    } catch {
-      return dob;
     }
   };
 
@@ -139,7 +127,7 @@ export function PatientList() {
                   </p>
                   <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground mt-0.5">
                     {patient.dateOfBirth && (
-                      <span>DOB: {formatDob(patient.dateOfBirth)}</span>
+                      <span>DOB: {formatPatientDob(patient.dateOfBirth)}</span>
                     )}
                     {patient.address && (
                       <span className="truncate max-w-[200px]">

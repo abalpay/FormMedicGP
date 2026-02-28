@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { formatPatientDob } from '@/lib/patient-mappers';
 import { Search } from 'lucide-react';
 import type { Patient } from '@/types';
 
@@ -16,7 +17,6 @@ export function PatientSearchCombobox({ onSelect }: PatientSearchComboboxProps) 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -56,21 +56,8 @@ export function PatientSearchCombobox({ onSelect }: PatientSearchComboboxProps) 
     onSelect(patient);
   };
 
-  const formatDob = (dob: string | null) => {
-    if (!dob) return '';
-    try {
-      return new Date(dob).toLocaleDateString('en-AU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      });
-    } catch {
-      return dob;
-    }
-  };
-
   return (
-    <div ref={wrapperRef} className="relative">
+    <div className="relative">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
@@ -112,7 +99,7 @@ export function PatientSearchCombobox({ onSelect }: PatientSearchComboboxProps) 
                 <span className="font-medium">{patient.customerName}</span>
                 {patient.dateOfBirth && (
                   <span className="text-muted-foreground ml-2">
-                    DOB: {formatDob(patient.dateOfBirth)}
+                    DOB: {formatPatientDob(patient.dateOfBirth)}
                   </span>
                 )}
               </li>

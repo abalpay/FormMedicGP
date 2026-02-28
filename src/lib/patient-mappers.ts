@@ -1,5 +1,18 @@
 import type { Patient, PatientDetails } from '@/types';
 
+export function formatPatientDob(dob: string | null): string | null {
+  if (!dob) return null;
+  try {
+    return new Date(dob).toLocaleDateString('en-AU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  } catch {
+    return dob;
+  }
+}
+
 /**
  * Maps a Patient record to a partial PatientDetails object for populating
  * the form when a patient is selected.
