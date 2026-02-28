@@ -43,27 +43,13 @@ export const getCurrentDoctorProfile = cache(async (): Promise<DoctorProfile | n
   return mapDoctorProfileRow(data);
 });
 
-export async function getSavedFormSummaries(): Promise<SavedFormSummary[]> {
+export async function getSavedFormSummaries(doctorId: string): Promise<SavedFormSummary[]> {
   const supabase = await createServerClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError || !user) return [];
-
-  const { data: profileRow } = await supabase
-    .from('doctor_profiles')
-    .select('id')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (!profileRow) return [];
 
   const { data, error } = await supabase
     .from('saved_forms')
     .select('id, form_type, form_name, status, created_at, updated_at, patients(customer_name)')
-    .eq('doctor_id', profileRow.id)
+    .eq('doctor_id', doctorId)
     .order('created_at', { ascending: false });
 
   if (error || !data) return [];

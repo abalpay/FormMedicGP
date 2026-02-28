@@ -58,7 +58,6 @@ function LoginForm() {
 
     const next = searchParams.get('next') || '/dashboard';
     router.push(next);
-    router.refresh();
   };
 
   // Show error from callback if present

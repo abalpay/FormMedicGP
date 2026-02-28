@@ -23,12 +23,15 @@ const steps = [
 
 export default function NewFormPage() {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
-  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
-  const [savePatient, setSavePatient] = useState(false);
-  const { selectedFormType, selectedFormLabel, patientDetails, setFormType, setPatientDetails, setStep } =
+  const { selectedFormType, selectedFormLabel, patientDetails, currentStep: storeStep, setFormType, setPatientDetails, setStep } =
     useFormFlowStore();
+  const [currentStep, setCurrentStep] = useState(() => {
+    if (storeStep === 'patient-details' || storeStep === 'dictate') return 1;
+    return 0;
+  });
+  const [selectedFormId, setSelectedFormId] = useState<string | null>(selectedFormType);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(selectedFormLabel);
+  const [savePatient, setSavePatient] = useState(false);
 
   const handleFormSelect = (formId: string, label: string) => {
     setSelectedFormId(formId);
