@@ -53,7 +53,7 @@ export function Header({ userName, userEmail }: HeaderProps) {
     if (pathname.startsWith('/dashboard/saved/')) {
       return 'Saved Form';
     }
-    return pageTitles[pathname] ?? 'FormMedic';
+    return pageTitles[pathname] ?? 'FormBridge GP';
   };
 
   const handleSignOut = async () => {

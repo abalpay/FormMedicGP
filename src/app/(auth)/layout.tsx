@@ -27,7 +27,7 @@ export default function AuthLayout({
               <Stethoscope className="w-5 h-5 text-white" />
             </div>
             <span className="font-extrabold text-xl text-white tracking-tight font-[family-name:var(--font-display)]">
-              FormMedic
+              FormBridge GP
             </span>
           </Link>
         </div>
@@ -50,7 +50,7 @@ export default function AuthLayout({
           <div className="mt-10 relative">
             <div className="rounded-xl bg-white/[0.06] border border-white/[0.08] p-5">
               <p className="text-sm text-white/70 leading-relaxed italic">
-                &quot;FormMedic cut my Centrelink paperwork from 15 minutes to under 2. I can focus on patients instead of forms.&quot;
+                &quot;FormBridge GP cut my Centrelink paperwork from 15 minutes to under 2. I can focus on patients instead of forms.&quot;
               </p>
               <div className="mt-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-white/60">
@@ -81,7 +81,7 @@ export default function AuthLayout({
 
         {/* Copyright — bottom */}
         <p className="relative z-10 text-xs text-white/30">
-          &copy; 2026 FormMedic
+          &copy; 2026 FormBridge GP
         </p>
       </div>
 
@@ -106,7 +106,7 @@ export default function AuthLayout({
               <Stethoscope className="w-6 h-6 text-white" />
             </div>
             <span className="font-extrabold text-xl tracking-tight font-[family-name:var(--font-display)]">
-              FormMedic
+              FormBridge GP
             </span>
           </Link>
           <p className="text-xs text-muted-foreground">

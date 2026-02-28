@@ -1,4 +1,4 @@
-# FormMedic — Technical Architecture v1
+# FormBridge GP — Technical Architecture v1
 
 ## Product Summary
 
@@ -351,7 +351,7 @@ Return ONLY valid JSON matching the provided schema.
 ## Project Structure
 
 ```
-formmedic/
+formbridgegp/
 ├── app/
 │   ├── (auth)/
 │   │   ├── login/page.tsx

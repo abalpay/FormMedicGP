@@ -99,7 +99,7 @@ function LoginForm() {
           Welcome back
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Sign in to continue to FormMedic.
+          Sign in to continue to FormBridge GP.
         </p>
       </div>
 

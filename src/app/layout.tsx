@@ -15,7 +15,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'FormMedic',
+  title: 'FormBridge GP',
   description:
     'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
 };

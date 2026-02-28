@@ -1,8 +1,8 @@
-# Codex Backend Tasks — FormDoctor
+# Codex Backend Tasks — FormBridge GP
 
 ## Context
 
-FormDoctor is a Next.js 16 app that helps Australian GPs fill government PDF forms via AI-powered dictation. The frontend is largely built. You are building the **backend infrastructure**: database, auth, and API routes.
+FormBridge GP is a Next.js 16 app that helps Australian GPs fill government PDF forms via AI-powered dictation. The frontend is largely built. You are building the **backend infrastructure**: database, auth, and API routes.
 
 **Tech stack:** Next.js 16 (App Router), TypeScript, Supabase (PostgreSQL + Auth), `@supabase/ssr` for cookie-based sessions.
 

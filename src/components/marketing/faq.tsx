@@ -9,7 +9,7 @@ import {
 
 const faqItems = [
   {
-    question: 'Which government forms does FormMedic support?',
+    question: 'Which government forms does FormBridge GP support?',
     answer:
       'We currently support five Australian government medical forms: Centrelink Medical Certificate (SU415), DSP Medical Evidence (SA478), Carer Payment Medical Report (SA332A), Mobility Allowance Report (MA002), and Victorian Certificate of Capacity (TAC/WorkCover). New forms are added regularly.',
   },
@@ -21,7 +21,7 @@ const faqItems = [
   {
     question: 'How accurate is the AI extraction?',
     answer:
-      'FormMedic uses guided dictation prompts tailored to each form type, achieving high accuracy on structured fields. You always get a full review screen to verify and edit extracted data before downloading — the AI assists, you make the final call.',
+      'FormBridge GP uses guided dictation prompts tailored to each form type, achieving high accuracy on structured fields. You always get a full review screen to verify and edit extracted data before downloading — the AI assists, you make the final call.',
   },
   {
     question: 'Is any patient data stored on your servers?',
@@ -31,12 +31,12 @@ const faqItems = [
   {
     question: 'Does it work on mobile and tablet?',
     answer:
-      "Yes. FormMedic is fully responsive. The dictation feature uses your device's built-in microphone for real-time speech-to-text on any screen size.",
+      "Yes. FormBridge GP is fully responsive. The dictation feature uses your device's built-in microphone for real-time speech-to-text on any screen size.",
   },
   {
-    question: 'What does FormMedic cost?',
+    question: 'What does FormBridge GP cost?',
     answer:
-      "FormMedic is free during the early access period. We'll announce pricing plans well before general availability — early users will receive preferential rates.",
+      "FormBridge GP is free during the early access period. We'll announce pricing plans well before general availability — early users will receive preferential rates.",
   },
 ];
 
@@ -53,10 +53,10 @@ export function FAQ() {
             Common questions.
           </h2>
           <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-            Everything you need to know about FormMedic. Can&apos;t find what
+            Everything you need to know about FormBridge GP. Can&apos;t find what
             you&apos;re looking for?{' '}
             <a
-              href="mailto:hello@formmedic.com.au"
+              href="mailto:hello@formbridgegp.au"
               className="text-primary hover:underline"
             >
               Get in touch

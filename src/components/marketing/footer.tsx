@@ -18,7 +18,7 @@ export function Footer() {
             </div>
             <div>
               <span className="font-bold text-sm font-[family-name:var(--font-display)]">
-                FormMedic
+                FormBridge GP
               </span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
                 AI-powered medical form automation
@@ -35,7 +35,7 @@ export function Footer() {
           </div>
 
           <p className="text-xs text-muted-foreground/60">
-            &copy; 2026 FormMedic. All rights reserved.
+            &copy; 2026 FormBridge GP. All rights reserved.
           </p>
         </div>
       </div>

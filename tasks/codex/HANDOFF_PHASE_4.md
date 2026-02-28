@@ -37,7 +37,7 @@ Implemented artifacts:
 
 `supabase/seed.sql` now:
 
-- Creates `test@formmedic.dev` user with password hash from:
+- Creates `test@formbridgegp.dev` user with password hash from:
   - `crypt('testtest', gen_salt('bf'))`
 - Sets `email_confirmed_at = now()` for immediate login
 - Stores user metadata with `full_name` and `name` as `Dr. Test User`
@@ -87,7 +87,7 @@ pnpm dev
 
 Then sign in at `/login` with:
 
-- Email: `test@formmedic.dev`
+- Email: `test@formbridgegp.dev`
 - Password: `testtest`
 
 ## Notes / Limitations

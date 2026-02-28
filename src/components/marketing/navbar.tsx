@@ -26,7 +26,7 @@ export function Navbar() {
             <Stethoscope className="w-5 h-5 text-white" />
           </div>
           <span className="font-extrabold text-lg tracking-tight font-[family-name:var(--font-display)]">
-            FormMedic
+            FormBridge GP
           </span>
         </Link>
 

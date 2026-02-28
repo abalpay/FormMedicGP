@@ -103,7 +103,7 @@ export default function RegisterPage() {
           Create your account
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Get started with FormMedic for free.
+          Get started with FormBridge GP for free.
         </p>
       </div>
 

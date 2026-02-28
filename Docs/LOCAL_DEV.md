@@ -1,6 +1,6 @@
 # Local Development Guide
 
-This guide sets up FormDoctor end-to-end on your machine using local Supabase.
+This guide sets up FormBridge GP end-to-end on your machine using local Supabase.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ Non-Supabase environment variables are preserved.
 
 ## Test Credentials
 
-- Email: `test@formmedic.dev`
+- Email: `test@formbridgegp.dev`
 - Password: `testtest`
 
 ## Useful URLs
@@ -40,7 +40,7 @@ Non-Supabase environment variables are preserved.
 
 1. Start the app with `pnpm dev`.
 2. Open http://localhost:3000/login.
-3. Sign in with `test@formmedic.dev` / `testtest`.
+3. Sign in with `test@formbridgegp.dev` / `testtest`.
 4. Verify dashboard greeting shows `Dr. Test User`.
 5. Open settings/profile and confirm doctor profile fields are pre-filled.
 6. Create a new form (requires valid `DEEPGRAM_API_KEY` and `ANTHROPIC_API_KEY` in `.env.local`).

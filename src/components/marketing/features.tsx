@@ -34,7 +34,7 @@ export function Features() {
         {/* Section header — left-aligned, editorial */}
         <div className="max-w-2xl mb-16">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
-            Why FormMedic
+            Why FormBridge GP
           </p>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-[family-name:var(--font-display)]">
             Built for clinicians who

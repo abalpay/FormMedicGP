@@ -34,7 +34,7 @@ export function Sidebar() {
             style={{ opacity: expanded ? 1 : 0 }}
             tabIndex={expanded ? 0 : -1}
           >
-            FormMedic
+            FormBridge GP
           </Link>
         </div>
 

@@ -1,11 +1,11 @@
-# FormDoctor Full-Stack Integration Design
+# FormBridge GP Full-Stack Integration Design
 
 **Date:** 2026-02-28
 **Status:** Pending Approval
 
 ## Overview
 
-Split FormDoctor into parallel frontend (Claude Code) and backend (Codex) workstreams to deliver: authentication, patient persistence, form saving, marketing landing page, and full integration.
+Split FormBridge GP into parallel frontend (Claude Code) and backend (Codex) workstreams to deliver: authentication, patient persistence, form saving, marketing landing page, and full integration.
 
 ## Architecture Decisions
 

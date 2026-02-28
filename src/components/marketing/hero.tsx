@@ -38,7 +38,7 @@ export function Hero() {
               className="mt-6 text-lg sm:text-xl leading-relaxed text-muted-foreground max-w-lg animate-fade-in-up"
               style={{ animationDelay: '160ms' }}
             >
-              Speak your clinical notes naturally. FormMedic fills out Centrelink,
+              Speak your clinical notes naturally. FormBridge GP fills out Centrelink,
               WorkCover, and DSP forms in under two minutes — with patient
               privacy built into every step.
             </p>

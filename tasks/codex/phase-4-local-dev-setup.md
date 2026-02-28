@@ -44,7 +44,7 @@ Make the script idempotent — safe to run multiple times.
 Add seed data that creates a test user and doctor profile so the developer can immediately log in without registering:
 
 1. Insert a test user into `auth.users` with:
-   - Email: `test@formmedic.dev`
+   - Email: `test@formbridgegp.dev`
    - Password: `testtest` (hashed with Supabase's default bcrypt — use `crypt('testtest', gen_salt('bf'))`)
    - `email_confirmed_at` set to now (skip confirmation)
    - `raw_user_meta_data`: `{"name": "Dr. Test User"}`
@@ -72,7 +72,7 @@ Include:
    ./scripts/setup-local.sh
    pnpm dev
    ```
-3. **Test credentials**: `test@formmedic.dev` / `testtest`
+3. **Test credentials**: `test@formbridgegp.dev` / `testtest`
 4. **Useful URLs**:
    - App: http://localhost:3000
    - Supabase Studio: http://localhost:55323
@@ -100,7 +100,7 @@ Don't configure Google OAuth in `config.toml` by default (it requires a Google C
 
 - [x] `./scripts/setup-local.sh` starts Supabase and populates `.env.local` with correct keys
 - [x] `supabase db reset` runs migrations + seed without errors
-- [x] Developer can login with `test@formmedic.dev` / `testtest` immediately after setup
+- [x] Developer can login with `test@formbridgegp.dev` / `testtest` immediately after setup
 - [x] Dashboard shows "Welcome back, Dr. Test User" with pre-filled profile
 - [x] `docs/LOCAL_DEV.md` is clear and complete
 - [x] Script is idempotent — running twice doesn't break anything

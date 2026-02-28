@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="fbg-title-i fbg-desc-i">
+  <title id="fbg-title-i">FormBridge GP icon logo</title>
+  <desc id="fbg-desc-i">Icon mark showing two connected forms and a medical cross cutout.</desc>
+  <defs>
+    <linearGradient id="fbg-bg-gradient-i" x1="12" y1="12" x2="116" y2="116" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EAF2FF"/>
+      <stop offset="1" stop-color="#ECFAF5"/>
+    </linearGradient>
+    <linearGradient id="fbg-bridge-gradient-i" x1="12" y1="10" x2="108" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B5FFF"/>
+      <stop offset="1" stop-color="#15A37D"/>
+    </linearGradient>
+    <mask id="fbg-cross-cutout-i" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+      <rect x="0" y="0" width="120" height="120" fill="#fff"/>
+      <rect x="55" y="45" width="10" height="30" rx="2" fill="#000"/>
+      <rect x="45" y="55" width="30" height="10" rx="2" fill="#000"/>
+    </mask>
+  </defs>
+
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#fbg-bg-gradient-i)"/>
+
+  <g transform="translate(4 4)">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" mask="url(#fbg-cross-cutout-i)">
+      <rect x="8" y="12" width="42" height="58" rx="8" stroke="#0B5FFF" stroke-width="5"/>
+      <rect x="70" y="12" width="42" height="58" rx="8" stroke="#15A37D" stroke-width="5"/>
+
+      <path d="M18 28h20M18 38h16M18 48h18" stroke="#0B5FFF" stroke-width="3" opacity="0.7"/>
+      <path d="M80 28h20M80 38h16M80 48h18" stroke="#15A37D" stroke-width="3" opacity="0.7"/>
+
+      <path d="M24 80C38 62 82 62 96 80" stroke="url(#fbg-bridge-gradient-i)" stroke-width="8"/>
+    </g>
+  </g>
+</svg>

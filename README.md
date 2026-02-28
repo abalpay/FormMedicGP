@@ -1,4 +1,4 @@
-# FormDoctor
+# FormBridge GP
 
 AI-powered medical form automation for Australian GP clinics. Doctors dictate, AI fills government forms, download PDF — in under 2 minutes.
 

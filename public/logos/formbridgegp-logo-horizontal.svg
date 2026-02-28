@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 160" role="img" aria-labelledby="fbg-title-h fbg-desc-h">
+  <title id="fbg-title-h">FormBridge GP horizontal logo</title>
+  <desc id="fbg-desc-h">Two form outlines connected by a bridge with a medical cross cutout and the FormBridge GP wordmark.</desc>
+  <defs>
+    <linearGradient id="fbg-bridge-gradient-h" x1="12" y1="10" x2="108" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B5FFF"/>
+      <stop offset="1" stop-color="#15A37D"/>
+    </linearGradient>
+    <mask id="fbg-cross-cutout-h" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+      <rect x="0" y="0" width="120" height="120" fill="#fff"/>
+      <rect x="55" y="45" width="10" height="30" rx="2" fill="#000"/>
+      <rect x="45" y="55" width="30" height="10" rx="2" fill="#000"/>
+    </mask>
+  </defs>
+
+  <g transform="translate(18 18)">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" mask="url(#fbg-cross-cutout-h)">
+      <rect x="8" y="12" width="42" height="58" rx="8" stroke="#0B5FFF" stroke-width="5"/>
+      <rect x="70" y="12" width="42" height="58" rx="8" stroke="#15A37D" stroke-width="5"/>
+
+      <path d="M18 28h20M18 38h16M18 48h18" stroke="#0B5FFF" stroke-width="3" opacity="0.7"/>
+      <path d="M80 28h20M80 38h16M80 48h18" stroke="#15A37D" stroke-width="3" opacity="0.7"/>
+
+      <path d="M24 80C38 62 82 62 96 80" stroke="url(#fbg-bridge-gradient-h)" stroke-width="8"/>
+    </g>
+  </g>
+
+  <text x="160" y="95" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="62" font-weight="700" fill="#1F2937">FormBridge</text>
+  <rect x="515" y="45" width="78" height="40" rx="20" fill="#15A37D"/>
+  <text x="554" y="72" text-anchor="middle" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">GP</text>
+</svg>

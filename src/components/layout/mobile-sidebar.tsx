@@ -37,7 +37,7 @@ export function MobileSidebar() {
           </div>
           <SheetTitle>
             <Link href="/dashboard" onClick={() => setOpen(false)} className="font-semibold text-lg text-white font-[family-name:var(--font-display)]">
-              FormMedic
+              FormBridge GP
             </Link>
           </SheetTitle>
         </SheetHeader>

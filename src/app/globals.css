@@ -52,7 +52,7 @@
 }
 
 /* ==========================================================================
-   FormMedic — "Medical Trust" Design System
+   FormBridge GP — "Medical Trust" Design System
    Primary: Deep Teal (#0F766E)  — trust, medical authority
    Accent:  Warm Amber (#F59E0B) — CTAs, "Record" button
    ========================================================================== */
@@ -191,7 +191,7 @@
 }
 
 /* ==========================================================================
-   Custom Utility Classes — FormMedic "Clinical Luxury" Design System
+   Custom Utility Classes — FormBridge GP "Clinical Luxury" Design System
    ========================================================================== */
 
 @layer utilities {
