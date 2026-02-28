@@ -45,6 +45,7 @@ next-env.d.ts
 .agent/
 .agents/
 .claude/
+.worktrees/
 
 # original form PDFs (templates are in src/lib/schemas/templates/)
 /Forms/
