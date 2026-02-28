@@ -13,7 +13,9 @@ import {
   getPatientDetailsValidationSchema,
 } from '@/lib/patient-details-config';
 import { shouldRenderPatientDetailsSectionTitle } from '@/lib/patient-details-heading';
-import type { PatientDetails } from '@/types';
+import { PatientSearchCombobox } from '@/components/forms/patient-search-combobox';
+import { patientToFormDetails } from '@/lib/patient-mappers';
+import type { Patient, PatientDetails } from '@/types';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 
 interface PatientDetailsFormProps {
@@ -21,6 +23,8 @@ interface PatientDetailsFormProps {
   initialValues?: Partial<PatientDetails>;
   onSubmit: (data: PatientDetails) => void;
   onBack: () => void;
+  showSaveOption?: boolean;
+  onSavePatientChange?: (save: boolean) => void;
 }
 
 export function PatientDetailsForm({
@@ -28,6 +32,8 @@ export function PatientDetailsForm({
   initialValues,
   onSubmit,
   onBack,
+  showSaveOption,
+  onSavePatientChange,
 }: PatientDetailsFormProps) {
   const schema = useMemo(
     () => getPatientDetailsValidationSchema(formType),
@@ -56,6 +62,11 @@ export function PatientDetailsForm({
     }
   }, [initialValues, reset]);
 
+  const handlePatientSelect = (patient: Patient) => {
+    const formDetails = patientToFormDetails(patient);
+    reset(formDetails);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
@@ -63,6 +74,14 @@ export function PatientDetailsForm({
         <p className="text-xs text-muted-foreground mt-0.5">
           {formConfig.description.replace('&apos;', "'")}
         </p>
+      </div>
+
+      {/* Patient search */}
+      <div className="rounded-lg border border-dashed border-muted-foreground/25 p-3 space-y-2">
+        <p className="text-xs text-muted-foreground">
+          Have a saved patient? Search to auto-fill.
+        </p>
+        <PatientSearchCombobox onSelect={handlePatientSelect} />
       </div>
 
       <div className="space-y-6">
@@ -157,14 +176,16 @@ export function PatientDetailsForm({
         </div>
       )}
 
-      {/* Privacy notice */}
-      <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
-        <ShieldCheck className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-muted-foreground">
-          Patient details are processed in your browser and never stored on our
-          servers. They are only used to fill the PDF form.
-        </p>
-      </div>
+      {/* Privacy notice — only shown when save option is off */}
+      {!showSaveOption && (
+        <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
+          <ShieldCheck className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+          <p className="text-xs text-muted-foreground">
+            Patient details are processed in your browser and never stored on our
+            servers. They are only used to fill the PDF form.
+          </p>
+        </div>
+      )}
 
       {/* Sticky pill footer */}
       <div className="sticky bottom-4 z-20 mx-auto max-w-md w-full px-5 py-2.5 rounded-full border bg-background/80 backdrop-blur-md shadow-lg">
@@ -172,10 +193,22 @@ export function PatientDetailsForm({
           <Button type="button" variant="ghost" onClick={onBack}>
             Back
           </Button>
-          <Button type="submit">
-            Continue to Describe
-            <ArrowRight className="w-4 h-4 ml-1.5" />
-          </Button>
+          <div className="flex items-center gap-3">
+            {showSaveOption && (
+              <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  className="rounded border-muted-foreground/30"
+                  onChange={(e) => onSavePatientChange?.(e.target.checked)}
+                />
+                Save patient
+              </label>
+            )}
+            <Button type="submit">
+              Continue to Describe
+              <ArrowRight className="w-4 h-4 ml-1.5" />
+            </Button>
+          </div>
         </div>
       </div>
     </form>
