@@ -5,7 +5,7 @@ import type { Database } from '@/types/database';
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient<Database>(
+  const client = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -26,4 +26,10 @@ export async function createClient() {
       },
     }
   );
+
+  // Suppress getSession() warning — middleware already calls getUser() to verify auth
+  // @ts-expect-error -- valid runtime property not exposed in @supabase/ssr types
+  client.auth.suppressGetSessionWarning = true;
+
+  return client;
 }
