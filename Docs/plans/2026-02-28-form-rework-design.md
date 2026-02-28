@@ -438,17 +438,18 @@ The Q41-Q46 and Q61-Q64 checkboxes need runtime verification to determine if the
 
 ### No code changes needed for
 - Dictate page (`dictate/page.tsx`) — already renders guided dictation from schema
-- Guided dictation panel component — already supports all input types
+- Guided dictation panel component — already supports all input types including `visibleWhen` conditionals
 - Process form API — already handles guided answers + AI extraction
 - Form flow store — already stores guided answers
 
 ### Changes needed
-1. **Schema files** — update `CAPACITY.json`, `SA478.json`, `SA332A.json`, `MA002.json` with `dictationGuide` sections and new field mappings (MA002)
-2. **System prompt additions** — update for each form to guide AI extraction of new field patterns (especially CAPACITY matrix extraction from narrative)
-3. **LLM instructions** — add/update `llmInstruction` on fields that need to be extracted from the single narrative
-4. **MA002 schema** — fix the Q3Details mapping bug, add new clinical fields
-5. **Review page** — all forms should work with existing FormSummary or PDF-primary review (no changes to review pattern needed)
-6. **Verify MA002 Q41-Q46 and Q61-Q64** — test if these checkbox fields support multi-value ratings during implementation
+1. **CAPACITY schema** — merge 3 textareas into 1, add `dateOfInjury` + capacity window dates (4 new split-date fields), update `dictationGuide`
+2. **SA478 schema** — add `dictationGuide` with 2 sections, add `hasSpecialistEvidence` (→Q5) and `hasTreatmentPlan` (→Q6) checkbox fields
+3. **SA332A schema** — add `dictationGuide` with 2 sections (no schema field changes)
+4. **MA002 schema** — fix Q3Details mapping bug (remove `treatmentPlan`, add `physicalDisabilitiesDetails`), add 5 new clinical fields, add `dictationGuide` with yes/no conditionals
+5. **System prompt additions** — update for each form to guide AI extraction of new field patterns (especially CAPACITY matrix extraction from narrative)
+6. **LLM instructions** — add/update `llmInstruction` on fields that need to be extracted from the single narrative
+7. **Verify MA002 Q41-Q46 and Q61-Q64** — test if these checkbox fields support multi-value ratings during implementation
 
 ### What stays the same
 - Form selection flow
@@ -457,3 +458,4 @@ The Q41-Q46 and Q61-Q64 checkboxes need runtime verification to determine if the
 - PDF generation pipeline
 - De-identification / re-identification
 - Validation and download gating
+- Review page — all forms should work with existing FormSummary or PDF-primary review
