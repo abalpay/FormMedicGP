@@ -224,18 +224,78 @@
     "clinical": {
       "source": "llm_extraction",
       "fields": {
+        "conditionsImpactWork": {
+          "label": "Conditions Impacting Work",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "1.0",
+          "pdfFieldType": "text",
+          "linkedCheckbox": "Q1.0",
+          "required": true,
+          "llmInstruction": "List the disability or medical conditions that significantly impact the patient's ability to work. Include diagnosis names and how each affects work capacity.",
+          "validation": {
+            "required": true
+          }
+        },
+        "conditionsDiagnosed": {
+          "label": "Diagnosis Status",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "1.1",
+          "pdfFieldType": "text",
+          "linkedCheckbox": "Q1.1",
+          "llmInstruction": "State whether conditions are formally diagnosed or still being investigated. Include diagnostic methods, dates, and any pending investigations."
+        },
+        "currentSymptoms": {
+          "label": "Current Symptoms & Functional Impact",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "1.2",
+          "pdfFieldType": "text",
+          "linkedCheckbox": "Q1.2",
+          "llmInstruction": "Describe current symptoms and their functional impacts on daily living and work — e.g. pain levels, mobility limits, standing/sitting tolerances, cognitive effects."
+        },
+        "treatmentHistory": {
+          "label": "Treatment History & Plan",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "1.3",
+          "pdfFieldType": "text",
+          "linkedCheckbox": "Q1.3",
+          "llmInstruction": "Describe past, current, and planned treatments including medications, therapies, injections, surgeries, and their outcomes."
+        },
+        "prognosisDetails": {
+          "label": "Prognosis",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "1.4",
+          "pdfFieldType": "text",
+          "linkedCheckbox": "Q1.4",
+          "llmInstruction": "Describe the prognosis, including likely improvement with current and planned treatment. State if condition is stabilised, deteriorating, or expected to improve."
+        },
+        "treatingProfessionals": {
+          "label": "Treating Health Professionals",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "1.5",
+          "pdfFieldType": "text",
+          "linkedCheckbox": "Q1.5",
+          "llmInstruction": "List treating health professionals currently or recently involved — e.g. GP, specialists, physiotherapists, psychologists. Include any pending or wait-listed referrals."
+        },
         "dspPrimaryConditions": {
-          "label": "Primary Conditions and Functional Impact",
+          "label": "Additional Medical Information (Q7)",
           "inputType": "textarea",
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Q7",
           "pdfFieldType": "text",
-          "required": true,
-          "llmInstruction": "Summarize diagnosed medical conditions and explain functional impact on work capacity and daily activities in plain clinical language.",
-          "validation": {
-            "required": true
-          }
+          "llmInstruction": "Any additional clinical information not covered in the checklist items above. If all relevant information is already captured in the checklist fields, leave this empty."
         },
         "dspSpecialistEvidence": {
           "label": "Specialist/Supporting Evidence",
@@ -244,16 +304,16 @@
           "type": "text",
           "pdfField": "Q5Details",
           "pdfFieldType": "text",
-          "llmInstruction": "Summarize specialist reports, objective findings, investigations, and prior treatment outcomes relevant to DSP evidence."
+          "llmInstruction": "If specialist evidence is available, summarize specialist reports, objective findings, investigations, and prior treatment outcomes relevant to DSP evidence."
         },
         "dspTreatmentPlan": {
-          "label": "Current and Planned Treatment",
+          "label": "Current and Planned Treatment (Q6)",
           "inputType": "textarea",
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Q6Details",
           "pdfFieldType": "text",
-          "llmInstruction": "Describe ongoing treatment, medication, therapy, and expected outcomes."
+          "llmInstruction": "If treatment is current or planned, describe ongoing treatment, medication, therapy, and expected outcomes."
         },
         "hasSpecialistEvidence": {
           "label": "Has Specialist/Supporting Evidence",
@@ -282,24 +342,12 @@
       }
     }
   },
-  "systemPromptAdditions": "For SA478 DSP medical evidence: focus on severity, permanence, and functional impairment across work-related tasks. Prefer objective findings and explicit functional limitations over vague descriptors.\n- Extract conditions and functional impact into 'dspPrimaryConditions'.\n- If hasSpecialistEvidence is 'yes', extract specialist evidence into 'dspSpecialistEvidence'. If 'no', omit the field.\n- If hasTreatmentPlan is 'yes', extract treatment details into 'dspTreatmentPlan'. If 'no', omit the field.",
+  "systemPromptAdditions": "For SA478 DSP medical evidence: focus on severity, permanence, and functional impairment across work-related tasks. Prefer objective findings and explicit functional limitations over vague descriptors.\n\nSection 1 checklist — extract into these 6 fields from the clinical narrative:\n- 'conditionsImpactWork': The disability or medical conditions which significantly impact their ability to work.\n- 'conditionsDiagnosed': Whether conditions are diagnosed or still being investigated, including diagnostic methods and dates.\n- 'currentSymptoms': Current symptoms and functional impacts — pain, mobility, tolerances, cognitive effects.\n- 'treatmentHistory': Past, current, and planned treatments and their outcomes.\n- 'prognosisDetails': Prognosis including likely improvement with current and planned treatment.\n- 'treatingProfessionals': Treating health professionals currently or recently involved, including pending referrals.\n\nOnly populate a field if the narrative contains relevant information for that category. Each field should be concise (2-4 sentences).\n\n- If hasSpecialistEvidence is 'yes', extract specialist evidence into 'dspSpecialistEvidence'. If 'no', omit the field.\n- If hasTreatmentPlan is 'yes', extract treatment details into 'dspTreatmentPlan'. If 'no', omit the field.\n- Use 'dspPrimaryConditions' (Q7) only for additional information not already captured in the checklist fields above.",
   "allowedUnmappedPdfFields": [
-    "1.0",
-    "1.1",
-    "1.2",
-    "1.3",
-    "1.4",
-    "1.5",
     "Clear",
     "DummyCalcQ1",
     "DummyCalcQ5",
     "DummyCalcQ6",
-    "Q1.0",
-    "Q1.1",
-    "Q1.2",
-    "Q1.3",
-    "Q1.4",
-    "Q1.5",
     "Q2",
     "Q3",
     "Q41",

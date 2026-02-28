@@ -108,6 +108,22 @@
           "pdfField": "Cust_RefNo",
           "pdfFieldType": "text"
         },
+        "customerPhone": {
+          "label": "Phone",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_PhoneNo",
+          "pdfFieldType": "text"
+        },
+        "customerEmail": {
+          "label": "Email",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Cust_Email1",
+          "pdfFieldType": "text"
+        },
         "caredPersonName": {
           "label": "Cared Person Name",
           "inputType": "text",
@@ -120,6 +136,30 @@
             "required": true
           }
         },
+        "caredPersonGivenName1": {
+          "label": "Cared Person Given Name 1",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "PBC_Name1",
+          "pdfFieldType": "text"
+        },
+        "caredPersonGivenName2": {
+          "label": "Cared Person Given Name 2",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "PBC_Name2",
+          "pdfFieldType": "text"
+        },
+        "caredPersonFamilyName": {
+          "label": "Cared Person Family Name",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "PBC_Name3",
+          "pdfFieldType": "text"
+        },
         "caredPersonDateOfBirth": {
           "label": "Cared Person DOB",
           "inputType": "date",
@@ -127,6 +167,26 @@
           "type": "date",
           "pdfField": "CaredPerson.DOB",
           "pdfFieldType": "date-text"
+        },
+        "caredPersonDateOfBirthPage1": {
+          "label": "Cared Person DOB (Page 1)",
+          "inputType": "date",
+          "reviewEditable": false,
+          "type": "date",
+          "pdfField": [
+            "PBC_DOBDD",
+            "PBC_DOBMM",
+            "PBC_DOBYYYY"
+          ],
+          "pdfFieldType": "split-date"
+        },
+        "caredPersonCrn": {
+          "label": "Cared Person CRN",
+          "inputType": "text",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "PBC_RefNo",
+          "pdfFieldType": "text"
         }
       }
     },
@@ -166,17 +226,7 @@
     },
     "clinical": {
       "source": "llm_extraction",
-      "fields": {
-        "careNeedsSummary": {
-          "label": "Care Needs Summary",
-          "inputType": "textarea",
-          "reviewEditable": true,
-          "type": "text",
-          "pdfField": "PBC_Name1",
-          "pdfFieldType": "text",
-          "llmInstruction": "Briefly summarize care needs to support claimant review. Keep concise and clinically factual."
-        }
-      }
+      "fields": {}
     }
   },
   "dictationGuide": [
@@ -240,14 +290,6 @@
   "allowedUnmappedPdfFields": [
     "AssessType",
     "Clear",
-    "Cust_Email1",
-    "Cust_PhoneNo",
-    "Instructions",
-    "PBC_DOBDD",
-    "PBC_DOBMM",
-    "PBC_DOBYYYY",
-    "PBC_Name2",
-    "PBC_Name3",
-    "PBC_RefNo"
+    "Instructions"
   ]
 }

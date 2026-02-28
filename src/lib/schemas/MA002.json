@@ -195,6 +195,7 @@
           "type": "text",
           "pdfField": "Q10Details",
           "pdfFieldType": "text",
+          "linkedCheckbox": "Q10",
           "required": true,
           "llmInstruction": "Summarize clinical diagnosis and mobility impact relevant to allowance eligibility.",
           "validation": {
@@ -232,6 +233,66 @@
           "pdfFieldType": "text",
           "llmInstruction": "Describe physical disabilities and how they affect mobility and ability to use public transport."
         },
+        "physicalCannotUseTransport": {
+          "label": "Cannot Use Public Transport Without Assistance",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q41",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient cannot use public transport without substantial assistance from another person."
+        },
+        "physicalUsesWheelchair": {
+          "label": "Uses Wheelchair/Motorised Scooter",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q42",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient requires regular use of a wheelchair, wheelchair substitute, or motorised scooter."
+        },
+        "physicalCannotWalk50m": {
+          "label": "Cannot Walk More Than 50m",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q43",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient is unable to walk more than 50 metres even with a walking aid."
+        },
+        "physicalVisualDisability": {
+          "label": "Profound Visual Disability",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q44",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient has a profound visual disability."
+        },
+        "physicalCannotNegotiateSteps": {
+          "label": "Cannot Negotiate Steps/Escalators",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q45",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient is unable to negotiate steps or use escalators."
+        },
+        "physicalOther": {
+          "label": "Other Physical Limitation",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q46",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient has other physical limitations affecting transport use not covered above."
+        },
         "hasPsychiatricDisabilities": {
           "label": "Has Psychiatric/Intellectual Disabilities",
           "inputType": "select",
@@ -253,6 +314,46 @@
           "pdfField": "Q5Details",
           "pdfFieldType": "text",
           "llmInstruction": "Describe psychiatric or intellectual disabilities and how they affect ability to use public transport."
+        },
+        "psychiatricCannotUseTransport": {
+          "label": "Cannot Use Transport Without Assistance",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q61",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient is unable to use public transport without regular assistance due to psychiatric/intellectual disability."
+        },
+        "psychiatricDisruptiveBehaviour": {
+          "label": "Disruptive/Anti-social Behaviour",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q62",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient exhibits disruptive, abusive, or other anti-social behaviour."
+        },
+        "psychiatricCannotNavigate": {
+          "label": "Cannot Navigate Unfamiliar Situations",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q63",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient is unable to negotiate unfamiliar situations without becoming distressed."
+        },
+        "psychiatricOther": {
+          "label": "Other Psychiatric/Intellectual Limitation",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q64",
+          "pdfFieldType": "checkbox",
+          "options": ["yes"],
+          "llmInstruction": "Set 'yes' if the patient has other psychiatric/intellectual limitations affecting transport use not covered above."
         },
         "hasOtherTransportInfo": {
           "label": "Has Other Transport Info",
@@ -294,7 +395,7 @@
       }
     }
   },
-  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n- Extract physical disability details into 'physicalDisabilitiesDetails' (maps to Q3Details on PDF).\n- If psychiatric/intellectual disabilities are mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'.\n- Extract overall functional impact into 'mobilityFunctionalImpact' and clinical summary into 'mobilityClinicalSummary'.\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if transport-specific info exists beyond physical/psychiatric categories.",
+  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n- Extract physical disability details into 'physicalDisabilitiesDetails' (maps to Q3Details on PDF).\n- For physical disabilities, also set the specific sub-type checkboxes (Q4 items):\n  - 'physicalCannotUseTransport': cannot use public transport without substantial assistance\n  - 'physicalUsesWheelchair': requires wheelchair, wheelchair substitute, or motorised scooter\n  - 'physicalCannotWalk50m': unable to walk more than 50 metres even with a walking aid\n  - 'physicalVisualDisability': profound visual disability\n  - 'physicalCannotNegotiateSteps': unable to negotiate steps or use escalators\n  - 'physicalOther': other physical limitations affecting transport\n- If psychiatric/intellectual disabilities are mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'. Also set sub-type checkboxes (Q6 items):\n  - 'psychiatricCannotUseTransport': cannot use public transport without regular assistance\n  - 'psychiatricDisruptiveBehaviour': exhibits disruptive, abusive, or anti-social behaviour\n  - 'psychiatricCannotNavigate': cannot negotiate unfamiliar situations without distress\n  - 'psychiatricOther': other psychiatric/intellectual limitations\n- Extract overall functional impact into 'mobilityFunctionalImpact' and clinical summary into 'mobilityClinicalSummary'.\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if transport-specific info exists beyond physical/psychiatric categories.",
   "allowedUnmappedPdfFields": [
     "Clear",
     "CliamNo",
@@ -308,23 +409,12 @@
     "DummyCalcQ8",
     "Instructions",
     "Print",
-    "Q10",
     "Q2",
     "Q2GoToQ11",
     "Q2PatientSince",
     "Q2PracticeSince",
     "Q3GoToQ5",
-    "Q41",
-    "Q42",
-    "Q43",
-    "Q44",
-    "Q45",
-    "Q46",
     "Q5GoToQ7",
-    "Q61",
-    "Q62",
-    "Q63",
-    "Q64",
     "Q8GoToQ10",
     "Sign"
   ],

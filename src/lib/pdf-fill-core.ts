@@ -228,6 +228,11 @@ export async function fillPdfFromBytes(
       const value = data[fieldKey];
       if (value != null) {
         fillField(form, fieldDef, value);
+
+        // Auto-tick a paired checkbox when the text field has content
+        if (fieldDef.linkedCheckbox && String(value).trim()) {
+          fillCheckBox(form, fieldDef.linkedCheckbox, 'yes');
+        }
       }
     }
   }

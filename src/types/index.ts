@@ -100,6 +100,8 @@ export interface FormField {
   tooltip?: string;
   highlight?: boolean;
   llmInstruction?: string;
+  /** When this text field is non-empty, auto-tick the named PDF checkbox. */
+  linkedCheckbox?: string;
 }
 
 export interface FormSection {

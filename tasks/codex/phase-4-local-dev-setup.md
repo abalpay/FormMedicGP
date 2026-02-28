@@ -4,7 +4,14 @@
 
 Create a complete local development setup so a developer can run `pnpm dev` and test the full app flow (register → login → create form → save → view) without needing a hosted Supabase project.
 
-## Current State
+## Status
+
+- [x] Task 1 complete (`scripts/setup-local.sh`)
+- [x] Task 2 complete (`supabase/seed.sql`)
+- [x] Task 3 complete (`Docs/LOCAL_DEV.md`)
+- [x] Task 4 complete (`Docs/LOCAL_DEV.md` optional Google OAuth section)
+
+## Initial State (At Task Start)
 
 - Supabase `config.toml` exists with local ports configured (API 55321, DB 55322, Studio 55323, Inbucket 55324)
 - Migration exists at `supabase/migrations/20260228193000_backend_foundation.sql`
@@ -91,10 +98,10 @@ Don't configure Google OAuth in `config.toml` by default (it requires a Google C
 
 ## Acceptance Criteria
 
-- [ ] `./scripts/setup-local.sh` starts Supabase and populates `.env.local` with correct keys
-- [ ] `supabase db reset` runs migrations + seed without errors
-- [ ] Developer can login with `test@formmedic.dev` / `testtest` immediately after setup
-- [ ] Dashboard shows "Welcome back, Dr. Test User" with pre-filled profile
-- [ ] `docs/LOCAL_DEV.md` is clear and complete
-- [ ] Script is idempotent — running twice doesn't break anything
-- [ ] Existing non-Supabase env vars in `.env.local` are preserved by the script
+- [x] `./scripts/setup-local.sh` starts Supabase and populates `.env.local` with correct keys
+- [x] `supabase db reset` runs migrations + seed without errors
+- [x] Developer can login with `test@formmedic.dev` / `testtest` immediately after setup
+- [x] Dashboard shows "Welcome back, Dr. Test User" with pre-filled profile
+- [x] `docs/LOCAL_DEV.md` is clear and complete
+- [x] Script is idempotent — running twice doesn't break anything
+- [x] Existing non-Supabase env vars in `.env.local` are preserved by the script
