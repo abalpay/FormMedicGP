@@ -95,8 +95,7 @@ begin
     qualifications = 'MBBS, FRACGP',
     practice_name = 'Sunrise Medical Centre',
     practice_address = '123 Collins St, Melbourne VIC 3000',
-    practice_phone = '03 9876 5432',
-    practice_abn = '12345678901'
+    practice_phone = '03 9876 5432'
   where user_id = seed_user_id;
 end;
 $$;

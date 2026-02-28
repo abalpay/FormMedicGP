@@ -7,7 +7,6 @@ export interface DoctorProfile {
   practiceName: string;
   practiceAddress: string;
   practicePhone: string;
-  practiceAbn: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -53,7 +53,6 @@ test('isDashboardProfileComplete requires only name and provider number', () => 
       practiceName: '',
       practiceAddress: '',
       practicePhone: '',
-      practiceAbn: '',
     }),
     true
   );
@@ -66,7 +65,6 @@ test('isDashboardProfileComplete requires only name and provider number', () => 
       practiceName: 'Clinic',
       practiceAddress: '1 Main St, Sydney NSW 2000',
       practicePhone: '0299999999',
-      practiceAbn: '12345678901',
     }),
     false
   );

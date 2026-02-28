@@ -37,7 +37,6 @@ export function mapDoctorProfileRow(row: DoctorProfileRow): DoctorProfile {
     practiceName: row.practice_name,
     practiceAddress: row.practice_address,
     practicePhone: row.practice_phone,
-    practiceAbn: row.practice_abn,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };

@@ -156,7 +156,7 @@ const deidentify = (text) => {
 ```
 Doctor enters:
   → Full name, provider number, qualifications
-  → Practice name, address, phone, ABN
+  → Practice name, address, phone
   → Saved to Supabase doctor_profiles table
   → Auto-fills on every form forever
 ```

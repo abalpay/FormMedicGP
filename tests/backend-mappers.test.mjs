@@ -17,7 +17,6 @@ test('mapDoctorProfileRow converts snake_case db row to DoctorProfile', () => {
     practice_name: 'Clinic',
     practice_address: '1 Main St',
     practice_phone: '0390001111',
-    practice_abn: '12345678901',
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-01-01T00:00:00Z',
   });
@@ -25,6 +24,7 @@ test('mapDoctorProfileRow converts snake_case db row to DoctorProfile', () => {
   assert.equal(mapped.userId, 'user-1');
   assert.equal(mapped.providerNumber, '123456AB');
   assert.equal(mapped.practicePhone, '0390001111');
+  assert.equal('practiceAbn' in mapped, false);
 });
 
 test('mapPatientRow converts nullable fields and date values', () => {
