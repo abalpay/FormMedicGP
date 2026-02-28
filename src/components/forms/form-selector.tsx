@@ -1,54 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { FileText, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import type { FormCatalogItem } from '@/types';
 
-type FormOption = FormCatalogItem;
-
 interface FormSelectorProps {
   selectedFormId: string | null;
   onSelect: (formId: string, label: string) => void;
+  forms: FormCatalogItem[];
 }
 
-export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
-  const [availableForms, setAvailableForms] = useState<FormOption[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadForms() {
-      try {
-        const res = await fetch('/api/forms', { cache: 'no-store' });
-        if (!res.ok) {
-          throw new Error(`Failed to load forms (${res.status})`);
-        }
-        const body = (await res.json()) as { forms?: FormOption[] };
-        if (!cancelled) {
-          setAvailableForms(body.forms ?? []);
-          setLoadError(null);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          const message =
-            err instanceof Error ? err.message : 'Failed to load forms';
-          setLoadError(message);
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-
-    loadForms();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
+export function FormSelector({ selectedFormId, onSelect, forms }: FormSelectorProps) {
   return (
     <div className="space-y-3">
       <div>
@@ -57,16 +20,8 @@ export function FormSelector({ selectedFormId, onSelect }: FormSelectorProps) {
           Choose the government form you need to complete.
         </p>
       </div>
-      {loading && (
-        <p className="text-xs text-muted-foreground">Loading available forms...</p>
-      )}
-      {loadError && (
-        <p className="text-xs text-destructive">
-          Could not load forms: {loadError}
-        </p>
-      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {availableForms.map((form, index) => {
+        {forms.map((form, index) => {
           const isSelected = selectedFormId === form.id;
           return (
             <button

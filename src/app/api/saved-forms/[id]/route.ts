@@ -5,12 +5,29 @@ interface SavedFormRouteContext {
   params: Promise<{ id: string }>;
 }
 
-export const GET = withAuth<SavedFormRouteContext>(async ({ context, auth }) => {
+export const GET = withAuth<SavedFormRouteContext>(async ({ request, context, auth }) => {
   if (!auth.doctorProfileRow) {
     return apiError('Doctor profile not found', 404);
   }
 
   const { id } = await context.params;
+  const url = new URL(request.url);
+  const includePdf = url.searchParams.get('include') === 'pdf';
+
+  if (includePdf) {
+    const { data, error } = await auth.supabase
+      .from('saved_forms')
+      .select('pdf_base64')
+      .eq('id', id)
+      .eq('doctor_id', auth.doctorProfileRow.id)
+      .maybeSingle();
+
+    if (error) return apiError('Failed to fetch saved form', 500);
+    if (!data) return apiError('Saved form not found', 404);
+
+    return apiSuccess({ pdfBase64: data.pdf_base64 });
+  }
+
   const { data, error } = await auth.supabase
     .from('saved_forms')
     .select('*')
@@ -18,13 +35,8 @@ export const GET = withAuth<SavedFormRouteContext>(async ({ context, auth }) => 
     .eq('doctor_id', auth.doctorProfileRow.id)
     .maybeSingle();
 
-  if (error) {
-    return apiError('Failed to fetch saved form', 500);
-  }
-
-  if (!data) {
-    return apiError('Saved form not found', 404);
-  }
+  if (error) return apiError('Failed to fetch saved form', 500);
+  if (!data) return apiError('Saved form not found', 404);
 
   return apiSuccess({ form: mapSavedFormRow(data) });
 });

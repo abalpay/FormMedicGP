@@ -12,7 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MobileSidebar } from '@/components/layout/mobile-sidebar';
+import dynamic from 'next/dynamic';
+
+const MobileSidebar = dynamic(
+  () => import('@/components/layout/mobile-sidebar').then((m) => ({ default: m.MobileSidebar })),
+  { ssr: false }
+);
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 

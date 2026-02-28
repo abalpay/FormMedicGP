@@ -1,7 +1,6 @@
 'use client';
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
 import type { PatientDetails, ReviewSchema } from '@/types';
 
 export type FormFlowStep =
@@ -50,39 +49,32 @@ const initialState = {
 };
 
 // SECURITY: No persist middleware — patient data must NEVER touch localStorage.
-// DevTools middleware only in development.
-export const useFormFlowStore = create<FormFlowState>()(
-  devtools(
-    (set, get) => ({
-      ...initialState,
+export const useFormFlowStore = create<FormFlowState>()((set, get) => ({
+  ...initialState,
 
-      setStep: (step) => set({ currentStep: step }),
-      setFormType: (formType, label) =>
-        set({ selectedFormType: formType, selectedFormLabel: label ?? formType, guidedAnswers: {} }),
-      setPatientDetails: (details) => set({ patientDetails: details }),
-      setTranscription: (text) => set({ transcription: text }),
-      setGuidedAnswers: (answers) => set({ guidedAnswers: answers }),
-      setGuidedAnswer: (key, value) =>
-        set((state) => ({
-          guidedAnswers: {
-            ...state.guidedAnswers,
-            [key]: value,
-          },
-        })),
-      setExtractedData: (data) => set({ extractedData: data }),
-      setMissingFields: (fields) => set({ missingFields: fields }),
-      setReviewSchema: (schema) => set({ reviewSchema: schema }),
-      setPdfBlobUrl: (url) => set({ pdfBlobUrl: url }),
-
-      reset: () => {
-        // Revoke any existing PDF blob URL to free memory
-        const currentBlobUrl = get().pdfBlobUrl;
-        if (currentBlobUrl) {
-          URL.revokeObjectURL(currentBlobUrl);
-        }
-        set(initialState);
+  setStep: (step) => set({ currentStep: step }),
+  setFormType: (formType, label) =>
+    set({ selectedFormType: formType, selectedFormLabel: label ?? formType, guidedAnswers: {} }),
+  setPatientDetails: (details) => set({ patientDetails: details }),
+  setTranscription: (text) => set({ transcription: text }),
+  setGuidedAnswers: (answers) => set({ guidedAnswers: answers }),
+  setGuidedAnswer: (key, value) =>
+    set((state) => ({
+      guidedAnswers: {
+        ...state.guidedAnswers,
+        [key]: value,
       },
-    }),
-    { name: 'form-flow-store', enabled: process.env.NODE_ENV === 'development' }
-  )
-);
+    })),
+  setExtractedData: (data) => set({ extractedData: data }),
+  setMissingFields: (fields) => set({ missingFields: fields }),
+  setReviewSchema: (schema) => set({ reviewSchema: schema }),
+  setPdfBlobUrl: (url) => set({ pdfBlobUrl: url }),
+
+  reset: () => {
+    const currentBlobUrl = get().pdfBlobUrl;
+    if (currentBlobUrl) {
+      URL.revokeObjectURL(currentBlobUrl);
+    }
+    set(initialState);
+  },
+}));

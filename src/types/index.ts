@@ -53,6 +53,8 @@ export interface SavedForm {
   updatedAt: string;
 }
 
+export type SavedFormMeta = Omit<SavedForm, 'pdfBase64'>;
+
 export interface SavedFormSummary {
   id: string;
   formType: string;

@@ -1,4 +1,4 @@
-import type { DoctorProfile, Patient, SavedForm, SavedFormSummary } from '@/types';
+import type { DoctorProfile, Patient, SavedForm, SavedFormMeta, SavedFormSummary } from '@/types';
 import type { Database } from '@/types/database';
 
 type DoctorProfileRow = Database['public']['Tables']['doctor_profiles']['Row'];
@@ -66,6 +66,22 @@ export function mapSavedFormRow(row: SavedFormRow): SavedForm {
     formName: row.form_name,
     extractedData: toJsonRecord(row.extracted_data),
     pdfBase64: row.pdf_base64,
+    status: row.status,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+type SavedFormMetaRow = Omit<SavedFormRow, 'pdf_base64'>;
+
+export function mapSavedFormMetaRow(row: SavedFormMetaRow): SavedFormMeta {
+  return {
+    id: row.id,
+    doctorId: row.doctor_id,
+    patientId: row.patient_id,
+    formType: row.form_type,
+    formName: row.form_name,
+    extractedData: toJsonRecord(row.extracted_data),
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,

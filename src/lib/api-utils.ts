@@ -14,10 +14,21 @@ export interface AuthContext {
   supabase: Awaited<ReturnType<typeof createClient>>;
 }
 
+export interface AuthLiteContext {
+  user: User;
+  supabase: Awaited<ReturnType<typeof createClient>>;
+}
+
 export type AuthenticatedHandler<TContext = unknown> = (args: {
   request: Request;
   context: TContext;
   auth: AuthContext;
+}) => Promise<Response>;
+
+export type AuthLiteHandler<TContext = unknown> = (args: {
+  request: Request;
+  context: TContext;
+  auth: AuthLiteContext;
 }) => Promise<Response>;
 
 export function apiError(message: string, status: number): NextResponse {
@@ -66,6 +77,33 @@ export function withAuth<TContext = unknown>(
           doctorProfileRow,
           supabase,
         },
+      });
+    } catch (error) {
+      console.error('[api-utils] unexpected auth wrapper error', error);
+      return apiError('Internal server error', 500);
+    }
+  };
+}
+
+export function withAuthLite<TContext = unknown>(
+  handler: AuthLiteHandler<TContext>
+) {
+  return async (request: Request, context: TContext): Promise<Response> => {
+    try {
+      const supabase = await createClient();
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        return apiError('Unauthorized', 401);
+      }
+
+      return await handler({
+        request,
+        context,
+        auth: { user, supabase },
       });
     } catch (error) {
       console.error('[api-utils] unexpected auth wrapper error', error);

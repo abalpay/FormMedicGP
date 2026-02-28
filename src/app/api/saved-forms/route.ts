@@ -1,6 +1,5 @@
 import { apiError, apiSuccess, withAuth } from '@/lib/api-utils';
 import {
-  mapSavedFormRow,
   mapSavedFormSummaryRow,
   type SavedFormSummaryRow,
 } from '@/lib/backend-mappers';
@@ -94,12 +93,12 @@ export const POST = withAuth(async ({ request, auth }) => {
   const { data, error } = await auth.supabase
     .from('saved_forms')
     .insert(insertPayload)
-    .select('*')
+    .select('id, form_type, form_name, status, created_at, updated_at')
     .single();
 
   if (error) {
     return apiError('Failed to create saved form', 500);
   }
 
-  return apiSuccess({ form: mapSavedFormRow(data) }, 201);
+  return apiSuccess({ form: data }, 201);
 });

@@ -128,9 +128,11 @@ export const POST = withAuth(async ({ request, auth }) => {
       auth.doctorProfile
     );
 
-    const pdfBytes = await fillPdf(schema, mergedData);
+    const [pdfBytes, textFieldMultilineMap] = await Promise.all([
+      fillPdf(schema, mergedData),
+      getTemplateTextFieldMultilineMap(schema),
+    ]);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
-    const textFieldMultilineMap = await getTemplateTextFieldMultilineMap(schema);
     const reviewSchema = buildReviewSchema(schema, {
       manifestFields: manifest?.fields ?? [],
       textFieldMultilineMap,

@@ -42,21 +42,19 @@ interface DictatePageContentProps {
 
 export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
   const router = useRouter();
-  const {
-    selectedFormType,
-    selectedFormLabel,
-    patientDetails,
-    transcription,
-    guidedAnswers,
-    setTranscription,
-    setGuidedAnswer,
-    setGuidedAnswers,
-    setStep,
-    setExtractedData,
-    setMissingFields,
-    setReviewSchema,
-    setPdfBlobUrl,
-  } = useFormFlowStore();
+  const selectedFormType = useFormFlowStore((s) => s.selectedFormType);
+  const selectedFormLabel = useFormFlowStore((s) => s.selectedFormLabel);
+  const patientDetails = useFormFlowStore((s) => s.patientDetails);
+  const transcription = useFormFlowStore((s) => s.transcription);
+  const guidedAnswers = useFormFlowStore((s) => s.guidedAnswers);
+  const setTranscription = useFormFlowStore((s) => s.setTranscription);
+  const setGuidedAnswer = useFormFlowStore((s) => s.setGuidedAnswer);
+  const setGuidedAnswers = useFormFlowStore((s) => s.setGuidedAnswers);
+  const setStep = useFormFlowStore((s) => s.setStep);
+  const setExtractedData = useFormFlowStore((s) => s.setExtractedData);
+  const setMissingFields = useFormFlowStore((s) => s.setMissingFields);
+  const setReviewSchema = useFormFlowStore((s) => s.setReviewSchema);
+  const setPdfBlobUrl = useFormFlowStore((s) => s.setPdfBlobUrl);
 
   const [recordingState, setRecordingState] = useState<RecordingState>('idle');
   const [isProcessing, setIsProcessing] = useState(false);

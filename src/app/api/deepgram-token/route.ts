@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { withAuth } from '@/lib/api-utils';
+import { withAuthLite } from '@/lib/api-utils';
 import { generateDeepgramToken } from '@/lib/deepgram';
 import {
   checkDistributedRateLimit,
@@ -12,7 +12,7 @@ const DEEPGRAM_TOKEN_RATE_LIMIT = {
   windowMs: 10 * 60 * 1000,
 };
 
-export const POST = withAuth(async ({ request, auth }) => {
+export const POST = withAuthLite(async ({ request, auth }) => {
   const ip = getClientIp(request);
   const key =
     ip === 'unknown'

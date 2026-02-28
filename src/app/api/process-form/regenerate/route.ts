@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import { getFormSchema } from '@/lib/schemas';
 import { validateEditedData } from '@/lib/form-validation';
 import { fillPdf } from '@/lib/pdf-filler';
-import { apiError, apiSuccess, withAuth } from '@/lib/api-utils';
+import { apiError, apiSuccess, withAuthLite } from '@/lib/api-utils';
 
-export const POST = withAuth(async ({ request }) => {
+export const POST = withAuthLite(async ({ request }) => {
   try {
     const body = await request.json();
     const { formType, editedData } = body as {

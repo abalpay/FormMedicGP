@@ -20,16 +20,10 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 });
 
 export const getCurrentDoctorProfile = cache(async (): Promise<DoctorProfile | null> => {
+  const user = await getCurrentUser();
+  if (!user) return null;
+
   const supabase = await createServerClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError || !user) {
-    return null;
-  }
-
   const { data, error } = await supabase
     .from('doctor_profiles')
     .select('*')

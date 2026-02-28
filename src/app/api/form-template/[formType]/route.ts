@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { NextResponse } from 'next/server';
 import { getFormSchema } from '@/lib/schemas';
@@ -16,7 +16,7 @@ export async function GET(
   const fullPath = join(process.cwd(), 'src', 'lib', 'schemas', schema.templatePath);
 
   try {
-    const bytes = readFileSync(fullPath);
+    const bytes = await readFile(fullPath);
     return new NextResponse(bytes, {
       headers: {
         'Content-Type': 'application/pdf',
