@@ -78,11 +78,22 @@ export function Hero() {
 
           {/* Right -- Floating UI cards collage */}
           <div
-            className="hidden lg:block relative h-[520px] animate-fade-in-up"
+            className="hidden lg:block relative h-[460px] animate-fade-in-up"
             style={{ animationDelay: '300ms' }}
           >
+            {/* Privacy badge — floating top-right, slightly overlaps main card */}
+            <div className="absolute -top-2 right-4 z-30 rounded-xl bg-card border border-border shadow-md px-3.5 py-2.5 flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold">De-identified</p>
+                <p className="text-[10px] text-muted-foreground">PII never reaches AI</p>
+              </div>
+            </div>
+
             {/* Main dictation card */}
-            <div className="absolute top-4 left-8 right-0 rounded-2xl bg-card border border-border shadow-xl p-5 z-20">
+            <div className="absolute top-8 left-4 right-12 rounded-2xl bg-card border border-border shadow-xl p-5 z-20">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl gradient-teal flex items-center justify-center">
@@ -107,12 +118,12 @@ export function Hero() {
                   <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
                     <Mic className="w-4 h-4 text-red-500" />
                   </div>
-                  <div className="flex-1 flex items-end gap-[3px] h-8">
-                    {[35, 55, 25, 70, 45, 60, 20, 80, 40, 55, 30, 65, 50, 75, 35, 60, 45, 25, 55, 40, 70, 30, 50, 65, 45].map((h, i) => (
+                  <div className="flex-1 flex items-end gap-[2px] h-7">
+                    {[3, 5, 2.5, 7, 4.5, 6, 2, 8, 4, 5.5, 3, 6.5, 5, 7.5, 3.5, 6, 4.5, 2.5, 5.5, 4, 7, 3, 5, 6.5, 4.5, 3.5, 6, 5, 7, 4, 3, 5.5, 6.5, 4.5, 2.5].map((h, i) => (
                       <div
                         key={i}
-                        className="flex-1 rounded-full bg-primary/60"
-                        style={{ height: `${h}%` }}
+                        className="flex-1 rounded-sm bg-primary/50"
+                        style={{ height: `${h * 10}%` }}
                       />
                     ))}
                   </div>
@@ -123,37 +134,32 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Extracted fields card — overlapping bottom-left */}
-            <div className="absolute bottom-12 -left-4 z-30 rounded-2xl bg-card border border-border shadow-lg p-4 w-[280px]">
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">Extracted Fields</p>
-              <div className="grid grid-cols-2 gap-2">
+            {/* Extracted fields card — overlaps main card bottom */}
+            <div className="absolute top-[255px] -left-2 z-30 rounded-2xl bg-card border border-border shadow-lg p-4 w-[260px]">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2.5">Extracted Fields</p>
+              <div className="grid grid-cols-2 gap-1.5">
                 {[
                   { label: 'Diagnosis', value: 'Lumbar radiculopathy' },
                   { label: 'Duration', value: '3 weeks' },
                   { label: 'Capacity', value: 'Unfit for work' },
                   { label: 'Treatment', value: 'Physio, NSAIDs' },
                 ].map((field) => (
-                  <div key={field.label} className="rounded-lg bg-muted/50 px-2.5 py-2">
-                    <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-wider">{field.label}</p>
+                  <div key={field.label} className="rounded-lg bg-muted/50 px-2.5 py-1.5">
+                    <p className="text-[8px] text-muted-foreground font-medium uppercase tracking-wider">{field.label}</p>
                     <p className="text-[11px] font-medium text-foreground mt-0.5">{field.value}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Privacy badge — floating top-right */}
-            <div className="absolute top-0 right-0 z-30 rounded-xl bg-card border border-border shadow-md px-4 py-3 flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold">De-identified</p>
-                <p className="text-[10px] text-muted-foreground">PII never reaches AI</p>
-              </div>
+            {/* Auto-filled badge — between main card and extracted fields, right side */}
+            <div className="absolute top-[270px] right-8 z-30 rounded-full bg-primary/10 border border-primary/15 px-3 py-1.5 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <span className="text-xs font-medium text-primary">14 fields auto-filled</span>
             </div>
 
-            {/* Time badge — floating bottom-right */}
-            <div className="absolute bottom-4 right-8 z-30 rounded-xl bg-card border border-border shadow-md px-4 py-3 flex items-center gap-2.5">
+            {/* Time badge — bottom-right, overlapping extracted fields area */}
+            <div className="absolute bottom-2 right-12 z-30 rounded-xl bg-card border border-border shadow-md px-3.5 py-2.5 flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center">
                 <Clock className="w-4 h-4 text-accent-foreground" />
               </div>
@@ -161,12 +167,6 @@ export function Hero() {
                 <p className="text-lg font-bold text-foreground leading-none">1:47</p>
                 <p className="text-[10px] text-muted-foreground">Average completion</p>
               </div>
-            </div>
-
-            {/* Auto-filled badge */}
-            <div className="absolute bottom-32 right-4 z-30 rounded-full bg-primary/10 border border-primary/15 px-3 py-1.5 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-xs font-medium text-primary">14 fields auto-filled</span>
             </div>
           </div>
         </div>
