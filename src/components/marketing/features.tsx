@@ -29,7 +29,7 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="py-20 sm:py-28">
+    <section id="features" className="pt-8 sm:pt-12 pb-20 sm:pb-28 border-t border-border/40">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         {/* Section header — left-aligned, editorial */}
         <div className="max-w-2xl mb-16">
