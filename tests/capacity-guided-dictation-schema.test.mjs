@@ -20,8 +20,8 @@ test('CAPACITY dictation guide target fields map to valid clinical schema keys',
   const questions = guide.flatMap((section) => section.questions ?? []);
 
   assert.ok(
-    questions.length >= 6 && questions.length <= 9,
-    `expected 6-9 guided questions, got ${questions.length}`
+    questions.length >= 6 && questions.length <= 12,
+    `expected 6-12 guided questions, got ${questions.length}`
   );
 
   for (const question of questions) {

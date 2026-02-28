@@ -33,7 +33,7 @@ test('review schema outputs labeled option objects for prognosis', () => {
   );
   assert.deepEqual(
     prognosis.options.map((option) => option.label),
-    ['Up to 13 weeks', '13 to 24 months', 'More than 24 months']
+    ['Up to 13 weeks', '13 weeks to 24 months', 'More than 24 months']
   );
 });
 

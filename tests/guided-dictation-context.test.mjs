@@ -18,16 +18,15 @@ test('buildGuidedExtractionPayload appends structured guided answers and omits e
     schema,
     guidedAnswers: {
       claimType: 'tac',
-      primaryDiagnosis: '  ',
-      restrictionsSummary:
-        'Can sit 30 minutes, lift up to 5kg occasionally.',
+      clinicalNarrative: '  ',
+      dateOfInjury: '2025-06-15',
     },
   });
 
   assert.match(result.transcriptionForLlm, /GUIDED ANSWERS:/);
   assert.match(result.transcriptionForLlm, /Claim Type: TAC \(tac\)/);
-  assert.match(result.transcriptionForLlm, /Restrictions Summary:/);
-  assert.doesNotMatch(result.transcriptionForLlm, /Primary Diagnosis:/);
+  assert.match(result.transcriptionForLlm, /Date of Injury:/);
+  assert.doesNotMatch(result.transcriptionForLlm, /Clinical Narrative:/);
 
   assert.equal(result.guidedOverrides.tacClaim, 'yes');
   assert.equal(result.guidedOverrides.vwaClaim, 'no');
