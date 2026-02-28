@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { DM_Sans, Plus_Jakarta_Sans } from 'next/font/google';
+import { DM_Sans, Instrument_Serif } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 
@@ -8,10 +8,11 @@ const dmSans = DM_Sans({
   subsets: ['latin'],
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const instrumentSerif = Instrument_Serif({
   variable: '--font-display',
   subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
+  weight: ['400'],
+  style: ['normal', 'italic'],
 });
 
 export const viewport: Viewport = {
@@ -59,7 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${plusJakarta.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${instrumentSerif.variable} font-sans antialiased`}>
         {children}
         <Toaster />
       </body>
