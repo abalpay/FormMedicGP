@@ -5,12 +5,17 @@ import { Button } from '@/components/ui/button';
 export function Hero() {
   return (
     <section className="relative pt-[72px] overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 gradient-teal" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_20%_-10%,oklch(0.55_0.12_175/0.5),transparent)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_80%_110%,oklch(0.35_0.08_185/0.6),transparent)]" />
+      {/* Background — rich deep teal, no muddy overlays */}
       <div
-        className="absolute inset-0 opacity-[0.07]"
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(160deg, oklch(0.32 0.08 175) 0%, oklch(0.24 0.07 178) 40%, oklch(0.18 0.05 182) 100%)',
+        }}
+      />
+      {/* Subtle lighter accent in top-left for depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_15%_10%,oklch(0.38_0.09_172/0.5),transparent)]" />
+      <div
+        className="absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
           backgroundSize: '32px 32px',
@@ -174,8 +179,8 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      {/* Bottom gradient fade — tall for smooth transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/60 to-transparent" />
     </section>
   );
 }
