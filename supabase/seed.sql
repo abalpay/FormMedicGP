@@ -1,0 +1,1 @@
+-- Seed data intentionally empty for backend foundation migration.
