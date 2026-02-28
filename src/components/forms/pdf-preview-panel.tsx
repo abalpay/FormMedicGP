@@ -13,7 +13,7 @@ interface PdfPreviewPanelProps {
 }
 
 export function PdfPreviewPanel({ previewUrl, isLoading, fullWidth, fillContainer }: PdfPreviewPanelProps) {
-  const iframeHeight = fullWidth ? 'calc(100vh - 14rem)' : 'calc(100vh - 12rem)';
+  const iframeHeight = fullWidth ? 'calc(100dvh - 14rem)' : 'calc(100dvh - 12rem)';
 
   return (
     <div className={cn(

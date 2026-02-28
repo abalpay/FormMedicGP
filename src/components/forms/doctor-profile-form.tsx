@@ -158,6 +158,7 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
               <Input
                 id="name"
                 placeholder="Dr. Jane Smith"
+                autoComplete="name"
                 className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('name')}
               />
@@ -170,6 +171,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
               <Input
                 id="providerNumber"
                 placeholder="123456AB"
+                inputMode="text"
+                spellCheck="false"
+                autoComplete="off"
                 className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('providerNumber')}
               />
@@ -236,6 +240,9 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
               <Input
                 id="practicePhone"
                 placeholder="02 9876 5432"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
                 className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('practicePhone')}
               />
@@ -250,6 +257,8 @@ export function DoctorProfileForm({ initialData }: DoctorProfileFormProps) {
               <Input
                 id="practiceAbn"
                 placeholder="12345678901"
+                inputMode="numeric"
+                autoComplete="off"
                 className="focus:shadow-[0_0_0_3px_oklch(0.47_0.1_175/0.1)]"
                 {...register('practiceAbn')}
               />

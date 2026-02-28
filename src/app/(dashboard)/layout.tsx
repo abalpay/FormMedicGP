@@ -12,7 +12,7 @@ export default async function DashboardLayout({
   const userEmail = user?.email;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col lg:flex-row min-h-dvh">
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0">
         <Header userName={userName} userEmail={userEmail} />

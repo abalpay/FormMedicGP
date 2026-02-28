@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { DM_Sans, Plus_Jakarta_Sans } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
@@ -14,12 +14,18 @@ const plusJakarta = Plus_Jakarta_Sans({
   weight: ['500', '600', '700', '800'],
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#0E7C66',
+};
+
 export const metadata: Metadata = {
   title: 'FormBridge GP',
   description:
     'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
   manifest: '/site.webmanifest',
-  themeColor: '#0E7C66',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
