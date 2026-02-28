@@ -834,17 +834,69 @@
             "required": true
           },
           "llmInstruction": "Summarize management plan and treatment strategy in concise clinical language."
+        },
+        "dateOfInjury": {
+          "label": "Date of Injury",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Date of Injury Day",
+            "Date of Injury Month",
+            "Date of Injury Year"
+          ],
+          "pdfFieldType": "split-date",
+          "llmInstruction": "Extract the date of the original injury or onset. Use YYYY-MM-DD format."
+        },
+        "preInjuryCapacityFrom": {
+          "label": "Pre-injury Capacity From",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Have a capacity for pre-injury employment from Day",
+            "Have a capacity for pre-injury employment from Month",
+            "Have a capacity for pre-injury employment from Year"
+          ],
+          "pdfFieldType": "split-date",
+          "llmInstruction": "Start date of pre-injury employment capacity window. Only extract when certification option is pre-injury capacity."
+        },
+        "suitableEmploymentFrom": {
+          "label": "Suitable Employment From",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Have a capacity for suitable employment from Day 1",
+            "Have a capacity for suitable employment from Month 1",
+            "Have a capacity for suitable employment from Year 1"
+          ],
+          "pdfFieldType": "split-date",
+          "llmInstruction": "Start date of suitable employment capacity window. Only extract when certification option is suitable employment."
+        },
+        "suitableEmploymentTo": {
+          "label": "Suitable Employment To",
+          "inputType": "date",
+          "reviewEditable": true,
+          "type": "date",
+          "pdfField": [
+            "Have a capacity for suitable employment to Day 2",
+            "Have a capacity for suitable employment to Month 2",
+            "Have a capacity for suitable employment to Year 2"
+          ],
+          "pdfFieldType": "split-date",
+          "llmInstruction": "End date of suitable employment capacity window. Only extract when certification option is suitable employment."
         }
       }
     }
   },
-  "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.",
+  "systemPromptAdditions": "For Certificate of Capacity, focus on diagnosis, objective restrictions, current work capacity window, and practical return-to-work planning.\n- The clinical narrative contains ALL clinical information — extract diagnosis, restrictions, treatment, work environment, and capacity matrix ratings from it.\n- For the 9 physical capacity items (sit, stand/walk, bend, squat, kneel, reach, arm/hand, lift, neck): classify each as 'can', 'with_modifications', or 'cannot' based on evidence in the narrative. Default to 'can' if no restriction is mentioned for that activity.\n- For the 3 mental capacity items (attention, memory, judgement): classify each as 'not_affected' or 'affected'. Default to 'not_affected' if no mental health impact is described.",
   "allowedUnmappedPdfFields": [],
   "advancedUnmappedPdfFields": [],
   "dictationGuide": [
     {
       "id": "claimAndCertificate",
-      "title": "Claim And Certificate",
+      "title": "Claim & Certificate",
       "description": "Capture claim type and certificate selection.",
       "questions": [
         {
@@ -852,40 +904,16 @@
           "label": "Claim Type",
           "inputType": "segmented",
           "options": [
-            {
-              "value": "tac",
-              "label": "TAC"
-            },
-            {
-              "value": "vwa",
-              "label": "VWA/WorkSafe"
-            },
-            {
-              "value": "both",
-              "label": "Both"
-            },
-            {
-              "value": "none",
-              "label": "None"
-            }
+            { "value": "tac", "label": "TAC" },
+            { "value": "vwa", "label": "VWA/WorkSafe" },
+            { "value": "both", "label": "Both" },
+            { "value": "none", "label": "None" }
           ],
           "valueOverrides": {
-            "tac": {
-              "tacClaim": "yes",
-              "vwaClaim": "no"
-            },
-            "vwa": {
-              "tacClaim": "no",
-              "vwaClaim": "yes"
-            },
-            "both": {
-              "tacClaim": "yes",
-              "vwaClaim": "yes"
-            },
-            "none": {
-              "tacClaim": "no",
-              "vwaClaim": "no"
-            }
+            "tac": { "tacClaim": "yes", "vwaClaim": "no" },
+            "vwa": { "tacClaim": "no", "vwaClaim": "yes" },
+            "both": { "tacClaim": "yes", "vwaClaim": "yes" },
+            "none": { "tacClaim": "no", "vwaClaim": "no" }
           },
           "requiredForBestFill": true
         },
@@ -895,14 +923,8 @@
           "description": "Use yes only when this certificate confirms attendance only (sections 1, 2, 5, 6).",
           "inputType": "segmented",
           "options": [
-            {
-              "value": "yes",
-              "label": "Yes"
-            },
-            {
-              "value": "no",
-              "label": "No"
-            }
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
           ],
           "targetFieldKey": "confirmAttendance"
         },
@@ -911,20 +933,18 @@
           "label": "Certification Option",
           "inputType": "segmented",
           "options": [
-            {
-              "value": "pre_injury_capacity",
-              "label": "Pre-injury Employment"
-            },
-            {
-              "value": "suitable_employment",
-              "label": "Suitable Employment"
-            },
-            {
-              "value": "no_capacity",
-              "label": "No Capacity"
-            }
+            { "value": "pre_injury_capacity", "label": "Pre-injury Employment" },
+            { "value": "suitable_employment", "label": "Suitable Employment" },
+            { "value": "no_capacity", "label": "No Capacity" }
           ],
           "targetFieldKey": "certificationOption",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "dateOfInjury",
+          "label": "Date of Injury",
+          "inputType": "date",
+          "targetFieldKey": "dateOfInjury",
           "requiredForBestFill": true
         }
       ]
@@ -932,7 +952,7 @@
     {
       "id": "capacityTimeline",
       "title": "Capacity Timeline",
-      "description": "Capture no-capacity window and return estimate.",
+      "description": "Capture incapacity window, capacity dates, and return estimate.",
       "questions": [
         {
           "key": "incapacityStartDate",
@@ -949,109 +969,62 @@
           "requiredForBestFill": true
         },
         {
+          "key": "preInjuryCapacityFrom",
+          "label": "Pre-injury Capacity From",
+          "inputType": "date",
+          "targetFieldKey": "preInjuryCapacityFrom",
+          "visibleWhen": { "key": "certificationOption", "equals": "pre_injury_capacity" }
+        },
+        {
+          "key": "suitableEmploymentFrom",
+          "label": "Suitable Employment From",
+          "inputType": "date",
+          "targetFieldKey": "suitableEmploymentFrom",
+          "visibleWhen": { "key": "certificationOption", "equals": "suitable_employment" }
+        },
+        {
+          "key": "suitableEmploymentTo",
+          "label": "Suitable Employment To",
+          "inputType": "date",
+          "targetFieldKey": "suitableEmploymentTo",
+          "visibleWhen": { "key": "certificationOption", "equals": "suitable_employment" }
+        },
+        {
           "key": "returnToWorkEstimate",
           "label": "Estimated Return To Work",
           "inputType": "select",
           "options": [
-            {
-              "value": "3_days",
-              "label": "3 days"
-            },
-            {
-              "value": "7_days",
-              "label": "7 days"
-            },
-            {
-              "value": "14_days",
-              "label": "14 days"
-            },
-            {
-              "value": "2_weeks",
-              "label": "2 weeks"
-            },
-            {
-              "value": "4_weeks",
-              "label": "4 weeks"
-            },
-            {
-              "value": "6_weeks",
-              "label": "6 weeks"
-            },
-            {
-              "value": "not_set",
-              "label": "Not set"
-            }
+            { "value": "3_days", "label": "3 days" },
+            { "value": "7_days", "label": "7 days" },
+            { "value": "14_days", "label": "14 days" },
+            { "value": "2_weeks", "label": "2 weeks" },
+            { "value": "4_weeks", "label": "4 weeks" },
+            { "value": "6_weeks", "label": "6 weeks" },
+            { "value": "not_set", "label": "Not set" }
           ],
           "valueOverrides": {
-            "3_days": {
-              "returnToWorkDays": "3",
-              "returnToWorkWeeks": ""
-            },
-            "7_days": {
-              "returnToWorkDays": "7",
-              "returnToWorkWeeks": ""
-            },
-            "14_days": {
-              "returnToWorkDays": "14",
-              "returnToWorkWeeks": ""
-            },
-            "2_weeks": {
-              "returnToWorkDays": "",
-              "returnToWorkWeeks": "2"
-            },
-            "4_weeks": {
-              "returnToWorkDays": "",
-              "returnToWorkWeeks": "4"
-            },
-            "6_weeks": {
-              "returnToWorkDays": "",
-              "returnToWorkWeeks": "6"
-            },
-            "not_set": {
-              "returnToWorkDays": "",
-              "returnToWorkWeeks": ""
-            }
+            "3_days": { "returnToWorkDays": "3", "returnToWorkWeeks": "" },
+            "7_days": { "returnToWorkDays": "7", "returnToWorkWeeks": "" },
+            "14_days": { "returnToWorkDays": "14", "returnToWorkWeeks": "" },
+            "2_weeks": { "returnToWorkDays": "", "returnToWorkWeeks": "2" },
+            "4_weeks": { "returnToWorkDays": "", "returnToWorkWeeks": "4" },
+            "6_weeks": { "returnToWorkDays": "", "returnToWorkWeeks": "6" },
+            "not_set": { "returnToWorkDays": "", "returnToWorkWeeks": "" }
           },
           "requiredForBestFill": true
         }
       ]
     },
     {
-      "id": "clinicalCore",
-      "title": "Clinical Core",
-      "description": "Provide the core clinical narrative used for autofill.",
+      "id": "clinicalNarrative",
+      "title": "Clinical Narrative",
+      "description": "Describe diagnosis, restrictions, treatment, and work environment considerations in one narrative.",
       "questions": [
         {
-          "key": "primaryDiagnosis",
-          "label": "Primary Diagnosis",
+          "key": "clinicalNarrative",
+          "label": "Clinical Narrative",
           "inputType": "textarea",
-          "placeholder": "Diagnosis and anatomical site.",
-          "targetFieldKey": "primaryDiagnosis",
-          "requiredForBestFill": true
-        },
-        {
-          "key": "treatmentAndEnvironment",
-          "label": "Treatment Plan And Work Environment Considerations",
-          "inputType": "textarea",
-          "placeholder": "Current treatment, follow-up plan, and workplace/environment constraints.",
-          "targetFieldKeys": [
-            "treatment",
-            "workEnvironmentConsiderations"
-          ],
-          "requiredForBestFill": true
-        }
-      ]
-    },
-    {
-      "id": "restrictions",
-      "title": "Restrictions Summary",
-      "description": "Summarize practical activity and cognitive limits to support matrix autofill.",
-      "questions": [
-        {
-          "key": "restrictionsSummary",
-          "label": "Restrictions Summary",
-          "inputType": "textarea",
-          "placeholder": "Example: sit 30 minutes, lift max 5kg occasionally, avoid kneeling, reduced concentration after 2 hours.",
+          "placeholder": "e.g. Right rotator cuff tear. Cannot lift above shoulder, sit max 30min. Attention not affected, memory OK. Physio 2x/week, avoid overhead work and heavy lifting.",
           "requiredForBestFill": true
         }
       ]
