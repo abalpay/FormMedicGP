@@ -6,14 +6,14 @@ Create Supabase migration files that set up the database tables, RLS policies, i
 
 ## Tasks
 
-- [ ] 1.1 Initialize Supabase project structure (`supabase/` directory with `config.toml` if not present)
-- [ ] 1.2 Create migration: `doctor_profiles` table
-- [ ] 1.3 Create migration: `patients` table
-- [ ] 1.4 Create migration: `saved_forms` table
-- [ ] 1.5 Create RLS policies for all tables
-- [ ] 1.6 Create indexes for common queries
-- [ ] 1.7 Create `updated_at` trigger function
-- [ ] 1.8 Generate TypeScript types from schema (output to `src/types/database.ts`)
+- [x] 1.1 Initialize Supabase project structure (`supabase/` directory with `config.toml` if not present)
+- [x] 1.2 Create migration: `doctor_profiles` table
+- [x] 1.3 Create migration: `patients` table
+- [x] 1.4 Create migration: `saved_forms` table
+- [x] 1.5 Create RLS policies for all tables
+- [x] 1.6 Create indexes for common queries
+- [x] 1.7 Create `updated_at` trigger function
+- [x] 1.8 Generate TypeScript types from schema (output to `src/types/database.ts`)
 
 ## Table Schemas
 

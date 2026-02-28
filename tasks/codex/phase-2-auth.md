@@ -6,11 +6,11 @@ Configure Supabase Auth for Google OAuth and email/password sign-in. Create Next
 
 ## Tasks
 
-- [ ] 2.1 Create auth callback route (`src/app/auth/callback/route.ts`)
-- [ ] 2.2 Create Next.js middleware (`src/middleware.ts`) to protect routes
-- [ ] 2.3 Create auth helper functions (`src/lib/supabase/auth.ts`)
-- [ ] 2.4 Create auto-provision trigger: create `doctor_profiles` row on user sign-up
-- [ ] 2.5 Document Google OAuth setup steps (for Supabase dashboard configuration)
+- [x] 2.1 Create auth callback route (`src/app/auth/callback/route.ts`)
+- [x] 2.2 Create Next.js middleware (`src/middleware.ts`) to protect routes
+- [x] 2.3 Create auth helper functions (`src/lib/supabase/auth.ts`)
+- [x] 2.4 Create auto-provision trigger: create `doctor_profiles` row on user sign-up
+- [x] 2.5 Document Google OAuth setup steps (for Supabase dashboard configuration)
 
 ## 2.1 Auth Callback Route
 

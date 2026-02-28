@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Download, FilePlus, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Download, FilePlus, ArrowLeft, RefreshCw, Save, Check } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StepIndicator } from '@/components/ui/step-indicator';
@@ -47,6 +47,8 @@ export default function FormReviewPage() {
     null
   );
   const [isApplying, setIsApplying] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const isSU415 = selectedFormType === 'SU415';
 
@@ -211,6 +213,67 @@ export default function FormReviewPage() {
     router.push('/dashboard/forms/new');
   };
 
+  const handleSave = async () => {
+    if (!selectedFormType || !selectedFormLabel) {
+      toast.error('No form type selected.');
+      return;
+    }
+
+    const hasErrors = Object.keys(validationErrors).length > 0;
+    if (hasErrors) {
+      toast.error('Please fix highlighted fields before saving.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      // Convert blob URL to base64
+      let pdfBase64 = '';
+      const blobSource = isSU415 ? (previewUrl ?? pdfBlobUrl) : pdfBlobUrl;
+      if (blobSource) {
+        const res = await fetch(blobSource);
+        const blob = await res.blob();
+        const buffer = await blob.arrayBuffer();
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        pdfBase64 = btoa(binary);
+      }
+
+      const saveRes = await fetch('/api/saved-forms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: selectedFormType,
+          formName: selectedFormLabel,
+          extractedData: editableData,
+          pdfBase64,
+          patientId: null,
+        }),
+      });
+
+      if (!saveRes.ok) {
+        const body = await saveRes.json().catch(() => null);
+        throw new Error(body?.error ?? 'Failed to save form');
+      }
+
+      setIsSaved(true);
+      toast.success('Form saved successfully', {
+        action: {
+          label: 'View Dashboard',
+          onClick: () => router.push('/dashboard'),
+        },
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to save form';
+      toast.error(message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const data = editableData;
 
   // ---------- SU415: PDF-primary layout ----------
@@ -243,6 +306,18 @@ export default function FormReviewPage() {
               <p className="text-xs text-muted-foreground hidden sm:block">
                 Use the download button in the PDF viewer toolbar to save your edits
               </p>
+              <Button
+                variant="outline"
+                onClick={handleSave}
+                disabled={isSaving || isSaved}
+              >
+                {isSaved ? (
+                  <Check className="w-4 h-4 mr-1.5" />
+                ) : (
+                  <Save className="w-4 h-4 mr-1.5" />
+                )}
+                {isSaving ? 'Saving...' : isSaved ? 'Saved' : 'Save Form'}
+              </Button>
               <Button variant="outline" onClick={handleNewForm}>
                 <FilePlus className="w-4 h-4 mr-1.5" />
                 New Form
@@ -306,6 +381,18 @@ export default function FormReviewPage() {
           <Button variant="outline" onClick={handleNewForm}>
             <FilePlus className="w-4 h-4 mr-1.5" />
             New Form
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleSave}
+            disabled={isSaving || isSaved || Object.keys(validationErrors).length > 0}
+          >
+            {isSaved ? (
+              <Check className="w-4 h-4 mr-1.5" />
+            ) : (
+              <Save className="w-4 h-4 mr-1.5" />
+            )}
+            {isSaving ? 'Saving...' : isSaved ? 'Saved' : 'Save Form'}
           </Button>
           <Button
             onClick={handleDownload}

@@ -50,6 +50,9 @@ export function Header({ userName, userEmail }: HeaderProps) {
     if (pathname.startsWith('/dashboard/forms/') && pathname !== '/dashboard/forms/new') {
       return 'Form Review';
     }
+    if (pathname.startsWith('/dashboard/saved/')) {
+      return 'Saved Form';
+    }
     return pageTitles[pathname] ?? 'FormMedic';
   };
 

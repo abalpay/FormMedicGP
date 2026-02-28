@@ -6,11 +6,11 @@ Create CRUD API routes for doctor profiles, patients, and saved forms. Update th
 
 ## Tasks
 
-- [ ] 3.1 Doctor profile API (`src/app/api/doctor-profile/route.ts`)
-- [ ] 3.2 Patients API (`src/app/api/patients/route.ts` + `[id]/route.ts`)
-- [ ] 3.3 Saved forms API (`src/app/api/saved-forms/route.ts` + `[id]/route.ts`)
-- [ ] 3.4 Update `process-form` route to use real doctor profile
-- [ ] 3.5 Create shared API error handling utility
+- [x] 3.1 Doctor profile API (`src/app/api/doctor-profile/route.ts`)
+- [x] 3.2 Patients API (`src/app/api/patients/route.ts` + `[id]/route.ts`)
+- [x] 3.3 Saved forms API (`src/app/api/saved-forms/route.ts` + `[id]/route.ts`)
+- [x] 3.4 Update `process-form` route to use real doctor profile
+- [x] 3.5 Create shared API error handling utility
 
 ## 3.1 Doctor Profile API
 
