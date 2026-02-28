@@ -57,7 +57,7 @@ export function withAuth<TContext = unknown>(
         ? mapDoctorProfileRow(doctorProfileRow)
         : null;
 
-      return handler({
+      return await handler({
         request,
         context,
         auth: {
