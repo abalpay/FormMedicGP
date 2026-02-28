@@ -42,6 +42,10 @@ function LoginForm() {
   });
 
   const handleGoogleSignIn = async () => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     setIsGoogleLoading(true);
     const supabase = createClient();
     const redirectTo = `${window.location.origin}/auth/callback`;
@@ -56,6 +60,10 @@ function LoginForm() {
   };
 
   const onSubmit = async (data: LoginFormData) => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({
       email: data.email,

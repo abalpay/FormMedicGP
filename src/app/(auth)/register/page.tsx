@@ -33,6 +33,10 @@ export default function RegisterPage() {
   });
 
   const handleGoogleSignUp = async () => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     setIsGoogleLoading(true);
     const supabase = createClient();
     const redirectTo = `${window.location.origin}/auth/callback`;
@@ -47,6 +51,10 @@ export default function RegisterPage() {
   };
 
   const onSubmit = async (data: RegisterFormData) => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
       email: data.email,

@@ -210,19 +210,91 @@
           "pdfFieldType": "text",
           "llmInstruction": "Describe practical mobility restrictions and transport barriers."
         },
-        "treatmentPlan": {
-          "label": "Treatment Plan",
+        "hasPhysicalDisabilities": {
+          "label": "Has Physical Disabilities",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q3",
+          "pdfFieldType": "checkbox",
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes", "no": "No" },
+          "default": "yes",
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' if physical disabilities affecting mobility are described. Default 'yes' since this form is about mobility."
+        },
+        "physicalDisabilitiesDetails": {
+          "label": "Physical Disabilities Details",
           "inputType": "textarea",
           "reviewEditable": true,
           "type": "text",
           "pdfField": "Q3Details",
           "pdfFieldType": "text",
-          "llmInstruction": "Summarize treatment, rehabilitation, and expected trajectory."
+          "llmInstruction": "Describe physical disabilities and how they affect mobility and ability to use public transport."
+        },
+        "hasPsychiatricDisabilities": {
+          "label": "Has Psychiatric/Intellectual Disabilities",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q5",
+          "pdfFieldType": "checkbox",
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes", "no": "No" },
+          "default": "no",
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' if psychiatric or intellectual disabilities are described. Default 'no'."
+        },
+        "psychiatricDisabilitiesDetails": {
+          "label": "Psychiatric/Intellectual Details",
+          "inputType": "textarea",
+          "reviewEditable": true,
+          "type": "text",
+          "pdfField": "Q5Details",
+          "pdfFieldType": "text",
+          "llmInstruction": "Describe psychiatric or intellectual disabilities and how they affect ability to use public transport."
+        },
+        "hasOtherTransportInfo": {
+          "label": "Has Other Transport Info",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q7",
+          "pdfFieldType": "checkbox",
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes", "no": "No" },
+          "default": "no",
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' if there is additional transport limitation information beyond physical and psychiatric. Default 'no'."
+        },
+        "mobilityPermanentOrTemporary": {
+          "label": "Permanent or Temporary",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q8",
+          "pdfFieldType": "checkbox",
+          "options": ["permanent", "temporary"],
+          "optionLabels": { "permanent": "Permanent", "temporary": "Temporary" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Is the mobility limitation permanent or temporary?"
+        },
+        "mobilityDuration": {
+          "label": "Duration",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q9",
+          "pdfFieldType": "checkbox",
+          "options": ["less_than_12_months", "12_months_or_longer"],
+          "optionLabels": { "less_than_12_months": "Less than 12 months", "12_months_or_longer": "12 months or longer" },
+          "reviewControl": "segmented",
+          "llmInstruction": "If temporary, will the mobility limitation last less than 12 months or 12 months or longer?"
         }
       }
     }
   },
-  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.",
+  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n- Extract physical disability details into 'physicalDisabilitiesDetails' (maps to Q3Details on PDF).\n- If psychiatric/intellectual disabilities are mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'.\n- Extract overall functional impact into 'mobilityFunctionalImpact' and clinical summary into 'mobilityClinicalSummary'.\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if transport-specific info exists beyond physical/psychiatric categories.",
   "allowedUnmappedPdfFields": [
     "Clear",
     "CliamNo",
@@ -241,7 +313,6 @@
     "Q2GoToQ11",
     "Q2PatientSince",
     "Q2PracticeSince",
-    "Q3",
     "Q3GoToQ5",
     "Q41",
     "Q42",
@@ -249,17 +320,80 @@
     "Q44",
     "Q45",
     "Q46",
-    "Q5",
-    "Q5Details",
     "Q5GoToQ7",
     "Q61",
     "Q62",
     "Q63",
     "Q64",
-    "Q7",
-    "Q8",
     "Q8GoToQ10",
-    "Q9",
     "Sign"
+  ],
+  "dictationGuide": [
+    {
+      "id": "conditionAndPrognosis",
+      "title": "Condition & Prognosis",
+      "description": "Indicate the nature and duration of the mobility limitation.",
+      "questions": [
+        {
+          "key": "hasPhysicalDisabilities",
+          "label": "Physical Disabilities?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "targetFieldKey": "hasPhysicalDisabilities",
+          "defaultValue": "yes",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "hasPsychiatricDisabilities",
+          "label": "Psychiatric/Intellectual Disabilities?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "targetFieldKey": "hasPsychiatricDisabilities",
+          "defaultValue": "no"
+        },
+        {
+          "key": "permanentOrTemporary",
+          "label": "Permanent or Temporary",
+          "inputType": "segmented",
+          "options": [
+            { "value": "permanent", "label": "Permanent" },
+            { "value": "temporary", "label": "Temporary" }
+          ],
+          "targetFieldKey": "mobilityPermanentOrTemporary",
+          "requiredForBestFill": true
+        },
+        {
+          "key": "mobilityDuration",
+          "label": "Duration if Temporary",
+          "inputType": "segmented",
+          "options": [
+            { "value": "less_than_12_months", "label": "Less than 12 months" },
+            { "value": "12_months_or_longer", "label": "12 months or longer" }
+          ],
+          "targetFieldKey": "mobilityDuration",
+          "visibleWhen": { "key": "permanentOrTemporary", "equals": "temporary" }
+        }
+      ]
+    },
+    {
+      "id": "clinicalNarrative",
+      "title": "Clinical Narrative",
+      "description": "Describe the patient's mobility condition, how it affects their ability to use public transport, and current treatment.",
+      "questions": [
+        {
+          "key": "clinicalNarrative",
+          "label": "Mobility & Transport Impact",
+          "inputType": "textarea",
+          "placeholder": "e.g. Severe bilateral knee OA with valgus deformity. Cannot walk >100m, unable to negotiate steps, serious difficulty standing on moving transport. Uses walking frame. Awaiting TKR. Also has anxiety limiting ability to navigate unfamiliar environments.",
+          "requiredForBestFill": true
+        }
+      ]
+    }
   ]
 }
