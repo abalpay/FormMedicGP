@@ -45,14 +45,14 @@ export function Navbar() {
             <Link href="/login">Sign In</Link>
           </Button>
           <Button variant="teal" size="sm" className="text-[13px] font-semibold" asChild>
-            <Link href="/register">Get Started</Link>
+            <Link href="/register">Join Waitlist</Link>
           </Button>
         </div>
 
         {/* Mobile menu */}
         <div className="md:hidden flex items-center gap-2">
           <Button variant="teal" size="sm" className="text-[13px] font-semibold" asChild>
-            <Link href="/register">Get Started</Link>
+            <Link href="/register">Join Waitlist</Link>
           </Button>
           <Sheet>
             <SheetTrigger asChild>

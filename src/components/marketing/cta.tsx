@@ -31,7 +31,7 @@ export function CTA() {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Button variant="amber" size="lg" className="h-12 px-8 text-[15px] font-semibold" asChild>
             <Link href="/register">
-              Get Started Free
+              Join Waitlist
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>

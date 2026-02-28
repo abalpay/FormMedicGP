@@ -49,7 +49,7 @@ export function Hero() {
             >
               <Button variant="teal" size="lg" className="h-12 px-7 text-[15px] font-semibold rounded-full" asChild>
                 <Link href="/register">
-                  Get Started
+                  Join Waitlist
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>

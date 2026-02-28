@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="fbg-title-ig fbg-desc-ig">
+  <title id="fbg-title-ig">FormBridge GP icon on green</title>
+  <desc id="fbg-desc-ig">White symbol on primary green rounded square background.</desc>
+  <rect x="2" y="2" width="124" height="124" rx="34" fill="#0E7C66" />
+  <g transform="translate(-12 -2)" fill="#FFFFFF">
+    <path d="M16 52Q76 14 136 52L136 70Q76 42 16 70Z" />
+    <path d="M16 78Q76 66 136 78L136 87Q76 75 16 87Z" opacity="0.9" />
+    <rect x="36" y="94" width="20" height="36" rx="4" />
+    <rect x="96" y="94" width="20" height="36" rx="4" />
+  </g>
+</svg>

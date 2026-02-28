@@ -1,12 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" role="img" aria-labelledby="fbg-title-h fbg-desc-h">
-  <title id="fbg-title-h">FormBridge GP primary horizontal logo</title>
-  <desc id="fbg-desc-h">FormBridge GP logo with a bridge symbol, dark wordmark and green GP suffix.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 170" role="img" aria-labelledby="fbg-title-mkt fbg-desc-mkt">
+  <title id="fbg-title-mkt">FormBridge GP marketing accent logo</title>
+  <desc id="fbg-desc-mkt">FormBridge GP logo with yellow accent underline for marketing placements.</desc>
   <defs>
     <style>
       .fbg-primary { fill: #0E7C66; }
       .fbg-deep { fill: #0A6A57; }
       .fbg-mint { fill: #86C9BD; }
       .fbg-dark { fill: #0B1020; }
+      .fbg-yellow { fill: #F4B400; }
     </style>
   </defs>
 
@@ -18,5 +19,6 @@
   </g>
 
   <text x="170" y="99" class="fbg-dark" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="62" font-weight="700">FormBridge</text>
+  <rect x="170" y="110" width="180" height="10" rx="5" class="fbg-yellow" />
   <text x="522" y="99" class="fbg-primary" font-family="'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="50" font-weight="700">GP</text>
 </svg>
