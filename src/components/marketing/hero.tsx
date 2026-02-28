@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Clock } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Clock, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function Hero() {
@@ -59,7 +59,7 @@ export function Hero() {
                 className="h-12 px-7 text-[15px] font-medium rounded-full"
                 asChild
               >
-                <Link href="#how-it-works">How It Works?</Link>
+                <Link href="#how-it-works">See How It Works</Link>
               </Button>
             </div>
 
@@ -67,9 +67,16 @@ export function Hero() {
               className="mt-10 flex flex-wrap items-center gap-3 animate-fade-in-up"
               style={{ animationDelay: '320ms' }}
             >
-              {['5 government forms', 'Privacy-first', 'Free early access'].map((text) => (
-                <div key={text} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
+              {[
+                { icon: FileText, text: '5 Government Forms' },
+                { icon: Shield, text: 'Privacy-First' },
+                { icon: Gift, text: 'Free Early Access' },
+              ].map(({ icon: Icon, text }) => (
+                <div
+                  key={text}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/[0.06] border border-primary/10 text-sm text-foreground/80 font-medium"
+                >
+                  <Icon className="w-4 h-4 text-primary" />
                   <span>{text}</span>
                 </div>
               ))}

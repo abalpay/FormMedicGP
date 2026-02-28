@@ -17,9 +17,9 @@ const steps = [
   {
     step: '03',
     icon: Sparkles,
-    title: 'AI Extracts',
+    title: 'Form Fills Automatically',
     description:
-      'De-identified notes are processed by AI. Fields are mapped and populated automatically.',
+      'De-identified notes are processed by AI. Fields are mapped and the form is populated automatically.',
   },
   {
     step: '04',
