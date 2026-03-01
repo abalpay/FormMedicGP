@@ -6,10 +6,10 @@
     "customerName": "Margaret Williams",
     "dateOfBirth": "1955-06-15",
     "address": "8 Collins Street, Brisbane QLD 4000",
-    "crn": "789 456 321G",
+    "crn": "789456321G",
     "caredPersonName": "Robert Williams",
     "caredPersonDateOfBirth": "1942-11-03",
-    "caredPersonCrn": "456 789 123C"
+    "caredPersonCrn": "456789123C"
   },
   "guidedAnswers": {
     "disabilityType": "intellectual",

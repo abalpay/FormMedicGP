@@ -81,10 +81,6 @@ export const POST = withAuth(async ({ request, auth }) => {
         guidedAnswers: safeGuidedAnswers,
       });
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[process-form] guidedOverrides:', JSON.stringify(guidedOverrides));
-    }
-
     const { deidentifiedText } = deidentify(transcriptionForLlm, {
       patientNames: [
         patientDetails?.customerName,
@@ -115,13 +111,6 @@ export const POST = withAuth(async ({ request, auth }) => {
       schema
     );
     const mergedClinicalData = mergeGuidedOverrides(llmData, guidedOverrides);
-
-    if (process.env.NODE_ENV !== 'production') {
-      const debugKeys = ['hasPhysicalDisabilities', 'mobilityPermanentOrTemporary', 'hasAnyDisabilities', 'q4Walking400m', 'q4StandingTransport'];
-      const debugData: Record<string, unknown> = {};
-      for (const k of debugKeys) debugData[k] = (mergedClinicalData as Record<string, unknown>)[k];
-      console.log('[process-form] mergedClinicalData (debug):', JSON.stringify(debugData));
-    }
 
     const mergedData = reidentify(
       mergedClinicalData,
