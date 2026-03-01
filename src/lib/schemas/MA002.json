@@ -483,7 +483,10 @@
             { "value": "yes", "label": "Yes" },
             { "value": "no", "label": "No" }
           ],
-          "targetFieldKey": "hasPhysicalDisabilities",
+          "valueOverrides": {
+            "yes": { "hasPhysicalDisabilities": "yes", "hasAnyDisabilities": "yes" },
+            "no": { "hasPhysicalDisabilities": "no" }
+          },
           "defaultValue": "yes",
           "requiredForBestFill": true
         },

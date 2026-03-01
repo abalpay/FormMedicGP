@@ -1,0 +1,21 @@
+{
+  "scenario": "Advanced dementia — carer payment support",
+  "formType": "SA332A",
+  "formLabel": "Carer Payment/Allowance Medical Report 16+ (SA332A)",
+  "patientDetails": {
+    "customerName": "Margaret Williams",
+    "dateOfBirth": "1955-06-15",
+    "address": "8 Collins Street, Brisbane QLD 4000",
+    "crn": "789 456 321G",
+    "caredPersonName": "Robert Williams",
+    "caredPersonDateOfBirth": "1942-11-03",
+    "caredPersonCrn": "456 789 123C"
+  },
+  "guidedAnswers": {
+    "disabilityType": "intellectual",
+    "conditionPrognosis": "permanent_not_improving",
+    "dailyHelpRequired": "yes",
+    "careNarrative": "Patient has advanced Alzheimer's dementia and requires continuous daily care for personal hygiene, dressing, feeding, and supervision for safety. He is unable to be left unsupervised and requires 24-hour care. His wife Margaret provides daily care in the home."
+  },
+  "clinicalNarrative": "Robert Williams has advanced Alzheimer's dementia diagnosed 6 years ago. He is fully dependent for all activities of daily living including feeding, dressing, and personal hygiene. He requires 24-hour supervision due to wandering and falls risk. He is no longer able to communicate verbally and is doubly incontinent. His wife Margaret provides full-time care at home. Condition is permanent and progressive with no prospect of improvement."
+}
