@@ -233,7 +233,7 @@
           "options": ["1", "2", "3", "4", "5"],
           "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
           "reviewControl": "segmented",
-          "llmInstruction": "Rate the patient's difficulty walking 400 metres: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Infer from stated walking distance (e.g. cannot walk >100m → 4 or 5). Only set if patient has physical disabilities. Leave blank if not enough information."
+          "llmInstruction": "REQUIRED if physical disabilities present. Rate difficulty walking 400m: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. cannot walk 50m → 5; cannot walk 100m → 4 or 5; walks with aids up to 200m → 3–4; 400m with difficulty → 2."
         },
         "q4StandingTransport": {
           "label": "Standing on public transport",
@@ -246,7 +246,7 @@
           "options": ["1", "2", "3", "4", "5"],
           "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
           "reviewControl": "segmented",
-          "llmInstruction": "Rate difficulty standing on a moving bus or train: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Lower limb OA and balance disorders typically impair standing on moving transport. Only set if patient has physical disabilities. Leave blank if not enough information."
+          "llmInstruction": "REQUIRED if physical disabilities present. Rate difficulty standing on a moving bus/train: lower limb OA or balance disorder with significant walking difficulty → 4 or 5; mild lower limb impairment → 2–3."
         },
         "q4SittingTransport": {
           "label": "Sitting in public transport",
@@ -259,7 +259,7 @@
           "options": ["1", "2", "3", "4", "5"],
           "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
           "reviewControl": "segmented",
-          "llmInstruction": "Rate difficulty sitting in public transport: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Most lower-limb or mobility conditions do not impair sitting (typically 1 or 2 unless severe hip/back pathology). Only set if patient has physical disabilities. Leave blank if not enough information."
+          "llmInstruction": "REQUIRED if physical disabilities present. Rate difficulty sitting in transport: default 1–2 for most mobility conditions — only rate higher if back/hip pathology explicitly limits sitting duration."
         },
         "q4CrossingStreets": {
           "label": "Crossing streets and negotiating kerbs",
@@ -272,7 +272,7 @@
           "options": ["1", "2", "3", "4", "5"],
           "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
           "reviewControl": "segmented",
-          "llmInstruction": "Rate difficulty crossing streets and stepping off kerbs: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Relevant for lower limb weakness, balance issues, or visual impairment. Only set if patient has physical disabilities. Leave blank if not enough information."
+          "llmInstruction": "REQUIRED if physical disabilities present. Rate difficulty crossing streets and kerbs: similar severity to walking; falls risk or deformity → 4–5; knee/hip OA with significant walking difficulty → 3–4."
         },
         "q4NegotiatingSteps": {
           "label": "Negotiating steps in/out of transport",
@@ -285,7 +285,7 @@
           "options": ["1", "2", "3", "4", "5"],
           "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
           "reviewControl": "segmented",
-          "llmInstruction": "Rate difficulty negotiating the 1–2 steps into/out of buses or trains: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Knee and hip pathology commonly affects this. Only set if patient has physical disabilities. Leave blank if not enough information."
+          "llmInstruction": "REQUIRED if physical disabilities present. Rate difficulty negotiating 1–2 steps into/out of buses: knee/hip pathology with significant walking difficulty → 4 or 5; mild weakness or stiffness → 2–3."
         },
         "q4FlightOfSteps": {
           "label": "Negotiating a large flight of steps",
@@ -298,7 +298,7 @@
           "options": ["1", "2", "3", "4", "5"],
           "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
           "reviewControl": "segmented",
-          "llmInstruction": "Rate difficulty climbing a full flight of stairs (e.g. station overpass): 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Most significant mobility impairments make this at least Serious (4) or Cannot do (5). Only set if patient has physical disabilities. Leave blank if not enough information."
+          "llmInstruction": "REQUIRED if physical disabilities present. Rate difficulty climbing a full flight of stairs: significant lower-limb impairment (OA, fracture, neuropathy) → 4 or 5; mild impairment → 3."
         },
         "hasPsychiatricDisabilities": {
           "label": "Has Psychiatric/Intellectual Disabilities",
@@ -446,7 +446,7 @@
       }
     }
   },
-  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n\nIMPORTANT: Each text area field maps to a small box on the PDF. Keep all text responses to 2-4 SHORT sentences maximum. Be concise and clinical.\n\nPHYSICAL DISABILITIES (Q3–Q4):\n- Extract physical disability description into 'physicalDisabilitiesDetails' (Q3 on PDF — describes the condition).\n- Rate each Q4 activity field using the 1–5 scale (1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do). Only set these if physical disabilities are present:\n  - 'q4Walking400m' (Q41): infer from stated walking distance — cannot walk 100m → 4 or 5; walking impaired but can manage 400m → 2 or 3\n  - 'q4StandingTransport' (Q42): lower limb OA and balance disorders typically make standing on moving transport Serious (4) or worse\n  - 'q4SittingTransport' (Q43): most lower-limb conditions do NOT impair sitting — default to 1 or 2 unless hip/back pathology explicitly limits sitting\n  - 'q4CrossingStreets' (Q44): relevant for lower-limb weakness, deformity, or visual impairment\n  - 'q4NegotiatingSteps' (Q45): knee and hip pathology commonly makes negotiating bus/train steps Serious (4) or Cannot do (5)\n  - 'q4FlightOfSteps' (Q46): significant lower-limb impairment almost always makes a full flight of stairs Serious (4) or Cannot do (5)\n  - Leave any Q4 field blank if the narrative does not provide enough information to rate it confidently.\n\nPSYCHIATRIC/INTELLECTUAL DISABILITIES (Q5–Q6):\n- If mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'.\n- Rate each Q6 skills field using 1–5 (1=Full ability, 2=Slightly limited, 3=Moderately limited, 4=Severely limited, 5=No ability). Only set if psychiatric disabilities are present:\n  - 'q6PersonalSurvival' (Q61): personal survival skills — not a danger to self\n  - 'q6SocialSkills' (Q62): social skills — ability to relate to drivers or public\n  - 'q6EducationalSkills' (Q63): educational skills — handling money, buying tickets\n  - 'q6RecognitionSkills' (Q64): recognition skills — recognising landmarks or areas\n  - Leave any Q6 field blank if not enough information.\n\nOTHER TRANSPORT INFO (Q7):\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if there is additional transport-specific information beyond what is in Q3/Q5.\n\nRELEASE OF INFORMATION (Q10):\n- Set 'mobilityFoiRelease' to 'no' for all routine conditions (osteoarthritis, fractures, neurological conditions, etc.).\n- Only set to 'yes' if the clinical notes explicitly indicate information in this report could harm the patient's mental or physical health if disclosed directly to them. This is very rare.",
+  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n\nIMPORTANT: Each text area field maps to a small box on the PDF. Keep all text responses to 2-4 SHORT sentences maximum. Be concise and clinical.\n\nPHYSICAL DISABILITIES (Q3–Q4):\n- Extract physical disability description into 'physicalDisabilitiesDetails' (Q3 on PDF — describes the condition).\n- ALWAYS rate ALL Q4 activity fields when physical disabilities are present — use clinical judgement when specific activities are not explicitly mentioned. Use the 1–5 scale (1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do):\n  - 'q4Walking400m' (Q41): REQUIRED. cannot walk 50m → 5; cannot walk 100m → 4 or 5; walks with aids or pain up to 200m → 3–4; can walk 400m with difficulty → 2\n  - 'q4StandingTransport' (Q42): REQUIRED. lower limb OA or balance disorder with significant walking difficulty → 4 or 5; mild impairment → 2–3\n  - 'q4SittingTransport' (Q43): REQUIRED. default 1–2 for most mobility conditions — only rate higher if back/hip pathology explicitly limits sitting\n  - 'q4CrossingStreets' (Q44): REQUIRED. similar severity to walking; falls risk or deformity → 4–5; knee/hip OA with significant walking difficulty → 3–4\n  - 'q4NegotiatingSteps' (Q45): REQUIRED. knee/hip pathology with significant walking difficulty → 4 or 5; mild weakness → 2–3\n  - 'q4FlightOfSteps' (Q46): REQUIRED. significant lower-limb impairment → 4 or 5; mild impairment → 3\n  - Do NOT leave Q4 fields blank when physical disabilities are present. Always provide a rating based on the overall clinical picture.\n\nPSYCHIATRIC/INTELLECTUAL DISABILITIES (Q5–Q6):\n- If mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'.\n- Rate each Q6 skills field using 1–5 (1=Full ability, 2=Slightly limited, 3=Moderately limited, 4=Severely limited, 5=No ability). Only set if psychiatric disabilities are present:\n  - 'q6PersonalSurvival' (Q61): personal survival skills — not a danger to self\n  - 'q6SocialSkills' (Q62): social skills — ability to relate to drivers or public\n  - 'q6EducationalSkills' (Q63): educational skills — handling money, buying tickets\n  - 'q6RecognitionSkills' (Q64): recognition skills — recognising landmarks or areas\n  - Leave any Q6 field blank if not enough information.\n\nOTHER TRANSPORT INFO (Q7):\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if there is additional transport-specific information beyond what is in Q3/Q5.\n\nRELEASE OF INFORMATION (Q10):\n- Set 'mobilityFoiRelease' to 'no' for all routine conditions (osteoarthritis, fractures, neurological conditions, etc.).\n- Only set to 'yes' if the clinical notes explicitly indicate information in this report could harm the patient's mental or physical health if disclosed directly to them. This is very rare.",
   "allowedUnmappedPdfFields": [
     "Clear",
     "CliamNo",
