@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import usePlacesAutocomplete, { getGeocode } from 'use-places-autocomplete';
 import { Input } from '@/components/ui/input';
 import { loadPlaces } from '@/lib/google-places';
+import { sortPracticeSuggestions } from '@/lib/practice-suggestion-ranking';
 import { cn } from '@/lib/utils';
 
 interface PracticeAutocompleteProps {
@@ -82,7 +83,6 @@ function AutocompleteInput({
   } = usePlacesAutocomplete({
     requestOptions: {
       componentRestrictions: { country: 'au' },
-      types: ['establishment'],
     },
     debounce: 300,
     defaultValue: value,
@@ -137,7 +137,8 @@ function AutocompleteInput({
     }
   };
 
-  const showDropdown = open && status === 'OK' && data.length > 0;
+  const rankedSuggestions = sortPracticeSuggestions(data);
+  const showDropdown = open && status === 'OK' && rankedSuggestions.length > 0;
 
   return (
     <div className="relative">
@@ -159,7 +160,7 @@ function AutocompleteInput({
       />
       {showDropdown && (
         <ul className="absolute z-50 mt-1 w-full rounded-md border bg-popover p-1 shadow-md">
-          {data.map((suggestion) => (
+          {rankedSuggestions.map((suggestion) => (
             <li
               key={suggestion.place_id}
               className={cn(

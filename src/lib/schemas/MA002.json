@@ -4,11 +4,13 @@
   "formVersion": "2006-06",
   "templatePath": "templates/MA002.pdf",
   "dictationTips": [
-    "What condition affects the patient's mobility?",
-    "How does it limit their ability to use public transport?",
-    "What are their specific physical limitations — walking distance, standing tolerance, transfers?",
-    "What treatment or rehabilitation have they had, and what is the outlook?",
-    "Is this limitation temporary or long-term?"
+    "What is the primary diagnosis causing mobility limitation?",
+    "How far can the patient walk? (e.g. less than 50m, 100m, cannot walk 400m)",
+    "Can they stand on a moving bus or train?",
+    "Can they negotiate the steps into/out of buses or trains? Can they manage a large flight of stairs?",
+    "Can they cross streets and kerbs safely?",
+    "What treatment have they had and what is the prognosis?",
+    "Is this permanent, or expected to resolve — and if so, within 12 months or longer?"
   ],
   "sections": {
     "patient": {
@@ -188,20 +190,6 @@
     "clinical": {
       "source": "llm_extraction",
       "fields": {
-        "mobilityClinicalSummary": {
-          "label": "Clinical Mobility Summary",
-          "inputType": "textarea",
-          "reviewEditable": true,
-          "type": "text",
-          "pdfField": "Q10Details",
-          "pdfFieldType": "text",
-          "linkedCheckbox": "Q10",
-          "required": true,
-          "llmInstruction": "Summarize clinical diagnosis and mobility impact relevant to allowance eligibility. Keep to 3-4 short sentences — the text area is small.",
-          "validation": {
-            "required": true
-          }
-        },
         "mobilityFunctionalImpact": {
           "label": "Functional Impact",
           "inputType": "textarea",
@@ -218,6 +206,7 @@
           "type": "checkbox",
           "pdfField": "Q3",
           "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "Yes", "no": "No" },
           "options": ["yes", "no"],
           "optionLabels": { "yes": "Yes", "no": "No" },
           "default": "yes",
@@ -233,65 +222,83 @@
           "pdfFieldType": "text",
           "llmInstruction": "Describe physical disabilities and how they affect mobility and ability to use public transport. Keep to 2-3 short sentences — the text area is small."
         },
-        "physicalCannotUseTransport": {
-          "label": "Cannot Use Public Transport Without Assistance",
+        "q4Walking400m": {
+          "label": "Walking 400 metres",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q41",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient cannot use public transport without substantial assistance from another person."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate the patient's difficulty walking 400 metres: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Infer from stated walking distance (e.g. cannot walk >100m → 4 or 5). Only set if patient has physical disabilities. Leave blank if not enough information."
         },
-        "physicalUsesWheelchair": {
-          "label": "Uses Wheelchair/Motorised Scooter",
+        "q4StandingTransport": {
+          "label": "Standing on public transport",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q42",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient requires regular use of a wheelchair, wheelchair substitute, or motorised scooter."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate difficulty standing on a moving bus or train: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Lower limb OA and balance disorders typically impair standing on moving transport. Only set if patient has physical disabilities. Leave blank if not enough information."
         },
-        "physicalCannotWalk50m": {
-          "label": "Cannot Walk More Than 50m",
+        "q4SittingTransport": {
+          "label": "Sitting in public transport",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q43",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient is unable to walk more than 50 metres even with a walking aid."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate difficulty sitting in public transport: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Most lower-limb or mobility conditions do not impair sitting (typically 1 or 2 unless severe hip/back pathology). Only set if patient has physical disabilities. Leave blank if not enough information."
         },
-        "physicalVisualDisability": {
-          "label": "Profound Visual Disability",
+        "q4CrossingStreets": {
+          "label": "Crossing streets and negotiating kerbs",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q44",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient has a profound visual disability."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate difficulty crossing streets and stepping off kerbs: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Relevant for lower limb weakness, balance issues, or visual impairment. Only set if patient has physical disabilities. Leave blank if not enough information."
         },
-        "physicalCannotNegotiateSteps": {
-          "label": "Cannot Negotiate Steps/Escalators",
+        "q4NegotiatingSteps": {
+          "label": "Negotiating steps in/out of transport",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q45",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient is unable to negotiate steps or use escalators."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate difficulty negotiating the 1–2 steps into/out of buses or trains: 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Knee and hip pathology commonly affects this. Only set if patient has physical disabilities. Leave blank if not enough information."
         },
-        "physicalOther": {
-          "label": "Other Physical Limitation",
+        "q4FlightOfSteps": {
+          "label": "Negotiating a large flight of steps",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q46",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient has other physical limitations affecting transport use not covered above."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "No difficulty", "2": "Minor", "3": "Moderate", "4": "Serious", "5": "Cannot do" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate difficulty climbing a full flight of stairs (e.g. station overpass): 1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do. Most significant mobility impairments make this at least Serious (4) or Cannot do (5). Only set if patient has physical disabilities. Leave blank if not enough information."
         },
         "hasPsychiatricDisabilities": {
           "label": "Has Psychiatric/Intellectual Disabilities",
@@ -300,6 +307,7 @@
           "type": "checkbox",
           "pdfField": "Q5",
           "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "Yes", "no": "No" },
           "options": ["yes", "no"],
           "optionLabels": { "yes": "Yes", "no": "No" },
           "default": "no",
@@ -315,45 +323,71 @@
           "pdfFieldType": "text",
           "llmInstruction": "Describe psychiatric or intellectual disabilities and how they affect ability to use public transport. Keep to 2-3 short sentences — the text area is small."
         },
-        "psychiatricCannotUseTransport": {
-          "label": "Cannot Use Transport Without Assistance",
+        "q6PersonalSurvival": {
+          "label": "Personal survival skills",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q61",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient is unable to use public transport without regular assistance due to psychiatric/intellectual disability."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "Full ability", "2": "Slightly limited", "3": "Moderately limited", "4": "Severely limited", "5": "No ability" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate personal survival skills (e.g. not a danger to self): 1=Full ability, 2=Slightly limited, 3=Moderately limited, 4=Severely limited, 5=No ability. Only set if patient has psychiatric or intellectual disabilities. Leave blank if not enough information."
         },
-        "psychiatricDisruptiveBehaviour": {
-          "label": "Disruptive/Anti-social Behaviour",
+        "q6SocialSkills": {
+          "label": "Social skills",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q62",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient exhibits disruptive, abusive, or other anti-social behaviour."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "Full ability", "2": "Slightly limited", "3": "Moderately limited", "4": "Severely limited", "5": "No ability" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate social skills ability (e.g. ability to relate to bus drivers or public): 1=Full ability to 5=No ability. Only set if patient has psychiatric or intellectual disabilities. Leave blank if not enough information."
         },
-        "psychiatricCannotNavigate": {
-          "label": "Cannot Navigate Unfamiliar Situations",
+        "q6EducationalSkills": {
+          "label": "Educational skills",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q63",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient is unable to negotiate unfamiliar situations without becoming distressed."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "Full ability", "2": "Slightly limited", "3": "Moderately limited", "4": "Severely limited", "5": "No ability" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate educational skills ability (e.g. ability to handle money or buy tickets): 1=Full ability to 5=No ability. Only set if patient has psychiatric or intellectual disabilities. Leave blank if not enough information."
         },
-        "psychiatricOther": {
-          "label": "Other Psychiatric/Intellectual Limitation",
+        "q6RecognitionSkills": {
+          "label": "Recognition skills",
           "inputType": "select",
           "reviewEditable": true,
           "type": "checkbox",
           "pdfField": "Q64",
           "pdfFieldType": "checkbox",
-          "options": ["yes"],
-          "llmInstruction": "Set 'yes' if the patient has other psychiatric/intellectual limitations affecting transport use not covered above."
+          "pdfOptions": { "1": "1", "2": "2", "3": "3", "4": "4", "5": "5" },
+          "options": ["1", "2", "3", "4", "5"],
+          "optionLabels": { "1": "Full ability", "2": "Slightly limited", "3": "Moderately limited", "4": "Severely limited", "5": "No ability" },
+          "reviewControl": "segmented",
+          "llmInstruction": "Rate recognition skills ability (e.g. ability to recognise landmarks or areas): 1=Full ability to 5=No ability. Only set if patient has psychiatric or intellectual disabilities. Leave blank if not enough information."
+        },
+        "hasAnyDisabilities": {
+          "label": "Has Any Disabilities",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "Yes", "no": "No" },
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes", "no": "No" },
+          "default": "yes",
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' if the patient has any physical, psychiatric, or intellectual disabilities. Almost always 'yes' for MA002."
         },
         "hasOtherTransportInfo": {
           "label": "Has Other Transport Info",
@@ -362,6 +396,7 @@
           "type": "checkbox",
           "pdfField": "Q7",
           "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "Yes", "no": "No" },
           "options": ["yes", "no"],
           "optionLabels": { "yes": "Yes", "no": "No" },
           "default": "no",
@@ -375,6 +410,7 @@
           "type": "checkbox",
           "pdfField": "Q8",
           "pdfFieldType": "checkbox",
+          "pdfOptions": { "permanent": "Yes", "temporary": "No" },
           "options": ["permanent", "temporary"],
           "optionLabels": { "permanent": "Permanent", "temporary": "Temporary" },
           "reviewControl": "segmented",
@@ -387,15 +423,30 @@
           "type": "checkbox",
           "pdfField": "Q9",
           "pdfFieldType": "checkbox",
+          "pdfOptions": { "less_than_12_months": "#233c12", "12_months_or_longer": "#233e12" },
           "options": ["less_than_12_months", "12_months_or_longer"],
           "optionLabels": { "less_than_12_months": "Less than 12 months", "12_months_or_longer": "12 months or longer" },
           "reviewControl": "segmented",
           "llmInstruction": "If temporary, will the mobility limitation last less than 12 months or 12 months or longer?"
+        },
+        "mobilityFoiRelease": {
+          "label": "Sensitive Information",
+          "inputType": "select",
+          "reviewEditable": true,
+          "type": "checkbox",
+          "pdfField": "Q10",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "Yes", "no": "No" },
+          "options": ["yes", "no"],
+          "optionLabels": { "yes": "Yes — withhold from patient", "no": "No" },
+          "default": "no",
+          "reviewControl": "segmented",
+          "llmInstruction": "Set 'yes' ONLY if specific information in this report could be prejudicial to the patient's mental or physical health if released to them directly. For routine conditions (e.g. osteoarthritis, mobility impairment), always 'no'."
         }
       }
     }
   },
-  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n\nIMPORTANT: Each text area field has a small box on the PDF. Keep all text responses to 2-4 SHORT sentences maximum. Be concise and clinical.\n\n- Extract physical disability details into 'physicalDisabilitiesDetails' (maps to Q3Details on PDF).\n- For physical disabilities, also set the specific sub-type checkboxes (Q4 items):\n  - 'physicalCannotUseTransport': cannot use public transport without substantial assistance\n  - 'physicalUsesWheelchair': requires wheelchair, wheelchair substitute, or motorised scooter\n  - 'physicalCannotWalk50m': unable to walk more than 50 metres even with a walking aid\n  - 'physicalVisualDisability': profound visual disability\n  - 'physicalCannotNegotiateSteps': unable to negotiate steps or use escalators\n  - 'physicalOther': other physical limitations affecting transport\n- If psychiatric/intellectual disabilities are mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'. Also set sub-type checkboxes (Q6 items):\n  - 'psychiatricCannotUseTransport': cannot use public transport without regular assistance\n  - 'psychiatricDisruptiveBehaviour': exhibits disruptive, abusive, or anti-social behaviour\n  - 'psychiatricCannotNavigate': cannot negotiate unfamiliar situations without distress\n  - 'psychiatricOther': other psychiatric/intellectual limitations\n- Extract overall functional impact into 'mobilityFunctionalImpact' and clinical summary into 'mobilityClinicalSummary'.\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if transport-specific info exists beyond physical/psychiatric categories.",
+  "systemPromptAdditions": "For MA002 emphasize mobility limitations, transport barriers, persistence of impairment, and current treatment response.\n\nIMPORTANT: Each text area field maps to a small box on the PDF. Keep all text responses to 2-4 SHORT sentences maximum. Be concise and clinical.\n\nPHYSICAL DISABILITIES (Q3–Q4):\n- Extract physical disability description into 'physicalDisabilitiesDetails' (Q3 on PDF — describes the condition).\n- Rate each Q4 activity field using the 1–5 scale (1=No difficulty, 2=Minor, 3=Moderate, 4=Serious, 5=Cannot do). Only set these if physical disabilities are present:\n  - 'q4Walking400m' (Q41): infer from stated walking distance — cannot walk 100m → 4 or 5; walking impaired but can manage 400m → 2 or 3\n  - 'q4StandingTransport' (Q42): lower limb OA and balance disorders typically make standing on moving transport Serious (4) or worse\n  - 'q4SittingTransport' (Q43): most lower-limb conditions do NOT impair sitting — default to 1 or 2 unless hip/back pathology explicitly limits sitting\n  - 'q4CrossingStreets' (Q44): relevant for lower-limb weakness, deformity, or visual impairment\n  - 'q4NegotiatingSteps' (Q45): knee and hip pathology commonly makes negotiating bus/train steps Serious (4) or Cannot do (5)\n  - 'q4FlightOfSteps' (Q46): significant lower-limb impairment almost always makes a full flight of stairs Serious (4) or Cannot do (5)\n  - Leave any Q4 field blank if the narrative does not provide enough information to rate it confidently.\n\nPSYCHIATRIC/INTELLECTUAL DISABILITIES (Q5–Q6):\n- If mentioned, set 'hasPsychiatricDisabilities' to 'yes' and extract details into 'psychiatricDisabilitiesDetails'.\n- Rate each Q6 skills field using 1–5 (1=Full ability, 2=Slightly limited, 3=Moderately limited, 4=Severely limited, 5=No ability). Only set if psychiatric disabilities are present:\n  - 'q6PersonalSurvival' (Q61): personal survival skills — not a danger to self\n  - 'q6SocialSkills' (Q62): social skills — ability to relate to drivers or public\n  - 'q6EducationalSkills' (Q63): educational skills — handling money, buying tickets\n  - 'q6RecognitionSkills' (Q64): recognition skills — recognising landmarks or areas\n  - Leave any Q6 field blank if not enough information.\n\nOTHER TRANSPORT INFO (Q7):\n- Set 'hasOtherTransportInfo' to 'yes' and populate 'mobilityFunctionalImpact' if there is additional transport-specific information beyond what is in Q3/Q5.\n\nRELEASE OF INFORMATION (Q10):\n- Set 'mobilityFoiRelease' to 'no' for all routine conditions (osteoarthritis, fractures, neurological conditions, etc.).\n- Only set to 'yes' if the clinical notes explicitly indicate information in this report could harm the patient's mental or physical health if disclosed directly to them. This is very rare.",
   "allowedUnmappedPdfFields": [
     "Clear",
     "CliamNo",
@@ -409,7 +460,7 @@
     "DummyCalcQ8",
     "Instructions",
     "Print",
-    "Q2",
+    "Q10Details",
     "Q2GoToQ11",
     "Q2PatientSince",
     "Q2PracticeSince",
@@ -480,7 +531,7 @@
           "key": "clinicalNarrative",
           "label": "Mobility & Transport Impact",
           "inputType": "textarea",
-          "placeholder": "e.g. Severe bilateral knee OA with valgus deformity. Cannot walk >100m, unable to negotiate steps, serious difficulty standing on moving transport. Uses walking frame. Awaiting TKR. Also has anxiety limiting ability to navigate unfamiliar environments.",
+          "placeholder": "e.g. Severe bilateral knee OA with valgus deformity. Cannot walk >100m without rest — cannot walk 400m. Unable to stand on moving transport. Cannot negotiate bus steps without gripping rail — serious difficulty. Sitting is comfortable. Awaiting TKR. Temporary — expected resolution >12 months.",
           "requiredForBestFill": true
         }
       ]
