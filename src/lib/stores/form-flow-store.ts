@@ -78,3 +78,7 @@ export const useFormFlowStore = create<FormFlowState>()((set, get) => ({
     set(initialState);
   },
 }));
+
+if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
+  (window as any).__formFlowStore = useFormFlowStore;
+}

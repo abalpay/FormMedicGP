@@ -1,0 +1,19 @@
+{
+  "scenario": "Chronic lumbar spondylosis — DSP permanent impairment",
+  "formType": "SA478",
+  "formLabel": "Disability Support Pension Medical Evidence (SA478)",
+  "patientDetails": {
+    "customerName": "Patricia Nguyen",
+    "dateOfBirth": "1965-07-14",
+    "address": "12 George Street, Sydney NSW 2000",
+    "crn": "987 654 321B"
+  },
+  "guidedAnswers": {
+    "hasSpecialistEvidence": "yes",
+    "hasTreatmentPlan": "yes",
+    "disabilityType": "physical",
+    "conditionPrognosis": "permanent_not_improving",
+    "clinicalNarrative": "Severe lumbar spondylosis with multilevel disc disease and bilateral foraminal stenosis. Patient has been managed conservatively for 8 years with inadequate pain relief. Unable to stand or walk for more than 10 minutes. Specialist spinal surgeon has assessed as permanent and not amenable to further surgical intervention."
+  },
+  "clinicalNarrative": "Patricia Nguyen has severe lumbar spondylosis with multilevel disc disease confirmed on MRI. She has been under specialist spinal care for 8 years. She is unable to stand or walk for more than 10 minutes and requires a walking aid. All conservative and surgical options have been exhausted. Condition is permanent and not improving. She requires daily assistance with personal care and household tasks."
+}

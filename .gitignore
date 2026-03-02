@@ -49,3 +49,7 @@ next-env.d.ts
 
 # original form PDFs (templates are in src/lib/schemas/templates/)
 /Forms/
+
+# playwright e2e
+playwright/.auth/
+tests/form-review/output/

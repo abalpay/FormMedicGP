@@ -1,0 +1,19 @@
+{
+  "scenario": "Bilateral knee OA — temporary, less than 12 months",
+  "formType": "MA002",
+  "formLabel": "Mobility Allowance Medical Report (MA002)",
+  "patientDetails": {
+    "customerName": "Susan Thompson",
+    "dateOfBirth": "1958-05-19",
+    "address": "22 Flinders Lane, Melbourne VIC 3000",
+    "crn": "321 654 987D"
+  },
+  "guidedAnswers": {
+    "hasPhysicalDisabilities": "yes",
+    "hasPsychiatricDisabilities": "no",
+    "permanentOrTemporary": "temporary",
+    "mobilityDuration": "less_than_12_months",
+    "clinicalNarrative": "Bilateral knee osteoarthritis with acute inflammatory flare following fall. Patient cannot walk more than 50 metres without severe pain. Currently awaiting bilateral knee replacement surgery scheduled in 4 months. Temporary mobility impairment expected to resolve post-operatively within 12 months."
+  },
+  "clinicalNarrative": "Susan Thompson has bilateral knee osteoarthritis with an acute inflammatory flare following a recent fall. She cannot walk more than 50 metres without severe pain and requires a walking frame. She is unable to use public transport independently. She is currently awaiting bilateral knee replacement surgery scheduled for June 2026. Her mobility impairment is temporary and expected to resolve within 12 months post-surgery. She is unable to work during this period."
+}

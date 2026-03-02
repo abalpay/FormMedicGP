@@ -1,0 +1,21 @@
+{
+  "scenario": "Lumbar disc herniation — 6-week temporary incapacity",
+  "formType": "SU415",
+  "formLabel": "Centrelink Medical Certificate (SU415)",
+  "patientDetails": {
+    "customerName": "Michael Chen",
+    "dateOfBirth": "1978-03-22",
+    "address": "45 Park Road, Melbourne VIC 3000",
+    "crn": "123 456 789A"
+  },
+  "guidedAnswers": {
+    "workCapacity": "no",
+    "primaryPrognosis": "up_to_13_weeks",
+    "incapacityStartDate": "2026-02-15",
+    "incapacityEndDate": "2026-03-28",
+    "terminalIllness": "no",
+    "seriousIllness": "no",
+    "diagnosisNarrative": "Lumbar disc herniation L4/5 with left-sided radiculopathy causing significant sciatica."
+  },
+  "clinicalNarrative": "Michael Chen presents with lumbar disc herniation at L4/5 confirmed on MRI, causing left-sided sciatica. He cannot sit for more than 20 minutes or lift more than 5kg. He is on pregabalin 75mg BD and attending physiotherapy twice weekly. Expected recovery in 6 weeks. Unfit for all work from 15 February 2026. Return to work expected 28 March 2026."
+}

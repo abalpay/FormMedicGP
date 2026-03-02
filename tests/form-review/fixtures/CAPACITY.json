@@ -1,0 +1,23 @@
+{
+  "scenario": "Right rotator cuff tear — TAC claim, suitable employment",
+  "formType": "CAPACITY",
+  "formLabel": "Certificate of Capacity (Victoria TAC/WorkCover)",
+  "patientDetails": {
+    "customerName": "James Kowalski",
+    "dateOfBirth": "1982-09-08",
+    "address": "55 Spencer Street, Melbourne VIC 3000"
+  },
+  "guidedAnswers": {
+    "claimType": "tac",
+    "confirmAttendance": "yes",
+    "certificationOption": "suitable_employment",
+    "dateOfInjury": "2026-01-10",
+    "incapacityStartDate": "2026-01-10",
+    "incapacityEndDate": "2026-04-10",
+    "suitableEmploymentFrom": "2026-02-01",
+    "suitableEmploymentTo": "2026-04-10",
+    "returnToWorkEstimate": "6_weeks",
+    "clinicalNarrative": "Right rotator cuff tear (supraspinatus) sustained in MVA. Patient has suitable capacity for sedentary or light duties with right arm restrictions — no overhead reaching, no lifting greater than 2kg with right arm. Attending physiotherapy and under orthopaedic review for possible surgical repair."
+  },
+  "clinicalNarrative": "James Kowalski sustained a right rotator cuff tear (supraspinatus partial thickness) in a motor vehicle accident on 10 January 2026. He has suitable capacity for sedentary and light duties with restrictions: no overhead reaching, no lifting greater than 2kg with the right arm. He commenced light duties on 1 February 2026. He is attending physiotherapy three times weekly and is under orthopaedic review. Expected return to full pre-injury duties by 10 April 2026."
+}

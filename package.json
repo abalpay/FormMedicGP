@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --test tests/**/*.test.mjs",
+    "test:review": "playwright test tests/form-review/ --headed --reporter=line",
     "validate:forms": "node scripts/validate-form-schemas.mjs"
   },
   "dependencies": {
@@ -39,6 +40,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^20",
