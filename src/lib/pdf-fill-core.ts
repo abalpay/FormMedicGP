@@ -108,6 +108,24 @@ function fillCheckboxGroup(
   setCheckboxGroupValue(form, fieldNames, selectedField);
 }
 
+function fillRadioGroup(
+  form: ReturnType<PDFDocument['getForm']>,
+  fieldName: string,
+  value: string,
+  pdfOptions?: Record<string, string>
+): void {
+  try {
+    const radioGroup = form.getRadioGroup(fieldName);
+    const optionValue = pdfOptions?.[value] ?? value;
+    radioGroup.select(optionValue);
+  } catch (e) {
+    console.warn(
+      `[pdf-filler] Could not fill radio group "${fieldName}":`,
+      e instanceof Error ? e.message : e
+    );
+  }
+}
+
 function fillSplitDate(
   form: ReturnType<PDFDocument['getForm']>,
   fieldNames: string[],
@@ -214,6 +232,12 @@ function fillField(
     case 'checkbox-group':
       if (Array.isArray(field.pdfField)) {
         fillCheckboxGroup(form, field.pdfField, strValue, field.pdfOptions);
+      }
+      break;
+
+    case 'radio-group':
+      if (typeof field.pdfField === 'string') {
+        fillRadioGroup(form, field.pdfField, strValue, field.pdfOptions);
       }
       break;
 

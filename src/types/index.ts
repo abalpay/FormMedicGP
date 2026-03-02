@@ -84,6 +84,7 @@ export interface FormField {
     | 'checkbox'
     | 'radio'
     | 'checkbox-group'
+    | 'radio-group'
     | 'split-date'
     | 'split-chars'
     | 'date-text';

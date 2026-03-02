@@ -72,6 +72,13 @@ async function run() {
               filledCount++;
               break;
             }
+            case 'radio-group': {
+              const sample = getSample(field);
+              const optionValue = field.pdfOptions?.[sample] ?? sample;
+              form.getRadioGroup(field.pdfField).select(optionValue);
+              filledCount++;
+              break;
+            }
             case 'date-text': {
               form.getTextField(field.pdfField).setText('25/02/2026');
               filledCount++;
