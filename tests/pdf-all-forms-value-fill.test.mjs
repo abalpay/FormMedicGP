@@ -6,7 +6,7 @@ import { PDFDict, PDFDocument, PDFName } from 'pdf-lib';
 import { fillPdf } from '../src/lib/pdf-filler.ts';
 
 const ROOT = process.cwd();
-const FORM_IDS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY'];
+const FORM_IDS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY', 'NDIS_ACCESS'];
 const DEFAULT_TEXT_VALUE = 'A';
 const DEFAULT_SPLIT_CHARS_VALUE = 'ABCDEFGH1234567890';
 const DEFAULT_DATE_VALUE = '2026-02-25';
@@ -102,6 +102,13 @@ function sampleValueForField(field, templateForm) {
   }
   if (pdfFieldType === 'checkbox-group') {
     return chooseCheckboxGroupValue(field);
+  }
+  if (pdfFieldType === 'radio-group') {
+    if (field.pdfOptions && Object.keys(field.pdfOptions).length > 0) {
+      return Object.keys(field.pdfOptions)[0];
+    }
+    const enumValues = getEnumValues(field);
+    return enumValues.length > 0 ? enumValues[0] : 'yes';
   }
 
   return DEFAULT_TEXT_VALUE;
@@ -249,6 +256,14 @@ function assertFieldValue(form, field, value, label) {
         const actual = isCheckboxMarked(getCheckboxRawValue(form, name));
         assert.equal(actual, expected, `${label} checkbox-group mismatch at ${name}`);
       }
+      return;
+    }
+    case 'radio-group': {
+      assert.equal(typeof field.pdfField, 'string', `${label} expected a single radio-group field`);
+      const radioGroup = form.getRadioGroup(field.pdfField);
+      const expectedOption = field.pdfOptions?.[stringValue] ?? stringValue;
+      const actualSelected = radioGroup.getSelected();
+      assert.equal(actualSelected, expectedOption, `${label} radio-group selection mismatch`);
       return;
     }
     default:

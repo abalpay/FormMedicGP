@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 
-const EXPECTED_FORMS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY'];
+const EXPECTED_FORMS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY', 'NDIS_ACCESS'];
 
 function fallbackOptionLabel(value) {
   return String(value)

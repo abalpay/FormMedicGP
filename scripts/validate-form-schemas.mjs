@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const FORM_IDS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY'];
+const FORM_IDS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY', 'NDIS_ACCESS'];
 
 function readJson(relativePath) {
   const abs = path.join(ROOT, relativePath);
