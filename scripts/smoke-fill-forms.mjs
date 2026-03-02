@@ -3,7 +3,7 @@ import path from 'node:path';
 import { PDFDocument } from 'pdf-lib';
 
 const ROOT = process.cwd();
-const IDS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY'];
+const IDS = ['SU415', 'SA478', 'SA332A', 'MA002', 'CAPACITY', 'NDIS_ACCESS'];
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));

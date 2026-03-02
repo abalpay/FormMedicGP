@@ -61,14 +61,14 @@ const ALL_FORM_REGISTRY: FormRegistryEntry[] = [
   },
   {
     id: 'NDIS_ACCESS',
-    label: 'NDIS Access Request Form (Deferred)',
+    label: 'NDIS Access Request — Supporting Evidence Form',
     description:
-      'Deferred in this phase pending stable template sourcing and mapping verification.',
-    version: 'deferred',
-    templatePath: '',
-    schemaPath: '',
-    status: 'deferred',
-    deferred: true,
+      'NDIS access request supporting evidence covering impairments, assessments, and functional impact across 6 domains.',
+    version: '1.1-2020-04',
+    templatePath: 'templates/NDIS_ACCESS.pdf',
+    schemaPath: 'src/lib/schemas/NDIS_ACCESS.json',
+    status: 'active',
+    deferred: false,
   },
 ];
 
