@@ -1,0 +1,1116 @@
+{
+  "formId": "NDIS_ACCESS",
+  "formName": "NDIS Access Request — Supporting Evidence Form",
+  "formVersion": "1.1-2020-04",
+  "templatePath": "templates/NDIS_ACCESS.pdf",
+  "dictationTips": [
+    "Describe the primary impairment and its impact on daily life",
+    "Mention whether the condition is lifelong or likely to be permanent",
+    "Describe functional impact across domains: mobility, communication, social, learning, self-care, self-management",
+    "If relevant, mention any standardized assessments and their scores",
+    "Note any early intervention supports that could reduce future needs"
+  ],
+  "sections": {
+    "patient": {
+      "source": "manual_entry",
+      "fields": {
+        "patientFullName": {
+          "label": "Full Name",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "Full name",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "required": true,
+          "validation": { "required": true }
+        },
+        "patientDob": {
+          "label": "Date of Birth",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "Date of birth",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "required": true,
+          "validation": { "required": true }
+        },
+        "patientGuardian": {
+          "label": "Parent/Guardian/Carer/Representative",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "Name of parent guardian carer representative",
+          "pdfFieldType": "text",
+          "reviewEditable": true
+        },
+        "patientPhone": {
+          "label": "Phone",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "Phone",
+          "pdfFieldType": "text",
+          "reviewEditable": true
+        },
+        "ndisNumber": {
+          "label": "NDIS Number",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "NDIS number if known",
+          "pdfFieldType": "text",
+          "reviewEditable": true
+        }
+      }
+    },
+    "doctor": {
+      "source": "doctor_profile",
+      "fields": {
+        "doctorName": {
+          "label": "Health Professional Name",
+          "type": "text",
+          "pdfField": "Full name of health professional",
+          "pdfFieldType": "text"
+        },
+        "doctorQualifications": {
+          "label": "Professional Qualifications",
+          "type": "text",
+          "pdfField": "Professional qualifications",
+          "pdfFieldType": "text"
+        },
+        "doctorAddress": {
+          "label": "Address",
+          "type": "text",
+          "pdfField": "Address",
+          "pdfFieldType": "text"
+        },
+        "doctorPhone": {
+          "label": "Phone",
+          "type": "text",
+          "pdfField": "Phone_2",
+          "pdfFieldType": "text"
+        },
+        "doctorEmail": {
+          "label": "Email",
+          "type": "text",
+          "pdfField": "Email",
+          "pdfFieldType": "text"
+        },
+        "doctorDate": {
+          "label": "Date",
+          "type": "text",
+          "pdfField": "Date",
+          "pdfFieldType": "text",
+          "default": "today"
+        }
+      }
+    },
+    "clinical": {
+      "source": "llm_extraction",
+      "fields": {
+        "primaryImpairment": {
+          "label": "2.1 Primary Impairment",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "21 What is the persons primary impairment ie the impairment with the most impact on daily life",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the person's primary impairment — the impairment with the most impact on daily life. 2-3 sentences."
+        },
+        "primaryImpairmentDuration": {
+          "label": "2.2 Duration of Primary Impairment",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "22 How long has the person had this impairment",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "How long the person has had the primary impairment. E.g. 'Since birth', '5 years', '10+ years'."
+        },
+        "primaryImpairmentLifelong": {
+          "label": "2.3 Impairment Likely Lifelong?",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "23 Is the impairment likely to be lifelong Note an impairment may be considered likely to be lifelong even if the impact on the functional capacity fluctuates or varies in intensity over time",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Is the primary impairment likely to be lifelong? An impairment may be lifelong even if functional capacity fluctuates. Respond with 'Yes' or 'No' and a brief explanation."
+        },
+        "primaryTreatment": {
+          "label": "2.4 Treatment Undertaken",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "24 Please provide a brief description of any relevant treatment undertaken current andor past",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Brief description of current and/or past treatment for the primary impairment. 2-3 sentences."
+        },
+        "secondaryImpairment": {
+          "label": "2.5 Secondary Impairment",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "25 Does the person have another impairment that has a significant impact If yes please list",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "If the person has another impairment with significant impact, describe it. Leave empty if no secondary impairment mentioned."
+        },
+        "secondaryImpairmentDuration": {
+          "label": "2.6 Duration of Secondary Impairment",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "26 How long has the person had this impairment",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "hiddenWhenEmpty": "secondaryImpairment",
+          "llmInstruction": "Duration of the secondary impairment. Only fill if a secondary impairment was described."
+        },
+        "secondaryImpairmentLifelong": {
+          "label": "2.7 Secondary Impairment Lifelong?",
+          "type": "text",
+          "inputType": "text",
+          "pdfField": "27 Is the impairment likely to be lifelong",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "hiddenWhenEmpty": "secondaryImpairment",
+          "llmInstruction": "Is the secondary impairment likely to be lifelong? Only fill if a secondary impairment was described."
+        },
+        "secondaryTreatment": {
+          "label": "2.8 Secondary Impairment Treatment",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "28 Please provide a brief of any relevant treatment undertaken current andor past",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "hiddenWhenEmpty": "secondaryImpairment",
+          "llmInstruction": "Treatment for the secondary impairment. Only fill if a secondary impairment was described."
+        },
+        "otherImpairments": {
+          "label": "2.9 Other Impairments",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "29 Does the person have any other impairments If yes please list",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "List any other impairments beyond primary and secondary. Leave empty if none mentioned."
+        },
+
+        "earlyInterventionAlleviate": {
+          "label": "Early Intervention: Alleviate Impact",
+          "type": "checkbox",
+          "pdfField": "Alleviate the impact on functional capacity",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if early intervention could alleviate the impact on functional capacity. Otherwise leave empty."
+        },
+        "earlyInterventionPrevent": {
+          "label": "Early Intervention: Prevent Deterioration",
+          "type": "checkbox",
+          "pdfField": "Prevent deterioration of functional capacity",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if early intervention could prevent deterioration of functional capacity. Otherwise leave empty."
+        },
+        "earlyInterventionImprove": {
+          "label": "Early Intervention: Improve Capacity",
+          "type": "checkbox",
+          "pdfField": "Improve functional capacity",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if early intervention could improve functional capacity. Otherwise leave empty."
+        },
+        "earlyInterventionStrengthen": {
+          "label": "Early Intervention: Strengthen Supports",
+          "type": "checkbox",
+          "pdfField": "Strengthen the sustainability of available or",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if early intervention could strengthen existing supports. Otherwise leave empty."
+        },
+        "earlyInterventionDetails": {
+          "label": "Early Intervention Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "Details of recommended early intervention supports",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Details of recommended early intervention supports. Only fill if early intervention benefits were indicated."
+        },
+
+        "assessmentCansDate": {
+          "label": "CANS: Date",
+          "type": "text",
+          "pdfField": "Date completedCare and Need Scale CANS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date the CANS assessment was completed. Only fill if explicitly mentioned."
+        },
+        "assessmentCansScore": {
+          "label": "CANS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingCare and Need Scale CANS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "CANS score or rating. Only fill if explicitly mentioned."
+        },
+        "assessmentCansAttached": {
+          "label": "CANS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes", "no": "No" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentGmfcsDate": {
+          "label": "GMFCS: Date",
+          "type": "text",
+          "pdfField": "Date completedGross Motor Functional Classification Scale GMFCS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date the GMFCS assessment was completed. Only fill if explicitly mentioned."
+        },
+        "assessmentGmfcsScore": {
+          "label": "GMFCS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingGross Motor Functional Classification Scale GMFCS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "GMFCS level (I-V). Only fill if explicitly mentioned."
+        },
+        "assessmentGmfcsAttached": {
+          "label": "GMFCS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_2",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_2", "no": "No_2" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentHearingDate": {
+          "label": "Hearing Acuity: Date",
+          "type": "text",
+          "pdfField": "Date completedHearing Acuity Score",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date the hearing acuity assessment was completed. Only fill if explicitly mentioned."
+        },
+        "assessmentHearingScore": {
+          "label": "Hearing Acuity: Score",
+          "type": "text",
+          "pdfField": "Score or ratingHearing Acuity Score",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Hearing acuity score. Only fill if explicitly mentioned."
+        },
+        "assessmentHearingAttached": {
+          "label": "Hearing: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_3",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_3", "no": "No_3" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentDsm5Date": {
+          "label": "DSM-5: Date",
+          "type": "text",
+          "pdfField": "Date completedDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM5",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of DSM-5 diagnosis. Only fill if explicitly mentioned."
+        },
+        "assessmentDsm5Score": {
+          "label": "DSM-5: Diagnosis",
+          "type": "text",
+          "pdfField": "Score or ratingDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM5",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "DSM-5 diagnosis code or name. Only fill if explicitly mentioned."
+        },
+        "assessmentDsm5Attached": {
+          "label": "DSM-5: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_4",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_4", "no": "No_4" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentDsm4Date": {
+          "label": "DSM-4: Date",
+          "type": "text",
+          "pdfField": "Date completedDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM4",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of DSM-4 diagnosis. Only fill if explicitly mentioned."
+        },
+        "assessmentDsm4Score": {
+          "label": "DSM-4: Diagnosis",
+          "type": "text",
+          "pdfField": "Score or ratingDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM4",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "DSM-4 diagnosis code or name. Only fill if explicitly mentioned."
+        },
+        "assessmentDsm4Attached": {
+          "label": "DSM-4: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_5",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_5", "no": "No_5" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentVisualDate": {
+          "label": "Visual Acuity: Date",
+          "type": "text",
+          "pdfField": "Date completedVisual Acuity Rating",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of visual acuity assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentVisualScore": {
+          "label": "Visual Acuity: Score",
+          "type": "text",
+          "pdfField": "Score or ratingVisual Acuity Rating",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Visual acuity rating. Only fill if explicitly mentioned."
+        },
+        "assessmentVisualAttached": {
+          "label": "Visual Acuity: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_6",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_6", "no": "No_6" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentCfcsDate": {
+          "label": "CFCS: Date",
+          "type": "text",
+          "pdfField": "Date completedCommunication Function Classification System CFCS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of CFCS assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentCfcsScore": {
+          "label": "CFCS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingCommunication Function Classification System CFCS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "CFCS level (I-V). Only fill if explicitly mentioned."
+        },
+        "assessmentCfcsAttached": {
+          "label": "CFCS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_7",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_7", "no": "No_7" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentVinelandDate": {
+          "label": "Vineland-II: Date",
+          "type": "text",
+          "pdfField": "Date completedVineland Adaptive behaviour Scale VinelandII",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of Vineland-II assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentVinelandScore": {
+          "label": "Vineland-II: Score",
+          "type": "text",
+          "pdfField": "Score or ratingVineland Adaptive behaviour Scale VinelandII",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Vineland-II adaptive behavior composite score. Only fill if explicitly mentioned."
+        },
+        "assessmentVinelandAttached": {
+          "label": "Vineland-II: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_8",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_8", "no": "No_8" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentMrsDate": {
+          "label": "mRS: Date",
+          "type": "text",
+          "pdfField": "Date completedModified Rankin Scale mRS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of Modified Rankin Scale assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentMrsScore": {
+          "label": "mRS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingModified Rankin Scale mRS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Modified Rankin Scale score (0-6). Only fill if explicitly mentioned."
+        },
+        "assessmentMrsAttached": {
+          "label": "mRS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_9",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_9", "no": "No_9" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentMacsDate": {
+          "label": "MACS: Date",
+          "type": "text",
+          "pdfField": "Date completedManual Ability Classification Scale MACS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of MACS assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentMacsScore": {
+          "label": "MACS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingManual Ability Classification Scale MACS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "MACS level (I-V). Only fill if explicitly mentioned."
+        },
+        "assessmentMacsAttached": {
+          "label": "MACS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_10",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_10", "no": "No_10" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentAsiaDate": {
+          "label": "ASIA/AIS: Date",
+          "type": "text",
+          "pdfField": "Date completedAmerican Spinal Injury Association Impairment Scale ASIAAIS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of ASIA/AIS assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentAsiaScore": {
+          "label": "ASIA/AIS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingAmerican Spinal Injury Association Impairment Scale ASIAAIS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "ASIA Impairment Scale grade (A-E). Only fill if explicitly mentioned."
+        },
+        "assessmentAsiaAttached": {
+          "label": "ASIA/AIS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_11",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_11", "no": "No_11" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentDiseaseStepsDate": {
+          "label": "Disease Steps: Date",
+          "type": "text",
+          "pdfField": "Date completedDisease Steps",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of Disease Steps assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentDiseaseStepsScore": {
+          "label": "Disease Steps: Score",
+          "type": "text",
+          "pdfField": "Score or ratingDisease Steps",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Disease Steps score. Only fill if explicitly mentioned."
+        },
+        "assessmentDiseaseStepsAttached": {
+          "label": "Disease Steps: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_12",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_12", "no": "No_12" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentEdssDate": {
+          "label": "EDSS: Date",
+          "type": "text",
+          "pdfField": "Date completedExpanded Disability Status Scale EDSS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of EDSS assessment. Only fill if explicitly mentioned."
+        },
+        "assessmentEdssScore": {
+          "label": "EDSS: Score",
+          "type": "text",
+          "pdfField": "Score or ratingExpanded Disability Status Scale EDSS",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "EDSS score (0-10). Only fill if explicitly mentioned."
+        },
+        "assessmentEdssAttached": {
+          "label": "EDSS: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_13",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_13", "no": "No_13" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+        "assessmentOtherDate": {
+          "label": "Other Assessment: Date",
+          "type": "text",
+          "pdfField": "Date completedOther please specify",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Date of any other assessment. Only fill if an assessment not in the standard list is mentioned."
+        },
+        "assessmentOtherScore": {
+          "label": "Other Assessment: Score",
+          "type": "text",
+          "pdfField": "Score or ratingOther please specify",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Score for any other assessment. Only fill if an assessment not in the standard list is mentioned."
+        },
+        "assessmentOtherAttached": {
+          "label": "Other: Attached?",
+          "type": "radio",
+          "pdfField": "undefined_14",
+          "pdfFieldType": "radio-group",
+          "pdfOptions": { "yes": "Yes_14", "no": "No_14" },
+          "options": ["yes", "no"],
+          "reviewEditable": true,
+          "llmInstruction": "Leave empty — attachment status is handled outside dictation."
+        },
+
+        "mobilityNoAssistance": {
+          "label": "Mobility: No Assistance Needed",
+          "type": "checkbox",
+          "pdfField": "impairments",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any mobility assistance. Leave empty if they need any form of assistance."
+        },
+        "mobilitySpecialEquipment": {
+          "label": "Mobility: Special Equipment",
+          "type": "checkbox",
+          "pdfField": "Yes needs special equipment",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs special equipment for mobility (e.g. wheelchair, walker). Otherwise leave empty."
+        },
+        "mobilityAssistiveTech": {
+          "label": "Mobility: Assistive Technology",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistive technology",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistive technology for mobility. Otherwise leave empty."
+        },
+        "mobilityHomeMods": {
+          "label": "Mobility: Home Modifications",
+          "type": "checkbox",
+          "pdfField": "Yes needs home modifications",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs home modifications for mobility (e.g. ramps, widened doorways). Otherwise leave empty."
+        },
+        "mobilityPersonAssistance": {
+          "label": "Mobility: Person Assistance",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistance from other persons",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for mobility. Otherwise leave empty."
+        },
+        "mobilityDetails": {
+          "label": "Mobility: Assistance Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "If yes please describe the type of assistance required",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the type of mobility assistance required. 2-3 sentences. Only fill if any mobility assistance checkboxes are yes."
+        },
+
+        "commNoAssistance": {
+          "label": "Communication: No Assistance Needed",
+          "type": "checkbox",
+          "pdfField": "impairments_2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any communication assistance. Leave empty if they need any form of assistance."
+        },
+        "commSpecialEquipment": {
+          "label": "Communication: Special Equipment",
+          "type": "checkbox",
+          "pdfField": "Yes needs special equipment_2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs special equipment for communication. Otherwise leave empty."
+        },
+        "commAssistiveTech": {
+          "label": "Communication: Assistive Technology",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistive technology_2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistive technology for communication. Otherwise leave empty."
+        },
+        "commHomeMods": {
+          "label": "Communication: Home Modifications",
+          "type": "checkbox",
+          "pdfField": "Yes needs home modifications_2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs home modifications for communication. Otherwise leave empty."
+        },
+        "commPersonAssistance": {
+          "label": "Communication: Person Assistance",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistance from other persons_2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for communication. Otherwise leave empty."
+        },
+        "commDetails": {
+          "label": "Communication: Assistance Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "If yes please describe the type of assistance required_2",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the type of communication assistance required. 2-3 sentences. Only fill if any communication assistance checkboxes are yes."
+        },
+
+        "socialNoAssistance": {
+          "label": "Social: No Assistance Needed",
+          "type": "checkbox",
+          "pdfField": "No does not need assistance",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any social interaction assistance. Leave empty if they need any form of assistance."
+        },
+        "socialSpecialEquipment": {
+          "label": "Social: Special Equipment",
+          "type": "checkbox",
+          "pdfField": "Yes needs special equipment_3",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs special equipment for social interaction. Otherwise leave empty."
+        },
+        "socialAssistiveTech": {
+          "label": "Social: Assistive Technology",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistive technology_3",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistive technology for social interaction. Otherwise leave empty."
+        },
+        "socialPersonAssistance": {
+          "label": "Social: Person Assistance",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistance from other persons_3",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for social interaction. Otherwise leave empty."
+        },
+        "socialDetails": {
+          "label": "Social: Assistance Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "If yes please describe the type of social interaction assistance required",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the type of social interaction assistance required. 2-3 sentences. Only fill if any social assistance checkboxes are yes."
+        },
+
+        "learningNoAssistance": {
+          "label": "Learning: No Assistance Needed",
+          "type": "checkbox",
+          "pdfField": "No does not need assistance_2",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any learning assistance. Leave empty if they need any form of assistance."
+        },
+        "learningSpecialEquipment": {
+          "label": "Learning: Special Equipment",
+          "type": "checkbox",
+          "pdfField": "Yes needs special equipment_4",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs special equipment for learning. Otherwise leave empty."
+        },
+        "learningAssistiveTech": {
+          "label": "Learning: Assistive Technology",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistive technology_4",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistive technology for learning. Otherwise leave empty."
+        },
+        "learningPersonAssistance": {
+          "label": "Learning: Person Assistance",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistance from other persons_4",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for learning. Otherwise leave empty."
+        },
+        "learningDetails": {
+          "label": "Learning: Assistance Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "If yes please describe the type of assistance required_3",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the type of learning assistance required. 2-3 sentences. Only fill if any learning assistance checkboxes are yes."
+        },
+
+        "selfCareNoAssistance": {
+          "label": "Self-Care: No Assistance Needed",
+          "type": "checkbox",
+          "pdfField": "impairments_3",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any self-care assistance. Leave empty if they need any form of assistance."
+        },
+        "selfCareSpecialEquipment": {
+          "label": "Self-Care: Special Equipment",
+          "type": "checkbox",
+          "pdfField": "Yes need special equipment",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs special equipment for self-care. Otherwise leave empty."
+        },
+        "selfCareAssistiveTech": {
+          "label": "Self-Care: Assistive Technology",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistive technology_5",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistive technology for self-care. Otherwise leave empty."
+        },
+        "selfCareHomeMods": {
+          "label": "Self-Care: Home Modifications",
+          "type": "checkbox",
+          "pdfField": "Yes needs home modification",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs home modifications for self-care. Otherwise leave empty."
+        },
+        "selfCarePersonAssistance": {
+          "label": "Self-Care: Person Assistance",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistance from other persons in the areas",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistance from others for self-care. Otherwise leave empty."
+        },
+        "selfCareShowering": {
+          "label": "Self-Care: Showering/Bathing",
+          "type": "checkbox",
+          "pdfField": "showeringbathing",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistance with showering/bathing. Otherwise leave empty."
+        },
+        "selfCareEating": {
+          "label": "Self-Care: Eating/Drinking",
+          "type": "checkbox",
+          "pdfField": "eatingdrinking",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistance with eating/drinking. Otherwise leave empty."
+        },
+        "selfCareOvernight": {
+          "label": "Self-Care: Overnight Care",
+          "type": "checkbox",
+          "pdfField": "overnight care eg turning",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs overnight care (e.g. turning). Otherwise leave empty."
+        },
+        "selfCareToileting": {
+          "label": "Self-Care: Toileting",
+          "type": "checkbox",
+          "pdfField": "toileting",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistance with toileting. Otherwise leave empty."
+        },
+        "selfCareDressing": {
+          "label": "Self-Care: Dressing",
+          "type": "checkbox",
+          "pdfField": "dressing",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistance with dressing. Otherwise leave empty."
+        },
+        "selfCareDetails": {
+          "label": "Self-Care: Assistance Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "If yes please describe the type of assistance required_4",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the type of self-care assistance required. 2-3 sentences. Only fill if any self-care assistance checkboxes are yes."
+        },
+
+        "selfMgmtNoAssistance": {
+          "label": "Self-Management: No Assistance Needed",
+          "type": "checkbox",
+          "pdfField": "No does not need assistance_3",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any self-management assistance. Leave empty if they need any form of assistance."
+        },
+        "selfMgmtSpecialEquipment": {
+          "label": "Self-Management: Special Equipment",
+          "type": "checkbox",
+          "pdfField": "Yes needs special equipment_5",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs special equipment for self-management. Otherwise leave empty."
+        },
+        "selfMgmtAssistiveTech": {
+          "label": "Self-Management: Assistive Technology",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistive technology_6",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs assistive technology for self-management. Otherwise leave empty."
+        },
+        "selfMgmtPersonAssistance": {
+          "label": "Self-Management: Person Assistance",
+          "type": "checkbox",
+          "pdfField": "Yes needs assistance from other persons_5",
+          "pdfFieldType": "checkbox",
+          "pdfOptions": { "yes": "On" },
+          "reviewEditable": true,
+          "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for self-management. Otherwise leave empty."
+        },
+        "selfMgmtDetails": {
+          "label": "Self-Management: Assistance Details",
+          "type": "text",
+          "inputType": "textarea",
+          "pdfField": "If yes please describe the type of assistance required_5",
+          "pdfFieldType": "text",
+          "reviewEditable": true,
+          "llmInstruction": "Describe the type of self-management assistance required. 2-3 sentences. Only fill if any self-management assistance checkboxes are yes."
+        }
+      }
+    }
+  },
+  "dictationGuide": [
+    {
+      "id": "primaryImpairment",
+      "title": "Primary Impairment",
+      "questions": [
+        {
+          "key": "isLifelong",
+          "label": "Is the impairment likely to be lifelong?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" },
+            { "value": "unsure", "label": "Unsure" }
+          ],
+          "targetFieldKey": "primaryImpairmentLifelong",
+          "valueOverrides": {
+            "yes": { "primaryImpairmentLifelong": "Yes — the impairment is likely to be lifelong." },
+            "no": { "primaryImpairmentLifelong": "No — the impairment is not expected to be lifelong." }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "hasSecondaryImpairment",
+          "label": "Does the person have a secondary impairment?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "requiredForBestFill": false
+        }
+      ]
+    },
+    {
+      "id": "secondaryImpairment",
+      "title": "Secondary Impairment",
+      "questions": [
+        {
+          "key": "isSecondaryLifelong",
+          "label": "Is the secondary impairment likely to be lifelong?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" },
+            { "value": "unsure", "label": "Unsure" }
+          ],
+          "targetFieldKey": "secondaryImpairmentLifelong",
+          "valueOverrides": {
+            "yes": { "secondaryImpairmentLifelong": "Yes — the impairment is likely to be lifelong." },
+            "no": { "secondaryImpairmentLifelong": "No — the impairment is not expected to be lifelong." }
+          },
+          "visibleWhen": { "key": "hasSecondaryImpairment", "equals": "yes" }
+        }
+      ]
+    },
+    {
+      "id": "earlyIntervention",
+      "title": "Early Intervention",
+      "questions": [
+        {
+          "key": "hasEarlyIntervention",
+          "label": "Are early intervention supports likely to benefit the person?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "requiredForBestFill": false
+        }
+      ]
+    },
+    {
+      "id": "functionalDomains",
+      "title": "Functional Domains",
+      "description": "Indicate which domains are affected by the impairment(s).",
+      "questions": [
+        {
+          "key": "needsMobilityAssistance",
+          "label": "Needs mobility assistance?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "valueOverrides": {
+            "no": { "mobilityNoAssistance": "yes" }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "needsCommunicationAssistance",
+          "label": "Needs communication assistance?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "valueOverrides": {
+            "no": { "commNoAssistance": "yes" }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "needsSocialAssistance",
+          "label": "Needs social interaction assistance?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "valueOverrides": {
+            "no": { "socialNoAssistance": "yes" }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "needsLearningAssistance",
+          "label": "Needs learning assistance?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "valueOverrides": {
+            "no": { "learningNoAssistance": "yes" }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "needsSelfCareAssistance",
+          "label": "Needs self-care assistance?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "valueOverrides": {
+            "no": { "selfCareNoAssistance": "yes" }
+          },
+          "requiredForBestFill": true
+        },
+        {
+          "key": "needsSelfManagementAssistance",
+          "label": "Needs self-management assistance?",
+          "inputType": "segmented",
+          "options": [
+            { "value": "yes", "label": "Yes" },
+            { "value": "no", "label": "No" }
+          ],
+          "valueOverrides": {
+            "no": { "selfMgmtNoAssistance": "yes" }
+          },
+          "requiredForBestFill": true
+        }
+      ]
+    }
+  ],
+  "systemPromptAdditions": "This is an NDIS Access Request — Supporting Evidence Form. Key instructions:\n\n1. IMPAIRMENT DESCRIPTIONS: Keep text field responses to 2-3 concise sentences. Focus on clinical facts and functional impact.\n\n2. LIFELONG ASSESSMENT: An impairment may be considered lifelong even if its impact fluctuates or varies in intensity over time.\n\n3. EARLY INTERVENTION: Only check early intervention checkboxes if the doctor explicitly discusses benefits of early intervention. Map to the 4 categories: alleviate impact, prevent deterioration, improve capacity, strengthen sustainability.\n\n4. ASSESSMENTS: Only fill assessment date and score fields if the doctor explicitly mentions a standardized assessment by name (e.g. 'Modified Rankin Scale score of 3'). Do NOT guess or infer assessment scores.\n\n5. FUNCTIONAL IMPACT (6 domains): For each domain (mobility, communication, social interaction, learning, self-care, self-management), determine the type of assistance needed:\n   - 'No assistance' means the impairment does NOT affect this domain\n   - 'Special equipment' = physical equipment (wheelchair, walker, etc.)\n   - 'Assistive technology' = electronic/digital aids\n   - 'Home modifications' = structural changes to living environment\n   - 'Person assistance' = help from another person (physical, guidance, supervision, prompting)\n   Multiple assistance types can apply to one domain.\n\n6. SELF-CARE SUB-AREAS: Only check specific self-care areas (showering, eating, overnight care, toileting, dressing) when the doctor explicitly mentions difficulty with that activity.\n\n7. For checkbox fields, output 'yes' to check or leave the field empty/omit it to leave unchecked.",
+  "allowedUnmappedPdfFields": [
+    "Signature",
+    "Does the person require assistance with selfcare because of their impairments No does not need assistance"
+  ]
+}
