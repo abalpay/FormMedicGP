@@ -71,6 +71,14 @@ export async function middleware(request: NextRequest) {
     return redirectResponse;
   }
 
+  if (!user && pathname === '/set-password') {
+    const redirectResponse = NextResponse.redirect(
+      new URL('/login', request.url)
+    );
+    copyCookies(response, redirectResponse);
+    return redirectResponse;
+  }
+
   if (user && isAuthPage) {
     const redirectResponse = NextResponse.redirect(
       new URL('/dashboard', request.url)
@@ -88,5 +96,6 @@ export const config = {
     '/login',
     '/register',
     '/forgot-password',
+    '/set-password',
   ],
 };

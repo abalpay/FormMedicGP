@@ -46,6 +46,10 @@ export async function GET(request: Request) {
       );
     }
 
+    if (type === 'invite') {
+      return NextResponse.redirect(new URL('/set-password', requestUrl.origin));
+    }
+
     return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
   }
 
