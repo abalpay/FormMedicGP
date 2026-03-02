@@ -1,6 +1,8 @@
-# FormBridge GP
+# FormDoctor
 
 AI-powered medical form automation for Australian GP clinics. Doctors dictate, AI fills government forms, download PDF — in under 2 minutes.
+
+**Live at [formbridgegp.ai](https://formbridgegp.ai)**
 
 ## The Problem
 
@@ -124,4 +126,4 @@ src/
 
 ## License
 
-Private. All rights reserved.
+[MIT](LICENSE)
