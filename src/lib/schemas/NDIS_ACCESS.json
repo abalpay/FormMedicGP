@@ -953,6 +953,20 @@
   },
   "dictationGuide": [
     {
+      "id": "clinicalNarrative",
+      "title": "Clinical Narrative",
+      "description": "Describe the impairment(s), diagnosis, functional impact, and any relevant treatment history.",
+      "questions": [
+        {
+          "key": "clinicalNarrative",
+          "label": "Impairment & Functional Impact",
+          "inputType": "textarea",
+          "placeholder": "e.g. Autism spectrum disorder diagnosed age 4, Level 2 severity. Significant difficulties with social communication and daily living skills. Requires prompting for self-care and supervision in community settings. Ongoing speech therapy and occupational therapy. Condition is lifelong.",
+          "requiredForBestFill": true
+        }
+      ]
+    },
+    {
       "id": "primaryImpairment",
       "title": "Primary Impairment",
       "questions": [
