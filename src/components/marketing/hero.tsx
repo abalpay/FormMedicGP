@@ -1,29 +1,8 @@
-'use client';
-
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Clock, Gift } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-};
-
 export function Hero() {
-  const prefersReducedMotion = useReducedMotion();
-
-  const Wrapper = prefersReducedMotion ? 'div' : motion.div;
-
-  function motionProps(delay: number) {
-    if (prefersReducedMotion) return {};
-    return {
-      initial: fadeInUp.initial,
-      animate: fadeInUp.animate,
-      transition: { duration: 0.5, ease: 'easeOut' as const, delay },
-    };
-  }
-
   return (
     <section className="relative pt-[72px] bg-background overflow-hidden">
       {/* Decorative blobs */}
@@ -35,17 +14,16 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left -- Copy */}
           <div className="max-w-xl">
-            <Wrapper
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/[0.06] border border-primary/10 text-primary text-xs font-medium tracking-wide uppercase"
-              {...motionProps(0)}
+            <div
+              className="animate-fade-in-up motion-reduce:animate-none inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/[0.06] border border-primary/10 text-primary text-xs font-medium tracking-wide uppercase"
             >
               <Sparkles className="w-3.5 h-3.5" />
               AI-Powered Medical Forms for Australian GPs
-            </Wrapper>
+            </div>
 
-            <Wrapper
-              className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
-              {...motionProps(0.08)}
+            <div
+              className="animate-fade-in-up motion-reduce:animate-none mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
+              style={{ animationDelay: '0.08s' }}
             >
               <h1>
                 Dictate.
@@ -56,22 +34,22 @@ export function Hero() {
                   <span className="absolute -bottom-1 left-0 right-0 h-3 bg-accent/25 -skew-x-3 rounded-sm" />
                 </span>
               </h1>
-            </Wrapper>
+            </div>
 
-            <Wrapper
-              className="mt-6 text-lg sm:text-xl leading-relaxed text-muted-foreground max-w-lg"
-              {...motionProps(0.16)}
+            <div
+              className="animate-fade-in-up motion-reduce:animate-none mt-6 text-lg sm:text-xl leading-relaxed text-muted-foreground max-w-lg"
+              style={{ animationDelay: '0.16s' }}
             >
               <p>
                 Speak your clinical notes naturally. FormBridge GP fills out Centrelink,
                 WorkCover, and DSP forms in under two minutes — with patient
                 privacy built into every step.
               </p>
-            </Wrapper>
+            </div>
 
-            <Wrapper
-              className="mt-10 flex flex-col sm:flex-row items-start gap-3"
-              {...motionProps(0.24)}
+            <div
+              className="animate-fade-in-up motion-reduce:animate-none mt-10 flex flex-col sm:flex-row items-start gap-3"
+              style={{ animationDelay: '0.24s' }}
             >
               <Button variant="teal" size="lg" className="h-12 px-7 text-[15px] font-semibold rounded-full" asChild>
                 <Link href="/register">
@@ -87,11 +65,11 @@ export function Hero() {
               >
                 <Link href="#how-it-works">See How It Works</Link>
               </Button>
-            </Wrapper>
+            </div>
 
-            <Wrapper
-              className="mt-10 flex flex-wrap items-center gap-3"
-              {...motionProps(0.32)}
+            <div
+              className="animate-fade-in-up motion-reduce:animate-none mt-10 flex flex-wrap items-center gap-3"
+              style={{ animationDelay: '0.32s' }}
             >
               {[
                 { icon: FileText, text: '5 Government Forms' },
@@ -106,13 +84,13 @@ export function Hero() {
                   <span>{text}</span>
                 </div>
               ))}
-            </Wrapper>
+            </div>
           </div>
 
           {/* Right -- Single cohesive app preview */}
-          <Wrapper
-            className="hidden lg:block"
-            {...motionProps(0.24)}
+          <div
+            className="animate-fade-in-up motion-reduce:animate-none hidden lg:block"
+            style={{ animationDelay: '0.24s' }}
           >
             <div className="relative">
               {/* Main app card — the whole story in one panel */}
@@ -196,7 +174,7 @@ export function Hero() {
                 </div>
               </div>
             </div>
-          </Wrapper>
+          </div>
         </div>
       </div>
     </section>
