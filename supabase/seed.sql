@@ -3,7 +3,7 @@
 
 do $$
 declare
-  seed_email constant text := 'test@formbridgegp.dev';
+  seed_email constant text := 'test@test.com';
   seed_password constant text := 'testtest';
   seed_user_id uuid;
 begin
