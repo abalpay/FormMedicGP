@@ -4,15 +4,17 @@ import { Mic, Clock, Shield, FileStack } from 'lucide-react';
 import { AnimateOnScroll, StaggerChildren, StaggerItem } from './animate-on-scroll';
 import type { ReactNode } from 'react';
 
+const waveformBars = Array.from({ length: 40 }, (_, i) => {
+  const h = Math.round((Math.sin(i * 0.4) * 12 + Math.sin(i * 0.7) * 6 + 18) * 100) / 100;
+  return { x: i * 5, y: Math.round((20 - h / 2) * 100) / 100, h: Math.round(h * 100) / 100 };
+});
+
 function WaveformSVG() {
   return (
     <svg viewBox="0 0 200 40" className="w-full h-10 mt-4 opacity-60" preserveAspectRatio="none">
-      {Array.from({ length: 40 }, (_, i) => {
-        const h = Math.sin(i * 0.4) * 12 + Math.sin(i * 0.7) * 6 + 18;
-        return (
-          <rect key={i} x={i * 5} y={20 - h / 2} width={3} height={h} rx={1.5} className="fill-primary/40" />
-        );
-      })}
+      {waveformBars.map((bar, i) => (
+        <rect key={i} x={bar.x} y={bar.y} width={3} height={bar.h} rx={1.5} className="fill-primary/40" />
+      ))}
     </svg>
   );
 }

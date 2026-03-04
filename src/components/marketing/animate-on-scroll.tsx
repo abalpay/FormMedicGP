@@ -1,25 +1,40 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useInView } from 'framer-motion';
 import type { TargetAndTransition } from 'framer-motion';
-import type { ReactNode } from 'react';
+import { type ReactNode, useRef, useState, useEffect } from 'react';
 
 type AnimationPreset = 'fade-up' | 'fade-in' | 'scale-up';
 
-const presets: Record<AnimationPreset, { initial: TargetAndTransition; animate: TargetAndTransition }> = {
+const presets: Record<AnimationPreset, { hidden: TargetAndTransition; visible: TargetAndTransition }> = {
   'fade-up': {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
   },
   'fade-in': {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   },
   'scale-up': {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1 },
   },
 };
+
+/**
+ * Wait for hydration + two animation frames so IntersectionObserver
+ * can report which elements are already in the viewport before we
+ * hide any off-screen elements.
+ */
+function useHydrated() {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setHydrated(true));
+    });
+  }, []);
+  return hydrated;
+}
 
 export function AnimateOnScroll({
   children,
@@ -35,19 +50,31 @@ export function AnimateOnScroll({
   className?: string;
 }) {
   const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const hydrated = useHydrated();
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
-  const { initial, animate } = presets[preset];
+  const { hidden, visible } = presets[preset];
+
+  // Before hydration: render visible (SSR-safe, no invisible content)
+  // After hydration + in view: render visible (already seen by user)
+  // After hydration + not in view: snap to hidden, animate in when scrolled to
+  const isVisible = !hydrated || isInView;
 
   return (
     <motion.div
-      initial={initial}
-      whileInView={animate}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      ref={ref}
+      initial={false}
+      animate={isVisible ? visible : hidden}
+      transition={
+        isVisible && hydrated
+          ? { duration, delay, ease: [0.25, 0.1, 0.25, 1] }
+          : { duration: 0 }
+      }
       className={className}
     >
       {children}
@@ -65,18 +92,28 @@ export function StaggerChildren({
   staggerDelay?: number;
 }) {
   const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const hydrated = useHydrated();
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
+  const isVisible = !hydrated || isInView;
+
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
+      ref={ref}
+      initial={false}
+      animate={isVisible ? 'visible' : 'hidden'}
       variants={{
-        visible: { transition: { staggerChildren: staggerDelay } },
+        visible: {
+          transition: { staggerChildren: isVisible && hydrated ? staggerDelay : 0 },
+        },
+        hidden: {
+          transition: { duration: 0 },
+        },
       }}
       className={className}
     >
@@ -95,7 +132,7 @@ export function StaggerItem({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 20, transition: { duration: 0 } },
         visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
       }}
       className={className}
