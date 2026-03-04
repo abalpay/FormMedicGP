@@ -16,7 +16,7 @@ export default async function SavedFormDetailPage({
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('saved_forms')
-    .select('id, doctor_id, patient_id, form_type, form_name, status, created_at, updated_at, extracted_data')
+    .select('id, doctor_id, patient_id, form_type, form_name, status, created_at, updated_at, extracted_data, patient_name, patient_dob')
     .eq('id', id)
     .eq('doctor_id', profile.id)
     .maybeSingle();

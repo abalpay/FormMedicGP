@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FilePlus, Settings, type LucideIcon } from 'lucide-react';
+import { LayoutDashboard, FilePlus, FileText, Settings, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Tooltip,
@@ -13,6 +13,7 @@ import {
 const iconMap: Record<string, LucideIcon> = {
   'layout-dashboard': LayoutDashboard,
   'file-plus': FilePlus,
+  'file-text': FileText,
   settings: Settings,
 };
 

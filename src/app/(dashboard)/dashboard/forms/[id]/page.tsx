@@ -1,13 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FilePlus, ArrowLeft, Save, Check } from 'lucide-react';
+import { FilePlus, ArrowLeft, Check, Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PdfPreviewPanel } from '@/components/forms/pdf-preview-panel';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import { usePdfPreview } from '@/hooks/use-pdf-preview';
 import { toast } from 'sonner';
+
+function buildPdfFilename(
+  formType: string | null,
+  patientName: string | null,
+  patientDob: string | null,
+): string {
+  const parts: string[] = [];
+  if (formType) parts.push(formType);
+  if (patientName) parts.push(patientName.replace(/\s+/g, '-'));
+  if (patientDob) parts.push(patientDob);
+  parts.push(new Date().toISOString().slice(0, 10));
+  return `${parts.join('_')}.pdf`;
+}
 
 export default function FormReviewPage() {
   const router = useRouter();
@@ -19,8 +32,8 @@ export default function FormReviewPage() {
     reset,
   } = useFormFlowStore();
   const [editableData, setEditableData] = useState<Record<string, unknown>>({});
-  const [isSaving, setIsSaving] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const hasSavedRef = useRef(false);
 
   const { previewUrl, isGenerating } = usePdfPreview({
     formType: selectedFormType,
@@ -32,12 +45,63 @@ export default function FormReviewPage() {
     setEditableData(extractedData ?? {});
   }, [extractedData]);
 
+  // Auto-save when PDF preview becomes available
   useEffect(() => {
-    toast.info('Click any field in the PDF to edit it directly. Use the download button (↓) to save.', { id: 'pdf-edit-hint', duration: 6000 });
-  }, []);
+    if (!previewUrl || hasSavedRef.current || !selectedFormType || !selectedFormLabel) return;
+    hasSavedRef.current = true;
+
+    const autoSave = async () => {
+      setSaveStatus('saving');
+      try {
+        const res = await fetch(previewUrl);
+        const blob = await res.blob();
+        const buffer = await blob.arrayBuffer();
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        const pdfBase64 = btoa(binary);
+
+        const patientName = typeof editableData.fullName === 'string' ? editableData.fullName
+          : typeof editableData.customerName === 'string' ? editableData.customerName
+          : null;
+        const patientDob = typeof editableData.dateOfBirth === 'string' ? editableData.dateOfBirth : null;
+
+        const saveRes = await fetch('/api/saved-forms', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            formType: selectedFormType,
+            formName: selectedFormLabel,
+            extractedData: editableData,
+            pdfBase64,
+            patientId: null,
+            patientName,
+            patientDob,
+          }),
+        });
+
+        if (!saveRes.ok) {
+          const body = await saveRes.json().catch(() => null);
+          throw new Error(body?.error ?? 'Failed to save form');
+        }
+
+        setSaveStatus('saved');
+        router.refresh();
+        toast.success('Form saved automatically');
+      } catch (err) {
+        setSaveStatus('error');
+        const message = err instanceof Error ? err.message : 'Failed to save form';
+        toast.error(message);
+      }
+    };
+
+    autoSave();
+  }, [previewUrl, selectedFormType, selectedFormLabel, editableData, router]);
 
   useEffect(() => {
-    if (!isSaving) return;
+    if (saveStatus !== 'saving') return;
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -48,72 +112,32 @@ export default function FormReviewPage() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [isSaving]);
+  }, [saveStatus]);
 
   const handleNewForm = () => {
-    if (isSaving) return;
+    if (saveStatus === 'saving') return;
     reset();
     router.push('/dashboard/forms/new');
   };
 
   const handleBackToDescribe = () => {
-    if (isSaving) return;
+    if (saveStatus === 'saving') return;
     router.push('/dashboard/dictate');
   };
 
-  const handleSave = async () => {
-    if (!selectedFormType || !selectedFormLabel) {
-      toast.error('No form type selected.');
-      return;
-    }
+  const handleDownload = () => {
+    const blobSource = previewUrl ?? pdfBlobUrl;
+    if (!blobSource) return;
 
-    setIsSaving(true);
-    try {
-      // Convert blob URL to base64
-      let pdfBase64 = '';
-      const blobSource = previewUrl ?? pdfBlobUrl;
-      if (blobSource) {
-        const res = await fetch(blobSource);
-        const blob = await res.blob();
-        const buffer = await blob.arrayBuffer();
-        const bytes = new Uint8Array(buffer);
-        let binary = '';
-        for (let i = 0; i < bytes.length; i++) {
-          binary += String.fromCharCode(bytes[i]);
-        }
-        pdfBase64 = btoa(binary);
-      }
+    const patientName = typeof editableData.fullName === 'string' ? editableData.fullName
+      : typeof editableData.customerName === 'string' ? editableData.customerName
+      : null;
+    const patientDob = typeof editableData.dateOfBirth === 'string' ? editableData.dateOfBirth : null;
 
-      const saveRes = await fetch('/api/saved-forms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          formType: selectedFormType,
-          formName: selectedFormLabel,
-          extractedData: editableData,
-          pdfBase64,
-          patientId: null,
-        }),
-      });
-
-      if (!saveRes.ok) {
-        const body = await saveRes.json().catch(() => null);
-        throw new Error(body?.error ?? 'Failed to save form');
-      }
-
-      setIsSaved(true);
-      toast.success('Form saved successfully', {
-        action: {
-          label: 'View Dashboard',
-          onClick: () => router.push('/dashboard'),
-        },
-      });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to save form';
-      toast.error(message);
-    } finally {
-      setIsSaving(false);
-    }
+    const a = document.createElement('a');
+    a.href = blobSource;
+    a.download = buildPdfFilename(selectedFormType, patientName, patientDob);
+    a.click();
   };
 
   // PDF-primary layout for all forms.
@@ -135,29 +159,39 @@ export default function FormReviewPage() {
       {/* Pinned footer — solid, no scroll on this page */}
       <div className="shrink-0 border-t bg-card py-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <div className="max-w-5xl mx-auto w-full px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <Button variant="ghost" onClick={handleBackToDescribe} disabled={isSaving}>
+          <Button variant="ghost" onClick={handleBackToDescribe} disabled={saveStatus === 'saving'}>
             <>
               <ArrowLeft className="w-4 h-4 mr-1.5" />
               Back to Describe
             </>
           </Button>
           <div className="flex items-center gap-3">
-            <p className="text-xs text-muted-foreground hidden sm:block">
-              Use the download button in the PDF viewer toolbar to save your edits
-            </p>
+            {saveStatus === 'saving' && (
+              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                Saving...
+              </span>
+            )}
+            {saveStatus === 'saved' && (
+              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-green-500" />
+                Saved
+              </span>
+            )}
+            {saveStatus === 'error' && (
+              <span className="text-xs text-destructive flex items-center gap-1.5">
+                Save failed
+              </span>
+            )}
             <Button
               variant="outline"
-              onClick={handleSave}
-              disabled={isSaving || isSaved}
+              onClick={handleDownload}
+              disabled={!previewUrl && !pdfBlobUrl}
             >
-              {isSaved ? (
-                <Check className="w-4 h-4 mr-1.5" />
-              ) : (
-                <Save className="w-4 h-4 mr-1.5" />
-              )}
-              {isSaving ? 'Saving...' : isSaved ? 'Saved' : 'Save Form'}
+              <Download className="w-4 h-4 mr-1.5" />
+              Download PDF
             </Button>
-            <Button variant="outline" onClick={handleNewForm} disabled={isSaving}>
+            <Button variant="outline" onClick={handleNewForm} disabled={saveStatus === 'saving'}>
               <FilePlus className="w-4 h-4 mr-1.5" />
               New Form
             </Button>

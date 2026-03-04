@@ -40,7 +40,7 @@ export async function getSavedFormSummaries(doctorId: string): Promise<SavedForm
 
   const { data, error } = await supabase
     .from('saved_forms')
-    .select('id, form_type, form_name, status, created_at, updated_at, patients(customer_name)')
+    .select('id, form_type, form_name, status, created_at, updated_at, patient_name, patient_dob, patients(customer_name)')
     .eq('doctor_id', doctorId)
     .order('created_at', { ascending: false });
 
@@ -53,7 +53,7 @@ export const getDashboardData = cache(async () => {
   const supabase = await createServerClient();
   let rpcResult = await supabase.rpc(
     'get_dashboard_data',
-    { recent_limit: 20 } as never
+    { recent_limit: 5 } as never
   );
 
   // Backward compatibility for environments that still only have the legacy signature.

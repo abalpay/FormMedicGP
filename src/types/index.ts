@@ -67,6 +67,7 @@ export interface SavedFormSummary {
   formType: string;
   formName: string;
   patientName: string | null;
+  patientDob: string | null;
   status: string;
   createdAt: string;
   updatedAt: string;

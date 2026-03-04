@@ -45,7 +45,14 @@ export function SavedFormDetail({ form }: SavedFormDetailProps) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${form.formName || 'form'}.pdf`;
+      const patientName = form.extractedData?.fullName || form.extractedData?.customerName;
+      const patientDob = form.extractedData?.dateOfBirth;
+      const filenameParts: string[] = [];
+      if (form.formType) filenameParts.push(form.formType);
+      if (typeof patientName === 'string' && patientName) filenameParts.push(patientName.replace(/\s+/g, '-'));
+      if (typeof patientDob === 'string' && patientDob) filenameParts.push(patientDob);
+      filenameParts.push(new Date(form.createdAt).toISOString().slice(0, 10));
+      a.download = `${filenameParts.join('_')}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
       toast.success('PDF downloaded');

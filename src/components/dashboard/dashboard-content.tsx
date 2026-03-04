@@ -150,12 +150,25 @@ export function DashboardContent({
                       {form.formType}
                     </Badge>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground truncate">
-                        {form.formName}
-                      </p>
-                      {form.patientName && (
-                        <p className="text-xs text-muted-foreground truncate">
-                          {form.patientName}
+                      {form.patientName ? (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-medium text-foreground truncate">
+                              {form.patientName}
+                            </p>
+                            {form.patientDob && (
+                              <span className="text-xs text-muted-foreground shrink-0">
+                                · DOB: {formatDate(form.patientDob)}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {form.formName}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-sm font-medium text-foreground truncate">
+                          {form.formName}
                         </p>
                       )}
                     </div>
@@ -167,6 +180,17 @@ export function DashboardContent({
               </div>
             </CardContent>
           </Card>
+        )}
+
+        {forms.length > 0 && (
+          <div className="flex justify-center pt-2">
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/dashboard/saved">
+                View All Forms
+                <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </Button>
+          </div>
         )}
       </div>
     </div>

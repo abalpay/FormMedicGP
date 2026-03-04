@@ -18,6 +18,7 @@ import { NavItem } from '@/components/layout/nav-item';
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: 'layout-dashboard' as const },
   { href: '/dashboard/forms/new', label: 'New Form', icon: 'file-plus' as const },
+  { href: '/dashboard/saved', label: 'All Forms', icon: 'file-text' as const },
   { href: '/dashboard/settings', label: 'Settings', icon: 'settings' as const },
 ];
 

@@ -11,16 +11,23 @@ interface CreateSavedFormBody {
   extractedData?: Record<string, unknown>;
   pdfBase64?: string;
   status?: string;
+  patientName?: string | null;
+  patientDob?: string | null;
 }
 
 export const GET = withDoctorId(async ({ request, auth }) => {
   const url = new URL(request.url);
   const patientId = url.searchParams.get('patient_id');
+  const search = url.searchParams.get('search')?.trim() || null;
+  const formType = url.searchParams.get('form_type')?.trim() || null;
+  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
+  const perPage = Math.min(50, Math.max(1, parseInt(url.searchParams.get('per_page') || '20', 10)));
 
   let query = auth.supabase
     .from('saved_forms')
     .select(
-      'id, form_type, form_name, status, created_at, updated_at, patients(customer_name)'
+      'id, form_type, form_name, status, created_at, updated_at, patient_name, patient_dob, patients(customer_name)',
+      { count: 'exact' }
     )
     .eq('doctor_id', auth.doctorId)
     .order('created_at', { ascending: false });
@@ -28,14 +35,27 @@ export const GET = withDoctorId(async ({ request, auth }) => {
   if (patientId) {
     query = query.eq('patient_id', patientId);
   }
+  if (formType) {
+    query = query.eq('form_type', formType);
+  }
+  if (search) {
+    query = query.or(`patient_name.ilike.%${search}%,form_name.ilike.%${search}%`);
+  }
 
-  const { data, error } = await query;
+  const from = (page - 1) * perPage;
+  const to = from + perPage - 1;
+  query = query.range(from, to);
+
+  const { data, error, count } = await query;
   if (error) {
     return apiError('Failed to fetch saved forms', 500);
   }
 
   return apiSuccess({
     forms: (data as SavedFormSummaryRow[]).map(mapSavedFormSummaryRow),
+    total: count ?? 0,
+    page,
+    perPage,
   });
 });
 
@@ -80,6 +100,8 @@ export const POST = withDoctorId(async ({ request, auth }) => {
     extracted_data: body.extractedData as import('@/types/database').Json,
     pdf_base64: body.pdfBase64,
     status: body.status?.trim() || 'completed',
+    patient_name: body.patientName?.trim() || null,
+    patient_dob: body.patientDob?.trim() || null,
   };
 
   const { data, error } = await auth.supabase

@@ -11,7 +11,7 @@ type PatientListRow = Pick<
 
 export type SavedFormSummaryRow = Pick<
   SavedFormRow,
-  'id' | 'form_type' | 'form_name' | 'status' | 'created_at' | 'updated_at'
+  'id' | 'form_type' | 'form_name' | 'status' | 'created_at' | 'updated_at' | 'patient_name' | 'patient_dob'
 > & {
   patients: { customer_name: string } | { customer_name: string }[] | null;
 };
@@ -109,6 +109,7 @@ export interface DashboardFormRow {
   created_at: string;
   updated_at: string;
   patient_name: string | null;
+  patient_dob: string | null;
 }
 
 export function mapDashboardFormRow(row: DashboardFormRow): SavedFormSummary {
@@ -117,6 +118,7 @@ export function mapDashboardFormRow(row: DashboardFormRow): SavedFormSummary {
     formType: row.form_type,
     formName: row.form_name,
     patientName: row.patient_name,
+    patientDob: row.patient_dob,
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -132,7 +134,8 @@ export function mapSavedFormSummaryRow(row: SavedFormSummaryRow): SavedFormSumma
     id: row.id,
     formType: row.form_type,
     formName: row.form_name,
-    patientName: joinedPatients?.customer_name ?? null,
+    patientName: row.patient_name ?? joinedPatients?.customer_name ?? null,
+    patientDob: row.patient_dob ?? null,
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,

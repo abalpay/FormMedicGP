@@ -1149,6 +1149,8 @@ export type Database = {
           form_type: string
           id: string
           patient_id: string | null
+          patient_name: string | null
+          patient_dob: string | null
           pdf_base64: string
           status: string
           updated_at: string
@@ -1161,6 +1163,8 @@ export type Database = {
           form_type: string
           id?: string
           patient_id?: string | null
+          patient_name?: string | null
+          patient_dob?: string | null
           pdf_base64: string
           status?: string
           updated_at?: string
@@ -1173,6 +1177,8 @@ export type Database = {
           form_type?: string
           id?: string
           patient_id?: string | null
+          patient_name?: string | null
+          patient_dob?: string | null
           pdf_base64?: string
           status?: string
           updated_at?: string
