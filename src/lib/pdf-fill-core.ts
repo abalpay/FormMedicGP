@@ -285,6 +285,14 @@ export async function fillPdfFromBytes(
         if (fieldDef.linkedCheckbox && String(value).trim()) {
           fillCheckBox(form, fieldDef.linkedCheckbox, 'yes');
         }
+
+        // Auto-select a paired radio-group when the text field has content
+        if (fieldDef.linkedRadio && String(value).trim()) {
+          const radioField = section.fields[fieldDef.linkedRadio];
+          if (radioField && typeof radioField.pdfField === 'string') {
+            fillRadioGroup(form, radioField.pdfField, 'yes', radioField.pdfOptions);
+          }
+        }
       }
     }
   }
