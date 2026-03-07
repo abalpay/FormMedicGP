@@ -21,6 +21,9 @@ export interface PatientDetails {
   caredPersonCrn?: string;
   customerPhone?: string;
   customerEmail?: string;
+  patientGuardian?: string;
+  patientPhone?: string;
+  ndisNumber?: string;
 }
 
 export interface Patient {
@@ -113,6 +116,8 @@ export interface FormField {
   llmInstruction?: string;
   /** When this text field is non-empty, auto-tick the named PDF checkbox. */
   linkedCheckbox?: string;
+  /** When this text field is non-empty, auto-select "yes" on the named radio field key. */
+  linkedRadio?: string;
 }
 
 export interface FormSection {
