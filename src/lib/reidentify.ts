@@ -35,6 +35,9 @@ export function reidentify(
     doctorAddress1: doctorAddress.line1,
     doctorAddress2: doctorAddress.line2,
     doctorAddress3: doctorAddress.line3,
+    doctorFullAddress: [doctorAddress.line1, doctorAddress.line2, doctorAddress.line3]
+      .filter(Boolean)
+      .join(', '),
     doctorPostcode,
     phone: normalizedPhone,
     doctorPhoneAreaCode: normalizedPhone.slice(0, 2),

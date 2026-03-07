@@ -94,5 +94,16 @@ export function buildPatientIdentityFields(
     caredPersonFamilyName: caredNames.familyName,
     caredPersonDateOfBirthPage1: caredPersonDob,
     ...(caredPersonCrn ? { caredPersonCrn } : {}),
+
+    // NDIS-specific passthrough
+    ...(patientDetails.patientGuardian
+      ? { patientGuardian: patientDetails.patientGuardian.trim() }
+      : {}),
+    ...(patientDetails.patientPhone
+      ? { patientPhone: normalizePhone(patientDetails.patientPhone) }
+      : {}),
+    ...(patientDetails.ndisNumber
+      ? { ndisNumber: patientDetails.ndisNumber.trim() }
+      : {}),
   };
 }
