@@ -124,6 +124,9 @@ export const POST = withAuth(async ({ request, auth }) => {
         caredPersonCrn: patientDetails?.caredPersonCrn,
         customerPhone: patientDetails?.customerPhone,
         customerEmail: patientDetails?.customerEmail,
+        patientGuardian: patientDetails?.patientGuardian,
+        patientPhone: patientDetails?.patientPhone,
+        ndisNumber: patientDetails?.ndisNumber,
       },
       auth.doctorProfile
     );
