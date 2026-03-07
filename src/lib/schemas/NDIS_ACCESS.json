@@ -14,7 +14,7 @@
     "patient": {
       "source": "manual_entry",
       "fields": {
-        "patientFullName": {
+        "fullName": {
           "label": "Full Name",
           "type": "text",
           "inputType": "text",
@@ -22,17 +22,21 @@
           "pdfFieldType": "text",
           "reviewEditable": true,
           "required": true,
-          "validation": { "required": true }
+          "validation": {
+            "required": true
+          }
         },
-        "patientDob": {
+        "dateOfBirth": {
           "label": "Date of Birth",
           "type": "text",
           "inputType": "text",
           "pdfField": "Date of birth",
-          "pdfFieldType": "text",
+          "pdfFieldType": "date-text",
           "reviewEditable": true,
           "required": true,
-          "validation": { "required": true }
+          "validation": {
+            "required": true
+          }
         },
         "patientGuardian": {
           "label": "Parent/Guardian/Carer/Representative",
@@ -69,35 +73,29 @@
           "pdfField": "Full name of health professional",
           "pdfFieldType": "text"
         },
-        "doctorQualifications": {
+        "qualifications": {
           "label": "Professional Qualifications",
           "type": "text",
           "pdfField": "Professional qualifications",
           "pdfFieldType": "text"
         },
-        "doctorAddress": {
+        "doctorFullAddress": {
           "label": "Address",
           "type": "text",
           "pdfField": "Address",
           "pdfFieldType": "text"
         },
-        "doctorPhone": {
+        "phone": {
           "label": "Phone",
           "type": "text",
           "pdfField": "Phone_2",
           "pdfFieldType": "text"
         },
-        "doctorEmail": {
-          "label": "Email",
-          "type": "text",
-          "pdfField": "Email",
-          "pdfFieldType": "text"
-        },
-        "doctorDate": {
+        "dateSigned": {
           "label": "Date",
           "type": "text",
           "pdfField": "Date",
-          "pdfFieldType": "text",
+          "pdfFieldType": "date-text",
           "default": "today"
         }
       }
@@ -189,13 +187,14 @@
           "reviewEditable": true,
           "llmInstruction": "List any other impairments beyond primary and secondary. Leave empty if none mentioned."
         },
-
         "earlyInterventionAlleviate": {
           "label": "Early Intervention: Alleviate Impact",
           "type": "checkbox",
           "pdfField": "Alleviate the impact on functional capacity",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if early intervention could alleviate the impact on functional capacity. Otherwise leave empty."
         },
@@ -204,7 +203,9 @@
           "type": "checkbox",
           "pdfField": "Prevent deterioration of functional capacity",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if early intervention could prevent deterioration of functional capacity. Otherwise leave empty."
         },
@@ -213,7 +214,9 @@
           "type": "checkbox",
           "pdfField": "Improve functional capacity",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if early intervention could improve functional capacity. Otherwise leave empty."
         },
@@ -222,7 +225,9 @@
           "type": "checkbox",
           "pdfField": "Strengthen the sustainability of available or",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if early intervention could strengthen existing supports. Otherwise leave empty."
         },
@@ -235,14 +240,14 @@
           "reviewEditable": true,
           "llmInstruction": "Details of recommended early intervention supports. Only fill if early intervention benefits were indicated."
         },
-
         "assessmentCansDate": {
           "label": "CANS: Date",
           "type": "text",
           "pdfField": "Date completedCare and Need Scale CANS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date the CANS assessment was completed. Only fill if explicitly mentioned."
+          "llmInstruction": "Date the CANS assessment was completed. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentCansAttached"
         },
         "assessmentCansScore": {
           "label": "CANS: Score",
@@ -250,15 +255,22 @@
           "pdfField": "Score or ratingCare and Need Scale CANS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "CANS score or rating. Only fill if explicitly mentioned."
+          "llmInstruction": "CANS score or rating. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentCansAttached"
         },
         "assessmentCansAttached": {
           "label": "CANS: Attached?",
           "type": "radio",
           "pdfField": "undefined",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes", "no": "No" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes",
+            "no": "No"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -268,7 +280,8 @@
           "pdfField": "Date completedGross Motor Functional Classification Scale GMFCS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date the GMFCS assessment was completed. Only fill if explicitly mentioned."
+          "llmInstruction": "Date the GMFCS assessment was completed. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentGmfcsAttached"
         },
         "assessmentGmfcsScore": {
           "label": "GMFCS: Score",
@@ -276,15 +289,22 @@
           "pdfField": "Score or ratingGross Motor Functional Classification Scale GMFCS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "GMFCS level (I-V). Only fill if explicitly mentioned."
+          "llmInstruction": "GMFCS level (I-V). Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentGmfcsAttached"
         },
         "assessmentGmfcsAttached": {
           "label": "GMFCS: Attached?",
           "type": "radio",
           "pdfField": "undefined_2",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_2", "no": "No_2" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_2",
+            "no": "No_2"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -294,7 +314,8 @@
           "pdfField": "Date completedHearing Acuity Score",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date the hearing acuity assessment was completed. Only fill if explicitly mentioned."
+          "llmInstruction": "Date the hearing acuity assessment was completed. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentHearingAttached"
         },
         "assessmentHearingScore": {
           "label": "Hearing Acuity: Score",
@@ -302,15 +323,22 @@
           "pdfField": "Score or ratingHearing Acuity Score",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Hearing acuity score. Only fill if explicitly mentioned."
+          "llmInstruction": "Hearing acuity score. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentHearingAttached"
         },
         "assessmentHearingAttached": {
           "label": "Hearing: Attached?",
           "type": "radio",
           "pdfField": "undefined_3",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_3", "no": "No_3" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_3",
+            "no": "No_3"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -320,7 +348,8 @@
           "pdfField": "Date completedDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM5",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of DSM-5 diagnosis. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of DSM-5 diagnosis. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentDsm5Attached"
         },
         "assessmentDsm5Score": {
           "label": "DSM-5: Diagnosis",
@@ -328,15 +357,22 @@
           "pdfField": "Score or ratingDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM5",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "DSM-5 diagnosis code or name. Only fill if explicitly mentioned."
+          "llmInstruction": "DSM-5 diagnosis code or name. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentDsm5Attached"
         },
         "assessmentDsm5Attached": {
           "label": "DSM-5: Attached?",
           "type": "radio",
           "pdfField": "undefined_4",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_4", "no": "No_4" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_4",
+            "no": "No_4"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -346,7 +382,8 @@
           "pdfField": "Date completedDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM4",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of DSM-4 diagnosis. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of DSM-4 diagnosis. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentDsm4Attached"
         },
         "assessmentDsm4Score": {
           "label": "DSM-4: Diagnosis",
@@ -354,15 +391,22 @@
           "pdfField": "Score or ratingDiagnostic and Statistical Manual of Mental Disorders Fifth Edition DSM4",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "DSM-4 diagnosis code or name. Only fill if explicitly mentioned."
+          "llmInstruction": "DSM-4 diagnosis code or name. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentDsm4Attached"
         },
         "assessmentDsm4Attached": {
           "label": "DSM-4: Attached?",
           "type": "radio",
           "pdfField": "undefined_5",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_5", "no": "No_5" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_5",
+            "no": "No_5"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -372,7 +416,8 @@
           "pdfField": "Date completedVisual Acuity Rating",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of visual acuity assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of visual acuity assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentVisualAttached"
         },
         "assessmentVisualScore": {
           "label": "Visual Acuity: Score",
@@ -380,15 +425,22 @@
           "pdfField": "Score or ratingVisual Acuity Rating",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Visual acuity rating. Only fill if explicitly mentioned."
+          "llmInstruction": "Visual acuity rating. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentVisualAttached"
         },
         "assessmentVisualAttached": {
           "label": "Visual Acuity: Attached?",
           "type": "radio",
           "pdfField": "undefined_6",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_6", "no": "No_6" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_6",
+            "no": "No_6"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -398,7 +450,8 @@
           "pdfField": "Date completedCommunication Function Classification System CFCS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of CFCS assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of CFCS assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentCfcsAttached"
         },
         "assessmentCfcsScore": {
           "label": "CFCS: Score",
@@ -406,15 +459,22 @@
           "pdfField": "Score or ratingCommunication Function Classification System CFCS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "CFCS level (I-V). Only fill if explicitly mentioned."
+          "llmInstruction": "CFCS level (I-V). Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentCfcsAttached"
         },
         "assessmentCfcsAttached": {
           "label": "CFCS: Attached?",
           "type": "radio",
           "pdfField": "undefined_7",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_7", "no": "No_7" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_7",
+            "no": "No_7"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -424,7 +484,8 @@
           "pdfField": "Date completedVineland Adaptive behaviour Scale VinelandII",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of Vineland-II assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of Vineland-II assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentVinelandAttached"
         },
         "assessmentVinelandScore": {
           "label": "Vineland-II: Score",
@@ -432,15 +493,22 @@
           "pdfField": "Score or ratingVineland Adaptive behaviour Scale VinelandII",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Vineland-II adaptive behavior composite score. Only fill if explicitly mentioned."
+          "llmInstruction": "Vineland-II adaptive behavior composite score. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentVinelandAttached"
         },
         "assessmentVinelandAttached": {
           "label": "Vineland-II: Attached?",
           "type": "radio",
           "pdfField": "undefined_8",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_8", "no": "No_8" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_8",
+            "no": "No_8"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -450,7 +518,8 @@
           "pdfField": "Date completedModified Rankin Scale mRS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of Modified Rankin Scale assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of Modified Rankin Scale assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentMrsAttached"
         },
         "assessmentMrsScore": {
           "label": "mRS: Score",
@@ -458,15 +527,22 @@
           "pdfField": "Score or ratingModified Rankin Scale mRS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Modified Rankin Scale score (0-6). Only fill if explicitly mentioned."
+          "llmInstruction": "Modified Rankin Scale score (0-6). Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentMrsAttached"
         },
         "assessmentMrsAttached": {
           "label": "mRS: Attached?",
           "type": "radio",
           "pdfField": "undefined_9",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_9", "no": "No_9" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_9",
+            "no": "No_9"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -476,7 +552,8 @@
           "pdfField": "Date completedManual Ability Classification Scale MACS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of MACS assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of MACS assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentMacsAttached"
         },
         "assessmentMacsScore": {
           "label": "MACS: Score",
@@ -484,15 +561,22 @@
           "pdfField": "Score or ratingManual Ability Classification Scale MACS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "MACS level (I-V). Only fill if explicitly mentioned."
+          "llmInstruction": "MACS level (I-V). Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentMacsAttached"
         },
         "assessmentMacsAttached": {
           "label": "MACS: Attached?",
           "type": "radio",
           "pdfField": "undefined_10",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_10", "no": "No_10" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_10",
+            "no": "No_10"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -502,7 +586,8 @@
           "pdfField": "Date completedAmerican Spinal Injury Association Impairment Scale ASIAAIS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of ASIA/AIS assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of ASIA/AIS assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentAsiaAttached"
         },
         "assessmentAsiaScore": {
           "label": "ASIA/AIS: Score",
@@ -510,15 +595,22 @@
           "pdfField": "Score or ratingAmerican Spinal Injury Association Impairment Scale ASIAAIS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "ASIA Impairment Scale grade (A-E). Only fill if explicitly mentioned."
+          "llmInstruction": "ASIA Impairment Scale grade (A-E). Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentAsiaAttached"
         },
         "assessmentAsiaAttached": {
           "label": "ASIA/AIS: Attached?",
           "type": "radio",
           "pdfField": "undefined_11",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_11", "no": "No_11" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_11",
+            "no": "No_11"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -528,7 +620,8 @@
           "pdfField": "Date completedDisease Steps",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of Disease Steps assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of Disease Steps assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentDiseaseStepsAttached"
         },
         "assessmentDiseaseStepsScore": {
           "label": "Disease Steps: Score",
@@ -536,15 +629,22 @@
           "pdfField": "Score or ratingDisease Steps",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Disease Steps score. Only fill if explicitly mentioned."
+          "llmInstruction": "Disease Steps score. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentDiseaseStepsAttached"
         },
         "assessmentDiseaseStepsAttached": {
           "label": "Disease Steps: Attached?",
           "type": "radio",
           "pdfField": "undefined_12",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_12", "no": "No_12" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_12",
+            "no": "No_12"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -554,7 +654,8 @@
           "pdfField": "Date completedExpanded Disability Status Scale EDSS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of EDSS assessment. Only fill if explicitly mentioned."
+          "llmInstruction": "Date of EDSS assessment. Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentEdssAttached"
         },
         "assessmentEdssScore": {
           "label": "EDSS: Score",
@@ -562,15 +663,22 @@
           "pdfField": "Score or ratingExpanded Disability Status Scale EDSS",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "EDSS score (0-10). Only fill if explicitly mentioned."
+          "llmInstruction": "EDSS score (0-10). Only fill if explicitly mentioned.",
+          "linkedRadio": "assessmentEdssAttached"
         },
         "assessmentEdssAttached": {
           "label": "EDSS: Attached?",
           "type": "radio",
           "pdfField": "undefined_13",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_13", "no": "No_13" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_13",
+            "no": "No_13"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
@@ -580,7 +688,8 @@
           "pdfField": "Date completedOther please specify",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Date of any other assessment. Only fill if an assessment not in the standard list is mentioned."
+          "llmInstruction": "Date of any other assessment. Only fill if an assessment not in the standard list is mentioned.",
+          "linkedRadio": "assessmentOtherAttached"
         },
         "assessmentOtherScore": {
           "label": "Other Assessment: Score",
@@ -588,25 +697,33 @@
           "pdfField": "Score or ratingOther please specify",
           "pdfFieldType": "text",
           "reviewEditable": true,
-          "llmInstruction": "Score for any other assessment. Only fill if an assessment not in the standard list is mentioned."
+          "llmInstruction": "Score for any other assessment. Only fill if an assessment not in the standard list is mentioned.",
+          "linkedRadio": "assessmentOtherAttached"
         },
         "assessmentOtherAttached": {
           "label": "Other: Attached?",
           "type": "radio",
           "pdfField": "undefined_14",
           "pdfFieldType": "radio-group",
-          "pdfOptions": { "yes": "Yes_14", "no": "No_14" },
-          "options": ["yes", "no"],
+          "pdfOptions": {
+            "yes": "Yes_14",
+            "no": "No_14"
+          },
+          "options": [
+            "yes",
+            "no"
+          ],
           "reviewEditable": true,
           "llmInstruction": "Leave empty — attachment status is handled outside dictation."
         },
-
         "mobilityNoAssistance": {
           "label": "Mobility: No Assistance Needed",
           "type": "checkbox",
           "pdfField": "impairments",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any mobility assistance. Leave empty if they need any form of assistance."
         },
@@ -615,7 +732,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs special equipment",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs special equipment for mobility (e.g. wheelchair, walker). Otherwise leave empty."
         },
@@ -624,7 +743,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistive technology",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistive technology for mobility. Otherwise leave empty."
         },
@@ -633,7 +754,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs home modifications",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs home modifications for mobility (e.g. ramps, widened doorways). Otherwise leave empty."
         },
@@ -642,7 +765,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistance from other persons",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for mobility. Otherwise leave empty."
         },
@@ -655,13 +780,14 @@
           "reviewEditable": true,
           "llmInstruction": "Describe the type of mobility assistance required. 2-3 sentences. Only fill if any mobility assistance checkboxes are yes."
         },
-
         "commNoAssistance": {
           "label": "Communication: No Assistance Needed",
           "type": "checkbox",
           "pdfField": "impairments_2",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any communication assistance. Leave empty if they need any form of assistance."
         },
@@ -670,7 +796,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs special equipment_2",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs special equipment for communication. Otherwise leave empty."
         },
@@ -679,7 +807,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistive technology_2",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistive technology for communication. Otherwise leave empty."
         },
@@ -688,7 +818,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs home modifications_2",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs home modifications for communication. Otherwise leave empty."
         },
@@ -697,7 +829,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistance from other persons_2",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for communication. Otherwise leave empty."
         },
@@ -710,13 +844,14 @@
           "reviewEditable": true,
           "llmInstruction": "Describe the type of communication assistance required. 2-3 sentences. Only fill if any communication assistance checkboxes are yes."
         },
-
         "socialNoAssistance": {
           "label": "Social: No Assistance Needed",
           "type": "checkbox",
           "pdfField": "No does not need assistance",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any social interaction assistance. Leave empty if they need any form of assistance."
         },
@@ -725,7 +860,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs special equipment_3",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs special equipment for social interaction. Otherwise leave empty."
         },
@@ -734,7 +871,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistive technology_3",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistive technology for social interaction. Otherwise leave empty."
         },
@@ -743,7 +882,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistance from other persons_3",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for social interaction. Otherwise leave empty."
         },
@@ -756,13 +897,14 @@
           "reviewEditable": true,
           "llmInstruction": "Describe the type of social interaction assistance required. 2-3 sentences. Only fill if any social assistance checkboxes are yes."
         },
-
         "learningNoAssistance": {
           "label": "Learning: No Assistance Needed",
           "type": "checkbox",
           "pdfField": "No does not need assistance_2",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any learning assistance. Leave empty if they need any form of assistance."
         },
@@ -771,7 +913,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs special equipment_4",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs special equipment for learning. Otherwise leave empty."
         },
@@ -780,7 +924,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistive technology_4",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistive technology for learning. Otherwise leave empty."
         },
@@ -789,7 +935,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistance from other persons_4",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for learning. Otherwise leave empty."
         },
@@ -802,13 +950,14 @@
           "reviewEditable": true,
           "llmInstruction": "Describe the type of learning assistance required. 2-3 sentences. Only fill if any learning assistance checkboxes are yes."
         },
-
         "selfCareNoAssistance": {
           "label": "Self-Care: No Assistance Needed",
           "type": "checkbox",
           "pdfField": "impairments_3",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any self-care assistance. Leave empty if they need any form of assistance."
         },
@@ -817,7 +966,9 @@
           "type": "checkbox",
           "pdfField": "Yes need special equipment",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs special equipment for self-care. Otherwise leave empty."
         },
@@ -826,7 +977,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistive technology_5",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistive technology for self-care. Otherwise leave empty."
         },
@@ -835,7 +988,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs home modification",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs home modifications for self-care. Otherwise leave empty."
         },
@@ -844,7 +999,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistance from other persons in the areas",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistance from others for self-care. Otherwise leave empty."
         },
@@ -853,7 +1010,9 @@
           "type": "checkbox",
           "pdfField": "showeringbathing",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistance with showering/bathing. Otherwise leave empty."
         },
@@ -862,7 +1021,9 @@
           "type": "checkbox",
           "pdfField": "eatingdrinking",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistance with eating/drinking. Otherwise leave empty."
         },
@@ -871,7 +1032,9 @@
           "type": "checkbox",
           "pdfField": "overnight care eg turning",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs overnight care (e.g. turning). Otherwise leave empty."
         },
@@ -880,7 +1043,9 @@
           "type": "checkbox",
           "pdfField": "toileting",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistance with toileting. Otherwise leave empty."
         },
@@ -889,7 +1054,9 @@
           "type": "checkbox",
           "pdfField": "dressing",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistance with dressing. Otherwise leave empty."
         },
@@ -902,13 +1069,14 @@
           "reviewEditable": true,
           "llmInstruction": "Describe the type of self-care assistance required. 2-3 sentences. Only fill if any self-care assistance checkboxes are yes."
         },
-
         "selfMgmtNoAssistance": {
           "label": "Self-Management: No Assistance Needed",
           "type": "checkbox",
           "pdfField": "No does not need assistance_3",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' ONLY if the person does NOT need any self-management assistance. Leave empty if they need any form of assistance."
         },
@@ -917,7 +1085,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs special equipment_5",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs special equipment for self-management. Otherwise leave empty."
         },
@@ -926,7 +1096,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistive technology_6",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs assistive technology for self-management. Otherwise leave empty."
         },
@@ -935,7 +1107,9 @@
           "type": "checkbox",
           "pdfField": "Yes needs assistance from other persons_5",
           "pdfFieldType": "checkbox",
-          "pdfOptions": { "yes": "On" },
+          "pdfOptions": {
+            "yes": "On"
+          },
           "reviewEditable": true,
           "llmInstruction": "Set to 'yes' if the person needs physical assistance, guidance, supervision or prompting for self-management. Otherwise leave empty."
         },
@@ -975,14 +1149,27 @@
           "label": "Is the impairment likely to be lifelong?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" },
-            { "value": "unsure", "label": "Unsure" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            },
+            {
+              "value": "unsure",
+              "label": "Unsure"
+            }
           ],
           "targetFieldKey": "primaryImpairmentLifelong",
           "valueOverrides": {
-            "yes": { "primaryImpairmentLifelong": "Yes — the impairment is likely to be lifelong." },
-            "no": { "primaryImpairmentLifelong": "No — the impairment is not expected to be lifelong." }
+            "yes": {
+              "primaryImpairmentLifelong": "Yes — the impairment is likely to be lifelong."
+            },
+            "no": {
+              "primaryImpairmentLifelong": "No — the impairment is not expected to be lifelong."
+            }
           },
           "requiredForBestFill": true
         },
@@ -991,8 +1178,14 @@
           "label": "Does the person have a secondary impairment?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "requiredForBestFill": false
         }
@@ -1007,16 +1200,32 @@
           "label": "Is the secondary impairment likely to be lifelong?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" },
-            { "value": "unsure", "label": "Unsure" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            },
+            {
+              "value": "unsure",
+              "label": "Unsure"
+            }
           ],
           "targetFieldKey": "secondaryImpairmentLifelong",
           "valueOverrides": {
-            "yes": { "secondaryImpairmentLifelong": "Yes — the impairment is likely to be lifelong." },
-            "no": { "secondaryImpairmentLifelong": "No — the impairment is not expected to be lifelong." }
+            "yes": {
+              "secondaryImpairmentLifelong": "Yes — the impairment is likely to be lifelong."
+            },
+            "no": {
+              "secondaryImpairmentLifelong": "No — the impairment is not expected to be lifelong."
+            }
           },
-          "visibleWhen": { "key": "hasSecondaryImpairment", "equals": "yes" }
+          "visibleWhen": {
+            "key": "hasSecondaryImpairment",
+            "equals": "yes"
+          }
         }
       ]
     },
@@ -1029,8 +1238,14 @@
           "label": "Are early intervention supports likely to benefit the person?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "requiredForBestFill": false
         }
@@ -1046,11 +1261,19 @@
           "label": "Needs mobility assistance?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "valueOverrides": {
-            "no": { "mobilityNoAssistance": "yes" }
+            "no": {
+              "mobilityNoAssistance": "yes"
+            }
           },
           "requiredForBestFill": true
         },
@@ -1059,11 +1282,19 @@
           "label": "Needs communication assistance?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "valueOverrides": {
-            "no": { "commNoAssistance": "yes" }
+            "no": {
+              "commNoAssistance": "yes"
+            }
           },
           "requiredForBestFill": true
         },
@@ -1072,11 +1303,19 @@
           "label": "Needs social interaction assistance?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "valueOverrides": {
-            "no": { "socialNoAssistance": "yes" }
+            "no": {
+              "socialNoAssistance": "yes"
+            }
           },
           "requiredForBestFill": true
         },
@@ -1085,11 +1324,19 @@
           "label": "Needs learning assistance?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "valueOverrides": {
-            "no": { "learningNoAssistance": "yes" }
+            "no": {
+              "learningNoAssistance": "yes"
+            }
           },
           "requiredForBestFill": true
         },
@@ -1098,11 +1345,19 @@
           "label": "Needs self-care assistance?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "valueOverrides": {
-            "no": { "selfCareNoAssistance": "yes" }
+            "no": {
+              "selfCareNoAssistance": "yes"
+            }
           },
           "requiredForBestFill": true
         },
@@ -1111,11 +1366,19 @@
           "label": "Needs self-management assistance?",
           "inputType": "segmented",
           "options": [
-            { "value": "yes", "label": "Yes" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "valueOverrides": {
-            "no": { "selfMgmtNoAssistance": "yes" }
+            "no": {
+              "selfMgmtNoAssistance": "yes"
+            }
           },
           "requiredForBestFill": true
         }
