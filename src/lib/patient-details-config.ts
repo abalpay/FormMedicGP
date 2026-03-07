@@ -45,6 +45,9 @@ const BASE_SHAPE = {
       (value) => !value || /\S+@\S+\.\S+/.test(value),
       'A valid email address is required'
     ),
+  patientGuardian: z.string().optional(),
+  patientPhone: z.string().optional(),
+  ndisNumber: z.string().optional(),
 } satisfies Record<keyof PatientDetails, z.ZodTypeAny>;
 
 function isFutureIsoDate(value: string): boolean {
@@ -69,6 +72,10 @@ function hasFirstAndLastName(value: string): boolean {
 
 export function isCarerForm(formType: string | null | undefined): boolean {
   return formType === 'SA332A';
+}
+
+export function isNdisForm(formType: string | null | undefined): boolean {
+  return formType === 'NDIS_ACCESS';
 }
 
 export function getPatientDetailsValidationSchema(
@@ -113,6 +120,62 @@ export function getPatientDetailsValidationSchema(
 export function getPatientDetailsFormConfig(
   formType: string | null | undefined
 ): PatientDetailsFormConfig {
+  if (isNdisForm(formType)) {
+    return {
+      title: 'Participant Details',
+      description: "Enter the NDIS participant's identifying information.",
+      sections: [
+        {
+          id: 'customer',
+          title: 'Participant Details',
+          description: 'These fields fill the NDIS participant identity section.',
+          fields: [
+            {
+              key: 'customerName',
+              label: 'Participant Name',
+              inputType: 'text',
+              required: true,
+              placeholder: 'John Smith',
+            },
+            {
+              key: 'dateOfBirth',
+              label: 'Date of Birth',
+              inputType: 'date',
+              required: true,
+            },
+            {
+              key: 'patientGuardian',
+              label: 'Parent/Guardian/Carer/Representative',
+              inputType: 'text',
+              required: false,
+              placeholder: 'Jane Smith (mother)',
+            },
+            {
+              key: 'patientPhone',
+              label: 'Phone',
+              inputType: 'tel',
+              required: false,
+              placeholder: '04xx xxx xxx',
+            },
+            {
+              key: 'ndisNumber',
+              label: 'NDIS Number',
+              inputType: 'text',
+              required: false,
+              placeholder: '4xxxxxxxxx',
+            },
+            {
+              key: 'address',
+              label: 'Address',
+              inputType: 'address',
+              required: true,
+            },
+          ],
+        },
+      ],
+    };
+  }
+
   if (isCarerForm(formType)) {
     return {
       title: 'Customer and Cared Person Details',
