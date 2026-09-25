@@ -1,4 +1,4 @@
-import { getFormSchema, getFormManifest } from '@/lib/schemas';
+import { getFormSchema } from '@/lib/schemas';
 import { deidentify } from '@/lib/deidentify';
 import { extractFormData } from '@/lib/llm';
 import { reidentify } from '@/lib/reidentify';
@@ -43,7 +43,6 @@ export const POST = withAuth(async ({ request, auth }) => {
       return apiError('Form type is required', 400);
     }
 
-    const manifest = getFormManifest(formType);
     const schema = getFormSchema(formType);
     if (!schema) {
       return apiError(`Unknown form type: ${formType}`, 400);
@@ -137,10 +136,7 @@ export const POST = withAuth(async ({ request, auth }) => {
     ]);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
     const reviewSchema = buildReviewSchema(schema, {
-      manifestFields: manifest?.fields ?? [],
       textFieldMultilineMap,
-      defaultUnmappedPdfFields: schema.allowedUnmappedPdfFields ?? [],
-      advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields ?? [],
     });
 
     return apiSuccess({

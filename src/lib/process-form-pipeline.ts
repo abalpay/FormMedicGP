@@ -4,7 +4,7 @@ import type { reidentify } from '@/lib/reidentify';
 import type { fillPdf } from '@/lib/pdf-filler';
 import type { getTemplateTextFieldMultilineMap } from '@/lib/pdf-field-metadata';
 import type { buildReviewSchema } from '@/lib/review-schema';
-import type { getFormSchema, getFormManifest } from '@/lib/schemas';
+import type { getFormSchema } from '@/lib/schemas';
 import type {
   buildGuidedExtractionPayload,
   mergeGuidedOverrides,
@@ -31,7 +31,6 @@ type ProcessFormArgs = {
 };
 
 export type ProcessFormDependencies = {
-  getFormManifest: typeof getFormManifest;
   getFormSchema: typeof getFormSchema;
   deidentify: typeof deidentify;
   extractFormData: typeof extractFormData;
@@ -80,7 +79,6 @@ export async function processFormPost(
       return deps.apiError('Form type is required', 400);
     }
 
-    const manifest = deps.getFormManifest(formType);
     const schema = deps.getFormSchema(formType);
     if (!schema) {
       return deps.apiError(`Unknown form type: ${formType}`, 400);
@@ -158,10 +156,7 @@ export async function processFormPost(
     const textFieldMultilineMap =
       await deps.getTemplateTextFieldMultilineMap(schema);
     const reviewSchema = deps.buildReviewSchema(schema, {
-      manifestFields: manifest?.fields ?? [],
       textFieldMultilineMap,
-      defaultUnmappedPdfFields: schema.allowedUnmappedPdfFields ?? [],
-      advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields ?? [],
     });
 
     return deps.apiSuccess({
