@@ -96,12 +96,12 @@
 > Current SU415: ~14-18 clicks, 3 waits, ~3-5 min. No way to correct a field except re-dictating.
 - [ ] Re-wire `FormSummary` beside the PDF on review (`forms/[id]/page.tsx`), fed by store `missingFields`/`reviewSchema`; `usePdfPreview` already re-renders on edit. (Removed in 2d67bbb "simplified" — confirm it wasn't deliberate.) Shared with 14.1 demo
 - [ ] Show missing required fields above the PDF (data already in store, never displayed)
-- [ ] Profile gate at form selection (`form-selector.tsx` + `getMissingDoctorProfileFields`) instead of a 400 after dictating
-- [ ] "Record again" appends instead of wiping transcript (`dictation-recorder.tsx:81-93`)
+- [x] Profile gate at form selection (`form-selector.tsx` + `getMissingDoctorProfileFields`) instead of a 400 after dictating
+- [x] "Record again" appends instead of wiping transcript (`dictation-recorder.tsx:81-93`)
 - [ ] Link saved patient on autosave (currently always `patientId: null`); dedupe patient POST; "New form for this patient" from saved form
-- [ ] Route guards on dictate/review when store empty
-- [ ] Staged progress text ("Extracting… Filling PDF…"); seed preview from server PDF to skip client refill (2-4s)
-- [ ] Specific mic-denied vs token error; Deepgram drop resets recording state
+- [x] Route guards on dictate/review when store empty
+- [x] Staged progress text ("Extracting… Filling PDF…"); seed preview from server PDF to skip client refill (2-4s) — done: single honest label; preview seeded from server PDF
+- [x] Specific mic-denied vs token error; Deepgram drop resets recording state
 - [ ] Delete dead code or use it: `api/process-form/regenerate`, `review-download-gating.ts`
 - [ ] Later: keyboard shortcuts (Space record, Cmd+Enter process), print, iOS PDF fallback
 
