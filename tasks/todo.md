@@ -44,7 +44,14 @@
 - [x] 15.4 `/demo` dark restyle + technical copy removal + honest note (opus)
 - [x] 15.5 Motion / mobile / a11y-perf pass (impeccable:animate, adapt, audit, distill), screenshots, dashboard light check
 - Note 2026-09-25: story beats tightened (section ~1 viewport, denser mini-frames, Speak gets a "Listening" pill); form tiles compact (id → label → issuer); hero glow nudged up + faint glow behind frame; lower sections py-16/24. Reduced motion: scoped safety net in globals.css, static full-height waveforms, demo reset scroll respects it. Focus: `.marketing-dark` `:focus-visible` outline for links/controls; `color-scheme: dark` on wrapper. Mobile tap targets ≥44px (nav logo/CTA, footer, builder links, View source, demo result buttons); footer 2-col on mobile and moved into the marketing layout so `/demo` has it. `/demo` redaction panel shows the dictation only; guided-answer evidence quotes lose the ` (snake_value)` suffix. `FormSummary` title → "Form fields", weight 400. CLS 0.0008 (1440) / 0.0032 (390) over 12s; LCP = H1 at both.
-- [ ] 15.6 Push, PR, Vercel preview, review notes
+- [x] 15.6 Push, PR, Vercel preview, review notes — PR https://github.com/abalpay/FormMedicGP/pull/3 (not merged; owner reviews the preview first)
+
+### Review (2026-09-25)
+- **Shipped:** 1fab213 (dark foundation + hero replay), ac2a7a9 (story beats), ce2a9f9 (forms strip, builder, FAQ, CTA, footer), d9a03f7 (demo restyle + copy), dcaeaf0 (demo redaction panel/evidence quotes), a7b0f74 (tighten beats + tiles), 38be4d6 (a11y + motion audit), 695888b (login: fabricated testimonial + "<2m / 100%" claims removed — copy only, not a restyle).
+- **Theme scoping:** `.dark` tokens re-tuned for marketing and applied via the `.marketing-dark` wrapper in `src/app/(marketing)/layout.tsx`; the dashboard never receives `.dark` (no ThemeProvider), verified `/login` still light. Only shared-component change: `FormSummary` title "Form fields" at weight 400.
+- **Honesty checks:** demo banner "Nothing you see leaves your browser" verified in code + Playwright request log (cached mode: `GET /api/demo/extract` live-mode check and `GET /api/form-template/<id>` only). Privacy copy says forms are saved to the doctor's account (auto-save), never "nothing is stored unless you save it". No numbers, time claims, logos or testimonials anywhere on `/`, `/demo`, `/login`.
+- **Verification:** lint clean on touched paths; `pnpm build` 0 errors; `pnpm test` 124/124; screenshots 1440/390 incl. reduced motion + focus in the session scratchpad `redesign/final/`; mobile `scrollWidth` 390; CLS 0.0008/0.0032; LCP = H1.
+- **Left for the owner:** live (access-code) mode not visually checked; shared `FormSummary` inputs 36px tall on mobile; accordion focus ring sits tight to the text (low); headless Chromium doesn't render the PDF iframe in screenshots (real browsers do).
 
 ---
 
