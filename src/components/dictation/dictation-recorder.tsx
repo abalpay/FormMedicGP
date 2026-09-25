@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Mic, Square, RotateCcw } from 'lucide-react';
+import { useCallback, useEffect, useRef } from 'react';
+import { Mic, Square, RotateCcw, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useDeepgramRecorder, type RecordingState } from '@/lib/use-deepgram-recorder';
+import { mergeTranscript } from '@/lib/deepgram-transcript';
 
 interface DictationRecorderProps {
+  /** Current transcription text (typed and/or previously recorded). */
+  transcription: string;
   onTranscriptionUpdate: (text: string) => void;
   onRecordingStateChange: (state: RecordingState) => void;
 }
@@ -20,11 +23,28 @@ const formatDuration = (seconds: number) => {
 };
 
 export function DictationRecorder({
+  transcription,
   onTranscriptionUpdate,
   onRecordingStateChange,
 }: DictationRecorderProps) {
+  // Text already in the box when a recording starts — the live transcript is
+  // appended after it instead of overwriting it.
+  const prefixRef = useRef('');
+
+  const handleTranscriptionUpdate = useCallback(
+    (live: string) => {
+      onTranscriptionUpdate(mergeTranscript(prefixRef.current, live));
+    },
+    [onTranscriptionUpdate]
+  );
+
   const { state, isStarting, duration, startRecording, stopRecording, reset } =
-    useDeepgramRecorder({ onTranscriptionUpdate });
+    useDeepgramRecorder({ onTranscriptionUpdate: handleTranscriptionUpdate });
+
+  const handleStart = () => {
+    prefixRef.current = transcription;
+    startRecording();
+  };
 
   useEffect(() => {
     onRecordingStateChange(state);
@@ -42,7 +62,7 @@ export function DictationRecorder({
       >
         <button
           type="button"
-          onClick={state === 'recording' ? stopRecording : startRecording}
+          onClick={state === 'recording' ? stopRecording : handleStart}
           disabled={state === 'stopped' || isStarting}
           className={cn(
             'flex items-center justify-center w-20 h-20 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
@@ -78,18 +98,21 @@ export function DictationRecorder({
         )}
       </div>
 
-      {state === 'stopped' && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            reset();
-            onTranscriptionUpdate('');
-          }}
-        >
-          <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
-          Record again
-        </Button>
+      {state !== 'recording' && (state === 'stopped' || transcription.trim()) && (
+        <div className="flex items-center gap-2">
+          {state === 'stopped' && (
+            <Button variant="outline" size="sm" onClick={reset}>
+              <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+              Record again
+            </Button>
+          )}
+          {transcription.trim() && (
+            <Button variant="ghost" size="sm" onClick={() => onTranscriptionUpdate('')}>
+              <X className="w-3.5 h-3.5 mr-1.5" />
+              Clear
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );

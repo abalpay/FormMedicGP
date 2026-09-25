@@ -275,6 +275,7 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
           />
 
           <DictationRecorder
+            transcription={transcription}
             onTranscriptionUpdate={handleTranscriptionUpdate}
             onRecordingStateChange={handleRecordingStateChange}
           />
