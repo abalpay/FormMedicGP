@@ -1,0 +1,503 @@
+{
+  "caseId": "SU415",
+  "formType": "SU415",
+  "formLabel": "Centrelink Medical Certificate (SU415)",
+  "scenario": "Lumbar disc herniation — 6-week temporary incapacity",
+  "model": "claude-sonnet-5",
+  "generatedAt": "2026-09-25T04:57:54.978Z",
+  "transcript": "Michael Chen presents with lumbar disc herniation at L4/5 confirmed on MRI, causing left-sided sciatica. He cannot sit for more than 20 minutes or lift more than 5kg. He is on pregabalin 75mg BD and attending physiotherapy twice weekly. Expected recovery in 6 weeks. Unfit for all work from 15 February 2026. Return to work expected 28 March 2026.",
+  "guidedAnswers": {
+    "workCapacity": "no",
+    "primaryPrognosis": "up_to_13_weeks",
+    "incapacityStartDate": "2026-02-15",
+    "incapacityEndDate": "2026-03-28",
+    "terminalIllness": "no",
+    "seriousIllness": "no",
+    "diagnosisNarrative": "Lumbar disc herniation L4/5 with left-sided radiculopathy causing significant sciatica."
+  },
+  "patientDetails": {
+    "customerName": "Michael Chen",
+    "dateOfBirth": "1978-03-22",
+    "address": "45 Park Road, Melbourne VIC 3000",
+    "crn": "123 456 789A"
+  },
+  "deidentifiedText": "[PATIENT] presents with lumbar disc herniation at L4/5 confirmed on MRI, causing left-sided sciatica. He cannot sit for more than 20 minutes or lift more than 5kg. He is on pregabalin 75mg BD and attending physiotherapy twice weekly. Expected recovery in 6 weeks. Unfit for all work from 15 February 2026. Return to work expected 28 March 2026.\n\nGUIDED ANSWERS:\n- Clinical Narrative: Lumbar disc herniation L4/5 with left-sided radiculopathy causing significant sciatica.\n- Work Capacity (8+ hrs/week): No (no)\n- Expected Duration of Impact: Up to 13 weeks (up_to_13_weeks)\n- Incapacity Start Date: 2026-02-15\n- Incapacity End Date: 2026-03-28\n- Terminal Illness (life expectancy ≤24 months): No (no)\n- Serious Illness: No (no)",
+  "llmData": {
+    "primaryDiagnosis": "Lumbar disc herniation at L4/5 with left-sided sciatica/radiculopathy.",
+    "primaryOnsetDate": "2026-02-15",
+    "primaryPrognosis": "up_to_13_weeks",
+    "terminalIllness": "no",
+    "seriousIllness": "no",
+    "functionalImpact": "Cannot sit for more than 20 minutes; unable to lift more than 5kg; significant limitation in mobility and work tasks due to sciatica.",
+    "treatment": "Currently on pregabalin 75mg twice daily and attending physiotherapy twice weekly. Expected recovery within approximately 6 weeks with continued conservative management.",
+    "otherConditions": "no",
+    "incapacityStartDate": "2026-02-15",
+    "incapacityEndDate": "2026-03-28",
+    "workCapacity": "no"
+  },
+  "missingFields": [],
+  "evidence": {
+    "primaryDiagnosis": "Lumbar disc herniation L4/5 with left-sided radiculopathy causing significant sciatica.",
+    "primaryOnsetDate": "Unfit for all work from 15 February 2026",
+    "primaryPrognosis": "Expected Duration of Impact: Up to 13 weeks (up_to_13_weeks)",
+    "terminalIllness": "Terminal Illness (life expectancy ≤24 months): No (no)",
+    "seriousIllness": "Serious Illness: No (no)",
+    "functionalImpact": "He cannot sit for more than 20 minutes or lift more than 5kg.",
+    "treatment": "He is on pregabalin 75mg BD and attending physiotherapy twice weekly. Expected recovery in 6 weeks.",
+    "incapacityStartDate": "Incapacity Start Date: 2026-02-15",
+    "incapacityEndDate": "Incapacity End Date: 2026-03-28",
+    "workCapacity": "Work Capacity (8+ hrs/week): No (no)"
+  },
+  "reviewSchema": {
+    "formId": "SU415",
+    "formName": "Centrelink Medical Certificate (SU415)",
+    "sections": [
+      {
+        "id": "patient",
+        "title": "Patient Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "familyName",
+            "label": "Family Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "firstName",
+            "label": "First Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "secondName",
+            "label": "Second Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateOfBirth",
+            "label": "Date Of Birth",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "crn",
+            "label": "Crn",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "address1",
+            "label": "Address1",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "address2",
+            "label": "Address2",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "address3",
+            "label": "Address3",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "postcode",
+            "label": "Postcode",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Doctor Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "doctorName",
+            "label": "Doctor Name",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "qualifications",
+            "label": "Qualifications",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "providerNumber",
+            "label": "Provider Number",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "surgeryName",
+            "label": "Surgery Name",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress1",
+            "label": "Doctor Address1",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress2",
+            "label": "Doctor Address2",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress3",
+            "label": "Doctor Address3",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPostcode",
+            "label": "Doctor Postcode",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateSigned",
+            "label": "Date Signed",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "signature",
+            "label": "Signature",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "clinical",
+        "title": "Clinical Assessment",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "primaryDiagnosis",
+            "label": "Primary Diagnosis",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "primaryOnsetDate",
+            "label": "Primary Onset Date",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "primaryPrognosis",
+            "label": "Expected Duration of Impact",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "select",
+            "required": true,
+            "options": [
+              {
+                "value": "up_to_13_weeks",
+                "label": "Up to 13 weeks"
+              },
+              {
+                "value": "13_to_24_months",
+                "label": "13 weeks to 24 months"
+              },
+              {
+                "value": "more_than_24_months",
+                "label": "More than 24 months"
+              }
+            ]
+          },
+          {
+            "key": "terminalIllness",
+            "label": "Terminal Illness",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": true,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "seriousIllness",
+            "label": "Serious Illness",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": true,
+            "tooltip": "Serious illness includes conditions such as cancer, organ failure, major trauma, or severe mental health conditions requiring intensive treatment.",
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "secondaryDiagnosis",
+            "label": "Secondary Diagnosis",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "emptyHint": "No secondary condition detected from your description.",
+            "options": []
+          },
+          {
+            "key": "secondaryOnsetDate",
+            "label": "Secondary Onset Date",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "hiddenWhenEmpty": "secondaryDiagnosis",
+            "options": []
+          },
+          {
+            "key": "secondaryPrognosis",
+            "label": "Expected Duration of Impact",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "select",
+            "required": false,
+            "hiddenWhenEmpty": "secondaryDiagnosis",
+            "options": [
+              {
+                "value": "up_to_13_weeks",
+                "label": "Up to 13 weeks"
+              },
+              {
+                "value": "13_to_24_months",
+                "label": "13 weeks to 24 months"
+              },
+              {
+                "value": "more_than_24_months",
+                "label": "More than 24 months"
+              }
+            ]
+          },
+          {
+            "key": "functionalImpact",
+            "label": "Functional Impact",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": true,
+            "highlight": true,
+            "options": []
+          },
+          {
+            "key": "treatment",
+            "label": "Treatment",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": true,
+            "highlight": true,
+            "options": []
+          },
+          {
+            "key": "otherConditions",
+            "label": "Other Conditions",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "incapacityStartDate",
+            "label": "Incapacity Start Date",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "incapacityEndDate",
+            "label": "Incapacity End Date",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "workCapacity",
+            "label": "Work Capacity",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": true,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "hoursPerWeek",
+            "label": "Hours Per Week",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "conditional": "workCapacity === 'yes'",
+            "options": []
+          }
+        ]
+      }
+    ]
+  }
+}

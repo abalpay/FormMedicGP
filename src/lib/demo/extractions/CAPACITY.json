@@ -1,0 +1,853 @@
+{
+  "caseId": "CAPACITY",
+  "formType": "CAPACITY",
+  "formLabel": "Certificate of Capacity (Victoria TAC/WorkCover)",
+  "scenario": "Right rotator cuff tear — TAC claim, suitable employment",
+  "model": "claude-sonnet-5",
+  "generatedAt": "2026-09-25T04:58:40.389Z",
+  "transcript": "James Kowalski sustained a right rotator cuff tear (supraspinatus partial thickness) in a motor vehicle accident on 10 January 2026. He has suitable capacity for sedentary and light duties with restrictions: no overhead reaching, no lifting greater than 2kg with the right arm. He commenced light duties on 1 February 2026. He is attending physiotherapy three times weekly and is under orthopaedic review. Expected return to full pre-injury duties by 10 April 2026.",
+  "guidedAnswers": {
+    "claimType": "tac",
+    "confirmAttendance": "yes",
+    "certificationOption": "suitable_employment",
+    "dateOfInjury": "2026-01-10",
+    "incapacityStartDate": "2026-01-10",
+    "incapacityEndDate": "2026-04-10",
+    "suitableEmploymentFrom": "2026-02-01",
+    "suitableEmploymentTo": "2026-04-10",
+    "returnToWorkEstimate": "6_weeks",
+    "clinicalNarrative": "Right rotator cuff tear (supraspinatus) sustained in MVA. Patient has suitable capacity for sedentary or light duties with right arm restrictions — no overhead reaching, no lifting greater than 2kg with right arm. Attending physiotherapy and under orthopaedic review for possible surgical repair."
+  },
+  "patientDetails": {
+    "customerName": "James Kowalski",
+    "dateOfBirth": "1982-09-08",
+    "address": "55 Spencer Street, Melbourne VIC 3000"
+  },
+  "deidentifiedText": "[PATIENT] sustained a right rotator cuff tear (supraspinatus partial thickness) in a motor vehicle accident on 10 January 2026. He has suitable capacity for sedentary and light duties with restrictions: no overhead reaching, no lifting greater than 2kg with the right arm. He commenced light duties on 1 February 2026. He is attending physiotherapy three times weekly and is under orthopaedic review. Expected return to full pre-injury duties by 10 April 2026.\n\nGUIDED ANSWERS:\n- Claim Type: TAC (tac)\n- Attendance Certificate Only: Yes (yes)\n- Certification Option: Suitable Employment (suitable_employment)\n- Date of Injury: 2026-01-10\n- No Capacity From: 2026-01-10\n- No Capacity To: 2026-04-10\n- Suitable Employment From: 2026-02-01\n- Suitable Employment To: 2026-04-10\n- Estimated Return To Work: 6 weeks (6_weeks)\n- Clinical Narrative: Right rotator cuff tear (supraspinatus) sustained in MVA. Patient has suitable capacity for sedentary or light duties with right arm restrictions — no overhead reaching, no lifting greater than 2kg with right arm. Attending physiotherapy and under orthopaedic review for possible surgical repair.",
+  "llmData": {
+    "examinationDate": "2026-09-25",
+    "primaryDiagnosis": "Right rotator cuff tear, supraspinatus partial thickness (MVA)",
+    "tacClaim": "yes",
+    "vwaClaim": "no",
+    "confirmAttendance": "yes",
+    "certificationOption": "suitable_employment",
+    "workEnvironmentConsiderations": "Requires sedentary/light duties only; must avoid overhead reaching and lifting >2kg with right arm.",
+    "physicalFunction": "Suitable capacity for sedentary/light duties with right upper limb restrictions; no overhead reaching, lifting limited to <2kg with right arm.",
+    "mentalHealthFunction": "",
+    "otherFunctionalConsiderations": "",
+    "sit": "can",
+    "standWalk": "can",
+    "bend": "can",
+    "squat": "can",
+    "kneel": "can",
+    "reachAboveShoulder": "cannot",
+    "useInjuredArmHand": "with_modifications",
+    "lift": "with_modifications",
+    "neckMovement": "can",
+    "attention": "not_affected",
+    "memory": "not_affected",
+    "judgement": "not_affected",
+    "incapacityStartDate": "2026-01-10",
+    "incapacityEndDate": "2026-04-10",
+    "returnToWorkWeeks": 6,
+    "treatment": "Physiotherapy three times weekly and ongoing orthopaedic review, with possible surgical repair being considered.",
+    "dateOfInjury": "2026-01-10",
+    "suitableEmploymentFrom": "2026-02-01",
+    "suitableEmploymentTo": "2026-04-10"
+  },
+  "missingFields": [],
+  "evidence": {
+    "primaryDiagnosis": "right rotator cuff tear (supraspinatus partial thickness) in a motor vehicle accident on 10 January 2026",
+    "tacClaim": "Claim Type: TAC (tac)",
+    "confirmAttendance": "Attendance Certificate Only: Yes (yes)",
+    "certificationOption": "Certification Option: Suitable Employment (suitable_employment)",
+    "workEnvironmentConsiderations": "no overhead reaching, no lifting greater than 2kg with the right arm",
+    "physicalFunction": "He has suitable capacity for sedentary and light duties with restrictions: no overhead reaching, no lifting greater than 2kg with the right arm.",
+    "reachAboveShoulder": "no overhead reaching",
+    "useInjuredArmHand": "no lifting greater than 2kg with the right arm",
+    "lift": "no lifting greater than 2kg with the right arm",
+    "incapacityStartDate": "No Capacity From: 2026-01-10",
+    "incapacityEndDate": "No Capacity To: 2026-04-10",
+    "returnToWorkWeeks": "Estimated Return To Work: 6 weeks (6_weeks)",
+    "treatment": "He is attending physiotherapy three times weekly and is under orthopaedic review.",
+    "dateOfInjury": "Date of Injury: 2026-01-10",
+    "suitableEmploymentFrom": "Suitable Employment From: 2026-02-01",
+    "suitableEmploymentTo": "Suitable Employment To: 2026-04-10"
+  },
+  "reviewSchema": {
+    "formId": "CAPACITY",
+    "formName": "Certificate of Capacity (Victoria TAC/WorkCover)",
+    "sections": [
+      {
+        "id": "patient",
+        "title": "Patient Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "firstName",
+            "label": "Worker First Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "familyName",
+            "label": "Worker Last Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "secondName",
+            "label": "Additional Last Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "address1",
+            "label": "Worker Address",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "address2",
+            "label": "Worker Address Continued",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "postcode",
+            "label": "Postcode",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateOfBirth",
+            "label": "Date Of Birth",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "claimNumber",
+            "label": "Claim Number",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Doctor Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "doctorName",
+            "label": "Provider/Hospital Name 1",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "providerNumber",
+            "label": "Provider/Hospital Name 2",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "doctorAddress1",
+            "label": "Provider Address/Phone Block",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPostcode",
+            "label": "Provider Postcode",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPhoneAreaCode",
+            "label": "Provider Area Code",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPhoneNumber",
+            "label": "Provider Telephone",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateSigned",
+            "label": "Date Issued",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "clinical",
+        "title": "Clinical Assessment",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "examinationDate",
+            "label": "Date of Examination",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "primaryDiagnosis",
+            "label": "Clinical Diagnosis",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "tacClaim",
+            "label": "TAC Claim",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "claimAndCertificate",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "vwaClaim",
+            "label": "VWA Claim",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "claimAndCertificate",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "confirmAttendance",
+            "label": "Confirm Attendance",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "claimAndCertificate",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "certificationOption",
+            "label": "Certification Option",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "claimAndCertificate",
+            "required": false,
+            "options": [
+              {
+                "value": "pre_injury_capacity",
+                "label": "Pre-injury Employment"
+              },
+              {
+                "value": "suitable_employment",
+                "label": "Suitable Employment"
+              },
+              {
+                "value": "no_capacity",
+                "label": "No Capacity"
+              }
+            ]
+          },
+          {
+            "key": "workEnvironmentConsiderations",
+            "label": "Work Environment Considerations",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "physicalFunction",
+            "label": "Physical Function",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "mentalHealthFunction",
+            "label": "Mental Health Function",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "otherFunctionalConsiderations",
+            "label": "Other Functional Considerations",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "sit",
+            "label": "Sit",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "standWalk",
+            "label": "Stand/Walk",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "bend",
+            "label": "Bend",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "squat",
+            "label": "Squat",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "kneel",
+            "label": "Kneel",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "reachAboveShoulder",
+            "label": "Reach Above Shoulder",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "useInjuredArmHand",
+            "label": "Use Injured Arm/Hand",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "lift",
+            "label": "Lift",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "neckMovement",
+            "label": "Neck Movement",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "physicalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "can",
+                "label": "Can"
+              },
+              {
+                "value": "with_modifications",
+                "label": "With Modifications"
+              },
+              {
+                "value": "cannot",
+                "label": "Cannot"
+              }
+            ]
+          },
+          {
+            "key": "attention",
+            "label": "Attention/Concentration",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "mentalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "not_affected",
+                "label": "Not Affected"
+              },
+              {
+                "value": "affected",
+                "label": "Affected"
+              }
+            ]
+          },
+          {
+            "key": "memory",
+            "label": "Memory",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "mentalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "not_affected",
+                "label": "Not Affected"
+              },
+              {
+                "value": "affected",
+                "label": "Affected"
+              }
+            ]
+          },
+          {
+            "key": "judgement",
+            "label": "Judgement",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "group": "mentalCapacity",
+            "required": false,
+            "options": [
+              {
+                "value": "not_affected",
+                "label": "Not Affected"
+              },
+              {
+                "value": "affected",
+                "label": "Affected"
+              }
+            ]
+          },
+          {
+            "key": "incapacityStartDate",
+            "label": "No Capacity From",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "incapacityEndDate",
+            "label": "No Capacity To",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "returnToWorkDays",
+            "label": "Return to Work (days)",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "number",
+            "inputType": "number",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "returnToWorkWeeks",
+            "label": "Return to Work (weeks)",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "number",
+            "inputType": "number",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "treatment",
+            "label": "Treatment Plan",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "dateOfInjury",
+            "label": "Date of Injury",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "preInjuryCapacityFrom",
+            "label": "Pre-injury Capacity From",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "suitableEmploymentFrom",
+            "label": "Suitable Employment From",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "suitableEmploymentTo",
+            "label": "Suitable Employment To",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "date",
+            "inputType": "date",
+            "required": false,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "additionalPdf",
+        "title": "Additional PDF Fields",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "__pdf:Other Functional Considerations - not listed above (1)",
+            "label": "Other Functional Considerations - Not Listed Above (1)",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Other Functional Considerations - not listed above (2)",
+            "label": "Other Functional Considerations - Not Listed Above (2)",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Other Functional Considerations - not listed above (3)",
+            "label": "Other Functional Considerations - Not Listed Above (3)",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Details of any voluntary work, employment or self-employment you have engaged in",
+            "label": "Details Of Any Voluntary Work, Employment Or Self-employment You Have Engaged In",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Mandatory No",
+            "label": "Mandatory No",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Mandatory Yes",
+            "label": "Mandatory Yes",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          }
+        ]
+      }
+    ]
+  }
+}

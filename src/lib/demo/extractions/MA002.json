@@ -1,0 +1,797 @@
+{
+  "caseId": "MA002",
+  "formType": "MA002",
+  "formLabel": "Mobility Allowance Medical Report (MA002)",
+  "scenario": "Bilateral knee OA — temporary, less than 12 months",
+  "model": "claude-sonnet-5",
+  "generatedAt": "2026-09-25T04:58:24.643Z",
+  "transcript": "Susan Thompson has bilateral knee osteoarthritis with an acute inflammatory flare following a recent fall. She cannot walk more than 50 metres without severe pain and requires a walking frame. She is unable to use public transport independently. She is currently awaiting bilateral knee replacement surgery scheduled for June 2026. Her mobility impairment is temporary and expected to resolve within 12 months post-surgery. She is unable to work during this period.",
+  "guidedAnswers": {
+    "hasPhysicalDisabilities": "yes",
+    "hasPsychiatricDisabilities": "no",
+    "permanentOrTemporary": "temporary",
+    "mobilityDuration": "less_than_12_months",
+    "clinicalNarrative": "Bilateral knee osteoarthritis with acute inflammatory flare following fall. Patient cannot walk more than 50 metres without severe pain. Currently awaiting bilateral knee replacement surgery scheduled in 4 months. Temporary mobility impairment expected to resolve post-operatively within 12 months."
+  },
+  "patientDetails": {
+    "customerName": "Susan Thompson",
+    "dateOfBirth": "1958-05-19",
+    "address": "22 Flinders Lane, Melbourne VIC 3000",
+    "crn": "321 654 987D"
+  },
+  "deidentifiedText": "[PATIENT] has bilateral knee osteoarthritis with an acute inflammatory flare following a recent fall. She cannot walk more than 50 metres without severe pain and requires a walking frame. She is unable to use public transport independently. She is currently awaiting bilateral knee replacement surgery scheduled for June 2026. Her mobility impairment is temporary and expected to resolve within 12 months post-surgery. She is unable to work during this period.\n\nGUIDED ANSWERS:\n- Physical Disabilities?: Yes (yes)\n- Psychiatric/Intellectual Disabilities?: No (no)\n- Permanent or Temporary: Temporary (temporary)\n- Duration if Temporary: Less than 12 months (less_than_12_months)\n- Mobility & Transport Impact: Bilateral knee osteoarthritis with acute inflammatory flare following fall. Patient cannot walk more than 50 metres without severe pain. Currently awaiting bilateral knee replacement surgery scheduled in 4 months. Temporary mobility impairment expected to resolve post-operatively within 12 months.",
+  "llmData": {
+    "hasPhysicalDisabilities": "yes",
+    "physicalDisabilitiesDetails": "Bilateral knee osteoarthritis with acute inflammatory flare following a fall. Cannot walk more than 50 metres without severe pain and requires a walking frame. Unable to use public transport independently.",
+    "q4Walking400m": 5,
+    "q4StandingTransport": 5,
+    "q4SittingTransport": 2,
+    "q4CrossingStreets": 5,
+    "q4NegotiatingSteps": 5,
+    "q4FlightOfSteps": 5,
+    "hasPsychiatricDisabilities": "no",
+    "hasAnyDisabilities": "yes",
+    "hasOtherTransportInfo": "no",
+    "mobilityPermanentOrTemporary": "temporary",
+    "mobilityDuration": "less_than_12_months",
+    "mobilityFoiRelease": "no"
+  },
+  "missingFields": [],
+  "evidence": {
+    "hasPhysicalDisabilities": "Physical Disabilities?: Yes (yes)",
+    "physicalDisabilitiesDetails": "She cannot walk more than 50 metres without severe pain and requires a walking frame. She is unable to use public transport independently.",
+    "hasPsychiatricDisabilities": "Psychiatric/Intellectual Disabilities?: No (no)",
+    "mobilityPermanentOrTemporary": "Her mobility impairment is temporary",
+    "mobilityDuration": "expected to resolve within 12 months post-surgery"
+  },
+  "reviewSchema": {
+    "formId": "MA002",
+    "formName": "Mobility Allowance Medical Report (MA002)",
+    "sections": [
+      {
+        "id": "patient",
+        "title": "Patient Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "fullName",
+            "label": "Customer Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "address1",
+            "label": "Address1",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "address2",
+            "label": "Address2",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "postcode",
+            "label": "Postcode",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateOfBirth",
+            "label": "Date Of Birth",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "crn",
+            "label": "CRN",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Doctor Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "doctorName",
+            "label": "Doctor Name",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "qualifications",
+            "label": "Qualifications",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "providerNumber",
+            "label": "Provider Number",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "doctorAddress1",
+            "label": "Doctor Address1",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress2",
+            "label": "Doctor Address2",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress3",
+            "label": "Doctor Address3",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPostcode",
+            "label": "Doctor Postcode",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPhoneAreaCode",
+            "label": "Doctor Phone Area Code",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPhoneNumber",
+            "label": "Doctor Phone Number",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateSigned",
+            "label": "Date Signed",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "clinical",
+        "title": "Clinical Assessment",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "mobilityFunctionalImpact",
+            "label": "Functional Impact",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "hasPhysicalDisabilities",
+            "label": "Has Physical Disabilities",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "physicalDisabilitiesDetails",
+            "label": "Physical Disabilities Details",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "q4Walking400m",
+            "label": "Walking 400 metres",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "No difficulty"
+              },
+              {
+                "value": "2",
+                "label": "Minor"
+              },
+              {
+                "value": "3",
+                "label": "Moderate"
+              },
+              {
+                "value": "4",
+                "label": "Serious"
+              },
+              {
+                "value": "5",
+                "label": "Cannot do"
+              }
+            ]
+          },
+          {
+            "key": "q4StandingTransport",
+            "label": "Standing on public transport",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "No difficulty"
+              },
+              {
+                "value": "2",
+                "label": "Minor"
+              },
+              {
+                "value": "3",
+                "label": "Moderate"
+              },
+              {
+                "value": "4",
+                "label": "Serious"
+              },
+              {
+                "value": "5",
+                "label": "Cannot do"
+              }
+            ]
+          },
+          {
+            "key": "q4SittingTransport",
+            "label": "Sitting in public transport",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "No difficulty"
+              },
+              {
+                "value": "2",
+                "label": "Minor"
+              },
+              {
+                "value": "3",
+                "label": "Moderate"
+              },
+              {
+                "value": "4",
+                "label": "Serious"
+              },
+              {
+                "value": "5",
+                "label": "Cannot do"
+              }
+            ]
+          },
+          {
+            "key": "q4CrossingStreets",
+            "label": "Crossing streets and negotiating kerbs",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "No difficulty"
+              },
+              {
+                "value": "2",
+                "label": "Minor"
+              },
+              {
+                "value": "3",
+                "label": "Moderate"
+              },
+              {
+                "value": "4",
+                "label": "Serious"
+              },
+              {
+                "value": "5",
+                "label": "Cannot do"
+              }
+            ]
+          },
+          {
+            "key": "q4NegotiatingSteps",
+            "label": "Negotiating steps in/out of transport",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "No difficulty"
+              },
+              {
+                "value": "2",
+                "label": "Minor"
+              },
+              {
+                "value": "3",
+                "label": "Moderate"
+              },
+              {
+                "value": "4",
+                "label": "Serious"
+              },
+              {
+                "value": "5",
+                "label": "Cannot do"
+              }
+            ]
+          },
+          {
+            "key": "q4FlightOfSteps",
+            "label": "Negotiating a large flight of steps",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "No difficulty"
+              },
+              {
+                "value": "2",
+                "label": "Minor"
+              },
+              {
+                "value": "3",
+                "label": "Moderate"
+              },
+              {
+                "value": "4",
+                "label": "Serious"
+              },
+              {
+                "value": "5",
+                "label": "Cannot do"
+              }
+            ]
+          },
+          {
+            "key": "hasPsychiatricDisabilities",
+            "label": "Has Psychiatric/Intellectual Disabilities",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "psychiatricDisabilitiesDetails",
+            "label": "Psychiatric/Intellectual Details",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "q6PersonalSurvival",
+            "label": "Personal survival skills",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "Full ability"
+              },
+              {
+                "value": "2",
+                "label": "Slightly limited"
+              },
+              {
+                "value": "3",
+                "label": "Moderately limited"
+              },
+              {
+                "value": "4",
+                "label": "Severely limited"
+              },
+              {
+                "value": "5",
+                "label": "No ability"
+              }
+            ]
+          },
+          {
+            "key": "q6SocialSkills",
+            "label": "Social skills",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "Full ability"
+              },
+              {
+                "value": "2",
+                "label": "Slightly limited"
+              },
+              {
+                "value": "3",
+                "label": "Moderately limited"
+              },
+              {
+                "value": "4",
+                "label": "Severely limited"
+              },
+              {
+                "value": "5",
+                "label": "No ability"
+              }
+            ]
+          },
+          {
+            "key": "q6EducationalSkills",
+            "label": "Educational skills",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "Full ability"
+              },
+              {
+                "value": "2",
+                "label": "Slightly limited"
+              },
+              {
+                "value": "3",
+                "label": "Moderately limited"
+              },
+              {
+                "value": "4",
+                "label": "Severely limited"
+              },
+              {
+                "value": "5",
+                "label": "No ability"
+              }
+            ]
+          },
+          {
+            "key": "q6RecognitionSkills",
+            "label": "Recognition skills",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "1",
+                "label": "Full ability"
+              },
+              {
+                "value": "2",
+                "label": "Slightly limited"
+              },
+              {
+                "value": "3",
+                "label": "Moderately limited"
+              },
+              {
+                "value": "4",
+                "label": "Severely limited"
+              },
+              {
+                "value": "5",
+                "label": "No ability"
+              }
+            ]
+          },
+          {
+            "key": "hasAnyDisabilities",
+            "label": "Has Any Disabilities",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "hasOtherTransportInfo",
+            "label": "Has Other Transport Info",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "mobilityPermanentOrTemporary",
+            "label": "Permanent or Temporary",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "permanent",
+                "label": "Permanent"
+              },
+              {
+                "value": "temporary",
+                "label": "Temporary"
+              }
+            ]
+          },
+          {
+            "key": "mobilityDuration",
+            "label": "Duration",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "less_than_12_months",
+                "label": "Less than 12 months"
+              },
+              {
+                "value": "12_months_or_longer",
+                "label": "12 months or longer"
+              }
+            ]
+          },
+          {
+            "key": "mobilityFoiRelease",
+            "label": "Sensitive Information",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes — withhold from patient"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "additionalPdf",
+        "title": "Additional PDF Fields",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "__pdf:CustPhoneAC",
+            "label": "Cust Phone AC",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:CustPhoneNo",
+            "label": "Cust Phone No",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:CliamNo",
+            "label": "Cliam No",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q2PatientSince",
+            "label": "Q2 Patient Since",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q2PracticeSince",
+            "label": "Q2 Practice Since",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q10Details",
+            "label": "Q10 Details",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "advanced": false,
+            "options": []
+          }
+        ]
+      }
+    ]
+  }
+}
