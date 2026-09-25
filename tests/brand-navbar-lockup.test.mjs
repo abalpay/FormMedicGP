@@ -12,7 +12,7 @@ function readNavbarSource() {
 test('marketing navbar uses bridge icon lockup with explicit FormBridge GP text', () => {
   const source = readNavbarSource();
 
-  assert.match(source, /<BrandLogo[\s\S]*variant=\"icon\"/);
+  assert.match(source, /<BrandLogo[\s\S]*variant=\"iconOnDark\"/);
   assert.match(source, />\s*FormBridge\s*</);
   assert.match(source, />\s*GP\s*</);
   assert.doesNotMatch(source, /variant=\"horizontal\"/);

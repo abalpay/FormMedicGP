@@ -20,6 +20,41 @@
 
 ---
 
+## Phase 15: Dark landing redesign (2026-09-25)
+
+> Goal: a recruiter opens `/`, thinks "real, premium AI product" within 5s, clicks "Try the live demo".
+> Direction: DARK PREMIUM — dark teal-black canvas, teal/amber glow, glassy product frames, subtle grid + light beams. Trustworthy for clinicians (no gamer/crypto). Instrument Serif 400 display + DM Sans.
+
+### Creative brief
+- **Hero is the product.** Large glass frame replaying the real cached SU415 run (dictation typing + waveform → identifiers redact → fields fill → PDF slides in). Headline "Dictate. Don't type." is the LCP.
+- **Story in 3 beats:** Speak → Protected → Filled. Then forms strip, builder story, FAQ (trimmed), final CTA. ~6 sections, short page.
+- **No technical detail** on `/` or `/demo`: no model/vendor/library names, no stack, no architecture diagram, no engineering counts. "View source" stays as a quiet secondary link.
+- **Honesty:** no fake users/logos/testimonials, no unmeasured numbers or time claims, no compliance claims. Demo note: "This demo replays a recorded run with fictional patients. Nothing you see leaves your browser." (true in cached mode: only requests are the blank PDF template and a GET that checks whether live mode is on; live/access-code mode sends the de-identified dictation and must say so). Do NOT claim "nothing is stored unless you save it" — the real app auto-saves completed forms to the account.
+- **Privacy, plain language:** "Names and identifiers are removed before AI processing. Audio is never stored."
+- **Scope:** `src/app/(marketing)/`, `src/components/marketing/*`, `src/components/demo/*`. Dark tokens scoped to a marketing wrapper (`.dark` tokens are unused by the dashboard: no ThemeProvider, sonner only reads the theme). Dashboard/auth stay light.
+- **Motion:** CSS/SVG + IntersectionObserver only; full `prefers-reduced-motion` support; no layout shift; no WebGL; no new heavy deps.
+- **Mobile 390px** intentional; hero frame visible. WCAG AA on dark; visible focus; landmarks; heading order.
+
+### Tasks (sequential, one branch)
+- [x] 15.1 Foundation + hero showpiece (opus): scoped dark tokens, navbar, hero glass replay frame with lighting, page order, technical copy out of hero
+- [x] 15.2 Story beats Speak → Protected → Filled (sonnet): replace HowItWorks + UnderTheHood + Privacy; delete `under-the-hood.tsx`, `privacy.tsx`
+- Note 2026-09-25: `how-it-works.tsx` rebuilt as a vertical rail — spine line + 3 dots, each beat (Speak/Protected/Filled) with heading+copy left, a compact `glass-frame` mini illustration (waveform+caret / shield+`[PATIENT]` chip / mini PDF+"Filled" badge) right at desktop, stacked on mobile. Same `bg-background` + `bg-grid` as hero with a hairline top divider, fixing the light/dark seam. Deleted `under-the-hood.tsx` + `privacy.tsx` (already unused by `page.tsx`); removed their footer links (`Under the hood`, `Privacy`). `pnpm -s lint`/`build`/`test` clean (124/124); Playwright screenshots at 1440/390 (incl. reduced-motion) show no errors, mobile `scrollWidth` 390.
+- [x] 15.3 Forms strip, builder story (no counts), FAQ trim, CTA, footer, nav links (sonnet)
+- Note 2026-09-25: `form-library.tsx` → dense 6-tile `glass-frame` strip (id/label/issuer, no icons, no descriptions), dropped `bg-muted/40`. `builder-story.tsx` → removed the `node:fs` test-file count and the "counted from the repository" stats block entirely; now a quiet centred signature block (small hairline flourish, two short paragraphs, links) instead of a stats section. `faq.tsx` → trimmed to 5 plain-language questions in a single accordion list (no group labels, no Deepgram/Supabase/LLM names); patient-info answer corrected to say forms auto-save (not "only when you save"). `cta.tsx` → replaced `gradient-teal` block with a `glass-frame` panel reusing hero's `bg-grid` + `glow` lighting. `footer.tsx` → `sidebarOnDark` logo variant, non-jargon tagline. Nav links (`/#forms`, `/#how-it-works`, `/#faq`) already matched section ids, no changes needed there. `pnpm -s lint`/`build`/`test` clean (124/124); vendor-name sweep clean except `llmData` (a variable name in frozen `hero.tsx`, not visible copy); `font-bold`/`font-semibold` sweep clean on all Instrument Serif headings. Screenshots at 1440/390 (incl. FAQ with one item open) show a coherent dark system; a faint ghost-box artifact appeared in Playwright's `scrollIntoView`-based captures near the fixed navbar's `backdrop-blur` — confirmed absent under real wheel-scrolling, so it's a headless-Chromium compositing artifact, not a page bug.
+- [x] 15.4 `/demo` dark restyle + technical copy removal + honest note (opus)
+- [x] 15.5 Motion / mobile / a11y-perf pass (impeccable:animate, adapt, audit, distill), screenshots, dashboard light check
+- Note 2026-09-25: story beats tightened (section ~1 viewport, denser mini-frames, Speak gets a "Listening" pill); form tiles compact (id → label → issuer); hero glow nudged up + faint glow behind frame; lower sections py-16/24. Reduced motion: scoped safety net in globals.css, static full-height waveforms, demo reset scroll respects it. Focus: `.marketing-dark` `:focus-visible` outline for links/controls; `color-scheme: dark` on wrapper. Mobile tap targets ≥44px (nav logo/CTA, footer, builder links, View source, demo result buttons); footer 2-col on mobile and moved into the marketing layout so `/demo` has it. `/demo` redaction panel shows the dictation only; guided-answer evidence quotes lose the ` (snake_value)` suffix. `FormSummary` title → "Form fields", weight 400. CLS 0.0008 (1440) / 0.0032 (390) over 12s; LCP = H1 at both.
+- [x] 15.6 Push, PR, Vercel preview, review notes — PR https://github.com/abalpay/FormMedicGP/pull/3 (not merged; owner reviews the preview first)
+
+### Review (2026-09-25)
+- **Shipped:** 1fab213 (dark foundation + hero replay), ac2a7a9 (story beats), ce2a9f9 (forms strip, builder, FAQ, CTA, footer), d9a03f7 (demo restyle + copy), dcaeaf0 (demo redaction panel/evidence quotes), a7b0f74 (tighten beats + tiles), 38be4d6 (a11y + motion audit), 695888b (login: fabricated testimonial + "<2m / 100%" claims removed — copy only, not a restyle).
+- **Theme scoping:** `.dark` tokens re-tuned for marketing and applied via the `.marketing-dark` wrapper in `src/app/(marketing)/layout.tsx`; the dashboard never receives `.dark` (no ThemeProvider), verified `/login` still light. Only shared-component change: `FormSummary` title "Form fields" at weight 400.
+- **Honesty checks:** demo banner "Nothing you see leaves your browser" verified in code + Playwright request log (cached mode: `GET /api/demo/extract` live-mode check and `GET /api/form-template/<id>` only). Privacy copy says forms are saved to the doctor's account (auto-save), never "nothing is stored unless you save it". No numbers, time claims, logos or testimonials anywhere on `/`, `/demo`, `/login`.
+- **Verification:** lint clean on touched paths; `pnpm build` 0 errors; `pnpm test` 124/124; screenshots 1440/390 incl. reduced motion + focus in the session scratchpad `redesign/final/`; mobile `scrollWidth` 390; CLS 0.0008/0.0032; LCP = H1.
+- **Left for the owner:** live (access-code) mode not visually checked; shared `FormSummary` inputs 36px tall on mobile; accordion focus ring sits tight to the text (low); headless Chromium doesn't render the PDF iframe in screenshots (real browsers do).
+
+---
+
 ## Phase 14: Recruiter-Ready Demo + Landing Redesign (planned 2026-09-25)
 
 > Goal: a recruiter/hiring engineer (e.g. Heidi Health) opens the site, plays with a real pipeline in <90s with no signup, and is impressed. Constraint: no free, abusable paid API.

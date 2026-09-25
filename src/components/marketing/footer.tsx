@@ -5,9 +5,7 @@ import { GITHUB_PROFILE_URL, REPO_URL, SITE_URL } from '@/components/marketing/l
 const productLinks = [
   { label: 'Live demo', href: '/demo' },
   { label: 'How it works', href: '/#how-it-works' },
-  { label: 'Under the hood', href: '/#under-the-hood' },
   { label: 'Forms', href: '/#forms' },
-  { label: 'Privacy', href: '/#privacy' },
   { label: 'FAQ', href: '/#faq' },
 ];
 
@@ -20,29 +18,30 @@ const externalLinks = [
 const columnHeadingClass =
   'text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground';
 
-const linkClass = 'hover:text-foreground transition-colors duration-200';
+const linkClass =
+  'inline-flex min-h-11 items-center md:min-h-8 rounded-sm hover:text-foreground transition-colors duration-200';
 
 export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-card/50">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-10 md:gap-16">
-          <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-[1fr_auto_auto] gap-x-6 gap-y-8 md:gap-16">
+          <div className="col-span-2 md:col-span-1 flex flex-col gap-3">
             <BrandLogo
-              variant="sidebar"
+              variant="sidebarOnDark"
               alt="FormBridge GP"
               className="h-7 w-auto"
               sizes="170px"
             />
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Voice-to-form automation for Australian government medical forms.
-              An open-source portfolio project.
+              Voice to official medical forms for Australian GPs. An open-source
+              portfolio project.
             </p>
           </div>
 
           <div className="flex flex-col gap-3">
             <h2 className={columnHeadingClass}>Product</h2>
-            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            <ul className="flex flex-col text-sm text-muted-foreground">
               {productLinks.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} className={linkClass}>
@@ -55,7 +54,7 @@ export function Footer() {
 
           <div className="flex flex-col gap-3">
             <h2 className={columnHeadingClass}>Elsewhere</h2>
-            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            <ul className="flex flex-col text-sm text-muted-foreground">
               {externalLinks.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>

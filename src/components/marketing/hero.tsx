@@ -29,67 +29,72 @@ function formatValue(type: string, value: string) {
   });
 }
 
+function HeroLighting() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div className="bg-grid absolute inset-0" />
+      <div className="glow absolute -top-64 -left-48 h-[44rem] w-[64rem] [--glow:oklch(0.7_0.12_180/0.26)]" />
+      <div className="glow absolute top-[12%] right-[-6rem] h-[38rem] w-[56rem] [--glow:oklch(0.7_0.12_180/0.12)]" />
+      <div className="glow absolute bottom-0 right-[-8rem] h-[30rem] w-[40rem] [--glow:oklch(0.795_0.177_78/0.1)]" />
+      <div className="beam absolute top-[38%] right-[-12rem] w-[64rem] opacity-90" />
+      <div className="beam absolute top-[58%] right-[-20rem] w-[52rem] opacity-50" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+    </div>
+  );
+}
+
 export function Hero() {
   return (
-    <section className="relative pt-[72px] bg-background overflow-hidden">
-      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-20 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left -- Copy */}
-          <div className="max-w-xl">
-            <div
-              className="animate-fade-in-up motion-reduce:animate-none text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
-              style={{ animationDelay: '0.08s' }}
+    <section className="relative isolate pt-[72px]">
+      <HeroLighting />
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-14 pb-20 sm:pt-20 lg:pt-24 lg:pb-28">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          <div className="lg:col-span-5 max-w-xl">
+            <p className="inline-flex items-center gap-2 text-[13px] font-medium text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+              Voice to government forms, for Australian GPs
+            </p>
+
+            <h1 className="mt-5 text-[3.25rem] sm:text-6xl lg:text-[5rem] leading-[1.02] tracking-[-0.01em] text-foreground font-[family-name:var(--font-display)]">
+              Dictate.
+              <br />
+              Don&apos;t <em className="text-primary">type.</em>
+            </h1>
+
+            <p
+              className="animate-fade-in-up motion-reduce:animate-none mt-6 text-lg leading-relaxed text-muted-foreground max-w-md"
+              style={{ animationDelay: '0.1s' }}
             >
-              <h1>
-                Dictate.
-                <br />
-                Don&apos;t{' '}
-                <span className="relative inline-block">
-                  type.
-                  <span className="absolute -bottom-1 left-0 right-0 h-3 bg-accent/25 -skew-x-3 rounded-sm" />
-                </span>
-              </h1>
-            </div>
+              Speak your clinical notes. FormBridge GP removes patient identifiers,
+              extracts the fields, and fills the official Centrelink, DSP,
+              WorkCover/TAC and NDIS forms for you to review.
+            </p>
 
             <div
-              className="animate-fade-in-up motion-reduce:animate-none mt-6 text-lg sm:text-xl leading-relaxed text-muted-foreground max-w-lg"
-              style={{ animationDelay: '0.16s' }}
-            >
-              <p>
-                Speak your clinical notes. FormBridge GP de-identifies them, extracts
-                the fields with Claude, and fills the official Centrelink, DSP,
-                WorkCover/TAC and NDIS PDFs for you to review.
-              </p>
-            </div>
-
-            <div
-              className="animate-fade-in-up motion-reduce:animate-none mt-10 flex flex-col sm:flex-row items-start gap-3"
-              style={{ animationDelay: '0.24s' }}
+              className="animate-fade-in-up motion-reduce:animate-none mt-9 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-4"
+              style={{ animationDelay: '0.18s' }}
             >
               <Button variant="teal" size="lg" className="h-12 px-7 text-[15px] font-semibold rounded-full" asChild>
                 <Link href="/demo">
                   Try the live demo — no signup
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-12 px-7 text-[15px] font-medium rounded-full"
-                asChild
+              <a
+                href={REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 self-start sm:self-auto rounded-md text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
               >
-                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-                  <Github className="w-4 h-4 mr-2" aria-hidden="true" />
-                  View source
-                </a>
-              </Button>
+                <Github className="w-4 h-4" aria-hidden="true" />
+                View source
+              </a>
             </div>
           </div>
 
-          {/* Right -- replay of the cached SU415 demo run */}
           <div
-            className="animate-fade-in-up motion-reduce:animate-none"
-            style={{ animationDelay: '0.24s' }}
+            className="lg:col-span-7 animate-fade-in-up motion-reduce:animate-none"
+            style={{ animationDelay: '0.2s' }}
           >
             <HeroReplay
               segments={buildRedactionSegments(SU415.transcript, dictation)}
@@ -99,7 +104,6 @@ export function Hero() {
               }))}
               formLabel={SU415.formLabel.replace(/ \(.*\)$/, '')}
               formId={SU415.formType}
-              model={SU415.model}
             />
           </div>
         </div>
