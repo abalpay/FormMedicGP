@@ -30,6 +30,7 @@ async function throwIfNotOk(res: Response) {
 export default function FormReviewPage() {
   const router = useRouter();
   const {
+    currentStep,
     selectedFormType,
     selectedFormLabel,
     extractedData,
@@ -50,6 +51,15 @@ export default function FormReviewPage() {
     editableData,
     enabled: true,
   });
+
+  // No extracted data (fresh session, or the flow store was reset) — send
+  // the doctor back to start a form, unless a process-form request is still
+  // in flight.
+  useEffect(() => {
+    if (!extractedData && currentStep !== 'processing') {
+      router.replace('/dashboard/forms/new');
+    }
+  }, [extractedData, currentStep, router]);
 
   // Auto-save when PDF preview becomes available
   useEffect(() => {
@@ -156,6 +166,10 @@ export default function FormReviewPage() {
     a.download = buildPdfFilename(selectedFormType, patientName, patientDob);
     a.click();
   };
+
+  if (!extractedData && currentStep !== 'processing') {
+    return null;
+  }
 
   // Editor + preview layout. No outer scroll — the page is a flex column that
   // fills the viewport; the editor column and the PDF viewer scroll internally.

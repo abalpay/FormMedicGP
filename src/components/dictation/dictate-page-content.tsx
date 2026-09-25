@@ -42,6 +42,7 @@ interface DictatePageContentProps {
 
 export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
   const router = useRouter();
+  const currentFlowStep = useFormFlowStore((s) => s.currentStep);
   const selectedFormType = useFormFlowStore((s) => s.selectedFormType);
   const selectedFormLabel = useFormFlowStore((s) => s.selectedFormLabel);
   const patientDetails = useFormFlowStore((s) => s.patientDetails);
@@ -70,6 +71,14 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
   const handleRecordingStateChange = useCallback((state: RecordingState) => {
     setRecordingState(state);
   }, []);
+
+  // No form selected (fresh session, or the flow store was reset) — send the
+  // doctor back to pick one, unless a process-form request is in flight.
+  useEffect(() => {
+    if (!selectedFormType && currentFlowStep !== 'processing') {
+      router.replace('/dashboard/forms/new');
+    }
+  }, [selectedFormType, currentFlowStep, router]);
 
   const selectedForm = formCatalog.find((form) => form.id === selectedFormType);
   const formLabel = selectedForm
@@ -195,6 +204,10 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
       setIsProcessing(false);
     }
   };
+
+  if (!selectedFormType && currentFlowStep !== 'processing') {
+    return null;
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
