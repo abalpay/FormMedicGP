@@ -98,10 +98,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Privacy & Security
 
-- **Patient data never stored** — transcription and patient details live in browser memory only (Zustand store, no localStorage)
-- **De-identification before external calls** — names, Medicare numbers, CRN, and phone numbers are stripped locally before reaching Deepgram or Claude
-- **Audio not recorded** — streamed directly to speech-to-text, never saved
-- **Anthropic DPA** — Claude API operates under a Data Processing Agreement (no training, no storage, no human review)
+- **De-identification before the LLM** — names, DOB, address, Medicare/CRN, phone and email are stripped locally (`src/lib/deidentify.ts`) before clinical notes reach Claude
+- **In-flight data stays in memory** — transcription and patient details live in a Zustand store with no persist middleware (never localStorage)
+- **Completed forms are saved to the doctor's account** (Supabase, row-level security per doctor) so they can be revisited; patient records are saved only when the doctor chooses
+- **Audio is never stored** — streamed to Deepgram for live transcription, not written anywhere
+- Third-party data-handling terms (Anthropic, Deepgram) are those providers' own; nothing here is a compliance claim
 
 ## Project Structure
 

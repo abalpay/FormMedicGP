@@ -112,7 +112,7 @@
 - [ ] Resolve route vs `process-form-pipeline.ts` drift
 
 ### Open decisions (owner)
-- Keep waitlist at all, or reframe as early access?
+- ~~Keep waitlist at all, or reframe as early access?~~ Removed (14.3)
 - Hero: 15s recorded mic clip vs no mic on public site
 - Access code: in applications only, or also on request?
 
