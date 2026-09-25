@@ -568,7 +568,7 @@ export function FormSummary({
                                 </p>
                               )}
                               {!hasError && !isMissingHint && field.emptyHint && isBlankValue(data[field.key]) && (
-                                <p className="text-xs text-muted-foreground/60 italic">
+                                <p className="text-xs text-muted-foreground italic">
                                   {field.emptyHint}
                                 </p>
                               )}

@@ -215,7 +215,7 @@ export function Privacy() {
         {/* Section header */}
         <AnimateOnScroll>
           <div className="max-w-2xl mb-16">
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[oklch(0.6_0.1_175)] mb-3">
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[oklch(0.68_0.1_175)] mb-3">
               Security
             </p>
             <h2 className="text-3xl sm:text-4xl tracking-tight text-white font-[family-name:var(--font-display)]">

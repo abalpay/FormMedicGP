@@ -80,7 +80,7 @@
 
   /* ---- Muted — light gray ---- */
   --muted: oklch(0.96 0.004 265);               /* slate-100 equivalent */
-  --muted-foreground: oklch(0.55 0.02 260);     /* #64748B  slate-500 */
+  --muted-foreground: oklch(0.52 0.02 260);     /* ~slate-500, darkened for AA on muted */
 
   /* ---- Accent — warm amber ---- */
   --accent: oklch(0.795 0.177 78);              /* #F59E0B */

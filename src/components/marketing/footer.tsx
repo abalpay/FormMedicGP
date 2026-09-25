@@ -30,6 +30,7 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <BrandLogo
               variant="sidebar"
+              alt="FormBridge GP"
               className="h-7 w-auto"
               sizes="170px"
             />
@@ -40,7 +41,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <h4 className={columnHeadingClass}>Product</h4>
+            <h2 className={columnHeadingClass}>Product</h2>
             <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
               {productLinks.map((link) => (
                 <li key={link.href}>
@@ -53,7 +54,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <h4 className={columnHeadingClass}>Elsewhere</h4>
+            <h2 className={columnHeadingClass}>Elsewhere</h2>
             <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
               {externalLinks.map((link) => (
                 <li key={link.href}>

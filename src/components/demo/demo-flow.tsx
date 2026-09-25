@@ -444,6 +444,16 @@ function CaseRun({
           <h2 className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">
             3 · Run the pipeline
           </h2>
+          {/* Announce step changes only; a live region over the redaction reveal would re-read the transcript. */}
+          <p className="sr-only" role="status">
+            {stage === 3
+              ? 'Pipeline complete. Review and download below.'
+              : stage === -1 || pdfFailed
+                ? ''
+                : stage === 1 && live
+                  ? LIVE_STEP_LABEL
+                  : STEPS[stage]}
+          </p>
           {stage === -1 ? (
             <div className="rounded-xl border border-dashed p-6">
               <p className="text-sm text-muted-foreground max-w-sm">
@@ -456,7 +466,7 @@ function CaseRun({
               </Button>
             </div>
           ) : (
-            <ol className="space-y-5" aria-live="polite">
+            <ol className="space-y-5">
               {STEPS.map((label, i) => {
                 const status =
                   stage > i ? 'done' : stage === i ? (i === 2 && pdfFailed ? 'failed' : 'active') : 'pending';

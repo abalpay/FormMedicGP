@@ -80,7 +80,7 @@ export function UnderTheHood() {
         <ol className="divide-y divide-border border-y border-border">
           {stages.map((stage, i) => (
             <li key={stage.name} className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-3 py-5">
-              <span className="text-2xl leading-none text-primary/60 font-[family-name:var(--font-display)] tabular-nums">
+              <span aria-hidden="true" className="text-2xl leading-none text-primary/80 font-[family-name:var(--font-display)] tabular-nums">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div>
