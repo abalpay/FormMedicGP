@@ -1,124 +1,165 @@
-import { ClipboardList, AudioLines, Sparkles, Download } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { Check, ShieldCheck } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
   StaggerItem,
 } from './animate-on-scroll';
 
-const steps = [
-  {
-    step: '01',
-    icon: ClipboardList,
-    title: 'Select a form',
-    description: 'Pick one of six supported Australian government medical forms.',
-  },
-  {
-    step: '02',
-    icon: AudioLines,
-    title: 'Dictate',
-    description:
-      'Speak your clinical notes naturally. Guided prompts help you cover every field.',
-  },
-  {
-    step: '03',
-    icon: Sparkles,
-    title: 'AI fills the form',
-    description:
-      'Identifiers are stripped, Claude maps the note to form fields, and the official PDF is filled.',
-  },
-  {
-    step: '04',
-    icon: Download,
-    title: 'Review, edit, download',
-    description:
-      'Check each field, edit inline and watch the PDF update, then download the completed form.',
-  },
-];
+const WAVE = [0.4, 0.75, 1, 0.55, 0.85, 0.35, 0.65];
 
-function DashedArrow() {
+function IllustrationFrame({ children }: { children: ReactNode }) {
   return (
-    <svg
-      className="hidden lg:block absolute top-3.5 -right-3 w-6 h-16 z-20"
-      viewBox="0 0 24 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+    <div
       aria-hidden="true"
+      className="glass-frame flex h-40 w-full max-w-sm items-center justify-center overflow-hidden rounded-xl px-6 sm:h-44"
     >
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="8"
-          markerHeight="6"
-          refX="7"
-          refY="3"
-          orient="auto"
-        >
-          <path
-            d="M0 0 L8 3 L0 6"
-            fill="none"
-            stroke="oklch(0.47 0.1 175 / 0.5)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </marker>
-      </defs>
-      <path
-        d="M0 32 L20 32"
-        stroke="oklch(0.47 0.1 175 / 0.35)"
-        strokeWidth="1.5"
-        strokeDasharray="4 3"
-        strokeLinecap="round"
-        markerEnd="url(#arrowhead)"
-      />
-    </svg>
+      {children}
+    </div>
   );
 }
 
+function SpeakIllustration() {
+  return (
+    <IllustrationFrame>
+      <div className="w-full max-w-[220px]">
+        <div className="flex h-8 items-end justify-center gap-[3px]">
+          {WAVE.map((h, i) => (
+            <span
+              key={i}
+              className="wave-bar w-[3px] rounded-full bg-primary"
+              style={{ height: `${h * 32}px`, animationDelay: `${i * -0.12}s` }}
+            />
+          ))}
+        </div>
+        <div className="mt-5 space-y-1.5">
+          <span className="block h-2 w-full rounded-full bg-white/10" />
+          <span className="inline-block h-2 w-2/3 rounded-full bg-white/10 align-middle" />
+          <span className="ml-1 inline-block h-3 w-px align-middle bg-primary motion-safe:animate-pulse" />
+        </div>
+      </div>
+    </IllustrationFrame>
+  );
+}
+
+function ProtectedIllustration() {
+  return (
+    <IllustrationFrame>
+      <div className="flex w-full max-w-[240px] items-center gap-4">
+        <ShieldCheck className="h-8 w-8 shrink-0 text-primary" strokeWidth={1.6} />
+        <div className="min-w-0 flex-1 space-y-2">
+          <span className="block h-2 w-3/4 rounded-full bg-white/10" />
+          <p className="flex flex-wrap items-center gap-1.5">
+            <span className="h-2 w-8 rounded-full bg-white/10" />
+            <span className="rounded-[5px] bg-accent/15 px-1.5 py-0.5 text-[11px] font-medium text-accent ring-1 ring-accent/40">
+              [PATIENT]
+            </span>
+            <span className="h-2 w-12 rounded-full bg-white/10" />
+          </p>
+        </div>
+      </div>
+    </IllustrationFrame>
+  );
+}
+
+function FilledIllustration() {
+  const rule = 'bg-[oklch(0.86_0.01_190)]';
+  const ink = 'bg-[oklch(0.42_0.08_190)]';
+  return (
+    <IllustrationFrame>
+      <div className="flex items-center gap-4">
+        <div className="aspect-[1/1.3] w-20 shrink-0 rounded-md bg-[oklch(0.97_0.004_180)] p-2.5 shadow-[0_14px_30px_-10px_oklch(0_0_0/0.6)]">
+          <div className="h-1.5 w-8 rounded-full bg-[oklch(0.3_0.02_200)]" />
+          <div className="mt-2.5 space-y-1.5">
+            {[0.9, 0.55, 0.7].map((w, i) => (
+              <span key={i} className={`block h-[3px] rounded-full ${rule}`} style={{ width: `${w * 100}%` }} />
+            ))}
+            {[0.85, 0.4].map((w, i) => (
+              <span key={i} className={`block h-1 rounded-full ${ink}`} style={{ width: `${w * 100}%` }} />
+            ))}
+          </div>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1.5 text-[12px] font-medium text-primary ring-1 ring-primary/30">
+          <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+          Filled
+        </span>
+      </div>
+    </IllustrationFrame>
+  );
+}
+
+const BEATS = [
+  {
+    label: 'Speak',
+    body: "Dictate the clinical note the way you'd say it to a colleague. Guided prompts make sure nothing the form needs gets missed.",
+    Illustration: SpeakIllustration,
+  },
+  {
+    label: 'Protected',
+    body: 'Names and identifiers are removed before any AI processing. Audio is never stored.',
+    Illustration: ProtectedIllustration,
+  },
+  {
+    label: 'Filled',
+    body: 'The official Centrelink, DSP, WorkCover/TAC or NDIS PDF is filled from your words. You review every field, edit inline, and download.',
+    Illustration: FilledIllustration,
+  },
+];
+
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="scroll-mt-20 py-20 sm:py-28 bg-muted/40">
+    <section id="how-it-works" className="scroll-mt-20 relative isolate py-20 sm:py-28 lg:py-32">
+      <div
+        aria-hidden="true"
+        className="bg-grid pointer-events-none absolute inset-0 -z-10 opacity-70"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+      />
+
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
-          <div className="max-w-2xl mb-16">
+          <div className="max-w-xl mb-16 sm:mb-24">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
-              The Process
+              How it works
             </p>
             <h2 className="text-3xl sm:text-4xl tracking-tight font-[family-name:var(--font-display)]">
-              Four steps, one dictation.
+              Three moments, one dictation.
             </h2>
           </div>
         </AnimateOnScroll>
 
-        <StaggerChildren
-          staggerDelay={0.15}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6"
-        >
-          {steps.map((item, i) => (
-            <StaggerItem key={item.step} className="relative">
-              {/* SVG dashed arrow connector — desktop only */}
-              {i < 3 && <DashedArrow />}
+        <div className="relative">
+          <span
+            aria-hidden="true"
+            className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-primary/70 to-white/10"
+          />
 
-              <div className="relative z-10 rounded-2xl bg-card border border-border/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/20">
-                {/* Step number + icon */}
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-primary" />
+          <StaggerChildren staggerDelay={0.15} className="space-y-12 sm:space-y-14 lg:space-y-20">
+            {BEATS.map((beat) => (
+              <StaggerItem key={beat.label}>
+                <div className="grid grid-cols-[2rem_1fr] gap-x-6 gap-y-6 lg:grid-cols-[2rem_22rem_1fr] lg:items-center lg:gap-x-10">
+                  <span
+                    aria-hidden="true"
+                    className="relative z-10 mx-auto mt-1.5 h-3 w-3 rounded-full bg-primary shadow-[0_0_0_5px_var(--background),0_0_14px_oklch(0.8_0.115_178/0.45)]"
+                  />
+                  <div className="min-w-0">
+                    <h3 className="text-2xl sm:text-3xl text-foreground font-[family-name:var(--font-display)]">
+                      {beat.label}
+                    </h3>
+                    <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+                      {beat.body}
+                    </p>
                   </div>
-                  <span aria-hidden="true" className="text-4xl text-muted-foreground/20 font-[family-name:var(--font-display)] select-none">
-                    {item.step}
-                  </span>
+                  <div className="col-start-2 lg:col-start-3">
+                    <beat.Illustration />
+                  </div>
                 </div>
-                <h3 className="text-base font-semibold mb-1.5">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed pr-4">
-                  {item.description}
-                </p>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
+              </StaggerItem>
+            ))}
+          </StaggerChildren>
+        </div>
       </div>
     </section>
   );

@@ -5,9 +5,7 @@ import { GITHUB_PROFILE_URL, REPO_URL, SITE_URL } from '@/components/marketing/l
 const productLinks = [
   { label: 'Live demo', href: '/demo' },
   { label: 'How it works', href: '/#how-it-works' },
-  { label: 'Under the hood', href: '/#under-the-hood' },
   { label: 'Forms', href: '/#forms' },
-  { label: 'Privacy', href: '/#privacy' },
   { label: 'FAQ', href: '/#faq' },
 ];
 

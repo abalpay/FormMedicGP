@@ -20,6 +20,32 @@
 
 ---
 
+## Phase 15: Dark landing redesign (2026-09-25)
+
+> Goal: a recruiter opens `/`, thinks "real, premium AI product" within 5s, clicks "Try the live demo".
+> Direction: DARK PREMIUM — dark teal-black canvas, teal/amber glow, glassy product frames, subtle grid + light beams. Trustworthy for clinicians (no gamer/crypto). Instrument Serif 400 display + DM Sans.
+
+### Creative brief
+- **Hero is the product.** Large glass frame replaying the real cached SU415 run (dictation typing + waveform → identifiers redact → fields fill → PDF slides in). Headline "Dictate. Don't type." is the LCP.
+- **Story in 3 beats:** Speak → Protected → Filled. Then forms strip, builder story, FAQ (trimmed), final CTA. ~6 sections, short page.
+- **No technical detail** on `/` or `/demo`: no model/vendor/library names, no stack, no architecture diagram, no engineering counts. "View source" stays as a quiet secondary link.
+- **Honesty:** no fake users/logos/testimonials, no unmeasured numbers or time claims, no compliance claims. Demo note: "This demo replays a recorded run with fictional patients. Nothing you see leaves your browser." (true in cached mode: only requests are the blank PDF template and a GET that checks whether live mode is on; live/access-code mode sends the de-identified dictation and must say so). Do NOT claim "nothing is stored unless you save it" — the real app auto-saves completed forms to the account.
+- **Privacy, plain language:** "Names and identifiers are removed before AI processing. Audio is never stored."
+- **Scope:** `src/app/(marketing)/`, `src/components/marketing/*`, `src/components/demo/*`. Dark tokens scoped to a marketing wrapper (`.dark` tokens are unused by the dashboard: no ThemeProvider, sonner only reads the theme). Dashboard/auth stay light.
+- **Motion:** CSS/SVG + IntersectionObserver only; full `prefers-reduced-motion` support; no layout shift; no WebGL; no new heavy deps.
+- **Mobile 390px** intentional; hero frame visible. WCAG AA on dark; visible focus; landmarks; heading order.
+
+### Tasks (sequential, one branch)
+- [x] 15.1 Foundation + hero showpiece (opus): scoped dark tokens, navbar, hero glass replay frame with lighting, page order, technical copy out of hero
+- [x] 15.2 Story beats Speak → Protected → Filled (sonnet): replace HowItWorks + UnderTheHood + Privacy; delete `under-the-hood.tsx`, `privacy.tsx`
+- Note 2026-09-25: `how-it-works.tsx` rebuilt as a vertical rail — spine line + 3 dots, each beat (Speak/Protected/Filled) with heading+copy left, a compact `glass-frame` mini illustration (waveform+caret / shield+`[PATIENT]` chip / mini PDF+"Filled" badge) right at desktop, stacked on mobile. Same `bg-background` + `bg-grid` as hero with a hairline top divider, fixing the light/dark seam. Deleted `under-the-hood.tsx` + `privacy.tsx` (already unused by `page.tsx`); removed their footer links (`Under the hood`, `Privacy`). `pnpm -s lint`/`build`/`test` clean (124/124); Playwright screenshots at 1440/390 (incl. reduced-motion) show no errors, mobile `scrollWidth` 390.
+- [ ] 15.3 Forms strip, builder story (no counts), FAQ trim, CTA, footer, nav links (sonnet)
+- [ ] 15.4 `/demo` dark restyle + technical copy removal + honest note (opus)
+- [ ] 15.5 Motion / mobile / a11y-perf pass (impeccable:animate, adapt, audit, distill), screenshots, dashboard light check
+- [ ] 15.6 Push, PR, Vercel preview, review notes
+
+---
+
 ## Phase 14: Recruiter-Ready Demo + Landing Redesign (planned 2026-09-25)
 
 > Goal: a recruiter/hiring engineer (e.g. Heidi Health) opens the site, plays with a real pipeline in <90s with no signup, and is impressed. Constraint: no free, abusable paid API.
