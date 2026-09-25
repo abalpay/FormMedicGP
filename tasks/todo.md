@@ -98,7 +98,7 @@
 - [ ] Show missing required fields above the PDF (data already in store, never displayed)
 - [x] Profile gate at form selection (`form-selector.tsx` + `getMissingDoctorProfileFields`) instead of a 400 after dictating
 - [x] "Record again" appends instead of wiping transcript (`dictation-recorder.tsx:81-93`)
-- [ ] Link saved patient on autosave (currently always `patientId: null`); dedupe patient POST; "New form for this patient" from saved form
+- [x] Link saved patient on autosave (store `patientId` from picked or newly saved patient); dedupe patient POST; "New form for this patient" from saved form
 - [x] Route guards on dictate/review when store empty
 - [x] Staged progress text ("Extracting… Filling PDF…"); seed preview from server PDF to skip client refill (2-4s) — done: single honest label; preview seeded from server PDF
 - [x] Specific mic-denied vs token error; Deepgram drop resets recording state
