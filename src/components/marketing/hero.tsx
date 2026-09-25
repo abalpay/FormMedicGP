@@ -1,28 +1,17 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Gift } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Mic, FileText, Shield, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { REPO_URL } from '@/components/marketing/links';
 
 export function Hero() {
   return (
     <section className="relative pt-[72px] bg-background overflow-hidden">
-      {/* Decorative blobs */}
-      <div className="absolute top-20 right-[15%] w-[500px] h-[500px] rounded-full bg-[oklch(0.47_0.1_175/0.06)] blur-3xl" />
-      <div className="absolute top-60 right-[35%] w-[300px] h-[300px] rounded-full bg-[oklch(0.795_0.177_78/0.08)] blur-3xl" />
-      <div className="absolute -bottom-20 left-[10%] w-[400px] h-[400px] rounded-full bg-[oklch(0.47_0.1_175/0.04)] blur-3xl" />
-
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-20 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left -- Copy */}
           <div className="max-w-xl">
             <div
-              className="animate-fade-in-up motion-reduce:animate-none inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/[0.06] border border-primary/10 text-primary text-xs font-medium tracking-wide uppercase"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              AI-Powered Medical Forms for Australian GPs
-            </div>
-
-            <div
-              className="animate-fade-in-up motion-reduce:animate-none mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
+              className="animate-fade-in-up motion-reduce:animate-none text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
               style={{ animationDelay: '0.08s' }}
             >
               <h1>
@@ -41,9 +30,9 @@ export function Hero() {
               style={{ animationDelay: '0.16s' }}
             >
               <p>
-                Speak your clinical notes naturally. FormBridge GP fills out Centrelink,
-                WorkCover, and DSP forms in under two minutes — with patient
-                privacy built into every step.
+                Speak your clinical notes. FormBridge GP de-identifies them, extracts
+                the fields with Claude, and fills the official Centrelink, DSP,
+                WorkCover/TAC and NDIS PDFs for you to review.
               </p>
             </div>
 
@@ -52,8 +41,8 @@ export function Hero() {
               style={{ animationDelay: '0.24s' }}
             >
               <Button variant="teal" size="lg" className="h-12 px-7 text-[15px] font-semibold rounded-full" asChild>
-                <Link href="/register">
-                  Join Waitlist
+                <Link href="/demo">
+                  Try the live demo — no signup
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -63,27 +52,11 @@ export function Hero() {
                 className="h-12 px-7 text-[15px] font-medium rounded-full"
                 asChild
               >
-                <Link href="#how-it-works">See How It Works</Link>
+                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                  <Github className="w-4 h-4 mr-2" aria-hidden="true" />
+                  View source
+                </a>
               </Button>
-            </div>
-
-            <div
-              className="animate-fade-in-up motion-reduce:animate-none mt-10 flex flex-wrap items-center gap-3"
-              style={{ animationDelay: '0.32s' }}
-            >
-              {[
-                { icon: FileText, text: '6 Government Forms' },
-                { icon: Shield, text: 'Privacy-First' },
-                { icon: Gift, text: 'Free Early Access' },
-              ].map(({ icon: Icon, text }) => (
-                <div
-                  key={text}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/[0.06] border border-primary/10 text-sm text-foreground/80 font-medium"
-                >
-                  <Icon className="w-4 h-4 text-primary" />
-                  <span>{text}</span>
-                </div>
-              ))}
             </div>
           </div>
 

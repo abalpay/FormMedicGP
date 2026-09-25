@@ -1,19 +1,21 @@
 import Link from 'next/link';
+import { Github } from 'lucide-react';
 import { BrandLogo } from '@/components/brand/brand-logo';
 import { Button } from '@/components/ui/button';
+import { REPO_URL } from '@/components/marketing/links';
 
 const navLinks = [
-  { label: 'Features', href: '/#features' },
-  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Demo', href: '/demo' },
+  { label: 'How it works', href: '/#how-it-works' },
+  { label: 'Under the hood', href: '/#under-the-hood' },
   { label: 'Forms', href: '/#forms' },
   { label: 'Privacy', href: '/#privacy' },
   { label: 'FAQ', href: '/#faq' },
-  { label: 'Demo', href: '/demo' },
 ];
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/70 glass">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/90">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group" aria-label="FormBridge GP home">
@@ -30,7 +32,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8 text-[13px] font-medium text-muted-foreground">
+        <div className="hidden lg:flex items-center gap-7 text-[13px] font-medium text-muted-foreground">
           {navLinks.map((link) => (
             <a key={link.href} href={link.href} className="hover:text-foreground transition-colors duration-200">
               {link.label}
@@ -39,27 +41,22 @@ export function Navbar() {
         </div>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <Button variant="ghost" size="sm" className="text-[13px] font-medium" asChild>
-            <Link href="/login">Sign In</Link>
+            <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+              <Github className="w-4 h-4 mr-1.5" aria-hidden="true" />
+              View source
+            </a>
           </Button>
           <Button variant="teal" size="sm" className="text-[13px] font-semibold" asChild>
-            <Link href="/register">Join Waitlist</Link>
+            <Link href="/demo">Try the live demo</Link>
           </Button>
         </div>
 
-        {/* Mobile CTAs */}
-        <div className="md:hidden flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="text-[13px] font-medium" asChild>
-            <Link href="/demo">Demo</Link>
-          </Button>
-          <Button variant="ghost" size="sm" className="text-[13px] font-medium" asChild>
-            <Link href="/login">Sign In</Link>
-          </Button>
-          <Button variant="teal" size="sm" className="text-[13px] font-semibold" asChild>
-            <Link href="/register">Join Waitlist</Link>
-          </Button>
-        </div>
+        {/* Mobile CTA */}
+        <Button variant="teal" size="sm" className="lg:hidden text-[13px] font-semibold" asChild>
+          <Link href="/demo">Demo</Link>
+        </Button>
       </div>
     </nav>
   );

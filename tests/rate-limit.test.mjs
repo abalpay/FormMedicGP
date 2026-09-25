@@ -26,7 +26,7 @@ test('distributed limiter calls check_rate_limit RPC with expected payload', asy
   };
 
   const result = await checkDistributedRateLimit(mockClient, {
-    key: 'waitlist:203.0.113.10',
+    key: 'demo:203.0.113.10',
     limit: 5,
     windowMs: 30_000,
   });
@@ -34,7 +34,7 @@ test('distributed limiter calls check_rate_limit RPC with expected payload', asy
   assert.equal(calls.length, 1);
   assert.equal(calls[0].fn, 'check_rate_limit');
   assert.deepEqual(calls[0].args, {
-    p_key: 'waitlist:203.0.113.10',
+    p_key: 'demo:203.0.113.10',
     p_limit: 5,
     p_window_seconds: 30,
   });

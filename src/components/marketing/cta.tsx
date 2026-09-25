@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimateOnScroll } from '@/components/marketing/animate-on-scroll';
+import { REPO_URL } from '@/components/marketing/links';
 
 export function CTA() {
   return (
@@ -20,8 +21,8 @@ export function CTA() {
 
       <div className="relative max-w-3xl mx-auto px-5 sm:px-8 text-center">
         <AnimateOnScroll preset="fade-up">
-          <p className="text-sm text-white/40 font-medium tracking-wide uppercase mb-6">
-            Join the waitlist
+          <p className="text-sm text-white/70 font-medium tracking-wide uppercase mb-6">
+            No signup. Fictional patients. Real pipeline.
           </p>
           <h2 className="text-4xl sm:text-5xl md:text-6xl tracking-tight text-white font-[family-name:var(--font-display)] leading-tight">
             Stop typing.
@@ -31,14 +32,14 @@ export function CTA() {
         </AnimateOnScroll>
 
         <AnimateOnScroll preset="fade-up" delay={0.1}>
-          <p className="mt-6 text-base sm:text-lg text-white/60 max-w-lg mx-auto leading-relaxed">
-            Complete Australian government medical forms in minutes
-            instead of hours.
+          <p className="mt-6 text-base sm:text-lg text-white/75 max-w-lg mx-auto leading-relaxed">
+            Dictate a fictional case, watch identifiers get stripped, and review
+            the official PDF the pipeline fills.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button variant="amber" size="lg" className="h-12 px-8 text-[15px] font-semibold" asChild>
-              <Link href="/register">
-                Join Waitlist
+              <Link href="/demo">
+                Try the live demo
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
@@ -48,7 +49,10 @@ export function CTA() {
               className="h-12 px-8 text-[15px] font-medium border border-white/30 text-white bg-white/10 hover:bg-white/20 hover:border-white/40"
               asChild
             >
-              <Link href="/login">Sign In</Link>
+              <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                <Github className="w-4 h-4 mr-2" aria-hidden="true" />
+                View source
+              </a>
             </Button>
           </div>
         </AnimateOnScroll>
