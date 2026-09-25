@@ -313,7 +313,7 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
             {isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                Processing...
+                Extracting fields and filling the PDF…
               </>
             ) : (
               <>

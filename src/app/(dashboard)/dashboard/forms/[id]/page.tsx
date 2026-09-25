@@ -192,7 +192,7 @@ export default function FormReviewPage() {
         </div>
         <div className="hidden lg:block flex-1 min-w-0 min-h-0">
           <PdfPreviewPanel
-            previewUrl={previewUrl}
+            previewUrl={previewUrl ?? pdfBlobUrl}
             isLoading={isGenerating}
             fullWidth
             fillContainer
