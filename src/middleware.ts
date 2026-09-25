@@ -58,7 +58,6 @@ export async function middleware(request: NextRequest) {
     pathname === '/dashboard' || pathname.startsWith('/dashboard/');
   const isAuthPage =
     pathname === '/login' ||
-    pathname === '/register' ||
     pathname === '/forgot-password';
 
   if (!user && isDashboardPath) {
@@ -94,7 +93,6 @@ export const config = {
   matcher: [
     '/dashboard/:path*',
     '/login',
-    '/register',
     '/forgot-password',
     '/set-password',
   ],

@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Download, Trash2 } from 'lucide-react';
+import { ArrowLeft, Download, FilePlus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import type { SavedFormMeta } from '@/types';
+import { useFormFlowStore } from '@/lib/stores/form-flow-store';
+import { patientToFormDetails } from '@/lib/patient-mappers';
+import type { Patient, SavedFormMeta } from '@/types';
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-AU', {
@@ -29,6 +31,25 @@ export function SavedFormDetail({ form }: SavedFormDetailProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isStartingNew, setIsStartingNew] = useState(false);
+
+  // Start a fresh flow prefilled with this form's patient; the doctor still picks the form.
+  const handleNewFormForPatient = async () => {
+    if (!form.patientId) return;
+    setIsStartingNew(true);
+    try {
+      const res = await fetch(`/api/patients/${form.patientId}`);
+      if (!res.ok) throw new Error();
+      const { patient } = (await res.json()) as { patient: Patient };
+      const { reset, setPatientDetails } = useFormFlowStore.getState();
+      reset();
+      setPatientDetails(patientToFormDetails(patient), patient.id);
+      router.push('/dashboard/forms/new');
+    } catch {
+      toast.error('Failed to load patient');
+      setIsStartingNew(false);
+    }
+  };
 
   const handleDownload = async () => {
     setIsDownloading(true);
@@ -93,6 +114,12 @@ export function SavedFormDetail({ form }: SavedFormDetailProps) {
           </Link>
         </Button>
         <div className="flex items-center gap-2">
+          {form.patientId && (
+            <Button variant="outline" onClick={handleNewFormForPatient} disabled={isStartingNew}>
+              <FilePlus className="w-4 h-4 mr-1.5" />
+              New form for this patient
+            </Button>
+          )}
           <Button variant="outline" onClick={handleDownload} disabled={isDownloading}>
             <Download className="w-4 h-4 mr-1.5" />
             {isDownloading ? 'Downloading...' : 'Download PDF'}

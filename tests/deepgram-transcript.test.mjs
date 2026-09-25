@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {
   applyDeepgramTranscriptMessage,
   formatDeepgramDisplayText,
+  mergeTranscript,
   INITIAL_DEEPGRAM_TRANSCRIPT_STATE,
 } from '../src/lib/deepgram-transcript.ts';
 
@@ -50,4 +51,20 @@ test('appends subsequent final transcripts with spacing', () => {
 
   assert.equal(second.committed, 'first sentence second sentence');
   assert.equal(formatDeepgramDisplayText(second), 'first sentence second sentence');
+});
+
+test('mergeTranscript appends live text after a trimmed prefix', () => {
+  assert.equal(
+    mergeTranscript('existing note  ', 'new live text'),
+    'existing note new live text'
+  );
+});
+
+test('mergeTranscript returns live text alone when there is no prefix', () => {
+  assert.equal(mergeTranscript('', 'new live text'), 'new live text');
+  assert.equal(mergeTranscript('   ', 'new live text'), 'new live text');
+});
+
+test('mergeTranscript returns the trimmed prefix alone when live text is empty', () => {
+  assert.equal(mergeTranscript('existing note  ', ''), 'existing note');
 });

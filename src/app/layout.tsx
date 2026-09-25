@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'FormBridge GP',
   description:
-    'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
+    'Dictate clinical notes; get de-identified AI extraction and filled Australian government medical forms. Open-source portfolio project with a live demo.',
   manifest: '/site.webmanifest',
   icons: {
     icon: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FormBridge GP',
     description:
-      'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
+      'Dictate clinical notes; get de-identified AI extraction and filled Australian government medical forms. Open-source portfolio project with a live demo.',
     siteName: 'FormBridge GP',
     type: 'website',
     locale: 'en_AU',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'FormBridge GP',
     description:
-      'AI-powered medical form automation for Australian GP clinics. Dictate clinical info, get completed government forms.',
+      'Dictate clinical notes; get de-identified AI extraction and filled Australian government medical forms. Open-source portfolio project with a live demo.',
   },
 };
 

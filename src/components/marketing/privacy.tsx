@@ -1,6 +1,4 @@
-'use client';
-
-import { Mic, FileText, ShieldCheck, Trash2, EyeOff, Server, Lock } from 'lucide-react';
+import { Mic, FileText, ShieldCheck, Sparkles, EyeOff, Server, Lock } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -28,17 +26,17 @@ const pipelineStages: PipelineStage[] = [
   {
     icon: FileText,
     label: 'Transcription',
-    detail: 'Speech converted to text in real-time.',
-    callout: 'Audio deleted after transcription',
+    detail: 'Speech converted to text in real time by Deepgram.',
+    callout: 'Audio is never stored by FormBridge',
   },
   {
     icon: ShieldCheck,
     label: 'De-Identification',
     detail: 'Names, DOBs, addresses & IDs stripped before AI.',
-    callout: 'Patient names never reach our AI',
+    callout: 'Identifiers stripped before the LLM',
   },
   {
-    icon: Trash2,
+    icon: Sparkles,
     label: 'LLM Extraction',
     detail: 'De-identified text mapped to form fields.',
   },
@@ -46,7 +44,7 @@ const pipelineStages: PipelineStage[] = [
     icon: FileText,
     label: 'Form Output',
     detail: 'Completed PDF ready for review & download.',
-    callout: 'Data stays in Australia',
+    callout: 'Saved to your account for review',
   },
 ];
 
@@ -63,9 +61,9 @@ const privacyFeatures = [
   },
   {
     icon: Server,
-    title: 'Controlled Retention',
+    title: 'Clear Retention',
     description:
-      'Form processing runs in-memory. Data is persisted only when you explicitly save a patient or save a completed form.',
+      'Completed forms are saved to your account automatically so you can revisit them; patient records are saved only when you choose. Audio is never stored.',
   },
   {
     icon: Lock,
@@ -176,18 +174,18 @@ function PipelineNode({ stage }: { stage: PipelineStage }) {
       </div>
 
       {/* Label */}
-      <p className="text-sm font-bold text-white font-[family-name:var(--font-display)] mb-1">
+      <p className="text-sm font-semibold text-white mb-1">
         {stage.label}
       </p>
 
       {/* Detail */}
-      <p className="text-xs text-white/50 leading-relaxed mb-2">
+      <p className="text-xs text-white/75 leading-relaxed mb-2">
         {stage.detail}
       </p>
 
       {/* Callout badge */}
       {stage.callout && (
-        <span className="inline-block text-[11px] font-medium leading-tight px-2.5 py-1 rounded-full bg-[oklch(0.25_0.06_175/0.5)] text-[oklch(0.7_0.1_175)] border border-[oklch(0.35_0.06_175/0.3)]">
+        <span className="inline-block text-xs font-medium leading-tight px-2.5 py-1 rounded-full bg-[oklch(0.25_0.06_175/0.5)] text-[oklch(0.7_0.1_175)] border border-[oklch(0.35_0.06_175/0.3)]">
           {stage.callout}
         </span>
       )}
@@ -201,7 +199,7 @@ function PipelineNode({ stage }: { stage: PipelineStage }) {
 
 export function Privacy() {
   return (
-    <section id="privacy" className="grain-overlay relative py-20 sm:py-32 overflow-hidden">
+    <section id="privacy" className="scroll-mt-20 grain-overlay relative py-20 sm:py-28 overflow-hidden">
       {/* Dark teal background */}
       <div className="absolute inset-0 bg-[oklch(0.18_0.035_180)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_70%_30%,oklch(0.25_0.06_175/0.6),transparent)]" />
@@ -217,25 +215,24 @@ export function Privacy() {
         {/* Section header */}
         <AnimateOnScroll>
           <div className="max-w-2xl mb-16">
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[oklch(0.6_0.1_175)] mb-3">
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[oklch(0.68_0.1_175)] mb-3">
               Security
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl sm:text-4xl tracking-tight text-white font-[family-name:var(--font-display)]">
               Privacy isn&apos;t a feature.
               <br className="hidden sm:block" />
               It&apos;s the architecture.
             </h2>
-            <p className="mt-4 text-base text-white/50 leading-relaxed max-w-lg">
-              Clear controls over what is sent for AI processing and what is
-              intentionally saved.
+            <p className="mt-4 text-base text-white/75 leading-relaxed max-w-lg">
+              What reaches the AI, what is saved, and what never is.
             </p>
           </div>
         </AnimateOnScroll>
 
         {/* Pipeline diagram card */}
-        <AnimateOnScroll preset="scale-up" className="mb-20">
+        <AnimateOnScroll preset="scale-up" className="mb-16">
           <div className="rounded-2xl bg-white/[0.04] border border-white/[0.08] p-6 sm:p-10">
-            <p className="text-xs font-semibold tracking-[0.15em] uppercase text-white/30 mb-8 text-center">
+            <p className="text-xs font-semibold tracking-[0.15em] uppercase text-white/70 mb-8 text-center">
               Data Flow Pipeline
             </p>
 
@@ -271,10 +268,10 @@ export function Privacy() {
               <div className="w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center mb-5 group-hover:bg-white/[0.1] group-hover:border-white/[0.15] group-hover:shadow-[0_0_24px_oklch(0.47_0.1_175/0.2)] transition-all duration-300">
                 <item.icon className="w-5 h-5 text-[oklch(0.6_0.1_175)]" />
               </div>
-              <h3 className="text-base font-bold text-white font-[family-name:var(--font-display)] mb-2">
+              <h3 className="text-base font-semibold text-white mb-2">
                 {item.title}
               </h3>
-              <p className="text-sm text-white/55 leading-relaxed">
+              <p className="text-sm text-white/75 leading-relaxed">
                 {item.description}
               </p>
             </StaggerItem>

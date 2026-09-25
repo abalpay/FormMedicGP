@@ -54,3 +54,12 @@ export function formatDeepgramDisplayText(
 ): string {
   return appendSegment(state.committed, state.interim);
 }
+
+/**
+ * Merges a pre-existing transcript (typed text, or text left over from a
+ * previous recording) with the live transcript of the current recording, so
+ * starting a new recording appends rather than overwrites.
+ */
+export function mergeTranscript(prefix: string, live: string): string {
+  return appendSegment(prefix.trim(), live);
+}

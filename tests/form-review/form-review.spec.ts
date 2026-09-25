@@ -38,7 +38,7 @@ for (const { formId, fixture } of loadFixtures()) {
     let capturedApiError: string | null = null;
 
     page.on('response', async (response) => {
-      if (response.url().includes('/api/process-form') && !response.url().includes('/regenerate')) {
+      if (response.url().includes('/api/process-form')) {
         try {
           const body = await response.json();
           if (body.pdfBase64) {

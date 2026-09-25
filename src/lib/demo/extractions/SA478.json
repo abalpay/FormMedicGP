@@ -1,0 +1,501 @@
+{
+  "caseId": "SA478",
+  "formType": "SA478",
+  "formLabel": "Disability Support Pension Medical Evidence (SA478)",
+  "scenario": "Chronic lumbar spondylosis — DSP permanent impairment",
+  "model": "claude-sonnet-5",
+  "generatedAt": "2026-09-25T04:58:14.354Z",
+  "transcript": "Patricia Nguyen has severe lumbar spondylosis with multilevel disc disease confirmed on MRI. She has been under specialist spinal care for 8 years. She is unable to stand or walk for more than 10 minutes and requires a walking aid. All conservative and surgical options have been exhausted. Condition is permanent and not improving. She requires daily assistance with personal care and household tasks.",
+  "guidedAnswers": {
+    "hasSpecialistEvidence": "yes",
+    "hasTreatmentPlan": "yes",
+    "disabilityType": "physical",
+    "conditionPrognosis": "permanent_not_improving",
+    "clinicalNarrative": "Severe lumbar spondylosis with multilevel disc disease and bilateral foraminal stenosis. Patient has been managed conservatively for 8 years with inadequate pain relief. Unable to stand or walk for more than 10 minutes. Specialist spinal surgeon has assessed as permanent and not amenable to further surgical intervention."
+  },
+  "patientDetails": {
+    "customerName": "Patricia Nguyen",
+    "dateOfBirth": "1965-07-14",
+    "address": "12 George Street, Sydney NSW 2000",
+    "crn": "987 654 321B"
+  },
+  "deidentifiedText": "[PATIENT] has severe lumbar spondylosis with multilevel disc disease confirmed on MRI. She has been under specialist spinal care for 8 years. She is unable to stand or walk for more than 10 minutes and requires a walking aid. All conservative and surgical options have been exhausted. Condition is permanent and not improving. She requires daily assistance with personal care and household tasks.\n\nGUIDED ANSWERS:\n- Specialist/Supporting Evidence Available?: Yes (yes)\n- Current or Planned Treatment?: Yes (yes)\n- Clinical Evidence: Severe lumbar spondylosis with multilevel disc disease and bilateral foraminal stenosis. Patient has been managed conservatively for 8 years with inadequate pain relief. Unable to stand or walk for more than 10 minutes. Specialist spinal surgeon has assessed as permanent and not amenable to further surgical intervention.",
+  "llmData": {
+    "conditionsImpactWork": "Severe lumbar spondylosis with multilevel disc disease and bilateral foraminal stenosis. Significantly limits standing/walking tolerance and requires use of a walking aid.",
+    "conditionsDiagnosed": "Diagnosed via MRI confirming multilevel disc disease and foraminal stenosis. Under specialist spinal care for 8 years.",
+    "currentSymptoms": "Unable to stand or walk for more than 10 minutes; requires a walking aid. Needs daily assistance with personal care and household tasks.",
+    "treatmentHistory": "Managed conservatively for 8 years with inadequate pain relief. All conservative and surgical treatment options have been exhausted.",
+    "prognosisDetails": "Condition assessed as permanent and not improving. Not amenable to further surgical intervention.",
+    "treatingProfessionals": "GP (completing doctor) and treating specialist spinal surgeon.",
+    "dspSpecialistEvidence": "Specialist spinal surgeon confirmed severe lumbar spondylosis with multilevel disc disease and bilateral foraminal stenosis on MRI. Eight years of conservative management has provided inadequate pain relief; condition deemed permanent and not amenable to further surgery.",
+    "dspTreatmentPlan": "No further surgical or conservative options remain viable; ongoing management likely limited to symptomatic/pain relief measures given exhausted treatment options.",
+    "hasSpecialistEvidence": "yes",
+    "hasTreatmentPlan": "yes"
+  },
+  "missingFields": [],
+  "evidence": {
+    "conditionsImpactWork": "She is unable to stand or walk for more than 10 minutes and requires a walking aid.",
+    "conditionsDiagnosed": "severe lumbar spondylosis with multilevel disc disease confirmed on MRI. She has been under specialist spinal care for 8 years.",
+    "treatmentHistory": "All conservative and surgical options have been exhausted.",
+    "prognosisDetails": "Condition is permanent and not improving.",
+    "treatingProfessionals": "under specialist spinal care for 8 years",
+    "dspSpecialistEvidence": "Severe lumbar spondylosis with multilevel disc disease and bilateral foraminal stenosis. Patient has been managed conservatively for 8 years with inadequate pain relief. Unable to stand or walk for more than 10 minutes. Specialist spinal surgeon has assessed as permanent and not amenable to further surgical intervention.",
+    "dspTreatmentPlan": "All conservative and surgical options have been exhausted.",
+    "hasSpecialistEvidence": "Yes (yes)",
+    "hasTreatmentPlan": "Yes (yes)"
+  },
+  "reviewSchema": {
+    "formId": "SA478",
+    "formName": "Disability Support Pension Medical Evidence (SA478)",
+    "sections": [
+      {
+        "id": "patient",
+        "title": "Patient Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "familyName",
+            "label": "Family Name",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "givenNames",
+            "label": "Given Names",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "dateOfBirth",
+            "label": "Date Of Birth",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "crn",
+            "label": "CRN",
+            "sectionId": "patient",
+            "sectionTitle": "Patient Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Doctor Details",
+        "initiallyCollapsed": true,
+        "fields": [
+          {
+            "key": "doctorName",
+            "label": "Doctor Name",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "qualifications",
+            "label": "Qualifications",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "providerNumber",
+            "label": "Provider Number",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "surgeryName",
+            "label": "Practice Name",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress1",
+            "label": "Doctor Address1",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress2",
+            "label": "Doctor Address2",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorAddress3",
+            "label": "Doctor Address3",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "doctorPostcode",
+            "label": "Doctor Postcode",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dateSigned",
+            "label": "Date Signed",
+            "sectionId": "doctor",
+            "sectionTitle": "Doctor Details",
+            "type": "date",
+            "inputType": "date",
+            "required": true,
+            "options": []
+          }
+        ]
+      },
+      {
+        "id": "clinical",
+        "title": "Clinical Assessment",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "conditionsImpactWork",
+            "label": "Conditions Impacting Work",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": true,
+            "options": []
+          },
+          {
+            "key": "conditionsDiagnosed",
+            "label": "Diagnosis Status",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "currentSymptoms",
+            "label": "Current Symptoms & Functional Impact",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "treatmentHistory",
+            "label": "Treatment History & Plan",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "prognosisDetails",
+            "label": "Prognosis",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "treatingProfessionals",
+            "label": "Treating Health Professionals",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dspPrimaryConditions",
+            "label": "Additional Medical Information (Q7)",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dspSpecialistEvidence",
+            "label": "Specialist/Supporting Evidence",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "dspTreatmentPlan",
+            "label": "Current and Planned Treatment (Q6)",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "text",
+            "inputType": "textarea",
+            "required": false,
+            "options": []
+          },
+          {
+            "key": "hasSpecialistEvidence",
+            "label": "Has Specialist/Supporting Evidence",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "hasTreatmentPlan",
+            "label": "Has Current/Planned Treatment",
+            "sectionId": "clinical",
+            "sectionTitle": "Clinical Assessment",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "additionalPdf",
+        "title": "Additional PDF Fields",
+        "initiallyCollapsed": false,
+        "fields": [
+          {
+            "key": "__pdf:Q2",
+            "label": "Q2",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "advanced": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "__pdf:Q3",
+            "label": "Q3",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "advanced": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "__pdf:Q4Day1",
+            "label": "Q4 Day1",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q4Time1.0",
+            "label": "Q4 Time1.0",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q4Time1.1",
+            "label": "Q4 Time1.1",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q41",
+            "label": "Q41",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "advanced": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "key": "__pdf:Q4Day2",
+            "label": "Q4 Day2",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q4Time2.0",
+            "label": "Q4 Time2.0",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q4Time2.1",
+            "label": "Q4 Time2.1",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "text",
+            "inputType": "text",
+            "required": false,
+            "advanced": false,
+            "options": []
+          },
+          {
+            "key": "__pdf:Q42",
+            "label": "Q42",
+            "sectionId": "additionalPdf",
+            "sectionTitle": "Additional PDF Fields",
+            "type": "checkbox",
+            "inputType": "select",
+            "reviewControl": "segmented",
+            "required": false,
+            "advanced": false,
+            "options": [
+              {
+                "value": "yes",
+                "label": "Yes"
+              },
+              {
+                "value": "no",
+                "label": "No"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

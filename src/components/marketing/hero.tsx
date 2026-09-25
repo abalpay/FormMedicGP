@@ -1,28 +1,43 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Clock, Gift } from 'lucide-react';
+import { ArrowRight, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { HeroReplay } from '@/components/marketing/hero-replay';
+import { REPO_URL } from '@/components/marketing/links';
+import SU415 from '@/lib/demo/extractions/SU415.json';
+import { buildRedactionSegments } from '@/lib/demo/redaction';
+import { getFormSchema } from '@/lib/schemas';
+
+const REPLAY_FIELDS = [
+  'primaryDiagnosis',
+  'incapacityStartDate',
+  'incapacityEndDate',
+  'functionalImpact',
+  'treatment',
+] as const;
+
+const clinicalFields = getFormSchema('SU415')!.sections.clinical.fields;
+const llmData = SU415.llmData as Record<string, unknown>;
+// The cached de-identified text also carries the guided-answers block; replay only the dictation.
+const dictation = SU415.deidentifiedText.split('\n\nGUIDED ANSWERS:')[0];
+
+function formatValue(type: string, value: string) {
+  if (type !== 'date') return value;
+  return new Date(`${value}T00:00:00`).toLocaleDateString('en-AU', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
 
 export function Hero() {
   return (
     <section className="relative pt-[72px] bg-background overflow-hidden">
-      {/* Decorative blobs */}
-      <div className="absolute top-20 right-[15%] w-[500px] h-[500px] rounded-full bg-[oklch(0.47_0.1_175/0.06)] blur-3xl" />
-      <div className="absolute top-60 right-[35%] w-[300px] h-[300px] rounded-full bg-[oklch(0.795_0.177_78/0.08)] blur-3xl" />
-      <div className="absolute -bottom-20 left-[10%] w-[400px] h-[400px] rounded-full bg-[oklch(0.47_0.1_175/0.04)] blur-3xl" />
-
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-20 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left -- Copy */}
           <div className="max-w-xl">
             <div
-              className="animate-fade-in-up motion-reduce:animate-none inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/[0.06] border border-primary/10 text-primary text-xs font-medium tracking-wide uppercase"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              AI-Powered Medical Forms for Australian GPs
-            </div>
-
-            <div
-              className="animate-fade-in-up motion-reduce:animate-none mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
+              className="animate-fade-in-up motion-reduce:animate-none text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground font-[family-name:var(--font-display)]"
               style={{ animationDelay: '0.08s' }}
             >
               <h1>
@@ -41,9 +56,9 @@ export function Hero() {
               style={{ animationDelay: '0.16s' }}
             >
               <p>
-                Speak your clinical notes naturally. FormBridge GP fills out Centrelink,
-                WorkCover, and DSP forms in under two minutes — with patient
-                privacy built into every step.
+                Speak your clinical notes. FormBridge GP de-identifies them, extracts
+                the fields with Claude, and fills the official Centrelink, DSP,
+                WorkCover/TAC and NDIS PDFs for you to review.
               </p>
             </div>
 
@@ -52,8 +67,8 @@ export function Hero() {
               style={{ animationDelay: '0.24s' }}
             >
               <Button variant="teal" size="lg" className="h-12 px-7 text-[15px] font-semibold rounded-full" asChild>
-                <Link href="/register">
-                  Join Waitlist
+                <Link href="/demo">
+                  Try the live demo — no signup
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -63,117 +78,29 @@ export function Hero() {
                 className="h-12 px-7 text-[15px] font-medium rounded-full"
                 asChild
               >
-                <Link href="#how-it-works">See How It Works</Link>
+                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                  <Github className="w-4 h-4 mr-2" aria-hidden="true" />
+                  View source
+                </a>
               </Button>
-            </div>
-
-            <div
-              className="animate-fade-in-up motion-reduce:animate-none mt-10 flex flex-wrap items-center gap-3"
-              style={{ animationDelay: '0.32s' }}
-            >
-              {[
-                { icon: FileText, text: '5 Government Forms' },
-                { icon: Shield, text: 'Privacy-First' },
-                { icon: Gift, text: 'Free Early Access' },
-              ].map(({ icon: Icon, text }) => (
-                <div
-                  key={text}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/[0.06] border border-primary/10 text-sm text-foreground/80 font-medium"
-                >
-                  <Icon className="w-4 h-4 text-primary" />
-                  <span>{text}</span>
-                </div>
-              ))}
             </div>
           </div>
 
-          {/* Right -- Single cohesive app preview */}
+          {/* Right -- replay of the cached SU415 demo run */}
           <div
-            className="animate-fade-in-up motion-reduce:animate-none hidden lg:block"
+            className="animate-fade-in-up motion-reduce:animate-none"
             style={{ animationDelay: '0.24s' }}
           >
-            <div className="relative">
-              {/* Main app card — the whole story in one panel */}
-              <div className="rounded-2xl bg-card border border-border shadow-[0_8px_40px_oklch(0_0_0/0.08)] overflow-hidden">
-                {/* Form header bar */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-border/60">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl gradient-teal flex items-center justify-center">
-                      <FileText className="w-4.5 h-4.5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">Centrelink Medical Certificate</p>
-                      <p className="text-[11px] text-muted-foreground">SU415 — Temporary incapacity</p>
-                    </div>
-                  </div>
-                  <div className="px-2.5 py-1 rounded-full bg-red-50 border border-red-200">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-[11px] font-medium text-red-600">Recording</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dictation area */}
-                <div className="px-5 py-4 border-b border-border/60">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-9 h-9 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
-                      <Mic className="w-4 h-4 text-red-500" />
-                    </div>
-                    <div className="flex-1 flex items-end gap-[2px] h-8">
-                      {[3, 5, 2, 7, 4, 6, 2, 8, 4, 5, 3, 6, 5, 7, 3, 6, 4, 2, 5, 4, 7, 3, 5, 6, 4, 3, 6, 5, 7, 4, 3, 5, 6, 4, 2, 5, 7, 3, 6, 4].map((h, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 rounded-[1px] bg-primary/50"
-                          style={{ height: `${h * 11}%` }}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">0:47</span>
-                  </div>
-                  <p className="text-[13px] text-foreground/70 leading-relaxed">
-                    <span className="text-foreground">&quot;Patient presents with lower back pain of three weeks duration,</span>{' '}
-                    radiating to the left leg. Unable to perform usual work duties. Currently managed with physiotherapy and NSAIDs...&quot;
-                  </p>
-                </div>
-
-                {/* Extracted fields */}
-                <div className="px-5 py-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Extracted Fields</p>
-                    <div className="flex items-center gap-1.5 text-primary">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span className="text-[11px] font-medium">14 fields mapped</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { label: 'Diagnosis', value: 'Lumbar radiculopathy' },
-                      { label: 'Duration', value: '3 weeks' },
-                      { label: 'Work capacity', value: 'Unfit for usual duties' },
-                      { label: 'Treatment', value: 'Physiotherapy, NSAIDs' },
-                    ].map((field) => (
-                      <div key={field.label} className="rounded-lg bg-muted/40 border border-border/50 px-3 py-2">
-                        <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-wider">{field.label}</p>
-                        <p className="text-[12px] font-medium text-foreground mt-0.5">{field.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Status footer bar */}
-                <div className="flex items-center justify-between px-5 py-3 border-t border-border/60 bg-muted/20">
-                  <div className="flex items-center gap-1.5 text-primary">
-                    <Shield className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-medium">De-identified processing</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-medium"><span className="text-foreground font-semibold">1:47</span> avg completion</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <HeroReplay
+              segments={buildRedactionSegments(SU415.transcript, dictation)}
+              fields={REPLAY_FIELDS.map((key) => ({
+                label: clinicalFields[key].label ?? key,
+                value: formatValue(clinicalFields[key].type, String(llmData[key] ?? '')),
+              }))}
+              formLabel={SU415.formLabel.replace(/ \(.*\)$/, '')}
+              formId={SU415.formType}
+              model={SU415.model}
+            />
           </div>
         </div>
       </div>

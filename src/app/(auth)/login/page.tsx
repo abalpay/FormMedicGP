@@ -164,12 +164,12 @@ function LoginForm() {
       </form>
 
       <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{' '}
+        No account?{' '}
         <Link
-          href="/register"
+          href="/demo"
           className="text-primary hover:underline font-semibold"
         >
-          Create one
+          Try the demo
         </Link>
       </p>
     </div>

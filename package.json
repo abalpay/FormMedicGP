@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "node --test tests/**/*.test.mjs",
     "test:review": "playwright test tests/form-review/ --headed --reporter=line",
-    "validate:forms": "node scripts/validate-form-schemas.mjs"
+    "validate:forms": "node scripts/validate-form-schemas.mjs",
+    "demo:cache": "npx tsx --conditions=react-server --env-file=.env.local scripts/generate-demo-extractions.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
@@ -22,7 +23,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.34.3",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "next-themes": "^0.4.6",

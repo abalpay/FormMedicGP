@@ -1,8 +1,10 @@
 # FormDoctor
 
-AI-powered medical form automation for Australian GP clinics. Doctors dictate, AI fills government forms, download PDF — in under 2 minutes.
+Voice dictation to filled Australian government medical forms. Doctors dictate, identifiers are stripped, Claude extracts the fields, and the official PDF is filled for review. Open-source portfolio project — not clinically deployed.
 
-**Live at [formbridgegp.ai](https://formbridgegp.ai)**
+Try it without signing up at [`/demo`](https://formbridgegp.com/demo) (fictional patients, cached extraction, zero paid API calls).
+
+**Live at [formbridgegp.com](https://formbridgegp.com)**
 
 ## The Problem
 
@@ -29,7 +31,7 @@ Doctor reviews, edits, downloads
 - **Voice dictation** — Real-time transcription with medical vocabulary support
 - **Guided dictation** — Form-specific structured prompts improve extraction accuracy
 - **AI form filling** — Claude maps clinical notes to the correct form fields
-- **Privacy-first** — Patient data is de-identified before any external API call; never persisted to disk or database
+- **Privacy-first** — Identifiers are stripped before the LLM call; audio is never stored. Completed forms are saved to the doctor's account; patient records only when the doctor chooses
 - **PDF generation** — Fills official government PDF templates directly
 - **Doctor profiles** — Set up once, auto-fill provider details on every form
 - **Completeness checking** — Identifies missing required fields and prompts the doctor
@@ -96,10 +98,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Privacy & Security
 
-- **Patient data never stored** — transcription and patient details live in browser memory only (Zustand store, no localStorage)
-- **De-identification before external calls** — names, Medicare numbers, CRN, and phone numbers are stripped locally before reaching Deepgram or Claude
-- **Audio not recorded** — streamed directly to speech-to-text, never saved
-- **Anthropic DPA** — Claude API operates under a Data Processing Agreement (no training, no storage, no human review)
+- **De-identification before the LLM** — names, DOB, address, Medicare/CRN, phone and email are stripped locally (`src/lib/deidentify.ts`) before clinical notes reach Claude
+- **In-flight data stays in memory** — transcription and patient details live in a Zustand store with no persist middleware (never localStorage)
+- **Completed forms are saved to the doctor's account** (Supabase, row-level security per doctor) so they can be revisited; patient records are saved only when the doctor chooses
+- **Audio is never stored** — streamed to Deepgram for live transcription, not written anywhere
+- Third-party data-handling terms (Anthropic, Deepgram) are those providers' own; nothing here is a compliance claim
 
 ## Project Structure
 

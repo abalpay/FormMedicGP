@@ -1,6 +1,4 @@
-import 'server-only';
-
-import { buildPatientIdentityFields, getPrimaryPatientName } from '@/lib/patient-identity';
+import { buildPatientIdentityFields, getPrimaryPatientName } from './patient-identity.ts';
 import type { ExtractedFormData, PatientDetails, DoctorProfile } from '@/types';
 
 export function reidentify(

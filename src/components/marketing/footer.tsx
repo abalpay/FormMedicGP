@@ -1,91 +1,80 @@
 import Link from 'next/link';
 import { BrandLogo } from '@/components/brand/brand-logo';
+import { GITHUB_PROFILE_URL, REPO_URL, SITE_URL } from '@/components/marketing/links';
 
 const productLinks = [
-  { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Forms', href: '#forms' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Live demo', href: '/demo' },
+  { label: 'How it works', href: '/#how-it-works' },
+  { label: 'Under the hood', href: '/#under-the-hood' },
+  { label: 'Forms', href: '/#forms' },
+  { label: 'Privacy', href: '/#privacy' },
+  { label: 'FAQ', href: '/#faq' },
 ];
 
-const legalLinks = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
+const externalLinks = [
+  { label: 'Source code', href: REPO_URL },
+  { label: 'GitHub', href: GITHUB_PROFILE_URL },
+  { label: 'alpaylabs.cloud', href: SITE_URL },
 ];
 
 const columnHeadingClass =
-  'text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground/60';
+  'text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground';
+
+const linkClass = 'hover:text-foreground transition-colors duration-200';
 
 export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-card/50">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-12">
-        {/* Three-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-          {/* Column 1 — Brand */}
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-10 md:gap-16">
           <div className="flex flex-col gap-3">
             <BrandLogo
               variant="sidebar"
+              alt="FormBridge GP"
               className="h-7 w-auto"
               sizes="170px"
             />
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Voice-powered medical form automation for Australian GPs.
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
+              Voice-to-form automation for Australian government medical forms.
+              An open-source portfolio project.
             </p>
           </div>
 
-          {/* Column 2 — Links (two sub-columns) */}
-          <div className="grid grid-cols-2 gap-8">
-            <div className="flex flex-col gap-3">
-              <h4 className={columnHeadingClass}>Product</h4>
-              <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
-                {productLinks.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="hover:text-foreground transition-colors duration-200"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <h4 className={columnHeadingClass}>Legal</h4>
-              <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
-                {legalLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="hover:text-foreground transition-colors duration-200"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="flex flex-col gap-3">
+            <h2 className={columnHeadingClass}>Product</h2>
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className={linkClass}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Column 3 — Contact */}
           <div className="flex flex-col gap-3">
-            <h4 className={columnHeadingClass}>Contact</h4>
-            <a
-              href="mailto:hello@formbridgegp.au"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-            >
-              hello@formbridgegp.au
-            </a>
+            <h2 className={columnHeadingClass}>Elsewhere</h2>
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+              {externalLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link href="/login" className={linkClass}>
+                  Sign in
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-12 border-t border-border/60 pt-6 text-center">
-          <p className="text-xs text-muted-foreground/60">
-            &copy; {new Date().getFullYear()} FormBridge GP. All rights
-            reserved.
+          <p className="text-xs text-muted-foreground">
+            &copy; {new Date().getFullYear()} FormBridge GP. Not a registered medical device.
           </p>
         </div>
       </div>

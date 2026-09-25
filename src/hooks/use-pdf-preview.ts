@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { fillPdfFromBytes } from '@/lib/pdf-fill-core';
 import { getFormSchema } from '@/lib/schemas';
-import type { FormSchema, ExtractedFormData } from '@/types';
+import type { ExtractedFormData } from '@/types';
 
 interface UsePdfPreviewOptions {
   formType: string | null;
@@ -14,6 +14,8 @@ interface UsePdfPreviewOptions {
 interface UsePdfPreviewReturn {
   previewUrl: string | null;
   isGenerating: boolean;
+  /** Set when the template fetch or the fill fails. */
+  error: string | null;
 }
 
 export function usePdfPreview({
@@ -25,6 +27,7 @@ export function usePdfPreview({
   const blobUrlRef = useRef<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const schema = useMemo(
     () => (formType ? getFormSchema(formType) : null),
@@ -37,17 +40,18 @@ export function usePdfPreview({
 
     let cancelled = false;
     setTemplateBytes(null);
+    setError(null);
 
     async function fetchTemplate() {
       try {
         const res = await fetch(`/api/form-template/${formType}`);
-        if (!res.ok) return;
+        if (!res.ok) throw new Error(`Template request failed (${res.status})`);
         const buf = await res.arrayBuffer();
         if (!cancelled) {
           setTemplateBytes(new Uint8Array(buf));
         }
-      } catch {
-        // Template fetch failed — preview won't be available
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Template request failed');
       }
     }
 
@@ -84,8 +88,10 @@ export function usePdfPreview({
         const url = URL.createObjectURL(blob);
         blobUrlRef.current = url;
         setPreviewUrl(url);
-      } catch {
-        // Fill failed — keep previous preview
+        setError(null);
+      } catch (err) {
+        // Keep the previous preview, but surface the failure.
+        if (!cancelled) setError(err instanceof Error ? err.message : 'PDF fill failed');
       } finally {
         if (!cancelled) setIsGenerating(false);
       }
@@ -105,5 +111,5 @@ export function usePdfPreview({
     };
   }, []);
 
-  return { previewUrl, isGenerating };
+  return { previewUrl, isGenerating, error };
 }
