@@ -358,3 +358,35 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
 }
+
+/* Scroll reveal — driven by src/components/marketing/animate-on-scroll.tsx */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal]:not([data-reveal='stagger']),
+  [data-reveal='stagger'] > * {
+    transition:
+      opacity var(--reveal-duration, 0.5s) cubic-bezier(0.25, 0.1, 0.25, 1) var(--reveal-delay, 0s),
+      transform var(--reveal-duration, 0.5s) cubic-bezier(0.25, 0.1, 0.25, 1) var(--reveal-delay, 0s);
+  }
+  [data-reveal='stagger'] > * {
+    --reveal-delay: calc(var(--i, 0) * var(--stagger, 0.1s));
+  }
+  [data-reveal='stagger'] > :nth-child(2) { --i: 1; }
+  [data-reveal='stagger'] > :nth-child(3) { --i: 2; }
+  [data-reveal='stagger'] > :nth-child(4) { --i: 3; }
+  [data-reveal='stagger'] > :nth-child(5) { --i: 4; }
+  [data-reveal='stagger'] > :nth-child(n + 6) { --i: 5; }
+
+  [data-reveal][data-inview='false']:not([data-reveal='stagger']),
+  [data-reveal='stagger'][data-inview='false'] > * {
+    opacity: 0;
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+  [data-reveal='fade-up'][data-inview='false'],
+  [data-reveal='stagger'][data-inview='false'] > * {
+    transform: translateY(20px);
+  }
+  [data-reveal='scale-up'][data-inview='false'] {
+    transform: scale(0.95);
+  }
+}

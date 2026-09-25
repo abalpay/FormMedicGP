@@ -1,39 +1,49 @@
 'use client';
 
-import { motion, useReducedMotion, useInView } from 'framer-motion';
-import type { TargetAndTransition } from 'framer-motion';
-import { type ReactNode, useRef, useState, useEffect } from 'react';
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react';
 
 type AnimationPreset = 'fade-up' | 'fade-in' | 'scale-up';
 
-const presets: Record<AnimationPreset, { hidden: TargetAndTransition; visible: TargetAndTransition }> = {
-  'fade-up': {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  },
-  'fade-in': {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  },
-  'scale-up': {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1 },
-  },
-};
-
 /**
- * Wait for hydration + two animation frames so IntersectionObserver
- * can report which elements are already in the viewport before we
- * hide any off-screen elements.
+ * Scroll reveal via IntersectionObserver + CSS (see `[data-reveal]` in globals.css).
+ * Server render has no `data-inview`, so content is visible without JS. After mount,
+ * elements already on screen stay put; off-screen ones are hidden and fade in on
+ * first intersection. Reduced motion: the CSS only applies under
+ * `prefers-reduced-motion: no-preference`, so nothing is ever hidden.
  */
-function useHydrated() {
-  const [hydrated, setHydrated] = useState(false);
+function Reveal({
+  kind,
+  className,
+  style,
+  children,
+}: {
+  kind: AnimationPreset | 'stagger';
+  className?: string;
+  style?: CSSProperties;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState<boolean>();
+
   useEffect(() => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setHydrated(true));
-    });
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+        if (entry.isIntersecting) observer.disconnect();
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
-  return hydrated;
+
+  return (
+    <div ref={ref} data-reveal={kind} data-inview={inView} className={className} style={style}>
+      {children}
+    </div>
+  );
 }
 
 export function AnimateOnScroll({
@@ -49,36 +59,14 @@ export function AnimateOnScroll({
   duration?: number;
   className?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
-  const hydrated = useHydrated();
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  const { hidden, visible } = presets[preset];
-
-  // Before hydration: render visible (SSR-safe, no invisible content)
-  // After hydration + in view: render visible (already seen by user)
-  // After hydration + not in view: snap to hidden, animate in when scrolled to
-  const isVisible = !hydrated || isInView;
-
   return (
-    <motion.div
-      ref={ref}
-      initial={false}
-      animate={isVisible ? visible : hidden}
-      transition={
-        isVisible && hydrated
-          ? { duration, delay, ease: [0.25, 0.1, 0.25, 1] }
-          : { duration: 0 }
-      }
+    <Reveal
+      kind={preset}
       className={className}
+      style={{ '--reveal-delay': `${delay}s`, '--reveal-duration': `${duration}s` } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </Reveal>
   );
 }
 
@@ -91,34 +79,14 @@ export function StaggerChildren({
   className?: string;
   staggerDelay?: number;
 }) {
-  const prefersReducedMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
-  const hydrated = useHydrated();
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  const isVisible = !hydrated || isInView;
-
   return (
-    <motion.div
-      ref={ref}
-      initial={false}
-      animate={isVisible ? 'visible' : 'hidden'}
-      variants={{
-        visible: {
-          transition: { staggerChildren: isVisible && hydrated ? staggerDelay : 0 },
-        },
-        hidden: {
-          transition: { duration: 0 },
-        },
-      }}
+    <Reveal
+      kind="stagger"
       className={className}
+      style={{ '--stagger': `${staggerDelay}s` } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </Reveal>
   );
 }
 
@@ -129,15 +97,5 @@ export function StaggerItem({
   children: ReactNode;
   className?: string;
 }) {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20, transition: { duration: 0 } },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }
