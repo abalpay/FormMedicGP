@@ -7,20 +7,18 @@ import { REPO_URL } from '@/components/marketing/links';
 const navLinks = [
   { label: 'Demo', href: '/demo' },
   { label: 'How it works', href: '/#how-it-works' },
-  { label: 'Under the hood', href: '/#under-the-hood' },
   { label: 'Forms', href: '/#forms' },
-  { label: 'Privacy', href: '/#privacy' },
   { label: 'FAQ', href: '/#faq' },
 ];
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/90">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group" aria-label="FormBridge GP home">
           <BrandLogo
-            variant="icon"
+            variant="iconOnDark"
             className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-opacity duration-200 group-hover:opacity-90"
             priority
             sizes="36px"
