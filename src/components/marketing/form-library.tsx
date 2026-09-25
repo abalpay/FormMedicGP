@@ -15,10 +15,10 @@ const supportedForms = [
 
 export function FormLibrary() {
   return (
-    <section id="forms" className="scroll-mt-20 relative py-20 sm:py-28">
+    <section id="forms" className="scroll-mt-20 relative py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
-          <div className="max-w-xl mb-10 sm:mb-14">
+          <div className="max-w-xl mb-8 sm:mb-10">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
               Forms
             </p>
@@ -34,16 +34,14 @@ export function FormLibrary() {
         >
           {supportedForms.map((form) => (
             <StaggerItem key={form.id}>
-              <div className="glass-frame flex h-full min-h-[8.5rem] flex-col justify-between rounded-xl px-4 py-4 transition-colors duration-200 hover:bg-white/[0.03]">
-                <span className="font-mono text-[11px] font-medium tracking-wide text-primary">
+              <div className="glass-frame h-full rounded-xl px-4 py-3.5 transition-[border-color,background-color] duration-200 hover:border-white/20 hover:bg-white/[0.03]">
+                <p className="font-mono text-[11px] font-medium tracking-wide text-primary">
                   {form.id}
-                </span>
-                <div>
-                  <p className="text-[13.5px] font-medium leading-snug text-foreground">
-                    {form.label}
-                  </p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">{form.issuer}</p>
-                </div>
+                </p>
+                <p className="mt-1.5 text-[13.5px] font-medium leading-snug text-foreground">
+                  {form.label}
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{form.issuer}</p>
               </div>
             </StaggerItem>
           ))}

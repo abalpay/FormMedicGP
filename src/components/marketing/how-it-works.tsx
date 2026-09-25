@@ -12,7 +12,7 @@ function IllustrationFrame({ children }: { children: ReactNode }) {
   return (
     <div
       aria-hidden="true"
-      className="glass-frame flex h-40 w-full max-w-sm items-center justify-center overflow-hidden rounded-xl px-6 sm:h-44"
+      className="glass-frame flex h-32 w-full max-w-sm items-center justify-center overflow-hidden rounded-xl px-6 sm:h-36"
     >
       {children}
     </div>
@@ -22,17 +22,23 @@ function IllustrationFrame({ children }: { children: ReactNode }) {
 function SpeakIllustration() {
   return (
     <IllustrationFrame>
-      <div className="w-full max-w-[220px]">
-        <div className="flex h-8 items-end justify-center gap-[3px]">
-          {WAVE.map((h, i) => (
-            <span
-              key={i}
-              className="wave-bar w-[3px] rounded-full bg-primary"
-              style={{ height: `${h * 32}px`, animationDelay: `${i * -0.12}s` }}
-            />
-          ))}
+      <div className="w-full max-w-[240px]">
+        <div className="flex items-center justify-between gap-3">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/[0.06] px-2.5 py-1 text-[11px] font-medium text-primary">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Listening
+          </span>
+          <div className="flex h-6 items-center gap-[3px]">
+            {WAVE.map((h, i) => (
+              <span
+                key={i}
+                className="wave-bar w-[3px] rounded-full bg-primary"
+                style={{ height: `${h * 24}px`, animationDelay: `${i * -0.12}s` }}
+              />
+            ))}
+          </div>
         </div>
-        <div className="mt-5 space-y-1.5">
+        <div className="mt-4 space-y-1.5">
           <span className="block h-2 w-full rounded-full bg-white/10" />
           <span className="inline-block h-2 w-2/3 rounded-full bg-white/10 align-middle" />
           <span className="ml-1 inline-block h-3 w-px align-middle bg-primary motion-safe:animate-pulse" />
@@ -56,6 +62,7 @@ function ProtectedIllustration() {
             </span>
             <span className="h-2 w-12 rounded-full bg-white/10" />
           </p>
+          <span className="block h-2 w-1/2 rounded-full bg-white/10" />
         </div>
       </div>
     </IllustrationFrame>
@@ -108,7 +115,7 @@ const BEATS = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="scroll-mt-20 relative isolate py-20 sm:py-28 lg:py-32">
+    <section id="how-it-works" className="scroll-mt-20 relative isolate py-16 sm:py-24">
       <div
         aria-hidden="true"
         className="bg-grid pointer-events-none absolute inset-0 -z-10 opacity-70"
@@ -120,7 +127,7 @@ export function HowItWorks() {
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
-          <div className="max-w-xl mb-16 sm:mb-24">
+          <div className="max-w-xl mb-10 sm:mb-14">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
               How it works
             </p>
@@ -136,10 +143,10 @@ export function HowItWorks() {
             className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-primary/70 to-white/10"
           />
 
-          <StaggerChildren staggerDelay={0.15} className="space-y-12 sm:space-y-14 lg:space-y-20">
+          <StaggerChildren staggerDelay={0.15} className="space-y-10 lg:space-y-12">
             {BEATS.map((beat) => (
               <StaggerItem key={beat.label}>
-                <div className="grid grid-cols-[2rem_1fr] gap-x-6 gap-y-6 lg:grid-cols-[2rem_22rem_1fr] lg:items-center lg:gap-x-10">
+                <div className="grid grid-cols-[2rem_1fr] gap-x-6 gap-y-5 lg:grid-cols-[2rem_22rem_1fr] lg:items-center lg:gap-x-10">
                   <span
                     aria-hidden="true"
                     className="relative z-10 mx-auto mt-1.5 h-3 w-3 rounded-full bg-primary shadow-[0_0_0_5px_var(--background),0_0_14px_oklch(0.8_0.115_178/0.45)]"
