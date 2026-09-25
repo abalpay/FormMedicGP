@@ -15,7 +15,11 @@ const supportedForms = [
 
 export function FormLibrary() {
   return (
-    <section id="forms" className="scroll-mt-20 relative py-16 sm:py-24">
+    <section id="forms" className="scroll-mt-20 relative py-14 sm:py-20">
+      <div
+        aria-hidden="true"
+        className="glow pointer-events-none absolute top-1/2 -right-[14rem] -z-10 h-[36rem] w-[52rem] -translate-y-1/2 [--glow:oklch(0.795_0.177_78/0.1)]"
+      />
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
           <div className="max-w-xl mb-8 sm:mb-10">

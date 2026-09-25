@@ -6,7 +6,8 @@ import { REPO_URL } from '@/components/marketing/links';
 
 export function CTA() {
   return (
-    <section className="relative py-16 sm:py-24">
+    <section className="relative pt-10 pb-20 sm:pt-14 sm:pb-28">
+      <div aria-hidden="true" className="horizon pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[125%]" />
       <div className="max-w-5xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll preset="fade-up">
           <div className="grain-overlay glass-frame relative isolate overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-16 sm:py-20">

@@ -23,7 +23,8 @@ const linkClass =
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-card/50">
+    <footer className="relative bg-gradient-to-b from-[oklch(0.115_0.012_195)] to-background">
+      <div aria-hidden="true" className="divider-lit pointer-events-none absolute inset-x-0 top-0" />
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-[1fr_auto] gap-x-6 gap-y-8 md:gap-x-28">
           <div className="col-span-2 md:col-span-1 flex flex-col gap-3">

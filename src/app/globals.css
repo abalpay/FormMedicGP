@@ -387,6 +387,14 @@ body:has(.marketing-dark) {
     inset: 0;
     opacity: 0.03;
     pointer-events: none;
+  }
+  /* Page-level grain: tiled (not stretched) so the noise is rendered once per tile */
+  .grain-layer {
+    opacity: 0.025;
+    background-size: 180px 180px;
+  }
+  .grain-overlay::after,
+  .grain-layer {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
 }
@@ -435,6 +443,34 @@ body:has(.marketing-dark) {
     linear-gradient(90deg, oklch(1 0 0 / 0.045) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+
+/* Grid band below the hero: fades in from the top edge and out at the bottom, so it hands off from the hero grid without a seam */
+.bg-grid-band {
+  mask-image: radial-gradient(ellipse 85% 50% at 50% 45%, #000 20%, transparent 85%);
+}
+
+/* Horizon: low wide teal light rising from the bottom edge (CTA into footer) */
+.horizon {
+  background: radial-gradient(
+    ellipse 55% 100% at 50% 100%,
+    oklch(0.7 0.12 180 / 0.2),
+    oklch(0.7 0.12 180 / 0.07) 45%,
+    transparent 75%
+  );
+}
+
+/* Section hairline with light falloff: dark at the edges, faint teal at centre */
+.divider-lit {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(1 0 0 / 0.08) 25%,
+    oklch(0.8 0.115 178 / 0.4) 50%,
+    oklch(1 0 0 / 0.08) 75%,
+    transparent
+  );
 }
 
 /* Soft radial glow; set --glow to the colour */

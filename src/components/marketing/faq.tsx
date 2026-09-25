@@ -41,7 +41,11 @@ const faqItems: FaqItem[] = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="scroll-mt-20 relative py-16 sm:py-24">
+    <section id="faq" className="scroll-mt-20 relative py-14 sm:py-20">
+      <div
+        aria-hidden="true"
+        className="glow pointer-events-none absolute top-[45%] -right-[18rem] -z-10 h-[40rem] w-[56rem] -translate-y-1/2 [--glow:oklch(0.7_0.12_180/0.11)]"
+      />
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
           <div className="text-center max-w-2xl mx-auto mb-10">

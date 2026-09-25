@@ -7,7 +7,7 @@ import { CTA } from '@/components/marketing/cta';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="relative isolate min-h-screen bg-background text-foreground overflow-x-hidden">
       <main>
         <Hero />
         <HowItWorks />
@@ -16,6 +16,8 @@ export default function LandingPage() {
         <FAQ />
         <CTA />
       </main>
+      {/* After <main> so it dithers the section glows beneath it (kills banding). */}
+      <div aria-hidden="true" className="grain-layer pointer-events-none absolute inset-0 -z-10" />
     </div>
   );
 }
