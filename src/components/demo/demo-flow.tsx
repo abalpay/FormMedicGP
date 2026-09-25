@@ -125,6 +125,14 @@ export function DemoFlow({ initialCaseId }: { initialCaseId?: string }) {
     setRunKey((k) => k + 1);
     // Native history API: Next syncs it without refetching the (dynamic) server page.
     window.history.replaceState(null, '', `/demo?case=${next.caseId.toLowerCase()}`);
+    // Single-column layout: the other cards sit between the pick and its dictation.
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      requestAnimationFrame(() =>
+        document.getElementById('demo-dictation')?.scrollIntoView({
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        })
+      );
+    }
   };
 
   const reset = () => {
@@ -197,6 +205,8 @@ function CaseRun({
   const placeholderCount = segments.filter((seg) => seg.placeholder).length;
   const [revealed, setRevealed] = useState(0);
   const [focusedKey, setFocusedKey] = useState<string | null>(null);
+  // Below lg the full dictation pushes "Run pipeline" off-screen, so it starts collapsed.
+  const [dictationOpen, setDictationOpen] = useState(false);
 
   const [showBlank, setShowBlank] = useState(false);
   const { previewUrl, isGenerating, error: pdfError } = usePdfPreview({
@@ -244,7 +254,7 @@ function CaseRun({
       {/* 2 + 3 — Dictation and pipeline */}
       <section className="grid gap-8 lg:grid-cols-2 lg:gap-12" aria-label="Dictation and pipeline">
         <div>
-          <h2 className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">
+          <h2 id="demo-dictation" className="scroll-mt-24 text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">
             2 · The GP&apos;s dictation
           </h2>
           <div className="rounded-xl border bg-card">
@@ -272,8 +282,18 @@ function CaseRun({
               )}
             </dl>
             <div className="p-4 space-y-4">
-              <p className="text-[15px] leading-relaxed text-foreground">{demoCase.transcript}</p>
-              <div>
+              <p className={cn('text-[15px] leading-relaxed text-foreground', !dictationOpen && 'max-lg:line-clamp-4')}>
+                {demoCase.transcript}
+              </p>
+              <button
+                type="button"
+                aria-expanded={dictationOpen}
+                onClick={() => setDictationOpen((open) => !open)}
+                className="lg:hidden -my-3 py-3 text-sm font-medium text-primary underline-offset-2 hover:underline"
+              >
+                {dictationOpen ? 'Show less' : 'Show full dictation'}
+              </button>
+              <div className={cn(!dictationOpen && 'max-lg:hidden')}>
                 <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-2">
                   Guided answers
                 </p>

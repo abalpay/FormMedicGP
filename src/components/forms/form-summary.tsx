@@ -573,7 +573,7 @@ export function FormSummary({
                                 </p>
                               )}
                               {evidence?.[field.key] && (
-                                <p className="truncate text-xs text-muted-foreground" title={evidence[field.key]}>
+                                <p className="line-clamp-1 text-xs text-muted-foreground" title={evidence[field.key]}>
                                   From the dictation: &ldquo;{evidence[field.key]}&rdquo;
                                 </p>
                               )}
