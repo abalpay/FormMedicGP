@@ -43,13 +43,45 @@ function formatDate(iso: string) {
 const PLACEHOLDER_MARK =
   'rounded bg-accent/30 px-1 font-semibold text-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500';
 
-/** Original transcript whose identifiers swap to placeholders as `revealed` counts up. */
-function RedactionReveal({ segments, revealed }: { segments: RedactionSegment[]; revealed: number }) {
+const QUOTE_MARK = 'rounded-sm bg-primary/15 text-foreground transition-colors';
+
+/**
+ * Original transcript whose identifiers swap to placeholders as `revealed` counts up.
+ * Once fully redacted, `quote` (a substring of the redacted text) is highlighted.
+ */
+function RedactionReveal({
+  segments,
+  revealed,
+  quote,
+}: {
+  segments: RedactionSegment[];
+  revealed: number;
+  quote?: string;
+}) {
+  const total = segments.filter((seg) => seg.placeholder).length;
+  const redacted = segments.map((seg) => seg.placeholder ?? seg.text).join('');
+  const qStart = quote && revealed >= total ? redacted.indexOf(quote) : -1;
+  const qEnd = qStart + (quote?.length ?? 0);
   let seen = 0;
+  let pos = 0;
   return (
     <>
       {segments.map((seg, i) => {
-        if (!seg.placeholder) return <Fragment key={i}>{seg.text}</Fragment>;
+        const start = pos;
+        if (!seg.placeholder) {
+          pos += seg.text.length;
+          if (qStart < 0 || qEnd <= start || qStart >= pos) return <Fragment key={i}>{seg.text}</Fragment>;
+          const a = Math.max(qStart, start) - start;
+          const b = Math.min(qEnd, pos) - start;
+          return (
+            <Fragment key={i}>
+              {seg.text.slice(0, a)}
+              <mark className={QUOTE_MARK}>{seg.text.slice(a, b)}</mark>
+              {seg.text.slice(b)}
+            </Fragment>
+          );
+        }
+        pos += seg.placeholder.length;
         return seen++ < revealed ? (
           <mark key={i} className={PLACEHOLDER_MARK}>
             {seg.placeholder}
@@ -164,6 +196,7 @@ function CaseRun({
   );
   const placeholderCount = segments.filter((seg) => seg.placeholder).length;
   const [revealed, setRevealed] = useState(0);
+  const [focusedKey, setFocusedKey] = useState<string | null>(null);
 
   const { previewUrl, isGenerating } = usePdfPreview({
     formType: demoCase.formType,
@@ -302,7 +335,11 @@ function CaseRun({
                       <p className="text-sm font-medium">{label}</p>
                       {i === 0 && status !== 'pending' && (
                         <p className="mt-2 rounded-lg bg-muted/60 p-3 text-sm leading-relaxed whitespace-pre-line text-muted-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
-                          <RedactionReveal segments={segments} revealed={revealed} />
+                          <RedactionReveal
+                            segments={segments}
+                            revealed={revealed}
+                            quote={focusedKey ? demoCase.evidence[focusedKey] : undefined}
+                          />
                         </p>
                       )}
                       {i === 1 && status === 'done' && (
@@ -387,6 +424,8 @@ function CaseRun({
                 data={editableData}
                 missingFields={result.missingFields}
                 onChange={(key, value) => setEditableData((prev) => ({ ...prev, [key]: value }))}
+                evidence={demoCase.evidence}
+                onFieldFocus={setFocusedKey}
               />
             </div>
             <div className="hidden lg:block min-w-0 h-[calc(100dvh-8rem)] sticky top-24">

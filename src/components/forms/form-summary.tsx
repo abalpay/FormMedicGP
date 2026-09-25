@@ -24,6 +24,10 @@ interface FormSummaryProps {
   missingFields?: string[];
   errors?: Record<string, string>;
   onChange: (key: string, value: string) => void;
+  /** Verbatim source quote per field key, shown under the field. */
+  evidence?: Record<string, string>;
+  /** Called with the field key on hover/focus, null on leave/blur. */
+  onFieldFocus?: (key: string | null) => void;
 }
 
 function stringifyValue(value: unknown): string {
@@ -232,8 +236,17 @@ export function FormSummary({
   missingFields = [],
   errors = {},
   onChange,
+  evidence,
+  onFieldFocus,
 }: FormSummaryProps) {
   const [showTechnicalFields, setShowTechnicalFields] = useState(false);
+  const focusHandlers = (key: string) =>
+    onFieldFocus && {
+      onMouseEnter: () => onFieldFocus(key),
+      onMouseLeave: () => onFieldFocus(null),
+      onFocus: () => onFieldFocus(key),
+      onBlur: () => onFieldFocus(null),
+    };
 
   if (!schema) {
     return (
@@ -413,6 +426,7 @@ export function FormSummary({
                                 return (
                                   <Fragment key={`${section.id}-${field.key}`}>
                                     <tr
+                                      {...focusHandlers(field.key)}
                                       className="border-t border-border/70 first:border-t-0 hover:bg-muted/30 transition-colors"
                                     >
                                       <th
@@ -558,12 +572,18 @@ export function FormSummary({
                                   {field.emptyHint}
                                 </p>
                               )}
+                              {evidence?.[field.key] && (
+                                <p className="truncate text-xs text-muted-foreground" title={evidence[field.key]}>
+                                  From the dictation: &ldquo;{evidence[field.key]}&rdquo;
+                                </p>
+                              )}
                             </div>
                           );
 
                           return (
                             <div
                               key={`${section.id}-${field.key}`}
+                              {...focusHandlers(field.key)}
                               className={
                                 field.highlight
                                   ? 'bg-primary/5 border border-primary/10 rounded-lg p-3'
