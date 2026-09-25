@@ -11,68 +11,40 @@ interface FaqItem {
   answer: string;
 }
 
-interface FaqGroup {
-  label: string;
-  items: FaqItem[];
-}
-
-const faqGroups: FaqGroup[] = [
+const faqItems: FaqItem[] = [
   {
-    label: 'Product',
-    items: [
-      {
-        question: 'Which government forms does FormBridge GP support?',
-        answer:
-          'We currently support six Australian government medical forms: Centrelink Medical Certificate (SU415), DSP Medical Evidence (SA478), Carer Payment Medical Report (SA332A), Mobility Allowance Report (MA002), Victorian Certificate of Capacity (TAC/WorkCover), and NDIS Access Request Supporting Evidence. Each form is a JSON schema plus the official PDF template.',
-      },
-      {
-        question: 'How accurate is the AI extraction?',
-        answer:
-          'We have not published accuracy numbers yet — evaluation against hand-labelled fixtures is in progress. Guided prompts cover the fields each form needs, and you review and edit every field before downloading. The AI assists; you make the final call.',
-      },
-      {
-        question: 'Does it work on mobile and tablet?',
-        answer:
-          "Yes. FormBridge GP is fully responsive. The dictation feature uses your device's built-in microphone for real-time speech-to-text on any screen size.",
-      },
-    ],
+    question: 'Which forms are supported?',
+    answer:
+      'Six Australian government medical forms — Centrelink Medical Certificate (SU415), DSP Medical Evidence (SA478), Carer Payment Medical Report (SA332A), Mobility Allowance Report (MA002), Victorian Certificate of Capacity (TAC/WorkCover), and NDIS Access Request Evidence. Each one is filled straight into the official PDF.',
   },
   {
-    label: 'Privacy & Security',
-    items: [
-      {
-        question: 'How does the de-identification pipeline protect patient data?',
-        answer:
-          'Dictation audio is transcribed by Deepgram first. Before clinical notes are sent to the extraction LLM, known identifiers (name, DOB, address, Medicare/CRN, phone, email) are de-identified from the text where detected. Patient details are merged back server-side only for final PDF generation.',
-      },
-      {
-        question: 'Is any patient data stored on your servers?',
-        answer:
-          'Completed forms are saved to your account automatically so you can revisit them; patient records are saved only when you choose. Audio is never stored. Saved records are only visible to your account (Supabase row-level security).',
-      },
-    ],
+    question: 'How accurate is it?',
+    answer:
+      "We haven't published accuracy numbers yet — evaluation against hand-labelled cases is in progress. You review and edit every field before downloading, so a clinician always has the final word.",
   },
   {
-    label: 'About the project',
-    items: [
-      {
-        question: 'Is this a real product?',
-        answer:
-          'Not yet. FormBridge GP is a portfolio project by a solo builder. It is not a registered medical device, it is not clinically deployed, and it has no users yet. The demo runs the real pipeline on fictional patients, and the source code is public on GitHub.',
-      },
-    ],
+    question: 'What happens to patient information?',
+    answer:
+      'Names and identifiers are removed before anything reaches the AI. Audio is never stored. Completed forms are saved to your account automatically so you can find them again.',
+  },
+  {
+    question: 'Does it work on mobile?',
+    answer:
+      "Yes, it's fully responsive, and dictation uses your device's built-in microphone.",
+  },
+  {
+    question: 'Is this a real product?',
+    answer:
+      'Not yet. This is a portfolio project by a solo builder — not a registered medical device, not clinically deployed, and with no users yet. The source code is public.',
   },
 ];
 
 export function FAQ() {
-  let itemIndex = 0;
-
   return (
-    <section id="faq" className="scroll-mt-20 py-20 sm:py-28">
+    <section id="faq" className="scroll-mt-20 relative py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        {/* Section header — centered */}
         <AnimateOnScroll>
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
               FAQ
             </p>
@@ -82,38 +54,20 @@ export function FAQ() {
           </div>
         </AnimateOnScroll>
 
-        {/* Grouped accordions — centered */}
-        <div className="max-w-3xl mx-auto space-y-10">
-          {faqGroups.map((group, groupIndex) => (
-            <AnimateOnScroll key={group.label} delay={groupIndex * 0.1}>
-              <div>
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-4">
-                  {group.label}
-                </p>
-                <Accordion type="single" collapsible className="w-full">
-                  {group.items.map((item) => {
-                    const value = `faq-${itemIndex}`;
-                    itemIndex++;
-                    return (
-                      <AccordionItem
-                        key={value}
-                        value={value}
-                        className="border-border/60"
-                      >
-                        <AccordionTrigger className="text-left text-[15px] font-semibold py-5 hover:no-underline hover:text-primary transition-colors duration-200">
-                          {item.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-5">
-                          {item.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
-              </div>
-            </AnimateOnScroll>
-          ))}
-        </div>
+        <AnimateOnScroll delay={0.1} className="max-w-3xl mx-auto">
+          <Accordion type="single" collapsible className="w-full">
+            {faqItems.map((item, index) => (
+              <AccordionItem key={item.question} value={`faq-${index}`} className="border-border/60">
+                <AccordionTrigger className="text-left text-[15px] font-semibold py-5 hover:no-underline hover:text-primary transition-colors duration-200">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-5">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </AnimateOnScroll>
       </div>
     </section>
   );

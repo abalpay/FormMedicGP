@@ -27,14 +27,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-10 md:gap-16">
           <div className="flex flex-col gap-3">
             <BrandLogo
-              variant="sidebar"
+              variant="sidebarOnDark"
               alt="FormBridge GP"
               className="h-7 w-auto"
               sizes="170px"
             />
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Voice-to-form automation for Australian government medical forms.
-              An open-source portfolio project.
+              Voice to official medical forms for Australian GPs. An open-source
+              portfolio project.
             </p>
           </div>
 
