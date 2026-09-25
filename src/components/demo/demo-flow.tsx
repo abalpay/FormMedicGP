@@ -7,6 +7,7 @@ import { FormSummary } from '@/components/forms/form-summary';
 import { MissingFieldsNotice } from '@/components/forms/missing-fields-notice';
 import { PdfPreviewPanel } from '@/components/forms/pdf-preview-panel';
 import { usePdfPreview } from '@/hooks/use-pdf-preview';
+import { buildRedactionSegments, type RedactionSegment } from '@/lib/demo/redaction';
 import { DEMO_CASES, getDemoCase, runDemoPipeline, type DemoCase } from '@/lib/demo/scenarios';
 import { buildPdfFilename, getPatientIdentity } from '@/lib/pdf-filename';
 import { getFormSchema } from '@/lib/schemas';
@@ -25,7 +26,10 @@ const STEPS = [
 // -1 = not started, 0..2 = running that step (stage 3 = done is derived)
 type Step = -1 | 0 | 1 | 2;
 
-const PLACEHOLDER_RE = /(\[[A-Z_]+\])/g;
+// Reveal timing: hold the original so the identifier is readable, then swap one per tick.
+const REVEAL_HOLD_MS = 450;
+const REVEAL_STAGGER_MS = 120;
+const REVEAL_TAIL_MS = 450;
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-AU', {
@@ -36,23 +40,32 @@ function formatDate(iso: string) {
   });
 }
 
-function HighlightedText({ text }: { text: string }) {
+const PLACEHOLDER_MARK =
+  'rounded bg-accent/30 px-1 font-semibold text-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500';
+
+/** Original transcript whose identifiers swap to placeholders as `revealed` counts up. */
+function RedactionReveal({ segments, revealed }: { segments: RedactionSegment[]; revealed: number }) {
+  let seen = 0;
   return (
     <>
-      {text.split(PLACEHOLDER_RE).map((part, i) =>
-        i % 2 === 1 ? (
-          <mark
-            key={i}
-            className="rounded bg-accent/30 px-1 font-semibold text-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500"
-          >
-            {part}
+      {segments.map((seg, i) => {
+        if (!seg.placeholder) return <Fragment key={i}>{seg.text}</Fragment>;
+        return seen++ < revealed ? (
+          <mark key={i} className={PLACEHOLDER_MARK}>
+            {seg.placeholder}
           </mark>
         ) : (
-          <Fragment key={i}>{part}</Fragment>
-        )
-      )}
+          <span key={i} className="text-foreground underline decoration-accent decoration-2 underline-offset-2">
+            {seg.text}
+          </span>
+        );
+      })}
     </>
   );
+}
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 function guidedAnswerRows(demoCase: DemoCase) {
@@ -145,6 +158,12 @@ function CaseRun({
   const result = useMemo(() => runDemoPipeline(demoCase), [demoCase]);
   const [editableData, setEditableData] = useState<Record<string, unknown>>(result.extractedData);
   const [step, setStep] = useState<Step>(autoRun ? 0 : -1);
+  const segments = useMemo(
+    () => buildRedactionSegments(result.transcriptionForLlm, result.deidentified.deidentifiedText),
+    [result]
+  );
+  const placeholderCount = segments.filter((seg) => seg.placeholder).length;
+  const [revealed, setRevealed] = useState(0);
 
   const { previewUrl, isGenerating } = usePdfPreview({
     formType: demoCase.formType,
@@ -154,12 +173,23 @@ function CaseRun({
   // The last step finishes only when the PDF has really been filled in the browser.
   const stage = step === 2 && previewUrl ? 3 : step;
 
+  // Step 0: redact identifiers one by one (instant under reduced motion).
+  useEffect(() => {
+    if (step !== 0) return;
+    const delay = (i: number) => (prefersReducedMotion() ? 0 : REVEAL_HOLD_MS + i * REVEAL_STAGGER_MS);
+    const timers = Array.from({ length: placeholderCount }, (_, i) =>
+      setTimeout(() => setRevealed(i + 1), delay(i))
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [step, placeholderCount]);
+
   // Steps 0 and 1 are short, fixed reveals of work already done in memory.
   useEffect(() => {
     if (step !== 0 && step !== 1) return;
-    const timer = setTimeout(() => setStep((s) => (s + 1) as Step), step === 0 ? 600 : 450);
+    const revealMs = REVEAL_HOLD_MS + placeholderCount * REVEAL_STAGGER_MS + REVEAL_TAIL_MS;
+    const timer = setTimeout(() => setStep((s) => (s + 1) as Step), step === 0 ? revealMs : 450);
     return () => clearTimeout(timer);
-  }, [step]);
+  }, [step, placeholderCount]);
 
   const handleDownload = () => {
     if (!previewUrl) return;
@@ -272,7 +302,7 @@ function CaseRun({
                       <p className="text-sm font-medium">{label}</p>
                       {i === 0 && status !== 'pending' && (
                         <p className="mt-2 rounded-lg bg-muted/60 p-3 text-sm leading-relaxed whitespace-pre-line text-muted-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
-                          <HighlightedText text={result.deidentified.deidentifiedText} />
+                          <RedactionReveal segments={segments} revealed={revealed} />
                         </p>
                       )}
                       {i === 1 && status === 'done' && (
