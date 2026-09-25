@@ -230,7 +230,7 @@ export default function FormReviewPage() {
 
       {/* Pinned footer — solid, no scroll on this page */}
       <div className="shrink-0 border-t bg-card py-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-        <div className="max-w-5xl mx-auto w-full px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="w-full px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <Button variant="ghost" onClick={handleBackToDescribe} disabled={saveStatus === 'saving'}>
             <>
               <ArrowLeft className="w-4 h-4 mr-1.5" />
