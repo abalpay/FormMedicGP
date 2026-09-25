@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { ArrowRight, Check, Download, Loader2, RotateCcw, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Check, Download, Loader2, RotateCcw, ShieldCheck, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FormSummary } from '@/components/forms/form-summary';
 import { MissingFieldsNotice } from '@/components/forms/missing-fields-notice';
@@ -198,13 +198,15 @@ function CaseRun({
   const [revealed, setRevealed] = useState(0);
   const [focusedKey, setFocusedKey] = useState<string | null>(null);
 
-  const { previewUrl, isGenerating } = usePdfPreview({
+  const [showBlank, setShowBlank] = useState(false);
+  const { previewUrl, isGenerating, error: pdfError } = usePdfPreview({
     formType: demoCase.formType,
     editableData,
     enabled: step >= 2,
   });
   // The last step finishes only when the PDF has really been filled in the browser.
   const stage = step === 2 && previewUrl ? 3 : step;
+  const pdfFailed = step === 2 && !previewUrl && Boolean(pdfError);
 
   // Step 0: redact identifiers one by one (instant under reduced motion).
   useEffect(() => {
@@ -307,7 +309,8 @@ function CaseRun({
           ) : (
             <ol className="space-y-5" aria-live="polite">
               {STEPS.map((label, i) => {
-                const status = stage > i ? 'done' : stage === i ? 'active' : 'pending';
+                const status =
+                  stage > i ? 'done' : stage === i ? (i === 2 && pdfFailed ? 'failed' : 'active') : 'pending';
                 return (
                   <li
                     key={label}
@@ -320,11 +323,14 @@ function CaseRun({
                       className={cn(
                         'mt-0.5 flex h-6 w-6 items-center justify-center rounded-full border text-xs',
                         status === 'done' && 'border-primary bg-primary text-primary-foreground',
-                        status === 'active' && 'border-primary text-primary'
+                        status === 'active' && 'border-primary text-primary',
+                        status === 'failed' && 'border-destructive text-destructive'
                       )}
                     >
                       {status === 'done' ? (
                         <Check className="w-3.5 h-3.5" />
+                      ) : status === 'failed' ? (
+                        <X className="w-3.5 h-3.5" />
                       ) : status === 'active' ? (
                         <Loader2 className="w-3.5 h-3.5 motion-safe:animate-spin" />
                       ) : (
@@ -347,6 +353,14 @@ function CaseRun({
                           {Object.keys(demoCase.llmData).length} clinical fields returned by{' '}
                           <code className="text-xs">{demoCase.model}</code>, run on{' '}
                           {formatDate(demoCase.generatedAt)}. Only the de-identified text above was sent.
+                        </p>
+                      )}
+                      {status === 'failed' && (
+                        <p className="mt-1 text-sm text-destructive" role="alert">
+                          Couldn&apos;t load the PDF template.{' '}
+                          <button type="button" onClick={onReset} className="underline underline-offset-2">
+                            Try again
+                          </button>
                         </p>
                       )}
                       {i === 2 && status === 'done' && (
@@ -428,8 +442,35 @@ function CaseRun({
                 onFieldFocus={setFocusedKey}
               />
             </div>
-            <div className="hidden lg:block min-w-0 h-[calc(100dvh-8rem)] sticky top-24">
-              <PdfPreviewPanel previewUrl={previewUrl} isLoading={isGenerating} fullWidth fillContainer />
+            <div className="hidden lg:flex flex-col gap-3 min-w-0 h-[calc(100dvh-8rem)] sticky top-24">
+              <div role="group" aria-label="PDF view" className="inline-flex self-start rounded-full border bg-muted/40 p-0.5 text-sm">
+                {(['Filled', 'Blank template'] as const).map((label) => {
+                  const pressed = showBlank === (label === 'Blank template');
+                  return (
+                    <button
+                      key={label}
+                      type="button"
+                      aria-pressed={pressed}
+                      onClick={() => setShowBlank(label === 'Blank template')}
+                      className={cn(
+                        'rounded-full px-3.5 py-1 transition-colors duration-200',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                        pressed ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                      )}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex-1 min-h-0">
+                <PdfPreviewPanel
+                  previewUrl={showBlank ? `/api/form-template/${demoCase.formType}` : previewUrl}
+                  isLoading={!showBlank && isGenerating}
+                  fullWidth
+                  fillContainer
+                />
+              </div>
             </div>
           </div>
         </section>
