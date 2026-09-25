@@ -5,6 +5,8 @@ import type { FormSchema, ExtractedFormData } from '@/types';
 
 const anthropic = new Anthropic();
 
+export const EXTRACTION_MODEL = 'claude-sonnet-5';
+
 export async function extractFormData(
   deidentifiedText: string,
   schema: FormSchema
@@ -57,8 +59,8 @@ Clinical Notes:
 ${deidentifiedText}`;
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 2048,
+    model: EXTRACTION_MODEL,
+    max_tokens: 8192,
     system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
   });
