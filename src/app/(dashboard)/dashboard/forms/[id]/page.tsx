@@ -37,6 +37,7 @@ export default function FormReviewPage() {
     pdfBlobUrl,
     missingFields,
     reviewSchema,
+    patientId,
     reset,
   } = useFormFlowStore();
   // Store is populated before navigating here (no persist), so seed once on mount.
@@ -78,7 +79,7 @@ export default function FormReviewPage() {
             formName: selectedFormLabel,
             extractedData: editableData,
             pdfBase64: await blobUrlToBase64(previewUrl),
-            patientId: null,
+            patientId,
             ...getPatientIdentity(editableData),
           }),
         });
@@ -97,7 +98,7 @@ export default function FormReviewPage() {
     };
 
     autoSave();
-  }, [previewUrl, selectedFormType, selectedFormLabel, editableData, router]);
+  }, [previewUrl, selectedFormType, selectedFormLabel, editableData, patientId, router]);
 
   // Persist edits: once the form exists, re-save ~1.5s after the preview
   // has caught up with the latest edit (previewUrl is derived from editableData).

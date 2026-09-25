@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,9 @@ import { ShieldCheck, ArrowRight } from 'lucide-react';
 interface PatientDetailsFormProps {
   formType?: string | null;
   initialValues?: Partial<PatientDetails>;
-  onSubmit: (data: PatientDetails) => void;
+  /** Saved patient the initial values came from, if any. */
+  initialPatientId?: string | null;
+  onSubmit: (data: PatientDetails, patientId: string | null) => void;
   onBack: () => void;
   showSaveOption?: boolean;
   onSavePatientChange?: (save: boolean) => void;
@@ -30,6 +32,7 @@ interface PatientDetailsFormProps {
 export function PatientDetailsForm({
   formType,
   initialValues,
+  initialPatientId = null,
   onSubmit,
   onBack,
   showSaveOption,
@@ -39,6 +42,8 @@ export function PatientDetailsForm({
     () => getPatientDetailsValidationSchema(formType),
     [formType]
   );
+  // Kept even if the doctor edits the picked patient's fields afterwards.
+  const [selectedPatientId, setSelectedPatientId] = useState(initialPatientId);
   const formConfig = useMemo(
     () => getPatientDetailsFormConfig(formType),
     [formType]
@@ -65,10 +70,11 @@ export function PatientDetailsForm({
   const handlePatientSelect = (patient: Patient) => {
     const formDetails = patientToFormDetails(patient);
     reset(formDetails);
+    setSelectedPatientId(patient.id);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit((data) => onSubmit(data, selectedPatientId))} className="space-y-6">
       <div>
         <h3 className="text-sm font-medium text-foreground">{formConfig.title}</h3>
         <p className="text-xs text-muted-foreground mt-0.5">
@@ -195,7 +201,10 @@ export function PatientDetailsForm({
             Back
           </Button>
           <div className="flex items-center gap-3">
-            {showSaveOption && (
+            {showSaveOption && selectedPatientId && (
+              <span className="text-xs text-muted-foreground">Saved patient</span>
+            )}
+            {showSaveOption && !selectedPatientId && (
               <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
                 <input
                   type="checkbox"

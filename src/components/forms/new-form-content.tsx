@@ -15,7 +15,7 @@ import {
   formatDoctorProfileFieldLabel,
   getMissingDoctorProfileFields,
 } from '@/lib/doctor-profile-requirements';
-import type { DoctorProfile, FormCatalogItem, PatientDetails } from '@/types';
+import type { DoctorProfile, FormCatalogItem, Patient, PatientDetails } from '@/types';
 import { toast } from 'sonner';
 
 import { AlertCircle, Sparkles } from 'lucide-react';
@@ -34,7 +34,7 @@ interface NewFormContentProps {
 
 export function NewFormContent({ catalog, doctorProfile }: NewFormContentProps) {
   const router = useRouter();
-  const { selectedFormType, selectedFormLabel, patientDetails, currentStep: storeStep, setFormType, setPatientDetails, setStep } =
+  const { selectedFormType, selectedFormLabel, patientDetails, patientId, currentStep: storeStep, setFormType, setPatientDetails, setStep } =
     useFormFlowStore();
   const [currentStep, setCurrentStep] = useState(() => {
     if (storeStep === 'patient-details' || storeStep === 'dictate') return 1;
@@ -61,21 +61,29 @@ export function NewFormContent({ catalog, doctorProfile }: NewFormContentProps) 
     setCurrentStep(1);
   };
 
-  const handlePatientDetailsSubmit = async (data: PatientDetails) => {
-    if (savePatient) {
+  const handlePatientDetailsSubmit = async (
+    data: PatientDetails,
+    selectedPatientId: string | null
+  ) => {
+    let linkedPatientId = selectedPatientId;
+    // A picked patient is already saved — never POST a duplicate.
+    if (savePatient && !linkedPatientId) {
       try {
         const res = await fetch('/api/patients', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formDetailsToPatientBody(data)),
         });
-        if (res.ok) toast.success('Patient saved');
-        else toast.error('Failed to save patient');
+        if (res.ok) {
+          const { patient } = (await res.json()) as { patient: Patient };
+          linkedPatientId = patient.id;
+          toast.success('Patient saved');
+        } else toast.error('Failed to save patient');
       } catch {
         toast.error('Failed to save patient');
       }
     }
-    setPatientDetails(data);
+    setPatientDetails(data, linkedPatientId);
     setStep('dictate');
     router.push('/dashboard/dictate');
   };
@@ -126,6 +134,7 @@ export function NewFormContent({ catalog, doctorProfile }: NewFormContentProps) 
               <PatientDetailsForm
                 formType={selectedFormType}
                 initialValues={patientDetails}
+                initialPatientId={patientId}
                 onSubmit={handlePatientDetailsSubmit}
                 onBack={handleBackToFormSelection}
                 showSaveOption
