@@ -16,6 +16,7 @@ import { getFormSchema } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import type { ExtractedFormData } from '@/types';
 
+const GUIDED_SPLIT = '\n\nGUIDED ANSWERS:';
 const LIVE_MODE_NOTE = 'Editing the dictation needs live mode, which is off right now.';
 
 const STEPS = [
@@ -163,7 +164,7 @@ export function DemoFlow({ initialCaseId }: { initialCaseId?: string }) {
   const reset = () => {
     setAutoRun(false);
     setRunKey((k) => k + 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
   };
 
   return (
@@ -247,9 +248,22 @@ function CaseRun({
   );
   const [editableData, setEditableData] = useState<Record<string, unknown>>(result.extractedData);
   const [step, setStep] = useState<Step>(autoRun ? 0 : -1);
+  // Reveal only the dictation; guided answers are listed in the dictation card.
   const segments = useMemo(
-    () => buildRedactionSegments(result.transcriptionForLlm, result.deidentified.deidentifiedText),
+    () =>
+      buildRedactionSegments(
+        result.transcriptionForLlm.split(GUIDED_SPLIT)[0],
+        result.deidentified.deidentifiedText.split(GUIDED_SPLIT)[0]
+      ),
     [result]
+  );
+  // Guided-answer quotes end in the raw option value, e.g. "... (up_to_13_weeks)".
+  const evidence = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(demoCase.evidence).map(([key, quote]) => [key, quote.replace(/ \([a-z0-9_]+\)$/, '')])
+      ),
+    [demoCase.evidence]
   );
   const placeholderCount = segments.filter((seg) => seg.placeholder).length;
   const [revealed, setRevealed] = useState(0);
@@ -514,7 +528,7 @@ function CaseRun({
                           <RedactionReveal
                             segments={segments}
                             revealed={revealed}
-                            quote={focusedKey && !live ? demoCase.evidence[focusedKey] : undefined}
+                            quote={focusedKey && !live ? evidence[focusedKey] : undefined}
                           />
                         </p>
                       )}
@@ -558,11 +572,11 @@ function CaseRun({
               </h2>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="teal" className="rounded-full px-5" onClick={handleDownload} disabled={!previewUrl}>
+              <Button variant="teal" className="h-11 lg:h-9 rounded-full px-5" onClick={handleDownload} disabled={!previewUrl}>
                 <Download className="w-4 h-4" aria-hidden="true" />
                 Download PDF
               </Button>
-              <Button variant="outline" className="rounded-full px-5" onClick={onReset}>
+              <Button variant="outline" className="h-11 lg:h-9 rounded-full px-5" onClick={onReset}>
                 <RotateCcw className="w-4 h-4" aria-hidden="true" />
                 Try another form
               </Button>
@@ -612,7 +626,7 @@ function CaseRun({
                 data={editableData}
                 missingFields={result.missingFields}
                 onChange={(key, value) => setEditableData((prev) => ({ ...prev, [key]: value }))}
-                evidence={live ? undefined : demoCase.evidence}
+                evidence={live ? undefined : evidence}
                 onFieldFocus={setFocusedKey}
               />
             </div>

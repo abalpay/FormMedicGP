@@ -252,7 +252,7 @@ export function FormSummary({
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Mapped Fields</CardTitle>
+          <CardTitle className="text-base">Form fields</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -287,7 +287,7 @@ export function FormSummary({
   return (
     <Card className="shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <CardTitle className="text-base font-[family-name:var(--font-display)]">Mapped Fields</CardTitle>
+        <CardTitle className="text-base font-normal font-[family-name:var(--font-display)]">Form fields</CardTitle>
         <div className="flex items-center gap-2">
           {!isCapacityForm && technicalFieldCount > 0 && (
             <button
