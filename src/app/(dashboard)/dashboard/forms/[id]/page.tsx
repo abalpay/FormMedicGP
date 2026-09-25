@@ -1,35 +1,16 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FilePlus, ArrowLeft, AlertCircle, Check, Download, Loader2 } from 'lucide-react';
+import { FilePlus, ArrowLeft, Check, Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FormSummary } from '@/components/forms/form-summary';
+import { MissingFieldsNotice } from '@/components/forms/missing-fields-notice';
 import { PdfPreviewPanel } from '@/components/forms/pdf-preview-panel';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import { usePdfPreview } from '@/hooks/use-pdf-preview';
 import { toast } from 'sonner';
-
-function buildPdfFilename(
-  formType: string | null,
-  patientName: string | null,
-  patientDob: string | null,
-): string {
-  const parts: string[] = [];
-  if (formType) parts.push(formType);
-  if (patientName) parts.push(patientName.replace(/\s+/g, '-'));
-  if (patientDob) parts.push(patientDob);
-  parts.push(new Date().toISOString().slice(0, 10));
-  return `${parts.join('_')}.pdf`;
-}
-
-function getPatientIdentity(data: Record<string, unknown>) {
-  const patientName = typeof data.fullName === 'string' ? data.fullName
-    : typeof data.customerName === 'string' ? data.customerName
-    : null;
-  const patientDob = typeof data.dateOfBirth === 'string' ? data.dateOfBirth : null;
-  return { patientName, patientDob };
-}
+import { buildPdfFilename, getPatientIdentity } from '@/lib/pdf-filename';
 
 async function blobUrlToBase64(url: string): Promise<string> {
   const bytes = new Uint8Array(await (await fetch(url)).arrayBuffer());
@@ -139,20 +120,6 @@ export default function FormReviewPage() {
     return () => clearTimeout(timer);
   }, [savedFormId, previewUrl, isGenerating, editableData]);
 
-  // Required fields the LLM couldn't fill that are still blank.
-  const outstandingMissing = useMemo(() => {
-    const labels = new Map<string, string>();
-    for (const section of reviewSchema?.sections ?? []) {
-      for (const field of section.fields) labels.set(field.key, field.label);
-    }
-    return missingFields
-      .filter((key) => {
-        const value = editableData[key];
-        return value == null || String(value).trim() === '';
-      })
-      .map((key) => labels.get(key) ?? key);
-  }, [missingFields, reviewSchema, editableData]);
-
   useEffect(() => {
     if (saveStatus !== 'saving') return;
 
@@ -197,20 +164,11 @@ export default function FormReviewPage() {
     <div className="flex-1 min-h-0 flex flex-col -m-4 lg:-m-6">
       <div className="flex-1 min-h-0 flex gap-4 w-full px-4 pt-2 pb-1">
         <div className="w-full lg:w-2/5 min-h-0 overflow-y-auto space-y-3 pb-2">
-          {outstandingMissing.length > 0 && (
-            <div className="flex gap-2.5 p-3 rounded-lg border border-warning/30 bg-warning/5" role="status">
-              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-warning" />
-              <div className="min-w-0 text-sm">
-                <p className="font-medium text-foreground">
-                  {outstandingMissing.length} required field{outstandingMissing.length === 1 ? '' : 's'}{' '}
-                  {outstandingMissing.length === 1 ? "wasn't" : "weren't"} in your dictation
-                </p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {outstandingMissing.join(', ')}
-                </p>
-              </div>
-            </div>
-          )}
+          <MissingFieldsNotice
+            missingFields={missingFields}
+            reviewSchema={reviewSchema}
+            data={editableData}
+          />
           <FormSummary
             schema={reviewSchema}
             data={editableData}

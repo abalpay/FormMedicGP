@@ -3,11 +3,12 @@ import { BrandLogo } from '@/components/brand/brand-logo';
 import { Button } from '@/components/ui/button';
 
 const navLinks = [
-  { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Forms', href: '#forms' },
-  { label: 'Privacy', href: '#privacy' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Features', href: '/#features' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Forms', href: '/#forms' },
+  { label: 'Privacy', href: '/#privacy' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Demo', href: '/demo' },
 ];
 
 export function Navbar() {
@@ -49,6 +50,9 @@ export function Navbar() {
 
         {/* Mobile CTAs */}
         <div className="md:hidden flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="text-[13px] font-medium" asChild>
+            <Link href="/demo">Demo</Link>
+          </Button>
           <Button variant="ghost" size="sm" className="text-[13px] font-medium" asChild>
             <Link href="/login">Sign In</Link>
           </Button>

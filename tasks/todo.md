@@ -45,13 +45,15 @@
 - [x] README URL fixed. Verified: lint clean, `pnpm build` passes, visual check of form grid
 
 ### 14.1 Zero-cost interactive demo (1.5–2 days)
-- [ ] `src/lib/reidentify.ts`: remove `import 'server-only'`
-- [ ] `scripts/generate-demo-extractions.mjs`: per fixture, guided payload → deidentify → extractFormData → write `src/lib/demo/extractions/<ID>.json` `{formType, model, generatedAt, deidentifiedText, llmData, missingFields, evidence}`; also ask for a source-sentence quote per field (feeds 14.2 highlight; cached so free)
-- [ ] `src/lib/demo/scenarios.ts`: fixtures + cached extractions, fictional `DEMO_DOCTOR`, `runDemoPipeline()` reusing lib functions (mergeGuidedOverrides, reidentify, buildReviewSchema). Default SU415; exclude SA332A
-- [ ] `src/app/(marketing)/demo/page.tsx` + `src/components/demo/demo-flow.tsx`: scenario picker → transcript + live de-identified panel (redaction highlighted) → FormSummary + PdfPreviewPanel via `usePdfPreview` → Download. Honest cached-mode banner; transcript edits in cached mode clearly say "enter access code to re-run live"
-- [ ] Deep links: `/demo?case=su415` auto-starts that scenario (link in applications)
-- [ ] Mobile: FormSummary + Download first; PDF iframe only at `lg:`
+- [x] `src/lib/reidentify.ts`: remove `import 'server-only'`
+- [x] `scripts/generate-demo-extractions.mjs`: per fixture, guided payload → deidentify → extractFormData → write `src/lib/demo/extractions/<ID>.json` `{formType, model, generatedAt, deidentifiedText, llmData, missingFields, evidence}`; also ask for a source-sentence quote per field (feeds 14.2 highlight; cached so free)
+- [x] `src/lib/demo/scenarios.ts`: fixtures + cached extractions, fictional `DEMO_DOCTOR`, `runDemoPipeline()` reusing lib functions (mergeGuidedOverrides, reidentify, buildReviewSchema). Default SU415; exclude SA332A
+- [x] `src/app/(marketing)/demo/page.tsx` + `src/components/demo/demo-flow.tsx`: scenario picker → transcript + live de-identified panel (redaction highlighted) → FormSummary + PdfPreviewPanel via `usePdfPreview` → Download. Honest cached-mode banner; transcript edits in cached mode clearly say "enter access code to re-run live"
+- [x] Deep links: `/demo?case=su415` auto-starts that scenario (link in applications)
+- [x] Mobile: FormSummary + Download first; PDF iframe only at `lg:`
 - [ ] Navbar + hero + CTA: primary "Try the live demo — no signup"; waitlist secondary
+- Note 2026-09-25: `claude-sonnet-4-20250514` was retired (404) — production switched to `claude-sonnet-5` (`EXTRACTION_MODEL` in llm.ts). Navbar hero/CTA item left for 14.3; only a Demo nav link added.
+- Finding: under the current prompt the model fills every required field (dates default to today, treatment invented when not dictated). SU415_BRIEF surfaces this via `unsupportedFields` (required fields with no evidence quote) instead of `missingFields`.
 
 ### 14.2 "Wow" moments (small, high-impact)
 - [ ] De-identification reveal animation: names/DOB/CRN flash to `[PATIENT]` etc. before extraction, then restore on the filled form
