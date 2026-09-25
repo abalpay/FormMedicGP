@@ -56,11 +56,13 @@
 - Finding: under the current prompt the model fills every required field (dates default to today, treatment invented when not dictated). SU415_BRIEF surfaces this via `unsupportedFields` (required fields with no evidence quote) instead of `missingFields`.
 
 ### 14.2 "Wow" moments (small, high-impact)
-- [ ] De-identification reveal animation: names/DOB/CRN flash to `[PATIENT]` etc. before extraction, then restore on the filled form
-- [ ] Source highlighting: hover a field → highlight the transcript sentence it came from (uses cached `evidence`)
+- [x] De-identification reveal animation: original transcript shown, identifiers swap to placeholders one by one (`buildRedactionSegments` in `src/lib/demo/redaction.ts`, test `tests/demo-redaction.test.mjs`; reduced motion = instant). Note: each fixture dictation contains only the patient name, so every case reveals one `[PATIENT]`
+- [x] Source highlighting: `FormSummary` optional `evidence` + `onFieldFocus`; quote line under each field; hover/focus highlights the quote in the de-identified panel (dashboard passes neither)
 - [ ] Missing-info prompt: one scenario deliberately omits prognosis; wire `missing-field-prompts.tsx` to show "Prognosis not mentioned — add it?"
-- [ ] Before/after: blank official PDF vs filled, with time comparison
-- [ ] End-of-demo "Try another form" to show schema-driven design
+- [x] Before/after: Filled / Blank template toggle above the PDF (`lg:`); `usePdfPreview` now returns `error`, demo shows "Couldn't load the PDF template" instead of spinning
+- Time comparison intentionally omitted (honesty rule: no unmeasured time claims)
+- [x] Mobile: dictation collapsed to 4 lines below `lg:` + scroll to it on case pick, so Run pipeline is within one 390×844 screen
+- [x] End-of-demo "Try another form" to show schema-driven design (shipped in 14.1)
 - [ ] 60s Loom walkthrough (owner on camera) embedded in hero + used in applications
 
 ### 14.3 Landing redesign for GPs + hiring engineers (1–2 days)
