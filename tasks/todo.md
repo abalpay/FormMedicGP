@@ -116,6 +116,14 @@
 - Hero: 15s recorded mic clip vs no mic on public site
 - Access code: in applications only, or also on request?
 
+### Review (2026-09-25)
+Delivered on branch `abalpay/check-prod-deployment-status`, 33 commits (343bba7..90b08eb), nothing pushed.
+- **Shipped:** 14.0, 14.1, 14.2 (Loom = owner), 14.3, 14.5 (route + UI; spend limits + Vercel env = owner), 14.7 (all except the "Later" list). 14.4 not started (owner hand-labelling); landing says "evaluation in progress", no numbers.
+- **Bug found and fixed on the way:** production model `claude-sonnet-4-20250514` had been retired (404) — `/api/process-form` was broken; now `EXTRACTION_MODEL = 'claude-sonnet-5'` in `src/lib/llm.ts`.
+- **Verification:** `pnpm -s lint` — 5 pre-existing problems in untouched files (`form-flow-store.ts` any, `tests/form-review/helpers/*` any, one RHF `watch` warning); `pnpm -s build` 0 errors; `pnpm test` 124/124 (stale `backend-mappers` expectation fixed); `node scripts/smoke-fill-forms.mjs` OK. Dashboard flows verified by build/tests/review only (local Supabase not running); `/` and `/demo` verified in Playwright at 1440/390px incl. reduced-motion, focus, contrast.
+- **Secret scan** of full history (`git log -p` key patterns + entropy sweep): clean; `.env*` never committed.
+- **Known / for the owner:** with the current prompt Sonnet fills required fields it has no evidence for (demo SU415_BRIEF: invented a treatment) — prompt/eval decision, surfaced honestly in the demo as "not stated in the dictation". Demo transcripts contain only the patient name, so the redaction reveal shows one placeholder per case; richer fixtures need a paid `pnpm demo:cache --force` re-run. Faint focus rings on shared `Input`/`Textarea`/segmented buttons; Tab cycling inside the PDF iframe needs a real-browser check. `Docs/plans/*landing-page-audit*` still mention the waitlist (historical docs, left as-is).
+
 ---
 
 ## Phase 10: Patient Management UI
