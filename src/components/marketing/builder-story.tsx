@@ -17,17 +17,17 @@ export function BuilderStory() {
             Who built this
           </p>
           <h2 className="mt-4 text-2xl sm:text-3xl tracking-tight font-[family-name:var(--font-display)]">
-            One builder, a real problem, no users yet.
+            Built solo, for a real problem.
           </h2>
           <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-muted-foreground">
             <p>
-              FormBridge GP is a portfolio project by a solo builder who works in a school by
-              day, building toward health-AI engineering roles.
+              GPs lose hours to government paperwork. FormBridge GP is a portfolio project by a
+              solo builder who works in a school by day.
             </p>
             <p>
-              It isn&apos;t clinically deployed and has no users. The live demo runs the real
-              pipeline on fictional patients, and the source is public so you can check every
-              claim on this page.
+              It isn&apos;t clinically deployed yet. The live demo runs the real pipeline on
+              fictional patients, and the source is public so you can check every claim on this
+              page.
             </p>
           </div>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 border-t border-white/10 pt-6 text-sm font-medium">

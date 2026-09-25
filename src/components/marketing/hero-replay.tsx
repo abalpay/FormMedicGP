@@ -6,13 +6,15 @@ import type { RedactionSegment } from '@/lib/demo/redaction';
 import { cn } from '@/lib/utils';
 
 // Timeline (ms) of one loop.
-const TYPE_END = 4800;
-const REDACT_AT = 5300;
-const FIELDS_AT = 6300;
-const FIELD_STEP = 450;
-const DONE_AT = 9000;
-const LOOP = 13500;
+const TYPE_END = 3000;
+const REDACT_AT = 3400;
+const FIELDS_AT = 4100;
+const FIELD_STEP = 350;
+const DONE_AT = 6400;
+const LOOP = 11000;
 const TICK = 50;
+// Hold the completed frame on first paint so the payoff is visible immediately.
+const INITIAL_HOLD = 3000;
 
 const BEATS = ['Speak', 'Protected', 'Filled'];
 const WAVE = [0.55, 0.9, 0.4, 1, 0.65, 0.8, 0.45];
@@ -28,15 +30,21 @@ export function HeroReplay({
   formLabel: string;
   formId: string;
 }) {
-  // Server render + reduced motion show the final state; the first tick wraps to 0.
+  // Server render + reduced motion show the final state; after INITIAL_HOLD the first tick wraps to 0.
   const [ms, setMs] = useState(LOOP);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = window.setInterval(() => {
-      if (!document.hidden) setMs((t) => (t + TICK) % LOOP);
-    }, TICK);
-    return () => window.clearInterval(id);
+    let id: number | undefined;
+    const hold = window.setTimeout(() => {
+      id = window.setInterval(() => {
+        if (!document.hidden) setMs((t) => (t + TICK) % LOOP);
+      }, TICK);
+    }, INITIAL_HOLD);
+    return () => {
+      window.clearTimeout(hold);
+      window.clearInterval(id);
+    };
   }, []);
 
   const totalChars = segments.reduce((n, s) => n + s.text.length, 0);
