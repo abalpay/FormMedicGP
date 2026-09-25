@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { StepIndicator } from '@/components/ui/step-indicator';
 import { FormSelector } from '@/components/forms/form-selector';
@@ -9,10 +10,15 @@ import { PatientDetailsForm } from '@/components/forms/patient-details-form';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import { formDetailsToPatientBody } from '@/lib/patient-mappers';
 import { Badge } from '@/components/ui/badge';
-import type { FormCatalogItem, PatientDetails } from '@/types';
+import { getFormSchema } from '@/lib/schemas';
+import {
+  formatDoctorProfileFieldLabel,
+  getMissingDoctorProfileFields,
+} from '@/lib/doctor-profile-requirements';
+import type { DoctorProfile, FormCatalogItem, PatientDetails } from '@/types';
 import { toast } from 'sonner';
 
-import { Sparkles } from 'lucide-react';
+import { AlertCircle, Sparkles } from 'lucide-react';
 
 const steps = [
   { label: 'Select Form' },
@@ -23,9 +29,10 @@ const steps = [
 
 interface NewFormContentProps {
   catalog: FormCatalogItem[];
+  doctorProfile: DoctorProfile | null;
 }
 
-export function NewFormContent({ catalog }: NewFormContentProps) {
+export function NewFormContent({ catalog, doctorProfile }: NewFormContentProps) {
   const router = useRouter();
   const { selectedFormType, selectedFormLabel, patientDetails, currentStep: storeStep, setFormType, setPatientDetails, setStep } =
     useFormFlowStore();
@@ -35,9 +42,21 @@ export function NewFormContent({ catalog }: NewFormContentProps) {
   });
   const [selectedFormId, setSelectedFormId] = useState<string | null>(selectedFormType);
   const [savePatient, setSavePatient] = useState(false);
+  const [missingProfileFields, setMissingProfileFields] = useState<
+    ReturnType<typeof getMissingDoctorProfileFields>
+  >([]);
 
   const handleFormSelect = (formId: string, label: string) => {
     setSelectedFormId(formId);
+
+    const schema = getFormSchema(formId);
+    const missing = schema ? getMissingDoctorProfileFields(schema, doctorProfile) : [];
+    if (missing.length > 0) {
+      setMissingProfileFields(missing);
+      return;
+    }
+
+    setMissingProfileFields([]);
     setFormType(formId, label);
     setCurrentStep(1);
   };
@@ -70,12 +89,28 @@ export function NewFormContent({ catalog }: NewFormContentProps) {
       <StepIndicator steps={steps} currentStep={currentStep} />
 
       {currentStep === 0 && (
-        <div className="animate-fade-in-up">
+        <div className="animate-fade-in-up space-y-4">
           <FormSelector
             selectedFormId={selectedFormId}
             onSelect={handleFormSelect}
             forms={catalog}
           />
+          {missingProfileFields.length > 0 && (
+            <div className="flex gap-2.5 p-3 rounded-lg border border-warning/30 bg-warning/5" role="status">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-warning" />
+              <div className="min-w-0 text-sm">
+                <p className="font-medium text-foreground">
+                  Complete your profile before using this form
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Missing: {missingProfileFields.map(formatDoctorProfileFieldLabel).join(', ')}.{' '}
+                  <Link href="/dashboard/settings" className="underline underline-offset-2 hover:text-foreground">
+                    Update in Settings
+                  </Link>
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
