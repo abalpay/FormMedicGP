@@ -207,6 +207,7 @@
 }
 
 /* Paint over/underscroll areas dark on marketing pages without JS. */
+html:has(.marketing-dark),
 body:has(.marketing-dark) {
   background-color: oklch(0.145 0.014 195);
   color-scheme: dark;
