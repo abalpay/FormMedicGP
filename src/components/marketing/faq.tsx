@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Accordion,
   AccordionContent,
@@ -30,7 +28,7 @@ const faqGroups: FaqGroup[] = [
       {
         question: 'How accurate is the AI extraction?',
         answer:
-          'FormBridge GP uses guided dictation prompts tailored to each form type, and flags required fields it could not find. You review the filled PDF before downloading — the AI assists, you make the final call.',
+          'We have not published accuracy numbers yet — evaluation against hand-labelled fixtures is in progress. Guided prompts cover the fields each form needs, and you review and edit every field before downloading. The AI assists; you make the final call.',
       },
       {
         question: 'Does it work on mobile and tablet?',
@@ -50,17 +48,17 @@ const faqGroups: FaqGroup[] = [
       {
         question: 'Is any patient data stored on your servers?',
         answer:
-          'Processing runs in-memory, but data can be stored when you choose to save it. Using Save Patient or Save Form persists records so you can search patients and revisit completed forms later.',
+          'Completed forms are saved to your account automatically so you can revisit them; patient records are saved only when you choose. Audio is never stored. Saved records are only visible to your account (Supabase row-level security).',
       },
     ],
   },
   {
-    label: 'Pricing & Access',
+    label: 'About the project',
     items: [
       {
-        question: 'What does FormBridge GP cost?',
+        question: 'Is this a real product?',
         answer:
-          "FormBridge GP is free during the early access period. We'll announce pricing plans well before general availability — early users will receive preferential rates.",
+          'Not yet. FormBridge GP is a portfolio project by a solo builder. It is not a registered medical device, it is not clinically deployed, and it has no users yet. The demo runs the real pipeline on fictional patients, and the source code is public on GitHub.',
       },
     ],
   },
@@ -70,7 +68,7 @@ export function FAQ() {
   let itemIndex = 0;
 
   return (
-    <section id="faq" className="py-20 sm:py-28">
+    <section id="faq" className="scroll-mt-20 py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         {/* Section header — centered */}
         <AnimateOnScroll>
@@ -78,12 +76,9 @@ export function FAQ() {
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
               FAQ
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl sm:text-4xl tracking-tight font-[family-name:var(--font-display)]">
               Common questions.
             </h2>
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Everything you need to know about FormBridge GP.
-            </p>
           </div>
         </AnimateOnScroll>
 

@@ -1,7 +1,33 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, Mic, FileText, Shield, Github } from 'lucide-react';
+import { ArrowRight, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { HeroReplay } from '@/components/marketing/hero-replay';
 import { REPO_URL } from '@/components/marketing/links';
+import SU415 from '@/lib/demo/extractions/SU415.json';
+import { buildRedactionSegments } from '@/lib/demo/redaction';
+import { getFormSchema } from '@/lib/schemas';
+
+const REPLAY_FIELDS = [
+  'primaryDiagnosis',
+  'incapacityStartDate',
+  'incapacityEndDate',
+  'functionalImpact',
+  'treatment',
+] as const;
+
+const clinicalFields = getFormSchema('SU415')!.sections.clinical.fields;
+const llmData = SU415.llmData as Record<string, unknown>;
+// The cached de-identified text also carries the guided-answers block; replay only the dictation.
+const dictation = SU415.deidentifiedText.split('\n\nGUIDED ANSWERS:')[0];
+
+function formatValue(type: string, value: string) {
+  if (type !== 'date') return value;
+  return new Date(`${value}T00:00:00`).toLocaleDateString('en-AU', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
 
 export function Hero() {
   return (
@@ -60,89 +86,21 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right -- Single cohesive app preview */}
+          {/* Right -- replay of the cached SU415 demo run */}
           <div
-            className="animate-fade-in-up motion-reduce:animate-none hidden lg:block"
+            className="animate-fade-in-up motion-reduce:animate-none"
             style={{ animationDelay: '0.24s' }}
           >
-            <div className="relative">
-              {/* Main app card — the whole story in one panel */}
-              <div className="rounded-2xl bg-card border border-border shadow-[0_8px_40px_oklch(0_0_0/0.08)] overflow-hidden">
-                {/* Form header bar */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-border/60">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl gradient-teal flex items-center justify-center">
-                      <FileText className="w-4.5 h-4.5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">Centrelink Medical Certificate</p>
-                      <p className="text-[11px] text-muted-foreground">SU415 — Temporary incapacity</p>
-                    </div>
-                  </div>
-                  <div className="px-2.5 py-1 rounded-full bg-red-50 border border-red-200">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-[11px] font-medium text-red-600">Recording</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dictation area */}
-                <div className="px-5 py-4 border-b border-border/60">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-9 h-9 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
-                      <Mic className="w-4 h-4 text-red-500" />
-                    </div>
-                    <div className="flex-1 flex items-end gap-[2px] h-8">
-                      {[3, 5, 2, 7, 4, 6, 2, 8, 4, 5, 3, 6, 5, 7, 3, 6, 4, 2, 5, 4, 7, 3, 5, 6, 4, 3, 6, 5, 7, 4, 3, 5, 6, 4, 2, 5, 7, 3, 6, 4].map((h, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 rounded-[1px] bg-primary/50"
-                          style={{ height: `${h * 11}%` }}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">0:47</span>
-                  </div>
-                  <p className="text-[13px] text-foreground/70 leading-relaxed">
-                    <span className="text-foreground">&quot;Patient presents with lower back pain of three weeks duration,</span>{' '}
-                    radiating to the left leg. Unable to perform usual work duties. Currently managed with physiotherapy and NSAIDs...&quot;
-                  </p>
-                </div>
-
-                {/* Extracted fields */}
-                <div className="px-5 py-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Extracted Fields</p>
-                    <div className="flex items-center gap-1.5 text-primary">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span className="text-[11px] font-medium">14 fields mapped</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { label: 'Diagnosis', value: 'Lumbar radiculopathy' },
-                      { label: 'Duration', value: '3 weeks' },
-                      { label: 'Work capacity', value: 'Unfit for usual duties' },
-                      { label: 'Treatment', value: 'Physiotherapy, NSAIDs' },
-                    ].map((field) => (
-                      <div key={field.label} className="rounded-lg bg-muted/40 border border-border/50 px-3 py-2">
-                        <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-wider">{field.label}</p>
-                        <p className="text-[12px] font-medium text-foreground mt-0.5">{field.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Status footer bar */}
-                <div className="flex items-center justify-between px-5 py-3 border-t border-border/60 bg-muted/20">
-                  <div className="flex items-center gap-1.5 text-primary">
-                    <Shield className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-medium">De-identified processing</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <HeroReplay
+              segments={buildRedactionSegments(SU415.transcript, dictation)}
+              fields={REPLAY_FIELDS.map((key) => ({
+                label: clinicalFields[key].label ?? key,
+                value: formatValue(clinicalFields[key].type, String(llmData[key] ?? '')),
+              }))}
+              formLabel={SU415.formLabel.replace(/ \(.*\)$/, '')}
+              formId={SU415.formType}
+              model={SU415.model}
+            />
           </div>
         </div>
       </div>

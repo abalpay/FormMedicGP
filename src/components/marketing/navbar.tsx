@@ -54,7 +54,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile CTA */}
-        <Button variant="teal" size="sm" className="lg:hidden text-[13px] font-semibold" asChild>
+        <Button variant="teal" className="lg:hidden h-10 px-4 text-sm font-semibold" asChild>
           <Link href="/demo">Demo</Link>
         </Button>
       </div>

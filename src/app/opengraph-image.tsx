@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 export const alt =
-  'FormBridge GP — AI-powered medical form automation for Australian GP clinics';
+  'FormBridge GP — voice dictation to filled Australian government medical forms';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -122,7 +122,7 @@ export default async function Image() {
               lineHeight: 1.3,
             }}
           >
-            AI-powered medical form automation for Australian GP clinics
+            Dictation to filled Australian government medical forms · open-source demo
           </span>
         </div>
       </div>

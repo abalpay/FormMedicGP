@@ -1,6 +1,8 @@
 # FormDoctor
 
-AI-powered medical form automation for Australian GP clinics. Doctors dictate, AI fills government forms, download PDF — in under 2 minutes.
+Voice dictation to filled Australian government medical forms. Doctors dictate, identifiers are stripped, Claude extracts the fields, and the official PDF is filled for review. Open-source portfolio project — not clinically deployed.
+
+Try it without signing up at [`/demo`](https://formbridgegp.com/demo) (fictional patients, cached extraction, zero paid API calls).
 
 **Live at [formbridgegp.com](https://formbridgegp.com)**
 
@@ -29,7 +31,7 @@ Doctor reviews, edits, downloads
 - **Voice dictation** — Real-time transcription with medical vocabulary support
 - **Guided dictation** — Form-specific structured prompts improve extraction accuracy
 - **AI form filling** — Claude maps clinical notes to the correct form fields
-- **Privacy-first** — Patient data is de-identified before any external API call; never persisted to disk or database
+- **Privacy-first** — Identifiers are stripped before the LLM call; audio is never stored. Completed forms are saved to the doctor's account; patient records only when the doctor chooses
 - **PDF generation** — Fills official government PDF templates directly
 - **Doctor profiles** — Set up once, auto-fill provider details on every form
 - **Completeness checking** — Identifies missing required fields and prompts the doctor
