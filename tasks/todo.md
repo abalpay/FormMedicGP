@@ -20,6 +20,15 @@
 
 ---
 
+## Phase 16: Landing depth polish (2026-09-26)
+
+> Owner feedback: footer logo placement off; white strip below footer / on overscroll; lower half of `/` is flat black and looks incomplete.
+
+- [ ] 16.1 Footer alignment + full-page dark root (sonnet): `self-start` logo, brand column balance, bottom bar alignment; paint `html:has(.marketing-dark)` too so overscroll is dark; `/login` stays light
+- [ ] 16.2 Depth system for the lower page (opus): grid fade-out from hero, alternating section-anchored teal/amber glows, horizon light behind CTA into footer, hairline dividers with falloff, low-opacity grain; spacing rhythm tightened. `/demo` inherits.
+- [ ] 16.3 Review screenshots (1440/390, bottom + overscroll, `/login`), iterate, impeccable:audit
+- [ ] 16.4 Push, PR to main, Vercel check
+
 ## Phase 15: Dark landing redesign (2026-09-25)
 
 > Goal: a recruiter opens `/`, thinks "real, premium AI product" within 5s, clicks "Try the live demo".
