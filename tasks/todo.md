@@ -51,7 +51,7 @@
 - [x] `src/app/(marketing)/demo/page.tsx` + `src/components/demo/demo-flow.tsx`: scenario picker → transcript + live de-identified panel (redaction highlighted) → FormSummary + PdfPreviewPanel via `usePdfPreview` → Download. Honest cached-mode banner; transcript edits in cached mode clearly say "enter access code to re-run live"
 - [x] Deep links: `/demo?case=su415` auto-starts that scenario (link in applications)
 - [x] Mobile: FormSummary + Download first; PDF iframe only at `lg:`
-- [ ] Navbar + hero + CTA: primary "Try the live demo — no signup"; waitlist secondary
+- [x] Navbar + hero + CTA: primary "Try the live demo — no signup"; waitlist removed in 14.3
 - Note 2026-09-25: `claude-sonnet-4-20250514` was retired (404) — production switched to `claude-sonnet-5` (`EXTRACTION_MODEL` in llm.ts). Navbar hero/CTA item left for 14.3; only a Demo nav link added.
 - Finding: under the current prompt the model fills every required field (dates default to today, treatment invented when not dictated). SU415_BRIEF surfaces this via `unsupportedFields` (required fields with no evidence quote) instead of `missingFields`.
 
@@ -66,20 +66,21 @@
 - [ ] 60s Loom walkthrough (owner on camera) embedded in hero + used in applications
 
 ### 14.3 Landing redesign for GPs + hiring engineers (1–2 days)
-- [ ] Remove waitlist: CTAs → "Try the live demo" + "View source"/contact; `/register` redirects to `/demo`; delete `api/waitlist`; Sign in moves to footer text link
-- [ ] Delete `features.tsx` and `compliance-strip.tsx` (restated by How it works / Under the hood); FAQ pricing group → "Is this a real product?" honest answer
-- [ ] Remove remaining unmeasured time claims ("Under Two Minutes", "15-20 minutes", "Four steps. Two minutes.") until eval measures them
-- [ ] Hero card visible on mobile (drop `hidden lg:block`); drop sparkles badge, blur blobs, filler pills
-- [ ] Remove faux `font-bold` on Instrument Serif (400-only) headings; normalise section `mb-16`, card type to 3 sizes
-- [ ] Replace framer-motion scroll fades with CSS `motion-safe:` + IntersectionObserver; drop `'use client'` where only used for animation
-- [ ] a11y: `<main>` landmark, `scroll-margin-top` for anchors, white-on-teal text ≥ /70 body, reduced-motion on pulse/shimmer
-- [ ] Navbar: mobile layout, `bg-background/90` instead of blur glass, dedupe CTA blocks
-- [ ] Metadata/OG description matches honest positioning
-- [ ] `hero.tsx`: replace static mock with looping replay driven by `extractions/SU415.json` (typing → redaction → fields → PDF thumbnail)
-- [ ] New `under-the-hood.tsx`: real stack + pipeline (nova-3-medical, regex de-id, Claude, pdf-lib AcroForm incl. linkedCheckbox/linkedRadio, no-persist Zustand, Supabase RLS, Postgres rate-limit RPC), GitHub link
-- [ ] New `builder-story.tsx` replacing SocialProof: who/why + verifiable numbers from git/ls (commits, tests, forms, mapped fields)
-- [ ] `page.tsx` order: Hero → Demo teaser → HowItWorks → UnderTheHood → FormLibrary → Privacy → Evaluation → FAQ → CTA
-- [ ] Decide waitlist copy: "Early access — in evaluation with GPs" instead of fake counts
+- [x] Remove waitlist: CTAs → "Try the live demo" + "View source"/contact; `/register` redirects to `/demo`; delete `api/waitlist`; Sign in moves to footer text link
+- [x] Delete `features.tsx` and `compliance-strip.tsx` (restated by How it works / Under the hood); FAQ pricing group → "Is this a real product?" honest answer
+- [x] Remove remaining unmeasured time claims ("Under Two Minutes", "15-20 minutes", "Four steps. Two minutes.") until eval measures them
+- [x] Hero card visible on mobile (drop `hidden lg:block`); drop sparkles badge, blur blobs, filler pills
+- [x] Remove faux `font-bold` on Instrument Serif (400-only) headings; normalise section `mb-16`, card type to 3 sizes
+- [x] Replace framer-motion scroll fades with CSS `motion-safe:` + IntersectionObserver; drop `'use client'` where only used for animation
+- [x] a11y: `<main>` landmark, `scroll-margin-top` for anchors, white-on-teal text ≥ /70 body, reduced-motion on pulse/shimmer
+- [x] Navbar: mobile layout, `bg-background/90` instead of blur glass, dedupe CTA blocks
+- [x] Metadata/OG description matches honest positioning
+- [x] `hero.tsx`: replace static mock with looping replay driven by `extractions/SU415.json` (typing → redaction → fields → PDF thumbnail)
+- [x] New `under-the-hood.tsx`: real stack + pipeline (nova-3-medical, regex de-id, Claude, pdf-lib AcroForm incl. linkedCheckbox/linkedRadio, no-persist Zustand, Supabase RLS, Postgres rate-limit RPC), GitHub link
+- [x] New `builder-story.tsx` replacing SocialProof: who/why + verifiable numbers from git/ls (commits, tests, forms, mapped fields)
+- [x] `page.tsx` order: Hero → Demo teaser → HowItWorks → UnderTheHood → FormLibrary → Privacy → Evaluation → FAQ → CTA
+- [x] Decide waitlist copy — waitlist removed
+- Note 2026-09-25: shipped order Hero → HowItWorks → UnderTheHood → FormLibrary → Privacy → BuilderStory → FAQ → CTA (no Demo teaser/Evaluation sections: the hero replay is the teaser, eval has no numbers yet — UnderTheHood + FAQ say so). Builder numbers are forms, mapped fields and test files counted at build time; commit counts dropped (shallow clones). Scroll reveal is IntersectionObserver + CSS in globals.css; framer-motion removed.
 
 ### 14.4 Extraction eval — real numbers only (1 day + labelling)
 - [ ] Hand-label `tests/form-review/fixtures/<ID>.expected.json` for SU415, SA478, MA002, CAPACITY (~77 fields)
