@@ -1,8 +1,8 @@
-import { Shield, Server } from 'lucide-react';
+import { Shield, Lock } from 'lucide-react';
 
 const badges = [
-  { icon: Shield, text: 'Australian Privacy Principles Aligned' },
-  { icon: Server, text: 'Data Hosted in Australia' },
+  { icon: Shield, text: 'Identifiers stripped before the LLM' },
+  { icon: Lock, text: 'Row-level security per doctor' },
 ];
 
 export function ComplianceStrip() {

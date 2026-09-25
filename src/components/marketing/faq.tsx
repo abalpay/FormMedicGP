@@ -25,12 +25,12 @@ const faqGroups: FaqGroup[] = [
       {
         question: 'Which government forms does FormBridge GP support?',
         answer:
-          'We currently support five Australian government medical forms: Centrelink Medical Certificate (SU415), DSP Medical Evidence (SA478), Carer Payment Medical Report (SA332A), Mobility Allowance Report (MA002), and Victorian Certificate of Capacity (TAC/WorkCover). New forms are added regularly.',
+          'We currently support six Australian government medical forms: Centrelink Medical Certificate (SU415), DSP Medical Evidence (SA478), Carer Payment Medical Report (SA332A), Mobility Allowance Report (MA002), Victorian Certificate of Capacity (TAC/WorkCover), and NDIS Access Request Supporting Evidence. Each form is a JSON schema plus the official PDF template.',
       },
       {
         question: 'How accurate is the AI extraction?',
         answer:
-          'FormBridge GP uses guided dictation prompts tailored to each form type, achieving high accuracy on structured fields. You always get a full review screen to verify and edit extracted data before downloading — the AI assists, you make the final call.',
+          'FormBridge GP uses guided dictation prompts tailored to each form type, and flags required fields it could not find. You review the filled PDF before downloading — the AI assists, you make the final call.',
       },
       {
         question: 'Does it work on mobile and tablet?',
@@ -82,15 +82,7 @@ export function FAQ() {
               Common questions.
             </h2>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Everything you need to know about FormBridge GP. Can&apos;t find what
-              you&apos;re looking for?{' '}
-              <a
-                href="mailto:hello@formbridgegp.au"
-                className="text-primary hover:underline"
-              >
-                Get in touch
-              </a>
-              .
+              Everything you need to know about FormBridge GP.
             </p>
           </div>
         </AnimateOnScroll>

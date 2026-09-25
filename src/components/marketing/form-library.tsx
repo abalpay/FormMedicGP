@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, MessageSquarePlus } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 import {
   AnimateOnScroll,
@@ -15,7 +15,6 @@ const supportedForms = [
     issuer: 'Centrelink',
     description:
       'Temporary incapacity certificate with diagnosis, prognosis, treatment and work capacity.',
-    tag: 'Most Popular',
   },
   {
     id: 'SA478',
@@ -45,6 +44,13 @@ const supportedForms = [
     description:
       'Victorian TAC/WorkCover certificate covering capacity windows, work restrictions, and treatment plan.',
     tag: 'Guided Dictation',
+  },
+  {
+    id: 'NDIS_ACCESS',
+    label: 'NDIS Access Request Evidence',
+    issuer: 'NDIS',
+    description:
+      'Supporting evidence covering impairments, assessments, and functional impact across six domains.',
   },
 ];
 
@@ -96,24 +102,6 @@ export function FormLibrary() {
               </div>
             </StaggerItem>
           ))}
-
-          {/* "Request a Form" CTA card */}
-          <StaggerItem>
-            <a
-              href="mailto:hello@formbridgegp.au"
-              className="rounded-2xl border-2 border-dashed border-border/60 p-6 flex flex-col items-center justify-center text-center min-h-[180px] h-full hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300 group"
-            >
-              <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center mb-3 group-hover:bg-primary/[0.07] transition-colors duration-300">
-                <MessageSquarePlus className="w-4.5 h-4.5 text-muted-foreground/50 group-hover:text-primary transition-colors duration-300" />
-              </div>
-              <p className="text-sm font-semibold font-[family-name:var(--font-display)] mb-1">
-                Need a different form?
-              </p>
-              <p className="text-xs text-muted-foreground/60">
-                Let us know which form you need
-              </p>
-            </a>
-          </StaggerItem>
         </StaggerChildren>
       </div>
     </section>

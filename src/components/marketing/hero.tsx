@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Clock, Gift } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Sparkles, Mic, FileText, Shield, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function Hero() {
@@ -72,7 +72,7 @@ export function Hero() {
               style={{ animationDelay: '0.32s' }}
             >
               {[
-                { icon: FileText, text: '5 Government Forms' },
+                { icon: FileText, text: '6 Government Forms' },
                 { icon: Shield, text: 'Privacy-First' },
                 { icon: Gift, text: 'Free Early Access' },
               ].map(({ icon: Icon, text }) => (
@@ -166,10 +166,6 @@ export function Hero() {
                   <div className="flex items-center gap-1.5 text-primary">
                     <Shield className="w-3.5 h-3.5" />
                     <span className="text-[11px] font-medium">De-identified processing</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-medium"><span className="text-foreground font-semibold">1:47</span> avg completion</span>
                   </div>
                 </div>
               </div>

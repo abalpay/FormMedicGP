@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Quote } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimateOnScroll } from '@/components/marketing/animate-on-scroll';
 
@@ -31,24 +31,9 @@ export function CTA() {
         </AnimateOnScroll>
 
         <AnimateOnScroll preset="fade-up" delay={0.1}>
-          <div className="mt-8 mx-auto max-w-md rounded-xl border border-white/[0.1] bg-white/[0.06] px-6 py-5">
-            <Quote className="w-5 h-5 text-white/30 mb-3 mx-auto" />
-            <p className="text-[15px] text-white/80 leading-relaxed italic">
-              &ldquo;Game changer for a busy clinic. Two minutes instead of twenty.&rdquo;
-            </p>
-            <p className="mt-3 text-sm text-white/40">
-              Dr Sarah Chen, Brisbane QLD
-            </p>
-          </div>
-        </AnimateOnScroll>
-
-        <AnimateOnScroll preset="fade-up" delay={0.2}>
-          <p className="mt-5 text-sm text-white/50 font-medium">
-            340+ GPs on the waitlist &middot; Free during early access
-          </p>
-          <p className="mt-4 text-base sm:text-lg text-white/60 max-w-lg mx-auto leading-relaxed">
-            Join Australian clinicians who complete government medical forms
-            in minutes instead of hours.
+          <p className="mt-6 text-base sm:text-lg text-white/60 max-w-lg mx-auto leading-relaxed">
+            Complete Australian government medical forms in minutes
+            instead of hours.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button variant="amber" size="lg" className="h-12 px-8 text-[15px] font-semibold" asChild>

@@ -28,14 +28,14 @@ const pipelineStages: PipelineStage[] = [
   {
     icon: FileText,
     label: 'Transcription',
-    detail: 'Speech converted to text in real-time.',
-    callout: 'Audio deleted after transcription',
+    detail: 'Speech converted to text in real time by Deepgram.',
+    callout: 'Audio is never stored by FormBridge',
   },
   {
     icon: ShieldCheck,
     label: 'De-Identification',
     detail: 'Names, DOBs, addresses & IDs stripped before AI.',
-    callout: 'Patient names never reach our AI',
+    callout: 'Identifiers stripped before the LLM',
   },
   {
     icon: Trash2,
@@ -46,7 +46,7 @@ const pipelineStages: PipelineStage[] = [
     icon: FileText,
     label: 'Form Output',
     detail: 'Completed PDF ready for review & download.',
-    callout: 'Data stays in Australia',
+    callout: 'Saved only when you choose',
   },
 ];
 

@@ -12,7 +12,7 @@ const steps = [
     step: '01',
     icon: ClipboardList,
     title: 'Select Form',
-    description: 'Pick from five supported Australian government medical forms.',
+    description: 'Pick from six supported Australian government medical forms.',
   },
   {
     step: '02',
