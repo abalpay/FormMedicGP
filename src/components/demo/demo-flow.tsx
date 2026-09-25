@@ -16,18 +16,18 @@ import { getFormSchema } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import type { ExtractedFormData } from '@/types';
 
-const LIVE_MODE_NOTE = 'Editing the dictation is available in live mode, which is off right now.';
+const LIVE_MODE_NOTE = 'Editing the dictation needs live mode, which is off right now.';
 
 const STEPS = [
-  'De-identifying in your browser',
-  'Extracting with Claude (cached)',
-  'Re-identifying + filling PDF in your browser',
+  'Removing identifiers',
+  'Extracting the clinical fields',
+  'Restoring details and filling the PDF',
 ] as const;
-const LIVE_STEP_LABEL = 'Extracting with Claude (live)';
+const LIVE_STEP_LABEL = 'Extracting the clinical fields (live)';
 // Leaves room for the guided-answer block under the server's 4000-char cap.
 const LIVE_TRANSCRIPT_MAX = 3000;
 
-type LiveRun = { transcript: string; llmData?: ExtractedFormData; model?: string };
+type LiveRun = { transcript: string; llmData?: ExtractedFormData };
 
 // -1 = not started, 0..2 = running that step (stage 3 = done is derived)
 type Step = -1 | 0 | 1 | 2;
@@ -47,9 +47,14 @@ function formatDate(iso: string) {
 }
 
 const PLACEHOLDER_MARK =
-  'rounded bg-accent/30 px-1 font-semibold text-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500';
+  'rounded-[5px] bg-accent/15 px-1 py-px font-medium text-accent ring-1 ring-accent/40 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-500';
 
-const QUOTE_MARK = 'rounded-sm bg-primary/15 text-foreground transition-colors';
+const QUOTE_MARK = 'rounded-sm bg-primary/20 text-foreground ring-1 ring-primary/40 transition-colors';
+
+// Small uppercase label used inside the glass panels.
+const PANEL_LABEL = 'text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground';
+// Section eyebrow, same as the landing's section labels.
+const EYEBROW = 'text-xs font-semibold tracking-[0.2em] uppercase text-primary';
 
 /**
  * Original transcript whose identifiers swap to placeholders as `revealed` counts up.
@@ -93,7 +98,7 @@ function RedactionReveal({
             {seg.placeholder}
           </mark>
         ) : (
-          <span key={i} className="text-foreground underline decoration-accent decoration-2 underline-offset-2">
+          <span key={i} className="text-foreground underline decoration-accent/70 decoration-dotted decoration-2 underline-offset-4">
             {seg.text}
           </span>
         );
@@ -165,10 +170,10 @@ export function DemoFlow({ initialCaseId }: { initialCaseId?: string }) {
     <div className="space-y-14 sm:space-y-20">
       {/* 1 — Scenario picker */}
       <section aria-labelledby="demo-pick">
-        <h2 id="demo-pick" className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">
+        <h2 id="demo-pick" className={cn(EYEBROW, 'mb-4')}>
           1 · Pick a case
         </h2>
-        <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+        <ol className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
           {DEMO_CASES.map((c, i) => {
             const selected = c.caseId === demoCase.caseId;
             return (
@@ -178,18 +183,17 @@ export function DemoFlow({ initialCaseId }: { initialCaseId?: string }) {
                   onClick={() => selectCase(c)}
                   aria-pressed={selected}
                   className={cn(
-                    'group h-full w-full text-left rounded-xl border p-3 sm:p-4 transition-colors duration-200',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                    selected
-                      ? 'border-primary bg-primary/[0.05]'
-                      : 'border-border bg-card hover:border-primary/40'
+                    'glass-frame group flex h-full w-full flex-col text-left rounded-xl px-4 py-3.5 sm:p-4',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
                   )}
                 >
                   <span className="flex items-baseline justify-between gap-2">
                     <span className="text-xl sm:text-2xl leading-none font-[family-name:var(--font-display)] text-foreground">
                       {c.formType}
                     </span>
-                    <span className="text-xs tabular-nums text-muted-foreground">0{i + 1}</span>
+                    <span className="text-xs tabular-nums text-muted-foreground group-aria-pressed:text-primary">
+                      0{i + 1}
+                    </span>
                   </span>
                   <span className="mt-1.5 sm:mt-2 block text-sm leading-snug text-muted-foreground group-aria-pressed:text-foreground">
                     {c.scenario}
@@ -307,7 +311,7 @@ function CaseRun({
         );
       }
       setEditableData(runDemoPipeline(liveCase, json.llmData).extractedData);
-      setLive({ transcript, llmData: json.llmData, model: json.model });
+      setLive({ transcript, llmData: json.llmData });
     } catch (error) {
       setLive(null);
       setStep(-1);
@@ -332,16 +336,14 @@ function CaseRun({
   return (
     <>
       {/* 2 + 3 — Dictation and pipeline */}
-      <section className="grid gap-8 lg:grid-cols-2 lg:gap-12" aria-label="Dictation and pipeline">
-        <div>
-          <h2 id="demo-dictation" className="scroll-mt-24 text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">
+      <section className="grid gap-10 lg:grid-cols-2 lg:gap-12" aria-label="Dictation and pipeline">
+        <div className="min-w-0">
+          <h2 id="demo-dictation" className={cn(EYEBROW, 'scroll-mt-24 mb-4')}>
             2 · The GP&apos;s dictation
           </h2>
-          <div className="rounded-xl border bg-card">
-            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 border-b p-4 text-sm">
-              <div className="col-span-2 -mb-1 text-[11px] font-semibold tracking-[0.15em] uppercase text-muted-foreground">
-                Fictional patient
-              </div>
+          <div className="glass-frame rounded-2xl overflow-hidden">
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 border-b border-white/[0.07] px-4 py-4 sm:px-5 text-sm">
+              <div className={cn(PANEL_LABEL, 'col-span-2 -mb-1')}>Fictional patient</div>
               <div>
                 <dt className="text-xs text-muted-foreground">Name</dt>
                 <dd className="font-medium">{patient.customerName}</dd>
@@ -361,17 +363,23 @@ function CaseRun({
                 </div>
               )}
             </dl>
-            <div className="p-4 space-y-4">
+            <div className="px-4 py-4 sm:px-5 space-y-4">
+              <p className={PANEL_LABEL}>Dictation</p>
               {liveEnabled && step === -1 ? (
                 <Textarea
                   aria-label="Dictation"
                   value={draft}
                   maxLength={LIVE_TRANSCRIPT_MAX}
                   onChange={(e) => setDraft(e.target.value)}
-                  className="text-[15px] leading-relaxed"
+                  className="-mt-2 text-[15px] leading-relaxed"
                 />
               ) : (
-                <p className={cn('text-[15px] leading-relaxed text-foreground', !dictationOpen && 'max-lg:line-clamp-4')}>
+                <p
+                  className={cn(
+                    '-mt-2 text-[15px] leading-relaxed text-foreground/90',
+                    !dictationOpen && 'max-lg:line-clamp-4'
+                  )}
+                >
                   {live?.transcript ?? demoCase.transcript}
                 </p>
               )}
@@ -379,14 +387,12 @@ function CaseRun({
                 type="button"
                 aria-expanded={dictationOpen}
                 onClick={() => setDictationOpen((open) => !open)}
-                className="lg:hidden -my-3 py-3 text-sm font-medium text-primary underline-offset-2 hover:underline"
+                className="lg:hidden -my-3 py-3 text-sm font-medium text-primary underline-offset-2 hover:underline rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 {dictationOpen ? 'Show less' : 'Show full dictation'}
               </button>
-              <div className={cn(!dictationOpen && 'max-lg:hidden')}>
-                <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-2">
-                  Guided answers
-                </p>
+              <div className={cn('border-t border-white/[0.07] pt-4', !dictationOpen && 'max-lg:hidden')}>
+                <p className={cn(PANEL_LABEL, 'mb-2')}>Guided answers</p>
                 <dl className="space-y-1.5 text-sm">
                   {guidedAnswerRows(demoCase).map((row) => (
                     <div key={row.key} className="grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-x-3 gap-y-0.5">
@@ -400,15 +406,15 @@ function CaseRun({
           </div>
           {liveEnabled ? (
             <form
-              className="mt-3 rounded-xl border p-4 space-y-3"
+              className="mt-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 space-y-3"
               onSubmit={(e) => {
                 e.preventDefault();
                 runLive();
               }}
             >
-              <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-muted-foreground">Live mode</p>
+              <p className={PANEL_LABEL}>Live mode</p>
               <p className="text-xs text-muted-foreground">
-                Edit the dictation above, then run one real Claude extraction. Guided answers stay as shown.
+                Edit the dictation, then run one real extraction. Guided answers stay as shown.
               </p>
               <div className="flex flex-wrap gap-2">
                 <Input
@@ -426,7 +432,7 @@ function CaseRun({
                   disabled={step !== -1 || !accessCode || draft.trim().length < 20}
                 >
                   {livePending && <Loader2 className="w-4 h-4 mr-1.5 motion-safe:animate-spin" />}
-                  Run live with Claude
+                  Run live
                 </Button>
               </div>
               {liveError && (
@@ -436,14 +442,12 @@ function CaseRun({
               )}
             </form>
           ) : (
-            <p className="mt-3 text-xs text-muted-foreground">{LIVE_MODE_NOTE}</p>
+            <p className="mt-3 px-1 text-xs text-muted-foreground">{LIVE_MODE_NOTE}</p>
           )}
         </div>
 
-        <div>
-          <h2 className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">
-            3 · Run the pipeline
-          </h2>
+        <div className="min-w-0">
+          <h2 className={cn(EYEBROW, 'mb-4')}>3 · Run the pipeline</h2>
           {/* Announce step changes only; a live region over the redaction reveal would re-read the transcript. */}
           <p className="sr-only" role="status">
             {stage === 3
@@ -454,40 +458,40 @@ function CaseRun({
                   ? LIVE_STEP_LABEL
                   : STEPS[stage]}
           </p>
-          {stage === -1 ? (
-            <div className="rounded-xl border border-dashed p-6">
-              <p className="text-sm text-muted-foreground max-w-sm">
-                Strips the patient&apos;s identity, extracts the clinical fields, then restores
-                identity and fills the official PDF.
-              </p>
-              <Button variant="teal" size="lg" className="mt-5 rounded-full px-6" onClick={() => setStep(0)}>
+          <div className="glass-frame rounded-2xl p-5 sm:p-6">
+            {stage === -1 && (
+              <Button variant="teal" size="lg" className="mb-7 h-12 rounded-full px-7 text-[15px] font-semibold" onClick={() => setStep(0)}>
                 Run pipeline
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Button>
-            </div>
-          ) : (
-            <ol className="space-y-5">
+            )}
+            <ol>
               {STEPS.map((label, i) => {
                 const status =
                   stage > i ? 'done' : stage === i ? (i === 2 && pdfFailed ? 'failed' : 'active') : 'pending';
                 return (
-                  <li
-                    key={i}
-                    className={cn(
-                      'grid grid-cols-[1.5rem_1fr] gap-3 transition-opacity duration-300',
-                      status === 'pending' && 'opacity-40'
+                  <li key={i} className="relative grid grid-cols-[1.75rem_1fr] gap-4 pb-7 last:pb-0">
+                    {i < STEPS.length - 1 && (
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'absolute left-[0.875rem] top-9 bottom-2 w-px -translate-x-1/2 transition-colors duration-500',
+                          stage > i ? 'bg-primary/60' : 'bg-white/10'
+                        )}
+                      />
                     )}
-                  >
                     <span
                       className={cn(
-                        'mt-0.5 flex h-6 w-6 items-center justify-center rounded-full border text-xs',
-                        status === 'done' && 'border-primary bg-primary text-primary-foreground',
+                        'flex h-7 w-7 items-center justify-center rounded-full border text-xs tabular-nums transition-colors duration-300',
+                        status === 'done' &&
+                          'border-primary bg-primary text-primary-foreground shadow-[0_0_14px_oklch(0.8_0.115_178/0.45)]',
                         status === 'active' && 'border-primary text-primary',
-                        status === 'failed' && 'border-destructive text-destructive'
+                        status === 'failed' && 'border-destructive text-destructive',
+                        status === 'pending' && 'border-white/15 text-muted-foreground'
                       )}
                     >
                       {status === 'done' ? (
-                        <Check className="w-3.5 h-3.5" />
+                        <Check className="w-3.5 h-3.5" strokeWidth={2.5} />
                       ) : status === 'failed' ? (
                         <X className="w-3.5 h-3.5" />
                       ) : status === 'active' ? (
@@ -496,10 +500,17 @@ function CaseRun({
                         i + 1
                       )}
                     </span>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium">{i === 1 && live ? LIVE_STEP_LABEL : label}</p>
+                    <div className="min-w-0 pt-0.5">
+                      <p
+                        className={cn(
+                          'text-[15px] font-medium transition-colors duration-300',
+                          status === 'pending' ? 'text-muted-foreground' : 'text-foreground'
+                        )}
+                      >
+                        {i === 1 && live ? LIVE_STEP_LABEL : label}
+                      </p>
                       {i === 0 && status !== 'pending' && (
-                        <p className="mt-2 rounded-lg bg-muted/60 p-3 text-sm leading-relaxed whitespace-pre-line text-muted-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
+                        <p className="relative mt-3 max-sm:-ml-11 rounded-lg border border-white/[0.07] bg-[oklch(0.155_0.015_195)] p-3.5 text-sm leading-relaxed whitespace-pre-line text-foreground/85 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
                           <RedactionReveal
                             segments={segments}
                             revealed={revealed}
@@ -507,17 +518,11 @@ function CaseRun({
                           />
                         </p>
                       )}
-                      {i === 1 && status === 'done' && live?.llmData && (
+                      {i === 1 && status === 'done' && (
                         <p className="mt-1 text-sm text-muted-foreground">
-                          {Object.keys(live.llmData).length} clinical fields returned by{' '}
-                          <code className="text-xs">{live.model}</code> just now. Only the de-identified text above was sent.
-                        </p>
-                      )}
-                      {i === 1 && status === 'done' && !live && (
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {Object.keys(demoCase.llmData).length} clinical fields returned by{' '}
-                          <code className="text-xs">{demoCase.model}</code>, run on{' '}
-                          {formatDate(demoCase.generatedAt)}. Only the de-identified text above was sent.
+                          {live
+                            ? 'Extracted just now. Only the de-identified text above was sent.'
+                            : `Recorded on ${formatDate(demoCase.generatedAt)}. Only the de-identified text above was used.`}
                         </p>
                       )}
                       {status === 'failed' && (
@@ -530,7 +535,7 @@ function CaseRun({
                       )}
                       {i === 2 && status === 'done' && (
                         <p className="mt-1 text-sm text-muted-foreground">
-                          Name, DOB, address and doctor details restored; official PDF filled with pdf-lib.
+                          Name, date of birth, address and doctor details restored; official PDF filled.
                         </p>
                       )}
                     </div>
@@ -538,57 +543,47 @@ function CaseRun({
                 );
               })}
             </ol>
-          )}
+          </div>
         </div>
       </section>
 
       {/* 4 — Result */}
       {stage === 3 && (
         <section aria-labelledby="demo-result" className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-500">
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-2">
-                4 · Review and download
-              </p>
-              <h2 id="demo-result" className="text-3xl tracking-tight font-[family-name:var(--font-display)]">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
+            <div className="min-w-0">
+              <p className={cn(EYEBROW, 'mb-2')}>4 · Review and download</p>
+              <h2 id="demo-result" className="text-3xl sm:text-4xl leading-tight tracking-[-0.01em] font-[family-name:var(--font-display)]">
                 {demoCase.formLabel}
               </h2>
             </div>
-            <div className="flex gap-2">
-              <Button variant="teal" onClick={handleDownload} disabled={!previewUrl}>
-                <Download className="w-4 h-4 mr-1.5" />
+            <div className="flex flex-wrap gap-2">
+              <Button variant="teal" className="rounded-full px-5" onClick={handleDownload} disabled={!previewUrl}>
+                <Download className="w-4 h-4" aria-hidden="true" />
                 Download PDF
               </Button>
-              <Button variant="outline" onClick={onReset}>
-                <RotateCcw className="w-4 h-4 mr-1.5" />
+              <Button variant="outline" className="rounded-full px-5" onClick={onReset}>
+                <RotateCcw className="w-4 h-4" aria-hidden="true" />
                 Try another form
               </Button>
             </div>
           </div>
 
-          <div className="mb-6 flex gap-2.5 rounded-lg border border-primary/20 bg-primary/[0.04] p-3 text-sm">
-            <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+          <div className="mb-6 flex gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm">
+            <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0 text-primary" aria-hidden="true" />
             <div className="space-y-0.5">
               {live ? (
-                <>
-                  <p className="text-foreground">
-                    Live extraction by <code className="text-xs">{live.model}</code> just now. De-identification,
-                    guided merge, re-identification and PDF fill ran in your browser.
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Only the de-identified dictation was sent to Claude. Field edits below stay in your browser.
-                  </p>
-                </>
+                <p className="text-foreground">
+                  Live extraction just now. Only the de-identified dictation was sent; identifier removal,
+                  form fill and edits stay in your browser.
+                </p>
               ) : (
                 <>
                   <p className="text-foreground">
-                    Extraction cached from a real <code className="text-xs">{demoCase.model}</code> run on{' '}
-                    {formatDate(demoCase.generatedAt)}. De-identification, guided merge, re-identification
-                    and PDF fill are running live in your browser.
+                    This demo replays a recorded run with fictional patients. Nothing you see leaves your browser.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Nothing you type or edit here is sent anywhere — the only API request is for the blank
-                    official PDF template.
+                    The only request made is for the blank official PDF template.
                   </p>
                 </>
               )}
@@ -603,12 +598,12 @@ function CaseRun({
                 data={editableData}
               />
               {!live && result.unsupportedFields.length > 0 && (
-                <div className="rounded-lg border border-warning/30 bg-warning/5 p-3 text-sm" role="status">
+                <div className="rounded-xl border border-warning/30 bg-warning/[0.07] px-4 py-3 text-sm" role="status">
                   <p className="font-medium text-foreground">
-                    Not stated in the dictation — Claude filled {result.unsupportedFields.length === 1 ? 'this' : 'these'} anyway
+                    Not stated in the dictation — filled anyway. Check before signing.
                   </p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    {result.unsupportedFields.map(fieldLabel).join(', ')}. Check before signing.
+                    {result.unsupportedFields.map(fieldLabel).join(', ')}
                   </p>
                 </div>
               )}
@@ -622,7 +617,7 @@ function CaseRun({
               />
             </div>
             <div className="hidden lg:flex flex-col gap-3 min-w-0 h-[calc(100dvh-8rem)] sticky top-24">
-              <div role="group" aria-label="PDF view" className="inline-flex self-start rounded-full border bg-muted/40 p-0.5 text-sm">
+              <div role="group" aria-label="PDF view" className="inline-flex self-start rounded-full border border-white/10 bg-white/[0.03] p-0.5 text-sm">
                 {(['Filled', 'Blank template'] as const).map((label) => {
                   const pressed = showBlank === (label === 'Blank template');
                   return (
@@ -633,8 +628,10 @@ function CaseRun({
                       onClick={() => setShowBlank(label === 'Blank template')}
                       className={cn(
                         'rounded-full px-3.5 py-1 transition-colors duration-200',
-                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                        pressed ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+                        pressed
+                          ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                          : 'text-muted-foreground hover:text-foreground'
                       )}
                     >
                       {label}
@@ -642,7 +639,7 @@ function CaseRun({
                   );
                 })}
               </div>
-              <div className="flex-1 min-h-0">
+              <div className="glass-frame flex-1 min-h-0 rounded-2xl p-1.5">
                 <PdfPreviewPanel
                   previewUrl={showBlank ? `/api/form-template/${demoCase.formType}` : previewUrl}
                   isLoading={!showBlank && isGenerating}
