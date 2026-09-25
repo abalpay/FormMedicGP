@@ -41,10 +41,10 @@ const faqItems: FaqItem[] = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="scroll-mt-20 relative py-20 sm:py-28">
+    <section id="faq" className="scroll-mt-20 relative py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
               FAQ
             </p>

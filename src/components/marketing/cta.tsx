@@ -6,7 +6,7 @@ import { REPO_URL } from '@/components/marketing/links';
 
 export function CTA() {
   return (
-    <section className="relative py-20 sm:py-28">
+    <section className="relative py-16 sm:py-24">
       <div className="max-w-5xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll preset="fade-up">
           <div className="grain-overlay glass-frame relative isolate overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-16 sm:py-20">
@@ -36,7 +36,7 @@ export function CTA() {
                 href={REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                className="inline-flex min-h-11 items-center gap-2 rounded-md text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
               >
                 <Github className="w-4 h-4" aria-hidden="true" />
                 View source

@@ -9,7 +9,7 @@ const links = [
 
 export function BuilderStory() {
   return (
-    <section id="builder" className="scroll-mt-20 relative py-20 sm:py-28">
+    <section id="builder" className="scroll-mt-20 relative py-16 sm:py-24">
       <div className="max-w-lg mx-auto px-5 sm:px-8 text-center">
         <AnimateOnScroll>
           <span aria-hidden="true" className="mx-auto block h-px w-12 bg-primary/50" />
@@ -30,14 +30,14 @@ export function BuilderStory() {
               claim on this page.
             </p>
           </div>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-sm font-medium">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 border-t border-white/10 pt-6 text-sm font-medium">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground/80 hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 items-center rounded-sm text-foreground/80 hover:text-primary transition-colors duration-200"
               >
                 {link.label}
               </a>

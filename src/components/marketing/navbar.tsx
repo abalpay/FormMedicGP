@@ -16,7 +16,7 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group" aria-label="FormBridge GP home">
+        <Link href="/" className="flex h-11 items-center gap-2.5 group rounded-md" aria-label="FormBridge GP home">
           <BrandLogo
             variant="iconOnDark"
             className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-opacity duration-200 group-hover:opacity-90"
@@ -52,7 +52,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile CTA */}
-        <Button variant="teal" className="lg:hidden h-10 px-4 text-sm font-semibold" asChild>
+        <Button variant="teal" className="lg:hidden h-11 px-4 text-sm font-semibold" asChild>
           <Link href="/demo">Demo</Link>
         </Button>
       </div>

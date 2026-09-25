@@ -4,7 +4,6 @@ import { FormLibrary } from '@/components/marketing/form-library';
 import { BuilderStory } from '@/components/marketing/builder-story';
 import { FAQ } from '@/components/marketing/faq';
 import { CTA } from '@/components/marketing/cta';
-import { Footer } from '@/components/marketing/footer';
 
 export default function LandingPage() {
   return (
@@ -17,7 +16,6 @@ export default function LandingPage() {
         <FAQ />
         <CTA />
       </main>
-      <Footer />
     </div>
   );
 }
