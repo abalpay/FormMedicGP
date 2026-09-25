@@ -9,7 +9,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import Anthropic from '@anthropic-ai/sdk';
-import { getFormManifest, getFormSchema } from '@/lib/schemas';
+import { getFormSchema } from '@/lib/schemas';
 import { buildGuidedExtractionPayload, mergeGuidedOverrides } from '@/lib/guided-dictation';
 import { deidentify } from '@/lib/deidentify';
 import { EXTRACTION_MODEL, extractFormData } from '@/lib/llm';
@@ -88,7 +88,6 @@ function nonBlank(values: Array<string | undefined>): string[] {
 async function generate(caseId: string, input: DemoInput) {
   const schema = getFormSchema(input.formType);
   if (!schema) throw new Error(`Unknown form type ${input.formType}`);
-  const manifest = getFormManifest(input.formType);
   const p = input.patientDetails;
 
   const { transcriptionForLlm, guidedOverrides } = buildGuidedExtractionPayload({
@@ -109,10 +108,7 @@ async function generate(caseId: string, input: DemoInput) {
 
   const textFieldMultilineMap = await getTemplateTextFieldMultilineMap(schema);
   const reviewSchema = buildReviewSchema(schema, {
-    manifestFields: manifest?.fields ?? [],
     textFieldMultilineMap,
-    defaultUnmappedPdfFields: schema.allowedUnmappedPdfFields ?? [],
-    advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields ?? [],
   });
 
   return {

@@ -12,13 +12,7 @@ function loadJson(relativePath) {
 
 test('CAPACITY review keeps raw checkbox field names out of primary sections', () => {
   const schema = loadJson('src/lib/schemas/CAPACITY.json');
-  const manifest = loadJson('src/lib/schemas/manifests/CAPACITY.json');
-
-  const reviewSchema = buildReviewSchema(schema, {
-    manifestFields: manifest.fields,
-    defaultUnmappedPdfFields: schema.allowedUnmappedPdfFields,
-    advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields,
-  });
+  const reviewSchema = buildReviewSchema(schema);
 
   const primarySections = reviewSchema.sections.filter(
     (section) => section.id !== 'advancedTemplate'
@@ -52,13 +46,7 @@ test('CAPACITY review keeps raw checkbox field names out of primary sections', (
 
 test('CAPACITY does not include any advanced-marked review fields', () => {
   const schema = loadJson('src/lib/schemas/CAPACITY.json');
-  const manifest = loadJson('src/lib/schemas/manifests/CAPACITY.json');
-
-  const reviewSchema = buildReviewSchema(schema, {
-    manifestFields: manifest.fields,
-    defaultUnmappedPdfFields: schema.allowedUnmappedPdfFields,
-    advancedUnmappedPdfFields: schema.advancedUnmappedPdfFields,
-  });
+  const reviewSchema = buildReviewSchema(schema);
 
   const allFields = reviewSchema.sections.flatMap((section) => section.fields);
   assert.equal(
