@@ -42,7 +42,7 @@ export interface DemoCase {
   reviewSchema: ReviewSchema;
 }
 
-const SCHEMAS: Record<string, FormSchema> = {
+export const SCHEMAS: Record<string, FormSchema> = {
   CAPACITY: CAPACITYSchema as unknown as FormSchema,
   MA002: MA002Schema as unknown as FormSchema,
   SA478: SA478Schema as unknown as FormSchema,

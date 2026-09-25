@@ -46,6 +46,8 @@ Non-Supabase environment variables are preserved.
 6. Create a new form (requires valid `DEEPGRAM_API_KEY` and `ANTHROPIC_API_KEY` in `.env.local`).
 7. Save the form and confirm it appears on the dashboard saved forms view.
 
+Live extraction on `/demo` is off unless `DEMO_ACCESS_CODE` is set; visitors must enter that code, and each run is one paid Claude call (5 per IP per hour, 40 per day overall).
+
 ## Reset the Database
 
 Use this when you need a clean local state:

@@ -88,8 +88,8 @@
 - [ ] `evaluation.tsx`: renders measured numbers with date, N and caveat (synthetic fixtures, not clinical validation)
 
 ### 14.5 Access-code live mode (0.5 day)
-- [ ] Set Anthropic + Deepgram console spend limits BEFORE enabling
-- [ ] `src/app/api/demo/extract/route.ts`: `x-demo-code` === `DEMO_ACCESS_CODE`; per-IP + global rate limits; deidentify + extractFormData only; never accepts patientDetails
+- [ ] (owner) Set Anthropic + Deepgram console spend limits BEFORE enabling
+- [x] `src/app/api/demo/extract/route.ts`: `x-demo-code` === `DEMO_ACCESS_CODE`; per-IP + global rate limits; deidentify + extractFormData only; never accepts patientDetails
 - [ ] `demo-flow.tsx`: access-code input → live re-extraction; `DEMO_ACCESS_CODE` in `.env.example` + Vercel env
 
 ### 14.7 Doctor workflow improvements (from UX audit 2026-09-25)
