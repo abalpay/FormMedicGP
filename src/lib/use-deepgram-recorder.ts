@@ -13,6 +13,7 @@ import {
   INITIAL_DEEPGRAM_TRANSCRIPT_STATE,
   type DeepgramTranscriptState,
 } from '@/lib/deepgram-transcript';
+import { getRecorderErrorMessage } from '@/lib/recorder-error-message';
 
 export type RecordingState = 'idle' | 'recording' | 'stopped';
 
@@ -66,6 +67,24 @@ export function useDeepgramRecorder({
       clearTimeout(socketCloseTimeoutRef.current);
       socketCloseTimeoutRef.current = null;
     }
+  }, []);
+
+  // Recover from an unexpected socket drop mid-recording: stop the mic and
+  // timers so the UI doesn't get stuck showing a red "recording" state.
+  const handleSocketFailure = useCallback(() => {
+    if (stateRef.current !== 'recording') return;
+
+    if (mediaRecorderRef.current?.state !== 'inactive') {
+      mediaRecorderRef.current?.stop();
+    }
+    mediaRecorderRef.current?.stream.getTracks().forEach((track) => track.stop());
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    setState('stopped');
   }, []);
 
   const startRecording = useCallback(async () => {
@@ -157,6 +176,7 @@ export function useDeepgramRecorder({
       socket.onerror = (err) => {
         console.error('Deepgram WebSocket error:', err);
         toast.error('Live transcription error — you can type your notes manually.');
+        handleSocketFailure();
       };
 
       socket.onclose = (event) => {
@@ -165,6 +185,7 @@ export function useDeepgramRecorder({
         console.log('Deepgram WebSocket closed:', event.code, event.reason);
         if (event.code !== 1000 && stateRef.current === 'recording') {
           toast.error('Live transcription disconnected — you can type your notes manually.');
+          handleSocketFailure();
         }
       };
 
@@ -207,9 +228,9 @@ export function useDeepgramRecorder({
       mediaRecorderRef.current = null;
       isStartingRef.current = false;
       setIsStarting(false);
-      toast.error('Unable to start live dictation. Please try again.');
+      toast.error(getRecorderErrorMessage(err));
     }
-  }, [clearSocketCloseTimeout, clearKeepAlive]);
+  }, [clearSocketCloseTimeout, clearKeepAlive, handleSocketFailure]);
 
   const stopRecording = useCallback(() => {
     clearKeepAlive();
