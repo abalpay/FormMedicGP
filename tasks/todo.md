@@ -90,7 +90,7 @@
 ### 14.5 Access-code live mode (0.5 day)
 - [ ] (owner) Set Anthropic + Deepgram console spend limits BEFORE enabling
 - [x] `src/app/api/demo/extract/route.ts`: `x-demo-code` === `DEMO_ACCESS_CODE`; per-IP + global rate limits; deidentify + extractFormData only; never accepts patientDetails
-- [ ] `demo-flow.tsx`: access-code input → live re-extraction; `DEMO_ACCESS_CODE` in `.env.example` + Vercel env
+- [x] `demo-flow.tsx`: access-code input → live re-extraction; `DEMO_ACCESS_CODE` in `.env.example` (Vercel env: owner)
 
 ### 14.7 Doctor workflow improvements (from UX audit 2026-09-25)
 > Current SU415: ~14-18 clicks, 3 waits, ~3-5 min. No way to correct a field except re-dictating.

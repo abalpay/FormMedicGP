@@ -3,6 +3,8 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { ArrowRight, Check, Download, Loader2, RotateCcw, ShieldCheck, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { FormSummary } from '@/components/forms/form-summary';
 import { MissingFieldsNotice } from '@/components/forms/missing-fields-notice';
 import { PdfPreviewPanel } from '@/components/forms/pdf-preview-panel';
@@ -12,16 +14,20 @@ import { DEMO_CASES, getDemoCase, runDemoPipeline, type DemoCase } from '@/lib/d
 import { buildPdfFilename, getPatientIdentity } from '@/lib/pdf-filename';
 import { getFormSchema } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
+import type { ExtractedFormData } from '@/types';
 
-// 14.5 replaces this note with the access-code input.
-const LIVE_MODE_NOTE =
-  'Editing the dictation needs live mode (access code) — coming in this demo shortly.';
+const LIVE_MODE_NOTE = 'Editing the dictation is available in live mode, which is off right now.';
 
 const STEPS = [
   'De-identifying in your browser',
   'Extracting with Claude (cached)',
   'Re-identifying + filling PDF in your browser',
 ] as const;
+const LIVE_STEP_LABEL = 'Extracting with Claude (live)';
+// Leaves room for the guided-answer block under the server's 4000-char cap.
+const LIVE_TRANSCRIPT_MAX = 3000;
+
+type LiveRun = { transcript: string; llmData?: ExtractedFormData; model?: string };
 
 // -1 = not started, 0..2 = running that step (stage 3 = done is derived)
 type Step = -1 | 0 | 1 | 2;
@@ -118,6 +124,20 @@ export function DemoFlow({ initialCaseId }: { initialCaseId?: string }) {
   // Bumped to remount the run (fresh pipeline state + fresh PDF preview).
   const [runKey, setRunKey] = useState(0);
   const [autoRun, setAutoRun] = useState(Boolean(initialCaseId));
+  const [liveEnabled, setLiveEnabled] = useState(false);
+  // React state only: never persisted.
+  const [accessCode, setAccessCode] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/demo/extract')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => !cancelled && setLiveEnabled(json?.enabled === true))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const selectCase = (next: DemoCase) => {
     setDemoCase(next);
@@ -181,7 +201,15 @@ export function DemoFlow({ initialCaseId }: { initialCaseId?: string }) {
         </ol>
       </section>
 
-      <CaseRun key={`${demoCase.caseId}-${runKey}`} demoCase={demoCase} autoRun={autoRun} onReset={reset} />
+      <CaseRun
+        key={`${demoCase.caseId}-${runKey}`}
+        demoCase={demoCase}
+        autoRun={autoRun}
+        onReset={reset}
+        liveEnabled={liveEnabled}
+        accessCode={accessCode}
+        onAccessCodeChange={setAccessCode}
+      />
     </div>
   );
 }
@@ -190,12 +218,29 @@ function CaseRun({
   demoCase,
   autoRun,
   onReset,
+  liveEnabled,
+  accessCode,
+  onAccessCodeChange,
 }: {
   demoCase: DemoCase;
   autoRun: boolean;
   onReset: () => void;
+  liveEnabled: boolean;
+  accessCode: string;
+  onAccessCodeChange: (code: string) => void;
 }) {
-  const result = useMemo(() => runDemoPipeline(demoCase), [demoCase]);
+  const [draft, setDraft] = useState(demoCase.transcript);
+  const [live, setLive] = useState<LiveRun | null>(null);
+  const [liveError, setLiveError] = useState<string | null>(null);
+  const livePending = live !== null && !live.llmData;
+  // Live runs use the edited transcript; evidence quotes only exist for the cached extraction.
+  const result = useMemo(
+    () =>
+      live
+        ? runDemoPipeline({ ...demoCase, transcript: live.transcript, evidence: {} }, live.llmData)
+        : runDemoPipeline(demoCase),
+    [demoCase, live]
+  );
   const [editableData, setEditableData] = useState<Record<string, unknown>>(result.extractedData);
   const [step, setStep] = useState<Step>(autoRun ? 0 : -1);
   const segments = useMemo(
@@ -231,10 +276,45 @@ function CaseRun({
   // Steps 0 and 1 are short, fixed reveals of work already done in memory.
   useEffect(() => {
     if (step !== 0 && step !== 1) return;
+    if (step === 1 && livePending) return;
     const revealMs = REVEAL_HOLD_MS + placeholderCount * REVEAL_STAGGER_MS + REVEAL_TAIL_MS;
     const timer = setTimeout(() => setStep((s) => (s + 1) as Step), step === 0 ? revealMs : 450);
     return () => clearTimeout(timer);
-  }, [step, placeholderCount]);
+  }, [step, placeholderCount, livePending]);
+
+  const runLive = async () => {
+    const transcript = draft;
+    const liveCase = { ...demoCase, transcript, evidence: {} };
+    setLiveError(null);
+    setLive({ transcript });
+    setStep(0);
+    try {
+      // Send the text as de-identified in the browser (guided answers included), never patient details.
+      const res = await fetch('/api/demo/extract', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-demo-code': accessCode },
+        body: JSON.stringify({
+          formType: demoCase.formType,
+          transcription: runDemoPipeline(liveCase).deidentified.deidentifiedText,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const retryAfter = res.headers.get('Retry-After');
+        throw new Error(
+          (json.error ?? 'Live extraction failed.') +
+            (res.status === 429 && retryAfter ? ` Try again in ${retryAfter} seconds.` : '')
+        );
+      }
+      setEditableData(runDemoPipeline(liveCase, json.llmData).extractedData);
+      setLive({ transcript, llmData: json.llmData, model: json.model });
+    } catch (error) {
+      setLive(null);
+      setStep(-1);
+      setRevealed(0);
+      setLiveError(error instanceof Error ? error.message : 'Live extraction failed.');
+    }
+  };
 
   const handleDownload = () => {
     if (!previewUrl) return;
@@ -282,9 +362,19 @@ function CaseRun({
               )}
             </dl>
             <div className="p-4 space-y-4">
-              <p className={cn('text-[15px] leading-relaxed text-foreground', !dictationOpen && 'max-lg:line-clamp-4')}>
-                {demoCase.transcript}
-              </p>
+              {liveEnabled && step === -1 ? (
+                <Textarea
+                  aria-label="Dictation"
+                  value={draft}
+                  maxLength={LIVE_TRANSCRIPT_MAX}
+                  onChange={(e) => setDraft(e.target.value)}
+                  className="text-[15px] leading-relaxed"
+                />
+              ) : (
+                <p className={cn('text-[15px] leading-relaxed text-foreground', !dictationOpen && 'max-lg:line-clamp-4')}>
+                  {live?.transcript ?? demoCase.transcript}
+                </p>
+              )}
               <button
                 type="button"
                 aria-expanded={dictationOpen}
@@ -308,7 +398,46 @@ function CaseRun({
               </div>
             </div>
           </div>
-          <p className="mt-3 text-xs text-muted-foreground">{LIVE_MODE_NOTE}</p>
+          {liveEnabled ? (
+            <form
+              className="mt-3 rounded-xl border p-4 space-y-3"
+              onSubmit={(e) => {
+                e.preventDefault();
+                runLive();
+              }}
+            >
+              <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-muted-foreground">Live mode</p>
+              <p className="text-xs text-muted-foreground">
+                Edit the dictation above, then run one real Claude extraction. Guided answers stay as shown.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Input
+                  type="password"
+                  autoComplete="off"
+                  aria-label="Access code"
+                  placeholder="Access code"
+                  value={accessCode}
+                  onChange={(e) => onAccessCodeChange(e.target.value)}
+                  className="w-44"
+                />
+                <Button
+                  type="submit"
+                  variant="teal"
+                  disabled={step !== -1 || !accessCode || draft.trim().length < 20}
+                >
+                  {livePending && <Loader2 className="w-4 h-4 mr-1.5 motion-safe:animate-spin" />}
+                  Run live with Claude
+                </Button>
+              </div>
+              {liveError && (
+                <p className="text-sm text-destructive" role="alert">
+                  {liveError}
+                </p>
+              )}
+            </form>
+          ) : (
+            <p className="mt-3 text-xs text-muted-foreground">{LIVE_MODE_NOTE}</p>
+          )}
         </div>
 
         <div>
@@ -333,7 +462,7 @@ function CaseRun({
                   stage > i ? 'done' : stage === i ? (i === 2 && pdfFailed ? 'failed' : 'active') : 'pending';
                 return (
                   <li
-                    key={label}
+                    key={i}
                     className={cn(
                       'grid grid-cols-[1.5rem_1fr] gap-3 transition-opacity duration-300',
                       status === 'pending' && 'opacity-40'
@@ -358,17 +487,23 @@ function CaseRun({
                       )}
                     </span>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium">{label}</p>
+                      <p className="text-sm font-medium">{i === 1 && live ? LIVE_STEP_LABEL : label}</p>
                       {i === 0 && status !== 'pending' && (
                         <p className="mt-2 rounded-lg bg-muted/60 p-3 text-sm leading-relaxed whitespace-pre-line text-muted-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
                           <RedactionReveal
                             segments={segments}
                             revealed={revealed}
-                            quote={focusedKey ? demoCase.evidence[focusedKey] : undefined}
+                            quote={focusedKey && !live ? demoCase.evidence[focusedKey] : undefined}
                           />
                         </p>
                       )}
-                      {i === 1 && status === 'done' && (
+                      {i === 1 && status === 'done' && live?.llmData && (
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {Object.keys(live.llmData).length} clinical fields returned by{' '}
+                          <code className="text-xs">{live.model}</code> just now. Only the de-identified text above was sent.
+                        </p>
+                      )}
+                      {i === 1 && status === 'done' && !live && (
                         <p className="mt-1 text-sm text-muted-foreground">
                           {Object.keys(demoCase.llmData).length} clinical fields returned by{' '}
                           <code className="text-xs">{demoCase.model}</code>, run on{' '}
@@ -424,15 +559,29 @@ function CaseRun({
           <div className="mb-6 flex gap-2.5 rounded-lg border border-primary/20 bg-primary/[0.04] p-3 text-sm">
             <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
             <div className="space-y-0.5">
-              <p className="text-foreground">
-                Extraction cached from a real <code className="text-xs">{demoCase.model}</code> run on{' '}
-                {formatDate(demoCase.generatedAt)}. De-identification, guided merge, re-identification
-                and PDF fill are running live in your browser.
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Nothing you type or edit here is sent anywhere — the only API request is for the blank
-                official PDF template.
-              </p>
+              {live ? (
+                <>
+                  <p className="text-foreground">
+                    Live extraction by <code className="text-xs">{live.model}</code> just now. De-identification,
+                    guided merge, re-identification and PDF fill ran in your browser.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Only the de-identified dictation was sent to Claude. Field edits below stay in your browser.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-foreground">
+                    Extraction cached from a real <code className="text-xs">{demoCase.model}</code> run on{' '}
+                    {formatDate(demoCase.generatedAt)}. De-identification, guided merge, re-identification
+                    and PDF fill are running live in your browser.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Nothing you type or edit here is sent anywhere — the only API request is for the blank
+                    official PDF template.
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
@@ -443,7 +592,7 @@ function CaseRun({
                 reviewSchema={result.reviewSchema}
                 data={editableData}
               />
-              {result.unsupportedFields.length > 0 && (
+              {!live && result.unsupportedFields.length > 0 && (
                 <div className="rounded-lg border border-warning/30 bg-warning/5 p-3 text-sm" role="status">
                   <p className="font-medium text-foreground">
                     Not stated in the dictation — Claude filled {result.unsupportedFields.length === 1 ? 'this' : 'these'} anyway
@@ -458,7 +607,7 @@ function CaseRun({
                 data={editableData}
                 missingFields={result.missingFields}
                 onChange={(key, value) => setEditableData((prev) => ({ ...prev, [key]: value }))}
-                evidence={demoCase.evidence}
+                evidence={live ? undefined : demoCase.evidence}
                 onFieldFocus={setFocusedKey}
               />
             </div>
