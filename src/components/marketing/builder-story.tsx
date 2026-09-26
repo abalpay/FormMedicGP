@@ -16,7 +16,7 @@ export function BuilderStory() {
       />
       <div
         aria-hidden="true"
-        className="glow pointer-events-none absolute left-1/2 top-0 -z-10 h-[16rem] w-[30rem] -translate-x-1/2 -translate-y-1/3 sm:w-[40rem] [--glow:oklch(0.7_0.12_180/0.17)]"
+        className="glow pointer-events-none absolute left-1/2 top-0 -z-10 h-[16rem] w-[30rem] -translate-x-1/2 -translate-y-1/3 sm:w-[40rem] [--glow:oklch(0.7_0.12_180/0.2)]"
       />
       <div className="max-w-lg mx-auto px-5 sm:px-8 text-center">
         <AnimateOnScroll>

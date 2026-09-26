@@ -454,8 +454,8 @@ body:has(.marketing-dark) {
 .horizon {
   background: radial-gradient(
     ellipse var(--horizon-w, 55%) 100% at 50% 100%,
-    oklch(0.7 0.12 180 / 0.2),
-    oklch(0.7 0.12 180 / 0.07) 45%,
+    oklch(0.7 0.12 180 / 0.23),
+    oklch(0.7 0.12 180 / 0.09) 45%,
     transparent 75%
   );
 }
