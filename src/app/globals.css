@@ -453,11 +453,18 @@ body:has(.marketing-dark) {
 /* Horizon: low wide teal light rising from the bottom edge (CTA into footer) */
 .horizon {
   background: radial-gradient(
-    ellipse 55% 100% at 50% 100%,
+    ellipse var(--horizon-w, 55%) 100% at 50% 100%,
     oklch(0.7 0.12 180 / 0.2),
     oklch(0.7 0.12 180 / 0.07) 45%,
     transparent 75%
   );
+}
+
+/* Narrow screens: the CTA panel spans the width, so the horizon must be wider to show past it */
+@media (width < 40rem) {
+  .horizon {
+    --horizon-w: 95%;
+  }
 }
 
 /* Section hairline with light falloff: dark at the edges, faint teal at centre */

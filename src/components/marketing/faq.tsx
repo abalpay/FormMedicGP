@@ -44,7 +44,7 @@ export function FAQ() {
     <section id="faq" className="scroll-mt-20 relative py-14 sm:py-20">
       <div
         aria-hidden="true"
-        className="glow pointer-events-none absolute top-[45%] -right-[18rem] -z-10 h-[40rem] w-[56rem] -translate-y-1/2 [--glow:oklch(0.7_0.12_180/0.11)]"
+        className="glow pointer-events-none absolute top-[45%] -right-[14rem] -z-10 h-[32rem] w-[30rem] sm:-right-[18rem] sm:h-[40rem] sm:w-[56rem] -translate-y-1/2 [--glow:oklch(0.7_0.12_180/0.11)]"
       />
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <AnimateOnScroll>
