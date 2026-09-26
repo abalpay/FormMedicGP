@@ -122,7 +122,7 @@ export function HowItWorks() {
       />
       <div
         aria-hidden="true"
-        className="glow pointer-events-none absolute -top-56 -left-[22rem] -z-10 h-[52rem] w-[52rem] [--glow:oklch(0.7_0.12_180/0.12)]"
+        className="glow pointer-events-none absolute -top-56 -left-[22rem] -z-10 h-[52rem] w-[52rem] [--glow:oklch(0.7_0.12_180/0.15)]"
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
