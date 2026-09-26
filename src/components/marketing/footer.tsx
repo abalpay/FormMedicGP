@@ -28,12 +28,13 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-[1fr_auto] gap-x-6 gap-y-8 md:gap-x-28">
           <div className="col-span-2 md:col-span-1 flex flex-col gap-3">
-            <BrandLogo
-              variant="sidebarOnDark"
-              alt="FormBridge GP"
-              className="h-7 w-auto self-start"
-              sizes="170px"
-            />
+            <Link href="/" className="flex items-center gap-2.5 self-start rounded-md" aria-label="FormBridge GP home">
+              <BrandLogo variant="iconOnDark" className="w-8 h-8 shrink-0" sizes="32px" />
+              <span className="text-lg tracking-tight font-[family-name:var(--font-display)] leading-none text-foreground">
+                FormBridge
+                <span className="text-primary text-[0.9em] ml-0.5">GP</span>
+              </span>
+            </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
               Voice to official medical forms for Australian GPs. An open-source
               portfolio project.
