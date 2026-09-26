@@ -25,7 +25,8 @@
 > Owner feedback: footer logo placement off; white strip below footer / on overscroll; lower half of `/` is flat black and looks incomplete.
 
 - [ ] 16.1 Footer alignment + full-page dark root (sonnet): `self-start` logo, brand column balance, bottom bar alignment; paint `html:has(.marketing-dark)` too so overscroll is dark; `/login` stays light
-- [ ] 16.2 Depth system for the lower page (opus): grid fade-out from hero, alternating section-anchored teal/amber glows, horizon light behind CTA into footer, hairline dividers with falloff, low-opacity grain; spacing rhythm tightened. `/demo` inherits.
+- [x] 16.2 Depth system for the lower page (opus): grid fade-out from hero, alternating section-anchored teal/amber glows, horizon light behind CTA into footer, hairline dividers with falloff, low-opacity grain; spacing rhythm tightened. `/demo` inherits.
+- Note 2026-09-26: section-anchored glows (teal left beats, amber right forms, teal centre builder + faint grid band, teal right FAQ) in one `isolate` page stacking context; `.grain-layer` (0.025, tiled) after `<main>` dithers them; `.horizon` behind CTA into a darker footer ground with `.divider-lit` hairline; CTA panel lit from below. Rhythm: forms/FAQ py-14/20, builder py-12/16, CTA pt-10/14 pb-20/28. `/demo`: faint lower glow + grain. Worst glow-backed text 5.08:1 (390) / 5.22:1 (1440); reduced motion static; scrollWidth 390.
 - [ ] 16.3 Review screenshots (1440/390, bottom + overscroll, `/login`), iterate, impeccable:audit
 - [ ] 16.4 Push, PR to main, Vercel check
 
