@@ -23,57 +23,64 @@ const linkClass =
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-card/50">
+    <footer className="relative bg-gradient-to-b from-[oklch(0.115_0.012_195)] to-background">
+      <div aria-hidden="true" className="divider-lit pointer-events-none absolute inset-x-0 top-0" />
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-[1fr_auto_auto] gap-x-6 gap-y-8 md:gap-16">
+        <div className="grid grid-cols-2 md:grid-cols-[1fr_auto] gap-x-6 gap-y-8 md:gap-x-28">
           <div className="col-span-2 md:col-span-1 flex flex-col gap-3">
-            <BrandLogo
-              variant="sidebarOnDark"
-              alt="FormBridge GP"
-              className="h-7 w-auto"
-              sizes="170px"
-            />
+            <Link href="/" className="flex items-center gap-2.5 self-start rounded-md" aria-label="FormBridge GP home">
+              <BrandLogo variant="iconOnDark" className="w-8 h-8 shrink-0" sizes="32px" />
+              <span className="text-lg tracking-tight font-[family-name:var(--font-display)] leading-none text-foreground">
+                FormBridge
+                <span className="text-primary text-[0.9em] ml-0.5">GP</span>
+              </span>
+            </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
               Voice to official medical forms for Australian GPs. An open-source
               portfolio project.
             </p>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <h2 className={columnHeadingClass}>Product</h2>
-            <ul className="flex flex-col text-sm text-muted-foreground">
-              {productLinks.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href} className={linkClass}>
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="col-span-2 md:col-span-1 grid grid-cols-2 gap-x-6 gap-y-8 md:flex md:gap-x-20">
+            <div className="flex flex-col gap-3">
+              <h2 className={columnHeadingClass}>Product</h2>
+              <ul className="flex flex-col text-sm text-muted-foreground">
+                {productLinks.map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href} className={linkClass}>
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div className="flex flex-col gap-3">
-            <h2 className={columnHeadingClass}>Elsewhere</h2>
-            <ul className="flex flex-col text-sm text-muted-foreground">
-              {externalLinks.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                    {link.label}
-                  </a>
+            <div className="flex flex-col gap-3">
+              <h2 className={columnHeadingClass}>Elsewhere</h2>
+              <ul className="flex flex-col text-sm text-muted-foreground">
+                {externalLinks.map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+                <li>
+                  <Link href="/login" className={linkClass}>
+                    Sign in
+                  </Link>
                 </li>
-              ))}
-              <li>
-                <Link href="/login" className={linkClass}>
-                  Sign in
-                </Link>
-              </li>
-            </ul>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border/60 pt-6 text-center">
+        <div className="mt-12 border-t border-border/60 pt-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} FormBridge GP. Not a registered medical device.
+            &copy; {new Date().getFullYear()} FormBridge GP.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Not a registered medical device.
           </p>
         </div>
       </div>

@@ -38,6 +38,11 @@ export default async function DemoPage({
         </header>
         <DemoFlow initialCaseId={initialCaseId} />
       </div>
+      {/* Same system as the landing, quieter: a faint low glow and page grain (last, so it dithers the glows). */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="glow absolute -bottom-40 -right-48 h-[36rem] w-[56rem] [--glow:oklch(0.7_0.12_180/0.08)]" />
+        <div className="grain-layer absolute inset-0" />
+      </div>
     </main>
   );
 }

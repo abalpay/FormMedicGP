@@ -31,14 +31,13 @@ function formatValue(type: string, value: string) {
 
 function HeroLighting() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden [mask-image:linear-gradient(to_bottom,#000_60%,transparent)]">
       <div className="bg-grid absolute inset-0" />
       <div className="glow absolute -top-64 -left-48 h-[44rem] w-[64rem] [--glow:oklch(0.7_0.12_180/0.26)]" />
       <div className="glow absolute top-[12%] right-[-6rem] h-[38rem] w-[56rem] [--glow:oklch(0.7_0.12_180/0.12)]" />
       <div className="glow absolute bottom-0 right-[-8rem] h-[30rem] w-[40rem] [--glow:oklch(0.795_0.177_78/0.1)]" />
       <div className="beam absolute top-[38%] right-[-12rem] w-[64rem] opacity-90" />
       <div className="beam absolute top-[58%] right-[-20rem] w-[52rem] opacity-50" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
     </div>
   );
 }

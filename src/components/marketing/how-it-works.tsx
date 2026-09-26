@@ -115,14 +115,14 @@ const BEATS = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="scroll-mt-20 relative isolate py-16 sm:py-24">
+    <section id="how-it-works" className="scroll-mt-20 relative pt-16 pb-14 sm:pt-20 sm:pb-16">
       <div
         aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 -z-10 opacity-70"
+        className="bg-grid bg-grid-band pointer-events-none absolute inset-x-0 -top-48 bottom-0 -z-10 opacity-70"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+        className="glow pointer-events-none absolute -top-56 -left-[22rem] -z-10 h-[52rem] w-[52rem] [--glow:oklch(0.7_0.12_180/0.12)]"
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
