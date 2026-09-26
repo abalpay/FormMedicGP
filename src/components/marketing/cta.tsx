@@ -14,7 +14,7 @@ export function CTA() {
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
               <div className="bg-grid absolute inset-0 opacity-80" />
               {/* Lit from below, continuing the horizon behind the panel */}
-              <div className="glow absolute -bottom-44 left-1/2 h-80 w-[44rem] max-w-[140%] -translate-x-1/2 [--glow:oklch(0.7_0.12_180/0.26)]" />
+              <div className="glow absolute -bottom-56 sm:-bottom-44 left-1/2 h-80 w-[44rem] max-w-[140%] -translate-x-1/2 [--glow:oklch(0.7_0.12_180/0.2)]" />
               <div className="glow absolute -top-24 right-[8%] h-56 w-72 [--glow:oklch(0.795_0.177_78/0.08)]" />
             </div>
 
