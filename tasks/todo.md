@@ -24,11 +24,10 @@
 
 > Owner feedback: footer logo placement off; white strip below footer / on overscroll; lower half of `/` is flat black and looks incomplete.
 
-- [ ] 16.1 Footer alignment + full-page dark root (sonnet): `self-start` logo, brand column balance, bottom bar alignment; paint `html:has(.marketing-dark)` too so overscroll is dark; `/login` stays light
-- [x] 16.2 Depth system for the lower page (opus): grid fade-out from hero, alternating section-anchored teal/amber glows, horizon light behind CTA into footer, hairline dividers with falloff, low-opacity grain; spacing rhythm tightened. `/demo` inherits.
-- Note 2026-09-26: section-anchored glows (teal left beats, amber right forms, teal centre builder + faint grid band, teal right FAQ) in one `isolate` page stacking context; `.grain-layer` (0.025, tiled) after `<main>` dithers them; `.horizon` behind CTA into a darker footer ground with `.divider-lit` hairline; CTA panel lit from below. Rhythm: forms/FAQ py-14/20, builder py-12/16, CTA pt-10/14 pb-20/28. `/demo`: faint lower glow + grain. Worst glow-backed text 5.08:1 (390) / 5.22:1 (1440); reduced motion static; scrollWidth 390.
-- [ ] 16.3 Review screenshots (1440/390, bottom + overscroll, `/login`), iterate, impeccable:audit
-- [ ] 16.4 Push, PR to main, Vercel check
+- [x] 16.1 Footer alignment + full-page dark root (sonnet) — 46755eb: `self-start` on the logo (it was stretching to the column width and rendering centred), brand / link-group grid with even column gaps, bottom bar copyright left + "Not a registered medical device." right (stacked on mobile); `html:has(.marketing-dark)` painted dark alongside `body` so overscroll is dark. `/login` verified light.
+- [x] 16.2 Depth system for the lower page (opus) — 4a8818b … 73e8beb: one `isolate` stacking context on the landing wrapper; section-anchored teal glows (left behind story beats + grid band starting above the hero boundary, pool behind the forms tiles, overhead light on the builder flourish, right behind FAQ); `.horizon` rising behind the CTA into a darker footer ground; CTA panel lit from below with a low amber top edge (amber lives only in the CTA); `.grain-layer` (0.025, tiled) after `<main>` dithers the gradients. Hero lighting now masks to transparent instead of painting an opaque fade, so the hero → story handoff is continuous (max adjacent-row step ≤ 1.2 rgb, none at the boundary). Rhythm: story pt-20/pb-16, forms pt-16/pb-14, builder py-8/12, FAQ py-12/16, CTA pt-8/pb-20; page height 4103 → 3895px at 1440. `/demo` gets a faint lower glow + grain.
+- [x] 16.3 Review + audit: two review iterations on full-res crops (seam, mid-page glows, CTA smudge, gaps); worst glow-backed text contrast 5.56:1 (1440) / 5.46:1 (390), surface behind text ≤ oklch 0.237; reduced motion static; scrollWidth 390; lint clean on touched paths, build OK, tests 124/124. Screenshots in session scratchpad `depth/pass3/`.
+- [x] 16.4 Push, PR to main, Vercel check (not merged; owner reviews the preview)
 
 ## Phase 15: Dark landing redesign (2026-09-25)
 
