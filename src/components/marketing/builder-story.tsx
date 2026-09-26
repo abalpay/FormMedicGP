@@ -9,14 +9,14 @@ const links = [
 
 export function BuilderStory() {
   return (
-    <section id="builder" className="scroll-mt-20 relative py-12 sm:py-16">
+    <section id="builder" className="scroll-mt-20 relative py-8 sm:py-12">
       <div
         aria-hidden="true"
         className="bg-grid bg-grid-band pointer-events-none absolute inset-x-0 -inset-y-16 -z-10 opacity-50"
       />
       <div
         aria-hidden="true"
-        className="glow pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[34rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 [--glow:oklch(0.7_0.12_180/0.12)]"
+        className="glow pointer-events-none absolute left-1/2 top-0 -z-10 h-[16rem] w-[30rem] -translate-x-1/2 -translate-y-1/3 sm:w-[40rem] [--glow:oklch(0.7_0.12_180/0.17)]"
       />
       <div className="max-w-lg mx-auto px-5 sm:px-8 text-center">
         <AnimateOnScroll>
