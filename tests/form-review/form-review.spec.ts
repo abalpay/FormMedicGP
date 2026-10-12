@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 import { injectFixture } from './helpers/store-injector';
-import { runFieldAudit } from './helpers/field-audit';
+import { runFieldAudit, type AuditRow } from './helpers/field-audit';
 import { generateReport } from './helpers/report-generator';
 import type { FormFixture } from './fixtures/types';
 
@@ -73,7 +73,7 @@ for (const { formId, fixture } of loadFixtures()) {
     const reviewScreenshot = await page.screenshot({ fullPage: true });
 
     // 10. Field audit — if we captured pdfBase64, audit it; otherwise skip audit
-    let auditRows = [];
+    let auditRows: AuditRow[] = [];
     if (capturedPdfBase64) {
       auditRows = await runFieldAudit(formId, capturedPdfBase64);
     } else {
