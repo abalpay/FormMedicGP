@@ -8,6 +8,7 @@ export type FormFlowStep =
   | 'patient-details'
   | 'dictate'
   | 'processing'
+  | 'follow-up'
   | 'review';
 
 interface FormFlowState {
@@ -18,6 +19,8 @@ interface FormFlowState {
   transcription: string;
   guidedAnswers: Record<string, string>;
   extractedData: Record<string, unknown> | null;
+  initialExtraction: Record<string, unknown> | null;
+  followUpAnswers: Record<string, string>;
   missingFields: string[];
   reviewSchema: ReviewSchema | null;
   pdfBlobUrl: string | null;
@@ -29,6 +32,9 @@ interface FormFlowState {
   setGuidedAnswers: (answers: Record<string, string>) => void;
   setGuidedAnswer: (key: string, value: string) => void;
   setExtractedData: (data: Record<string, unknown>) => void;
+  setInitialExtraction: (data: Record<string, unknown>) => void;
+  setFollowUpAnswers: (answers: Record<string, string>) => void;
+  setFollowUpAnswer: (key: string, value: string) => void;
   setMissingFields: (fields: string[]) => void;
   setReviewSchema: (schema: ReviewSchema | null) => void;
   setPdfBlobUrl: (url: string) => void;
@@ -43,6 +49,8 @@ const initialState = {
   transcription: '',
   guidedAnswers: {},
   extractedData: null,
+  initialExtraction: null,
+  followUpAnswers: {},
   missingFields: [],
   reviewSchema: null,
   pdfBlobUrl: null,
@@ -66,6 +74,15 @@ export const useFormFlowStore = create<FormFlowState>()((set, get) => ({
       },
     })),
   setExtractedData: (data) => set({ extractedData: data }),
+  setInitialExtraction: (data) => set({ initialExtraction: data }),
+  setFollowUpAnswers: (answers) => set({ followUpAnswers: answers }),
+  setFollowUpAnswer: (key, value) =>
+    set((state) => ({
+      followUpAnswers: {
+        ...state.followUpAnswers,
+        [key]: value,
+      },
+    })),
   setMissingFields: (fields) => set({ missingFields: fields }),
   setReviewSchema: (schema) => set({ reviewSchema: schema }),
   setPdfBlobUrl: (url) => set({ pdfBlobUrl: url }),

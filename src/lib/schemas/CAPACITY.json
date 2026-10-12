@@ -915,6 +915,7 @@
             "both": { "tacClaim": "yes", "vwaClaim": "yes" },
             "none": { "tacClaim": "no", "vwaClaim": "no" }
           },
+          "coveredFields": ["tacClaim", "vwaClaim"],
           "requiredForBestFill": true
         },
         {
@@ -1011,6 +1012,7 @@
             "6_weeks": { "returnToWorkDays": "", "returnToWorkWeeks": "6" },
             "not_set": { "returnToWorkDays": "", "returnToWorkWeeks": "" }
           },
+          "coveredFields": ["returnToWorkDays", "returnToWorkWeeks"],
           "requiredForBestFill": true
         }
       ]

@@ -16,7 +16,9 @@ export async function injectFixture(page: Page, fixture: FormFixture): Promise<v
 
     store.getState().setFormType(f.formType, f.formLabel);
     store.getState().setPatientDetails(f.patientDetails);
-    store.getState().setGuidedAnswers(f.guidedAnswers);
+    if (f.guidedAnswers) {
+      store.getState().setGuidedAnswers(f.guidedAnswers);
+    }
     store.getState().setTranscription(f.clinicalNarrative ?? '');
     store.getState().setStep('dictate');
   }, fixture);

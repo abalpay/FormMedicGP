@@ -487,6 +487,7 @@
             "yes": { "hasPhysicalDisabilities": "yes", "hasAnyDisabilities": "yes" },
             "no": { "hasPhysicalDisabilities": "no" }
           },
+          "coveredFields": ["hasPhysicalDisabilities", "hasAnyDisabilities"],
           "defaultValue": "yes",
           "requiredForBestFill": true
         },

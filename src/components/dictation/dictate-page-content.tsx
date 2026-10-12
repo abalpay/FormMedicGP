@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  AlertTriangle,
   ArrowLeft,
   ArrowRight,
   Loader2,
@@ -18,11 +17,6 @@ import { StepIndicator } from '@/components/ui/step-indicator';
 import { DictationRecorder } from '@/components/dictation/dictation-recorder';
 import { TranscriptionDisplay } from '@/components/dictation/transcription-display';
 import { DictationTips } from '@/components/dictation/dictation-tips';
-import { GuidedDictationPanel } from '@/components/dictation/guided-dictation-panel';
-import {
-  getMissingRequiredGuidedQuestionKeys,
-  shouldShowGuidedSoftGate,
-} from '@/lib/guided-dictation';
 import { useFormFlowStore } from '@/lib/stores/form-flow-store';
 import type { FormCatalogItem, ReviewSchema } from '@/types';
 import { toast } from 'sonner';
@@ -31,6 +25,7 @@ const steps = [
   { label: 'Select Form' },
   { label: 'Patient Details' },
   { label: 'Describe', icon: Sparkles },
+  { label: 'Follow-up' },
   { label: 'Review' },
 ];
 
@@ -46,19 +41,17 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
   const selectedFormLabel = useFormFlowStore((s) => s.selectedFormLabel);
   const patientDetails = useFormFlowStore((s) => s.patientDetails);
   const transcription = useFormFlowStore((s) => s.transcription);
-  const guidedAnswers = useFormFlowStore((s) => s.guidedAnswers);
   const setTranscription = useFormFlowStore((s) => s.setTranscription);
-  const setGuidedAnswer = useFormFlowStore((s) => s.setGuidedAnswer);
-  const setGuidedAnswers = useFormFlowStore((s) => s.setGuidedAnswers);
   const setStep = useFormFlowStore((s) => s.setStep);
   const setExtractedData = useFormFlowStore((s) => s.setExtractedData);
+  const setInitialExtraction = useFormFlowStore((s) => s.setInitialExtraction);
   const setMissingFields = useFormFlowStore((s) => s.setMissingFields);
   const setReviewSchema = useFormFlowStore((s) => s.setReviewSchema);
   const setPdfBlobUrl = useFormFlowStore((s) => s.setPdfBlobUrl);
+  const setFollowUpAnswers = useFormFlowStore((s) => s.setFollowUpAnswers);
 
   const [recordingState, setRecordingState] = useState<RecordingState>('idle');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showGuidedWarning, setShowGuidedWarning] = useState(false);
 
   const handleTranscriptionUpdate = useCallback(
     (text: string) => {
@@ -79,73 +72,12 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
       : selectedFormType ?? 'No form selected';
   const activeTips = selectedForm?.dictationTips;
 
-  const activeGuide = useMemo(
-    () => selectedForm?.dictationGuide ?? [],
-    [selectedForm?.dictationGuide]
-  );
-  const hasGuidedDictation = activeGuide.length > 0;
-
-  const missingRequiredGuideKeys = useMemo(
-    () => getMissingRequiredGuidedQuestionKeys(activeGuide, guidedAnswers),
-    [activeGuide, guidedAnswers]
-  );
-
-  const missingGuideLabels = useMemo(() => {
-    const labelByKey = new Map(
-      activeGuide
-        .flatMap((section) => section.questions)
-        .map((question) => [question.key, question.label])
-    );
-
-    return missingRequiredGuideKeys.map((key) => labelByKey.get(key) ?? key);
-  }, [activeGuide, missingRequiredGuideKeys]);
-
-  useEffect(() => {
-    if (!hasGuidedDictation && Object.keys(guidedAnswers).length > 0) {
-      setGuidedAnswers({});
-    }
-  }, [guidedAnswers, hasGuidedDictation, setGuidedAnswers]);
-
-  // Seed default values from the guide when it first loads
-  useEffect(() => {
-    if (activeGuide.length === 0) return;
-    const defaults: Record<string, string> = {};
-    for (const section of activeGuide) {
-      for (const question of section.questions) {
-        if (question.defaultValue) {
-          defaults[question.key] = question.defaultValue;
-        }
-      }
-    }
-    if (Object.keys(defaults).length > 0) {
-      // Only set defaults for keys not already answered
-      setGuidedAnswers({ ...defaults, ...guidedAnswers });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeGuide]);
-
-  useEffect(() => {
-    if (showGuidedWarning && missingRequiredGuideKeys.length === 0) {
-      setShowGuidedWarning(false);
-    }
-  }, [missingRequiredGuideKeys.length, showGuidedWarning]);
-
-  const handleProcessForm = async (forceContinue = false) => {
-    if (!hasGuidedDictation && !transcription.trim()) {
+  const handleAnalyze = async () => {
+    if (!transcription.trim()) {
       toast.error('Please record or type your clinical notes first.');
       return;
     }
 
-    if (
-      hasGuidedDictation &&
-      !forceContinue &&
-      shouldShowGuidedSoftGate(activeGuide, guidedAnswers)
-    ) {
-      setShowGuidedWarning(true);
-      return;
-    }
-
-    setShowGuidedWarning(false);
     setIsProcessing(true);
     setStep('processing');
 
@@ -157,7 +89,6 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
           transcription,
           patientDetails,
           formType: selectedFormType,
-          guidedAnswers: hasGuidedDictation ? guidedAnswers : undefined,
         }),
       });
 
@@ -175,8 +106,10 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
         };
 
       setExtractedData(extractedData);
+      setInitialExtraction(extractedData);
       setMissingFields(missingFields ?? []);
       setReviewSchema(reviewSchema ?? null);
+      setFollowUpAnswers({});
 
       if (pdfBase64) {
         const bytes = Uint8Array.from(atob(pdfBase64), (c) => c.charCodeAt(0));
@@ -184,8 +117,9 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
         setPdfBlobUrl(URL.createObjectURL(blob));
       }
 
-      setStep('review');
-      router.push('/dashboard/forms/review');
+      // Navigate to follow-up step
+      setStep('follow-up');
+      router.push('/dashboard/follow-up');
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to process form';
@@ -205,68 +139,12 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
         <Badge variant="secondary">{formLabel}</Badge>
       </div>
 
-      {!hasGuidedDictation && (
-        <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
-          <DictationTips tips={activeTips} formName={selectedForm?.id} />
-        </div>
-      )}
-
-      {hasGuidedDictation ? (
-        <div className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
-          <GuidedDictationPanel
-            sections={activeGuide}
-            answers={guidedAnswers}
-            missingRequiredKeys={showGuidedWarning ? missingRequiredGuideKeys : []}
-            onAnswerChange={setGuidedAnswer}
-            isMainRecorderActive={recordingState === 'recording'}
-          />
-        </div>
-      ) : null}
-
-      {showGuidedWarning ? (
-        <Card className="border-warning/30 bg-warning/5 animate-fade-in-up" style={{ animationDelay: '90ms' }}>
-          <CardContent className="p-4 space-y-3">
-            <p className="text-sm font-medium text-foreground flex items-start gap-2">
-              <AlertTriangle className="w-4 h-4 mt-0.5 text-warning" />
-              Guided prompts can improve autofill quality for this form.
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Missing high-value prompts:
-            </p>
-            <ul className="list-disc pl-5 text-xs text-muted-foreground space-y-1">
-              {missingGuideLabels.map((label) => (
-                <li key={label}>{label}</li>
-              ))}
-            </ul>
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  document
-                    .getElementById('guided-dictation-panel')
-                    ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                }
-              >
-                Fill Missing Prompts
-              </Button>
-              <Button type="button" size="sm" onClick={() => handleProcessForm(true)}>
-                Continue Anyway
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ) : null}
+      <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+        <DictationTips tips={activeTips} formName={selectedForm?.id} />
+      </div>
 
       <Card className="shadow-sm animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         <CardContent className="p-6 space-y-6">
-          {hasGuidedDictation && (
-            <div>
-              <h3 className="text-sm font-medium">Additional Information / Context</h3>
-              <p className="text-xs text-muted-foreground">Optional — add any extra notes not covered by the guided prompts above.</p>
-            </div>
-          )}
           <TranscriptionDisplay
             text={transcription}
             isRecording={recordingState === 'recording'}
@@ -291,19 +169,17 @@ export function DictatePageContent({ formCatalog }: DictatePageContentProps) {
             </Link>
           </Button>
           <Button
-            onClick={() => handleProcessForm(false)}
-            disabled={
-              (!hasGuidedDictation && !transcription.trim()) || recordingState === 'recording' || isProcessing
-            }
+            onClick={handleAnalyze}
+            disabled={!transcription.trim() || recordingState === 'recording' || isProcessing}
           >
             {isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                Processing...
+                Analyzing...
               </>
             ) : (
               <>
-                Process Form
+                Analyze
                 <ArrowRight className="w-4 h-4 ml-1.5" />
               </>
             )}

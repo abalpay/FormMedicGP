@@ -140,6 +140,7 @@ export interface DictationGuideQuestion {
   targetFieldKey?: string;
   targetFieldKeys?: string[];
   valueOverrides?: Record<string, Record<string, string>>;
+  coveredFields?: string[];
   requiredForBestFill?: boolean;
   visibleWhen?: { key: string; equals: string | string[] };
   defaultValue?: string;

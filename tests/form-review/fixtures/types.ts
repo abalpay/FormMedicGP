@@ -11,6 +11,7 @@ export interface FormFixture {
     caredPersonDateOfBirth?: string;
     [key: string]: string | undefined;
   };
-  guidedAnswers: Record<string, string>;
+  /** Pre-filled guided answers (legacy flow). Optional in new follow-up flow. */
+  guidedAnswers?: Record<string, string>;
   clinicalNarrative: string;
 }

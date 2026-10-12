@@ -55,7 +55,7 @@ export function generateReport(options: {
     )
     .join('');
 
-  const guidedAnswersRows = Object.entries(fixture.guidedAnswers)
+  const guidedAnswersRows = Object.entries(fixture.guidedAnswers ?? {})
     .map(([k, v]) => `<tr><td><code>${escapeHtml(k)}</code></td><td>${escapeHtml(v)}</td></tr>`)
     .join('');
 

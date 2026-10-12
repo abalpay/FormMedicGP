@@ -1171,6 +1171,7 @@
               "primaryImpairmentLifelong": "No — the impairment is not expected to be lifelong."
             }
           },
+          "coveredFields": ["primaryImpairmentLifelong"],
           "requiredForBestFill": true
         },
         {
@@ -1222,6 +1223,7 @@
               "secondaryImpairmentLifelong": "No — the impairment is not expected to be lifelong."
             }
           },
+          "coveredFields": ["secondaryImpairmentLifelong"],
           "visibleWhen": {
             "key": "hasSecondaryImpairment",
             "equals": "yes"
@@ -1275,6 +1277,7 @@
               "mobilityNoAssistance": "yes"
             }
           },
+          "coveredFields": ["mobilityNoAssistance"],
           "requiredForBestFill": true
         },
         {
@@ -1296,6 +1299,7 @@
               "commNoAssistance": "yes"
             }
           },
+          "coveredFields": ["commNoAssistance"],
           "requiredForBestFill": true
         },
         {
@@ -1317,6 +1321,7 @@
               "socialNoAssistance": "yes"
             }
           },
+          "coveredFields": ["socialNoAssistance"],
           "requiredForBestFill": true
         },
         {
@@ -1338,6 +1343,7 @@
               "learningNoAssistance": "yes"
             }
           },
+          "coveredFields": ["learningNoAssistance"],
           "requiredForBestFill": true
         },
         {
@@ -1359,6 +1365,7 @@
               "selfCareNoAssistance": "yes"
             }
           },
+          "coveredFields": ["selfCareNoAssistance"],
           "requiredForBestFill": true
         },
         {
@@ -1380,6 +1387,7 @@
               "selfMgmtNoAssistance": "yes"
             }
           },
+          "coveredFields": ["selfMgmtNoAssistance"],
           "requiredForBestFill": true
         }
       ]

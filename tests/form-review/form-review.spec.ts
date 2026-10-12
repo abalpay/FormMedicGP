@@ -27,18 +27,21 @@ for (const { formId, fixture } of loadFixtures()) {
     await injectFixture(page, fixture);
 
     // 3. Wait for the dictate page to render with the selected form
-    //    The guided dictation panel appears when a form with dictationGuide is selected
     await page.waitForTimeout(500); // Allow React to re-render with injected state
 
     // 4. Take dictation screenshot
     const dictationScreenshot = await page.screenshot({ fullPage: true });
 
-    // 5. Intercept the /api/process-form response to capture pdfBase64
+    // 5. Intercept API responses to capture pdfBase64
     let capturedPdfBase64: string | null = null;
     let capturedApiError: string | null = null;
 
     page.on('response', async (response) => {
-      if (response.url().includes('/api/process-form') && !response.url().includes('/regenerate')) {
+      const url = response.url();
+      if (
+        url.includes('/api/process-form') &&
+        !url.includes('/regenerate')
+      ) {
         try {
           const body = await response.json();
           if (body.pdfBase64) {
@@ -53,26 +56,42 @@ for (const { formId, fixture } of loadFixtures()) {
       }
     });
 
-    // 6. Click "Process Form" button
-    const processButton = page.getByRole('button', { name: 'Process Form' });
-    await expect(processButton).toBeVisible({ timeout: 5_000 });
-    await processButton.click();
+    // 6. Click "Analyze" button (new flow)
+    const analyzeButton = page.getByRole('button', { name: 'Analyze' });
+    await expect(analyzeButton).toBeVisible({ timeout: 5_000 });
+    await analyzeButton.click();
 
-    // 7. Wait for navigation to review page (LLM call may take up to 90s)
-    await page.waitForURL('**/forms/review', { timeout: 90_000 });
+    // 7. Wait for navigation to follow-up page (LLM call may take up to 90s)
+    await page.waitForURL('**/follow-up', { timeout: 90_000 });
 
     if (capturedApiError) {
       throw new Error(`API returned error for ${formId}: ${capturedApiError}`);
     }
 
-    // 8. Wait for PDF iframe to appear (usePdfPreview regenerates a preview URL)
+    // 8. Verify follow-up page elements
+    const coverageCard = page.locator('text=AI Extraction Results');
+    await expect(coverageCard).toBeVisible({ timeout: 5_000 });
+
+    // 9. Take follow-up page screenshot
+    await page.waitForTimeout(500);
+    const followUpScreenshot = await page.screenshot({ fullPage: true });
+
+    // 10. Click "Finalize" or "Continue to Review" button
+    const finalizeButton = page.getByRole('button', { name: /Finalize|Continue to Review/ });
+    await expect(finalizeButton).toBeVisible({ timeout: 5_000 });
+    await finalizeButton.click();
+
+    // 11. Wait for navigation to review page
+    await page.waitForURL('**/forms/review', { timeout: 30_000 });
+
+    // 12. Wait for PDF iframe to appear
     await page.waitForSelector('iframe[title="PDF Preview"]', { timeout: 30_000 });
 
-    // 9. Take review page screenshot
+    // 13. Take review page screenshot
     await page.waitForTimeout(1_500); // Let PDF iframe render
     const reviewScreenshot = await page.screenshot({ fullPage: true });
 
-    // 10. Field audit — if we captured pdfBase64, audit it; otherwise skip audit
+    // 14. Field audit — if we captured pdfBase64, audit it
     let auditRows = [];
     if (capturedPdfBase64) {
       auditRows = await runFieldAudit(formId, capturedPdfBase64);
@@ -80,7 +99,7 @@ for (const { formId, fixture } of loadFixtures()) {
       console.warn(`[${formId}] pdfBase64 not captured from API response — skipping field audit`);
     }
 
-    // 11. Generate HTML report
+    // 15. Generate HTML report
     const reportPath = generateReport({
       formId,
       fixture,
